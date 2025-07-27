@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
+import { supabase } from '../../lib/supabase';
 
 interface Notice {
   id: string;
@@ -24,20 +25,22 @@ const UploadNoticeForm: React.FC<UploadNoticeFormProps> = ({ onUploadSuccess }) 
   const [error, setError] = useState('');
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const selectedFile = e.target.files[0];
-      if (selectedFile.type !== 'application/pdf') {
-        setError('Only PDF files are allowed.');
-        setFile(null);
-        return;
-      }
-      setError('');
-      setFile(selectedFile);
+    const selectedFile = e.target.files?.[0];
+    if (!selectedFile) return;
+
+    if (selectedFile.type !== 'application/pdf') {
+      setError('Only PDF files are allowed.');
+      setFile(null);
+      return;
     }
+
+    setError('');
+    setFile(selectedFile);
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
     if (!title.trim()) {
       setError('Title is required.');
       return;
@@ -50,13 +53,27 @@ const UploadNoticeForm: React.FC<UploadNoticeFormProps> = ({ onUploadSuccess }) 
     setUploading(true);
     setError('');
 
-    // Simulate upload delay and create a new Notice object
-    setTimeout(() => {
+    const timestamp = Date.now();
+    const filePath = `notices/${timestamp}_${file.name}`;
+
+    try {
+      const { error: uploadError } = await supabase.storage
+        .from('notice-pdfs')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false,
+        });
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage.from('notice-pdfs').getPublicUrl(filePath);
+      const publicUrl = data.publicUrl;
+
       const newNotice: Notice = {
-        id: Date.now().toString(),
+        id: timestamp.toString(),
         title,
         date: new Date(),
-        fileUrl: URL.createObjectURL(file), // replace with real uploaded file URL in production
+        fileUrl: publicUrl,
         fileName: file.name,
         fileSize: (file.size / (1024 * 1024)).toFixed(2) + ' MB',
         category: category as Notice['category'],
@@ -64,20 +81,25 @@ const UploadNoticeForm: React.FC<UploadNoticeFormProps> = ({ onUploadSuccess }) 
 
       onUploadSuccess(newNotice);
 
+      // Reset form
       setTitle('');
       setCategory('Exam');
       setFile(null);
+    } catch (err: any) {
+      console.error(err);
+      setError('Failed to upload notice. Please try again.');
+    } finally {
       setUploading(false);
-    }, 1500);
+    }
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white rounded-lg shadow-md p-6"
+      className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6"
       aria-busy={uploading}
     >
-      <h2 className="text-xl font-semibold mb-4">Upload New Notice</h2>
+      <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100">Upload New Notice</h2>
 
       {error && (
         <div className="mb-4 text-red-600 font-medium" role="alert">
@@ -86,7 +108,7 @@ const UploadNoticeForm: React.FC<UploadNoticeFormProps> = ({ onUploadSuccess }) 
       )}
 
       <div className="mb-4">
-        <label htmlFor="title" className="block font-medium mb-1">
+        <label htmlFor="title" className="block font-medium mb-1 text-gray-700 dark:text-gray-300">
           Notice Title
         </label>
         <input
@@ -94,21 +116,21 @@ const UploadNoticeForm: React.FC<UploadNoticeFormProps> = ({ onUploadSuccess }) 
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
           placeholder="Enter notice title"
           disabled={uploading}
         />
       </div>
 
       <div className="mb-4">
-        <label htmlFor="category" className="block font-medium mb-1">
+        <label htmlFor="category" className="block font-medium mb-1 text-gray-700 dark:text-gray-300">
           Category
         </label>
         <select
           id="category"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
           disabled={uploading}
         >
           {categories.map((cat) => (
@@ -120,7 +142,7 @@ const UploadNoticeForm: React.FC<UploadNoticeFormProps> = ({ onUploadSuccess }) 
       </div>
 
       <div className="mb-6">
-        <label htmlFor="file" className="block font-medium mb-1">
+        <label htmlFor="file" className="block font-medium mb-1 text-gray-700 dark:text-gray-300">
           PDF File
         </label>
         <input
@@ -129,14 +151,14 @@ const UploadNoticeForm: React.FC<UploadNoticeFormProps> = ({ onUploadSuccess }) 
           accept="application/pdf"
           onChange={handleFileChange}
           disabled={uploading}
-          className="w-full"
+          className="w-full file:cursor-pointer file:bg-blue-600 file:text-white file:px-4 file:py-2 file:rounded-md"
         />
       </div>
 
       <button
         type="submit"
         disabled={uploading}
-        className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md font-semibold transition-colors duration-200"
+        className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md font-semibold transition-colors duration-200 disabled:opacity-60"
       >
         {uploading ? 'Uploading...' : 'Upload Notice'}
       </button>

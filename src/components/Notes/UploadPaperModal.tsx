@@ -1,6 +1,6 @@
 // src/components/Notes/UploadPaperModal.tsx
 import React, { useState } from 'react';
-import { storage, ID, databases } from '../../lib/appwrite';
+import { supabase } from '../../lib/supabase';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { Select } from '../ui/Select';
@@ -78,32 +78,40 @@ export function UploadPaperModal({ onClose, user }: UploadPaperModalProps) {
     setMessage('');
 
     try {
-      // 1. Upload file to Appwrite Storage
-      const uploadedFile = await storage.createFile(
-        '6884d44c0014eeec5ba5', // <-- Replace with your Appwrite bucket ID
-        ID.unique(),
-        file,
-        ['role:all'] // public read permission, adjust as needed
-      );
+      const fileExt = file.name.split('.').pop();
+      const filePath = `papers/${Date.now()}.${fileExt}`;
 
-      // 2. Save metadata to Appwrite Database
-      await databases.createDocument(
-        '6884e4a10013576029e0',   // <-- Replace with your Database ID
-        '6884e6210018c64958a5',   // <-- Replace with your Collection ID
-        ID.unique(),
+      // Upload to Supabase Storage
+      const { data: storageData, error: storageError } = await supabase.storage
+        .from('past-papers')
+        .upload(filePath, file);
+
+      if (storageError) throw storageError;
+
+      // Get public URL
+      const { data: urlData } = supabase.storage
+        .from('past-papers')
+        .getPublicUrl(filePath);
+
+      const fileUrl = urlData?.publicUrl;
+
+      // Save metadata in Supabase Table
+      const { error: dbError } = await supabase.from('past_papers').insert([
         {
           title,
           subject,
-          semester: parseInt(semester, 10),
-          examType,
+          semester: parseInt(semester),
+          exam_type: examType,
           college,
-          fileId: uploadedFile.$id,  // reference uploaded file ID
-          uploadedBy: user?.name || user?.email || 'Unknown',
+          file_url: fileUrl,
+          uploaded_by: user?.name || user?.email || 'Unknown',
           downloads: 0,
           approved: false,
-          uploadedAt: new Date().toISOString(),
-        }
-      );
+          uploaded_at: new Date().toISOString(),
+        },
+      ]);
+
+      if (dbError) throw dbError;
 
       setMessage('Paper uploaded successfully!');
       setTitle('');

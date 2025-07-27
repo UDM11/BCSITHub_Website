@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import { AuthProvider } from './context/AuthContext';
 import { ProfileProvider } from './context/ProfileContext';
 
@@ -10,6 +11,7 @@ import ProtectedRoute from './components/routes/ProtectedRoute';
 import { Toaster } from 'react-hot-toast';
 import { ToastContainer } from './components/ui/Toast';
 
+// Pages
 import { Home } from './pages/Home';
 import { SignIn } from './pages/auth/SignIn';
 import { SignUp } from './pages/auth/SignUp';
@@ -21,8 +23,10 @@ import { Colleges } from './pages/Colleges';
 import PUNotices from './pages/PUNotices';
 import SemesterSubjects from './pages/Notes/SemesterSubjects';
 import { SubjectNotes } from './pages/Notes/SubjectNotes';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import StudentProfile from './pages/Profile/StudentProfile';
+
+// Dashboards
+import AdminDashboard from './dashboard/admin/AdminDashboard';
+import StudentProfile from './dashboard/student/StudentProfile';
 
 function App() {
   return (
@@ -30,8 +34,10 @@ function App() {
       <ProfileProvider>
         <Router>
           <div className="flex flex-col min-h-screen">
+            {/* Navbar */}
             <Navbar />
 
+            {/* Main content */}
             <main className="flex-1">
               <Routes>
                 <Route path="/" element={<Home />} />
@@ -46,6 +52,7 @@ function App() {
                 <Route path="/colleges" element={<Colleges />} />
                 <Route path="/pu-notices" element={<PUNotices />} />
 
+                {/* Protected Routes */}
                 <Route
                   path="/admin-dashboard"
                   element={
@@ -54,7 +61,6 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-
                 <Route
                   path="/profile"
                   element={
@@ -66,10 +72,14 @@ function App() {
               </Routes>
             </main>
 
+            {/* Footer */}
             <Footer />
+
+            {/* Toast container for custom styling */}
             <ToastContainer />
           </div>
 
+          {/* Global Toaster for feedback messages */}
           <Toaster
             position="top-right"
             toastOptions={{

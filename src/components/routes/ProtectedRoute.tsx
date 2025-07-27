@@ -8,9 +8,9 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute = ({ children, adminOnly = false }: ProtectedRouteProps) => {
-  const { user, loading, isAdmin } = useAuth();
+  const { user, loading, isAdmin, isAuthenticated } = useAuth();
 
-  // While auth state is loading, show a spinner or loading message
+  // Show loading screen while checking auth state
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen text-white text-lg">
@@ -19,19 +19,19 @@ const ProtectedRoute = ({ children, adminOnly = false }: ProtectedRouteProps) =>
     );
   }
 
-  // If user is not logged in, redirect to signin
-  if (!user) {
-    console.warn('User not logged in - redirecting to signin');
+  // Redirect to signin if not logged in
+  if (!isAuthenticated || !user) {
+    console.warn('[ProtectedRoute] User not logged in - redirecting to signin');
     return <Navigate to="/signin" replace />;
   }
 
-  // If adminOnly route and user is not admin, redirect to home
+  // If route is adminOnly and user is not admin, redirect to home
   if (adminOnly && !isAdmin) {
-    console.warn('Access denied: user is not admin - redirecting to home');
+    console.warn('[ProtectedRoute] Access denied - non-admin user tried to access admin-only route');
     return <Navigate to="/" replace />;
   }
 
-  // Otherwise render the children (protected content)
+  // Authorized: render protected content
   return <>{children}</>;
 };
 

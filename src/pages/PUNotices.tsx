@@ -7,6 +7,7 @@ import {
   Search,
   ExternalLink,
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface Notice {
   id: string;
@@ -57,29 +58,67 @@ const UploadNoticeForm: React.FC<{ onUploadSuccess: (notice: Notice) => void }> 
     <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md space-y-4">
       <div>
         <label className="block font-medium mb-1">Title</label>
-        <input type="text" className="w-full border px-3 py-2 rounded" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Notice title" required />
+        <input
+          type="text"
+          className="w-full border px-3 py-2 rounded"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Notice title"
+          required
+        />
       </div>
       <div>
         <label className="block font-medium mb-1">Category</label>
-        <select className="w-full border px-3 py-2 rounded" value={category} onChange={(e) => setCategory(e.target.value as Notice['category'])}>
+        <select
+          className="w-full border px-3 py-2 rounded"
+          value={category}
+          onChange={(e) => setCategory(e.target.value as Notice['category'])}
+        >
           {categories.map((cat) => (
-            <option key={cat} value={cat}>{cat}</option>
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
           ))}
         </select>
       </div>
       <div>
         <label className="block font-medium mb-1">File Name</label>
-        <input type="text" className="w-full border px-3 py-2 rounded" value={fileName} onChange={(e) => setFileName(e.target.value)} placeholder="example.pdf" required />
+        <input
+          type="text"
+          className="w-full border px-3 py-2 rounded"
+          value={fileName}
+          onChange={(e) => setFileName(e.target.value)}
+          placeholder="example.pdf"
+          required
+        />
       </div>
       <div>
         <label className="block font-medium mb-1">File URL</label>
-        <input type="url" className="w-full border px-3 py-2 rounded" value={fileUrl} onChange={(e) => setFileUrl(e.target.value)} placeholder="https://example.com/file.pdf" required />
+        <input
+          type="url"
+          className="w-full border px-3 py-2 rounded"
+          value={fileUrl}
+          onChange={(e) => setFileUrl(e.target.value)}
+          placeholder="https://example.com/file.pdf"
+          required
+        />
       </div>
       <div>
         <label className="block font-medium mb-1">File Size (optional)</label>
-        <input type="text" className="w-full border px-3 py-2 rounded" value={fileSize} onChange={(e) => setFileSize(e.target.value)} placeholder="e.g. 300 KB" />
+        <input
+          type="text"
+          className="w-full border px-3 py-2 rounded"
+          value={fileSize}
+          onChange={(e) => setFileSize(e.target.value)}
+          placeholder="e.g. 300 KB"
+        />
       </div>
-      <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Upload Notice</button>
+      <button
+        type="submit"
+        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+      >
+        Upload Notice
+      </button>
     </form>
   );
 };
@@ -103,7 +142,9 @@ const PUNotices: React.FC = () => {
   }, []);
 
   const filteredNotices = notices.filter((notice) => {
-    const matchesSearch = searchTerm ? notice.title.toLowerCase().includes(searchTerm.toLowerCase()) : true;
+    const matchesSearch = searchTerm
+      ? notice.title.toLowerCase().includes(searchTerm.toLowerCase())
+      : true;
     const matchesCategory = selectedCategory ? notice.category === selectedCategory : true;
     return matchesSearch && matchesCategory;
   });
@@ -148,7 +189,12 @@ const PUNotices: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay:0.3}}
+      className="min-h-screen bg-gray-50 py-12"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">PU Notices</h1>
@@ -206,7 +252,9 @@ const PUNotices: React.FC = () => {
             >
               <option value="">All Categories</option>
               {categories.map((category) => (
-                <option key={category} value={category}>{category}</option>
+                <option key={category} value={category}>
+                  {category}
+                </option>
               ))}
             </select>
           </div>
@@ -219,22 +267,41 @@ const PUNotices: React.FC = () => {
         <div className="space-y-4">
           {filteredNotices.length > 0 ? (
             filteredNotices.map((notice) => (
-              <div key={notice.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200">
+              <div
+                key={notice.id}
+                className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200"
+              >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center space-x-3 mb-2">
                       <FileText className="h-6 w-6 text-blue-600" />
                       <h3 className="text-lg font-semibold text-gray-900">{notice.title}</h3>
-                      <span className={`px-2 py-1 rounded text-xs font-medium ${getCategoryColor(notice.category)}`}>{notice.category}</span>
+                      <span
+                        className={`px-2 py-1 rounded text-xs font-medium ${getCategoryColor(
+                          notice.category
+                        )}`}
+                      >
+                        {notice.category}
+                      </span>
                     </div>
 
                     <div className="flex items-center space-x-6 text-sm text-gray-600 mb-3">
                       <div className="flex items-center space-x-1">
                         <Calendar className="h-4 w-4" />
-                        <span>{notice.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                        <span>
+                          {notice.date.toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                          })}
+                        </span>
                       </div>
-                      <div><span className="font-medium">File:</span> {notice.fileName}</div>
-                      <div><span className="font-medium">Size:</span> {notice.fileSize}</div>
+                      <div>
+                        <span className="font-medium">File:</span> {notice.fileName}
+                      </div>
+                      <div>
+                        <span className="font-medium">Size:</span> {notice.fileSize}
+                      </div>
                     </div>
                   </div>
 
@@ -252,7 +319,9 @@ const PUNotices: React.FC = () => {
             <div className="text-center py-12">
               <FileText className="h-16 w-16 text-gray-300 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">No notices found</h3>
-              <p className="text-gray-500">Try adjusting your search criteria or check back later for new notices.</p>
+              <p className="text-gray-500">
+                Try adjusting your search criteria or check back later for new notices.
+              </p>
             </div>
           )}
         </div>
@@ -267,13 +336,16 @@ const PUNotices: React.FC = () => {
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">About PU Notices</h3>
               <p className="text-gray-600 leading-relaxed">
-                This section contains official notices, circulars, and documents published by Pokhara University specifically related to the BCSIT program. All documents are uploaded by authorized administrators and are authentic university communications. For the most up-to-date information, always refer to the official Pokhara University website.
+                This section contains official notices, circulars, and documents published by Pokhara
+                University specifically related to the BCSIT program. All documents are uploaded by
+                authorized administrators and are authentic university communications. For the most
+                up-to-date information, always refer to the official Pokhara University website.
               </p>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

@@ -1,18 +1,30 @@
 import React from 'react';
 
 interface ProfileData {
-  name: string;
-  email: string;
-  semester: string;
-  college: string;
+  name?: string;
+  email?: string;
+  semester?: string;
+  college?: string;
   avatarUrl?: string;
 }
 
 interface ProfileDetailsProps {
-  profile: ProfileData;
+  profile: ProfileData | null; // Allow profile to be null
 }
 
 const ProfileDetails: React.FC<ProfileDetailsProps> = ({ profile }) => {
+  // Handle null/undefined profile case
+  if (!profile) {
+    return (
+      <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
+        <h2 className="text-2xl font-semibold mb-4 text-center">Profile Information</h2>
+        <div className="text-center text-gray-500 py-8">
+          No profile data available
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
       <h2 className="text-2xl font-semibold mb-4 text-center">Profile Information</h2>
@@ -37,7 +49,7 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ profile }) => {
           <div className="flex flex-col items-center">
             <img
               src={profile.avatarUrl}
-              alt={`${profile.name}'s avatar`}
+              alt={`${profile.name || 'User'}'s avatar`}
               className="w-32 h-32 rounded-full object-cover border-2 border-gray-300"
             />
           </div>

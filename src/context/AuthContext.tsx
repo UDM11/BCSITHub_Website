@@ -22,6 +22,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   isAdmin: boolean;
+  isAuthenticated: boolean;
   signIn: (
     email: string,
     password: string,
@@ -44,6 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const mountedRef = useRef(true);
 
@@ -55,6 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    // Firebase Auth Listener
     const unsubscribeFirebase = onAuthStateChanged(
       firebaseAuth,
       async (currentUser: FirebaseUser | null) => {
@@ -64,71 +67,79 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           try {
             const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
             const data = userDoc.exists() ? userDoc.data() : {};
-            const role = data.role || 'user';
+            const role = (data?.role as string) || 'user';
 
             const firebaseUser: User = {
               id: currentUser.uid,
               email: currentUser.email || '',
               name: currentUser.displayName || '',
               role,
-              created_at: data.created_at || new Date().toISOString(),
+              created_at: (data?.created_at as string) || new Date().toISOString(),
               ...data,
             };
 
             setUser(firebaseUser);
             setIsAdmin(role === 'admin');
+            setIsAuthenticated(true);
           } catch (error) {
             console.error('Error fetching Firebase user data:', error);
             setUser(null);
             setIsAdmin(false);
+            setIsAuthenticated(false);
           }
         } else {
           setUser(null);
           setIsAdmin(false);
+          setIsAuthenticated(false);
         }
 
         setLoading(false);
       }
     );
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      if (!mountedRef.current) return;
+    // Supabase Auth Listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (_event, session) => {
+        if (!mountedRef.current) return;
 
-      if (session?.user) {
-        try {
-          const { data: profile, error } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('id', session.user.id)
-            .single();
+        if (session?.user) {
+          try {
+            const { data: profile, error } = await supabase
+              .from('profiles')
+              .select('*')
+              .eq('id', session.user.id)
+              .single();
 
-          if (error) throw error;
+            if (error) throw error;
 
-          if (profile) {
-            setUser(profile as User);
-            setIsAdmin(profile.role === 'admin');
+            if (profile) {
+              setUser(profile as User);
+              setIsAdmin(profile.role === 'admin');
+              setIsAuthenticated(true);
+            }
+          } catch (error) {
+            console.error('Error fetching Supabase user data:', error);
+            setUser(null);
+            setIsAdmin(false);
+            setIsAuthenticated(false);
           }
-        } catch (error) {
-          console.error('Error fetching Supabase user data:', error);
+        } else {
           setUser(null);
           setIsAdmin(false);
+          setIsAuthenticated(false);
         }
-      } else {
-        setUser(null);
-        setIsAdmin(false);
-      }
 
-      setLoading(false);
-    });
+        setLoading(false);
+      }
+    );
 
     return () => {
-      unsubscribeFirebase?.();
-      subscription?.unsubscribe();
+      unsubscribeFirebase();
+      if (subscription) subscription.unsubscribe();
     };
   }, []);
 
+  // Sign In
   const signIn = async (
     email: string,
     password: string,
@@ -137,10 +148,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLoading(true);
     try {
       if (authProvider === 'supabase') {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
       } else {
         await signInWithEmailAndPassword(firebaseAuth, email, password);
@@ -153,6 +161,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  // Sign Up
   const signUp = async (
     email: string,
     password: string,
@@ -164,14 +173,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLoading(true);
     try {
       if (authProvider === 'supabase') {
-        const { data, error } = await supabase.auth.signUp({
-          email,
-          password,
-        });
-
+        const { data, error } = await supabase.auth.signUp({ email, password });
         if (error) throw error;
 
-        if (data.user) {
+        if (data?.user) {
           const { error: profileError } = await supabase
             .from('profiles')
             .insert([
@@ -184,15 +189,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 ...additionalData,
               },
             ]);
-
           if (profileError) throw profileError;
         }
       } else {
-        const userCredential = await createUserWithEmailAndPassword(
-          firebaseAuth,
-          email,
-          password
-        );
+        const userCredential = await createUserWithEmailAndPassword(firebaseAuth, email, password);
         const firebaseUser = userCredential.user;
 
         await setDoc(doc(db, 'users', firebaseUser.uid), {
@@ -212,6 +212,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  // Sign Out
   const signOut = async (authProvider: 'supabase' | 'firebase') => {
     setLoading(true);
     try {
@@ -224,6 +225,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       setUser(null);
       setIsAdmin(false);
+      setIsAuthenticated(false);
     } catch (error) {
       console.error('Sign-out error:', error);
       throw error;
@@ -234,7 +236,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, isAdmin, signIn, signUp, signOut }}
+      value={{
+        user,
+        loading,
+        isAdmin,
+        isAuthenticated,
+        signIn,
+        signUp,
+        signOut,
+      }}
     >
       {children}
     </AuthContext.Provider>
