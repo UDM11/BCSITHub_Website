@@ -102,14 +102,7 @@ export function Navbar() {
                           Admin Dashboard
                         </Link>
                       )}
-                      {user.role === 'teacher' && (
-                        <Link
-                          to="/teacher"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        >
-                          Teacher Dashboard
-                        </Link>
-                      )}
+ 
                       <Link
                         to="/profile"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -196,15 +189,7 @@ export function Navbar() {
                           Admin Dashboard
                         </Link>
                       )}
-                      {user.role === 'teacher' && (
-                        <Link
-                          to="/teacher"
-                          className="block px-3 py-2 text-gray-700 hover:text-indigo-600 hover:bg-gray-50 rounded-md"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          Teacher Dashboard
-                        </Link>
-                      )}
+
                       <Link
                         to="/profile"
                         className="block px-3 py-2 text-gray-700 hover:text-indigo-600 hover:bg-gray-50 rounded-md"
