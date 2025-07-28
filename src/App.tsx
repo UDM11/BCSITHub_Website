@@ -28,6 +28,9 @@ import { SubjectNotes } from './pages/Notes/SubjectNotes';
 import AdminDashboard from './dashboard/admin/AdminDashboard';
 import StudentProfile from './dashboard/student/StudentProfile';
 
+// Email Verification Page
+import OTPVerification from './pages/auth/OTPVerification';
+
 function App() {
   return (
     <AuthProvider>
@@ -48,9 +51,22 @@ function App() {
                 <Route path="/notes" element={<Notes />} />
                 <Route path="/notes/semester/:semesterId" element={<SemesterSubjects />} />
                 <Route path="/notes/:semesterId/subject/:subjectId" element={<SubjectNotes />} />
-                <Route path="/past-papers" element={<PastPapers />} />
+                
+                {/* Past Papers route without requiring email verification */}
+                <Route
+                  path="/past-papers"
+                  element={
+                    <ProtectedRoute requireEmailVerified={false}>
+                      <PastPapers />
+                    </ProtectedRoute>
+                  }
+                />
+                
                 <Route path="/colleges" element={<Colleges />} />
                 <Route path="/pu-notices" element={<PUNotices />} />
+
+                {/* Email Verification Page */}
+                <Route path="/verify" element={<OTPVerification />} />
 
                 {/* Protected Routes */}
                 <Route

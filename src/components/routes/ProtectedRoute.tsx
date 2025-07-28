@@ -5,12 +5,16 @@ import { useAuth } from '../../context/AuthContext';
 interface ProtectedRouteProps {
   children: ReactNode;
   adminOnly?: boolean;
+  requireEmailVerified?: boolean; // new optional prop
 }
 
-const ProtectedRoute = ({ children, adminOnly = false }: ProtectedRouteProps) => {
+const ProtectedRoute = ({
+  children,
+  adminOnly = false,
+  requireEmailVerified = true, // default true for most protected routes
+}: ProtectedRouteProps) => {
   const { user, loading, isAdmin, isAuthenticated } = useAuth();
 
-  // Show loading screen while checking auth state
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen text-white text-lg">
@@ -19,19 +23,22 @@ const ProtectedRoute = ({ children, adminOnly = false }: ProtectedRouteProps) =>
     );
   }
 
-  // Redirect to signin if not logged in
   if (!isAuthenticated || !user) {
     console.warn('[ProtectedRoute] User not logged in - redirecting to signin');
     return <Navigate to="/signin" replace />;
   }
 
-  // If route is adminOnly and user is not admin, redirect to home
+  // Check email verification only if required
+  if (requireEmailVerified && !user.emailVerified) {
+    console.warn('[ProtectedRoute] Email not verified - redirecting to verify page');
+    return <Navigate to="/verify" replace />;
+  }
+
   if (adminOnly && !isAdmin) {
     console.warn('[ProtectedRoute] Access denied - non-admin user tried to access admin-only route');
     return <Navigate to="/" replace />;
   }
 
-  // Authorized: render protected content
   return <>{children}</>;
 };
 

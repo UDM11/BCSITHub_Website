@@ -8,7 +8,8 @@ import { Mail, Send } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { Card, CardContent, CardHeader } from '../../components/ui/Card';
-import { supabase } from '../../lib/supabase'; // adjust path if needed
+import { sendPasswordResetEmail } from 'firebase/auth';
+import { auth } from '../../lib/firebase';
 
 const schema = yup.object({
   email: yup.string().email('Invalid email').required('Email is required'),
@@ -36,10 +37,7 @@ export function ForgotPassword() {
     setError('');
     setMessage('');
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
-        redirectTo: `${window.location.origin}/reset-password`, // or your reset page route
-      });
-      if (error) throw error;
+      await sendPasswordResetEmail(auth, data.email);
       setMessage('Check your email for the password reset link.');
     } catch (err: any) {
       setError(err.message || 'Failed to send reset email.');

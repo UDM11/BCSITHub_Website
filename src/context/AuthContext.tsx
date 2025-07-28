@@ -23,6 +23,7 @@ interface AuthContextType {
   loading: boolean;
   isAdmin: boolean;
   isAuthenticated: boolean;
+  reloadUser: () => Promise<void>; // added reloadUser
   signIn: (
     email: string,
     password: string,
@@ -75,6 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               name: currentUser.displayName || '',
               role,
               created_at: (data?.created_at as string) || new Date().toISOString(),
+              emailVerified: currentUser.emailVerified, // add this
               ...data,
             };
 
@@ -138,6 +140,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (subscription) subscription.unsubscribe();
     };
   }, []);
+
+  // Reload Firebase user to refresh emailVerified etc.
+  const reloadUser = async () => {
+    if (firebaseAuth.currentUser) {
+      await firebaseAuth.currentUser.reload();
+      const currentUser = firebaseAuth.currentUser;
+      if (!currentUser) return;
+
+      try {
+        const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+        const data = userDoc.exists() ? userDoc.data() : {};
+        const role = (data?.role as string) || 'user';
+
+        const firebaseUser: User = {
+          id: currentUser.uid,
+          email: currentUser.email || '',
+          name: currentUser.displayName || '',
+          role,
+          created_at: (data?.created_at as string) || new Date().toISOString(),
+          emailVerified: currentUser.emailVerified,
+          ...data,
+        };
+
+        setUser(firebaseUser);
+        setIsAdmin(role === 'admin');
+        setIsAuthenticated(true);
+      } catch (error) {
+        console.error('Error reloading Firebase user data:', error);
+        setUser(null);
+        setIsAdmin(false);
+        setIsAuthenticated(false);
+      }
+    }
+  };
 
   // Sign In
   const signIn = async (
@@ -241,6 +277,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loading,
         isAdmin,
         isAuthenticated,
+        reloadUser, // added here
         signIn,
         signUp,
         signOut,
