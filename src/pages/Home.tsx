@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BookOpen, Users, FileText, GraduationCap, Award, Zap, Shield} from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Card, CardContent } from '../components/ui/Card';
+import { useAuth } from '../context/AuthContext';
 
 const features = [
   {
@@ -45,6 +46,8 @@ const stats = [
 
 export function Home() {
   const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Simulate content loading
@@ -73,7 +76,7 @@ export function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center">
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               className="text-4xl md:text-6xl font-bold mb-6"
@@ -84,7 +87,7 @@ export function Home() {
               </span>
             </motion.h1>
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-xl md:text-2xl mb-8 text-indigo-100 max-w-3xl mx-auto"
@@ -98,12 +101,18 @@ export function Home() {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="flex flex-col sm:flex-row gap-4 justify-center"
             >
-              <Link to="/signup">
-                <Button size="lg" className="bg-black text-white hover:bg-white hover:text-black">
-                  <GraduationCap />
-                  Get Started Free
-                </Button>
-              </Link>
+              <Button
+                size="lg"
+                className="bg-black text-white hover:bg-white hover:text-black"
+                onClick={() => {
+                  if (!user) navigate('/signup');
+                }}
+                style={user ? { cursor: 'not-allowed', opacity: 0.7 } : {}}
+                disabled={!!user}
+              >
+                <GraduationCap />
+                Get Started Free
+              </Button>
               <Link to="/syllabus">
                 <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-indigo-600">
                   <BookOpen />
@@ -182,12 +191,18 @@ export function Home() {
             Join thousands of BCSIT students who are already excelling with BCSITHub
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/signup">
-              <Button size="lg" className="bg-black text-white hover:bg-white hover:text-black">
-                <Zap />
-                Start Learning Today
-              </Button>
-            </Link>
+            <Button
+              size="lg"
+              className="bg-black text-white hover:bg-white hover:text-black"
+              onClick={() => {
+                if (!user) navigate('/signup');
+              }}
+              style={user ? { cursor: 'not-allowed', opacity: 0.7 } : {}}
+              disabled={!!user}
+            >
+              <Zap />
+              Start Learning Today
+            </Button>
             <Link to="/colleges">
               <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-indigo-600">
                 <Shield />

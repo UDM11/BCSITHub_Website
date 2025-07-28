@@ -7,6 +7,8 @@ import {
   Search,
   ExternalLink,
 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import UploadNoticeForm from '../components/common/UploadNoticeForm';
 import { motion } from 'framer-motion';
 
 interface Notice {
@@ -21,116 +23,15 @@ interface Notice {
 
 const categories = ['Exam', 'Admission', 'Result', 'General'];
 
-const UploadNoticeForm: React.FC<{ onUploadSuccess: (notice: Notice) => void }> = ({ onUploadSuccess }) => {
-  const [title, setTitle] = useState('');
-  const [category, setCategory] = useState<'Exam' | 'Admission' | 'Result' | 'General'>('Exam');
-  const [fileName, setFileName] = useState('');
-  const [fileUrl, setFileUrl] = useState('');
-  const [fileSize, setFileSize] = useState('');
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!title || !fileName || !fileUrl) {
-      alert('Please fill in all fields');
-      return;
-    }
-
-    const newNotice: Notice = {
-      id: Date.now().toString(),
-      title,
-      category,
-      date: new Date(),
-      fileName,
-      fileUrl,
-      fileSize: fileSize || 'Unknown',
-    };
-
-    onUploadSuccess(newNotice);
-
-    setTitle('');
-    setCategory('Exam');
-    setFileName('');
-    setFileUrl('');
-    setFileSize('');
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md space-y-4">
-      <div>
-        <label className="block font-medium mb-1">Title</label>
-        <input
-          type="text"
-          className="w-full border px-3 py-2 rounded"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Notice title"
-          required
-        />
-      </div>
-      <div>
-        <label className="block font-medium mb-1">Category</label>
-        <select
-          className="w-full border px-3 py-2 rounded"
-          value={category}
-          onChange={(e) => setCategory(e.target.value as Notice['category'])}
-        >
-          {categories.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label className="block font-medium mb-1">File Name</label>
-        <input
-          type="text"
-          className="w-full border px-3 py-2 rounded"
-          value={fileName}
-          onChange={(e) => setFileName(e.target.value)}
-          placeholder="example.pdf"
-          required
-        />
-      </div>
-      <div>
-        <label className="block font-medium mb-1">File URL</label>
-        <input
-          type="url"
-          className="w-full border px-3 py-2 rounded"
-          value={fileUrl}
-          onChange={(e) => setFileUrl(e.target.value)}
-          placeholder="https://example.com/file.pdf"
-          required
-        />
-      </div>
-      <div>
-        <label className="block font-medium mb-1">File Size (optional)</label>
-        <input
-          type="text"
-          className="w-full border px-3 py-2 rounded"
-          value={fileSize}
-          onChange={(e) => setFileSize(e.target.value)}
-          placeholder="e.g. 300 KB"
-        />
-      </div>
-      <button
-        type="submit"
-        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
-      >
-        Upload Notice
-      </button>
-    </form>
-  );
-};
-
 const PUNotices: React.FC = () => {
-  const isAdmin = true;
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin';
 
   const [loading, setLoading] = useState(true);
   const [notices, setNotices] = useState<Notice[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
-  const [showUploadForm, setShowUploadForm] = useState(false);
+  const [showUploadModal, setShowUploadModal] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -140,6 +41,16 @@ const PUNotices: React.FC = () => {
     const sampleNotices: Notice[] = [];
     setNotices(sampleNotices);
   }, []);
+
+  useEffect(() => {
+    if (showUploadModal) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [showUploadModal]);
 
   const filteredNotices = notices.filter((notice) => {
     const matchesSearch = searchTerm
@@ -170,11 +81,6 @@ const PUNotices: React.FC = () => {
     } else {
       alert('File URL not available.');
     }
-  };
-
-  const handleUploadSuccess = (newNotice: Notice) => {
-    setNotices((prev) => [newNotice, ...prev]);
-    setShowUploadForm(false);
   };
 
   if (loading) {
@@ -216,19 +122,35 @@ const PUNotices: React.FC = () => {
 
             {isAdmin && (
               <button
-                onClick={() => setShowUploadForm(!showUploadForm)}
+                onClick={() => setShowUploadModal(true)}
                 className="inline-flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200"
               >
                 <UploadCloud className="h-5 w-5" />
-                <span>{showUploadForm ? 'Cancel Upload' : 'Upload Notice'}</span>
+                <span>Upload Notice</span>
               </button>
             )}
           </div>
         </div>
 
-        {showUploadForm && isAdmin && (
-          <div className="mb-8">
-            <UploadNoticeForm onUploadSuccess={handleUploadSuccess} />
+        {showUploadModal && isAdmin && (
+          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="bg-white p-6 rounded-lg shadow-xl w-full max-w-lg space-y-4"
+              style={{ backgroundColor: 'white' }}
+            >
+              <div className="flex justify-between items-center mb-2">
+                <h2 className="text-2xl font-semibold text-gray-800">Upload Notice</h2>
+                <button onClick={() => setShowUploadModal(false)} className="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+              </div>
+              <UploadNoticeForm
+                onUploadSuccess={(newNotice) => {
+                  setNotices((prev) => [newNotice, ...prev]);
+                  setShowUploadModal(false);
+                }}
+              />
+            </motion.div>
           </div>
         )}
 
