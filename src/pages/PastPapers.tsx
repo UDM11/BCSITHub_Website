@@ -10,7 +10,7 @@ import { Select } from '../components/ui/Select';
 import { useAuth } from '../context/AuthContext';
 import { UploadPaperModal } from '../components/Notes/UploadPaperModal';
 import { db } from '../lib/firebase';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs, query, where, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 
 const semesters = [
   { value: '1', label: '1st Semester' },
@@ -79,26 +79,30 @@ export function PastPapers() {
       try {
         setLoading(true);
         let q = query(collection(db, 'past-papers'));
-        
-        // Apply filters only if they have values
         const filters = [];
-        if (selectedSemester) filters.push(where('semester', '==', parseInt(selectedSemester)));
-        if (selectedExamType) filters.push(where('examType', '==', selectedExamType));
+        if (selectedSemester) filters.push(where('semester', '==', Number(selectedSemester)));
+        if (selectedExamType) filters.push(where('exam_type', '==', selectedExamType));
         if (selectedCollege) filters.push(where('college', '==', selectedCollege));
-        
-        // Apply all filters to the query
         if (filters.length > 0) {
-          q = query(q, ...filters);
+          q = query(collection(db, 'past-papers'), ...filters);
         }
-
         const snapshot = await getDocs(q);
-        const data = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-          semester: doc.data().semester, // Ensure semester is a number
-          uploadedAt: doc.data().uploadedAt?.toDate()?.toISOString() || doc.data().uploadedAt
-        })) as Paper[];
-
+        const data = snapshot.docs.map(doc => {
+          const d = doc.data();
+          return {
+            id: doc.id,
+            title: d.title,
+            subject: d.subject,
+            semester: d.semester,
+            examType: d.exam_type, // map to camelCase for UI
+            college: d.college,
+            uploadedAt: d.uploadedAt?.toDate?.() ? d.uploadedAt.toDate().toISOString() : d.uploadedAt,
+            uploadedBy: d.uploaded_by,
+            downloads: d.downloads,
+            approved: d.approved,
+            fileUrl: d.file_url,
+          };
+        }) as Paper[];
         setPapers(data);
       } catch (error) {
         console.error("Error fetching papers:", error);
@@ -135,6 +139,32 @@ export function PastPapers() {
     setSearchQuery('');
   };
 
+  const handleUploadClick = () => {
+    if (!user) {
+      alert('Please login or signup to upload papers.');
+      return;
+    }
+    setShowUploadModal(true);
+  };
+
+  const handleApprove = async (paperId: string) => {
+    try {
+      await updateDoc(doc(db, 'past-papers', paperId), { approved: true });
+      setPapers((prev) => prev.map(p => p.id === paperId ? { ...p, approved: true } : p));
+    } catch (error) {
+      alert('Failed to approve paper.');
+    }
+  };
+  const handleReject = async (paperId: string) => {
+    if (!window.confirm('Are you sure you want to reject and delete this paper?')) return;
+    try {
+      await deleteDoc(doc(db, 'past-papers', paperId));
+      setPapers((prev) => prev.filter(p => p.id !== paperId));
+    } catch (error) {
+      alert('Failed to reject paper.');
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 py-8 flex justify-center items-center">
@@ -163,17 +193,17 @@ export function PastPapers() {
               Access and share previous exam papers from different colleges
             </p>
           </div>
-          {user && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
-              <Button icon={Plus} onClick={() => setShowUploadModal(true)}>
-                Upload Paper
-              </Button>
-            </motion.div>
-          )}
+          <br></br>
+          <br></br>
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <Button icon={Plus} onClick={handleUploadClick}>
+              Upload Paper
+            </Button>
+          </motion.div>
         </motion.div>
 
         {/* Search + Filters */}
@@ -191,7 +221,7 @@ export function PastPapers() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
-            <Button icon={Search}>Search</Button>
+            <Button icon={Search} type="button">Search</Button>
           </div>
 
           <Card>
@@ -216,21 +246,21 @@ export function PastPapers() {
                 <Select 
                   label="Semester" 
                   value={selectedSemester} 
-                  onChange={(value) => setSelectedSemester(value)}
+                  onChange={e => { e.preventDefault(); setSelectedSemester(e.target.value); }}
                   options={semesters} 
                   placeholder="All Semesters" 
                 />
                 <Select 
                   label="Exam Type" 
                   value={selectedExamType} 
-                  onChange={(value) => setSelectedExamType(value)}
+                  onChange={e => { e.preventDefault(); setSelectedExamType(e.target.value); }}
                   options={examTypes} 
                   placeholder="All Types" 
                 />
                 <Select 
                   label="College" 
                   value={selectedCollege} 
-                  onChange={(value) => setSelectedCollege(value)}
+                  onChange={e => { e.preventDefault(); setSelectedCollege(e.target.value); }}
                   options={colleges} 
                   placeholder="All Colleges" 
                 />
@@ -238,6 +268,14 @@ export function PastPapers() {
             </CardContent>
           </Card>
         </motion.div>
+
+        {(selectedSemester || selectedExamType || selectedCollege || searchQuery) && (
+          <div className="mb-4 flex justify-end">
+            <Button variant="outline" onClick={handleResetFilters}>
+              Clear All Filters
+            </Button>
+          </div>
+        )}
 
         {/* Papers Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -290,13 +328,19 @@ export function PastPapers() {
                   </div>
                   <div className="mt-4">
                     {paper.approved ? (
-                      <Button className="w-full" icon={Download} onClick={() => handleDownload(paper.fileUrl)}>
+                      <Button className="w-full" icon={Download} onClick={() => {
+                        if (!user) {
+                          alert('Please login or signup to download papers.');
+                          return;
+                        }
+                        handleDownload(paper.fileUrl);
+                      }}>
                         Download Paper
                       </Button>
                     ) : user?.role === 'admin' ? (
                       <div className="flex space-x-2">
-                        <Button variant="outline" size="sm" className="flex-1">Approve</Button>
-                        <Button variant="danger" size="sm" className="flex-1">Reject</Button>
+                        <Button variant="outline" size="sm" className="flex-1" onClick={() => handleApprove(paper.id)}>Approve</Button>
+                        <Button variant="danger" size="sm" className="flex-1" onClick={() => handleReject(paper.id)}>Reject</Button>
                       </div>
                     ) : (
                       <Button variant="ghost" className="w-full" disabled>
@@ -332,7 +376,7 @@ export function PastPapers() {
         {showUploadModal && (
           <UploadPaperModal
             onClose={() => setShowUploadModal(false)}
-            user={user}
+            user={user || {}}
             onUploadSuccess={() => {
               setSelectedSemester('');
               setSelectedExamType('');

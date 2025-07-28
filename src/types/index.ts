@@ -31,7 +31,7 @@ export interface Question {
   created_by: string;
 }
 
-export interface Note {
+export interface Quiz {
   id: string;
   title: string;
   description: string;
@@ -86,7 +86,7 @@ export interface Notice {
   created_at: string;
 }
 
-export interface Note {
+export interface NoteFile {
   title: string;
   url: string;
 }
@@ -94,7 +94,7 @@ export interface Note {
 export interface Subject {
   code: string;
   name: string;
-  notes: Note[];
+  notes: NoteFile[];
 }
 
 export interface Semester {

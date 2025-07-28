@@ -85,7 +85,7 @@ export default function AdminDashboard() {
                 paper={{
                   id: paper.id,
                   title: paper.title || 'Untitled',
-                  fileUrl: paper.file_url || '',
+                  file_url: paper.file_url || '',
                   downloads: 0, // Optional: can extend schema to include this
                 }}
               />

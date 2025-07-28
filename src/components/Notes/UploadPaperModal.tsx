@@ -1,5 +1,5 @@
 // src/components/Notes/UploadPaperModal.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
@@ -14,6 +14,7 @@ interface User {
 interface UploadPaperModalProps {
   onClose: () => void;
   user: User;
+  onUploadSuccess?: () => void;
 }
 
 const semesters = [
@@ -53,73 +54,78 @@ const colleges = [
   { value: 'Other', label: 'Other College' },
 ];
 
-export function UploadPaperModal({ onClose, user }: UploadPaperModalProps) {
+export function UploadPaperModal({ onClose, user, onUploadSuccess }: UploadPaperModalProps) {
   const [title, setTitle] = useState('');
   const [subject, setSubject] = useState('');
   const [semester, setSemester] = useState('');
   const [examType, setExamType] = useState('');
   const [college, setCollege] = useState('');
-  const [file, setFile] = useState<File | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
+  // Prevent background scroll when modal is open
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, []);
+
   const handleUpload = async () => {
-    if (!title || !subject || !semester || !examType || !college || !file) {
-      setMessage('Please fill all fields and upload a file.');
+    if (!title || !subject || !semester || !examType || !college || files.length === 0) {
+      setMessage('Please fill all fields and upload at least one file.');
       return;
     }
-
-    if (file.type !== 'application/pdf') {
-      setMessage('Only PDF files are allowed.');
-      return;
+    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'];
+    for (const file of files) {
+      if (!allowedTypes.includes(file.type)) {
+        setMessage('Only PDF or image files (jpg, png) are allowed.');
+        return;
+      }
     }
-
     setLoading(true);
     setMessage('');
-
     try {
-      const fileExt = file.name.split('.').pop();
-      const filePath = `papers/${Date.now()}.${fileExt}`;
-
-      // Upload to Supabase Storage
-      const { data: storageData, error: storageError } = await supabase.storage
-        .from('past-papers')
-        .upload(filePath, file);
-
-      if (storageError) throw storageError;
-
-      // Get public URL
-      const { data: urlData } = supabase.storage
-        .from('past-papers')
-        .getPublicUrl(filePath);
-
-      const fileUrl = urlData?.publicUrl;
-
-      // Save metadata in Supabase Table
-      const { error: dbError } = await supabase.from('past_papers').insert([
-        {
-          title,
-          subject,
-          semester: parseInt(semester),
-          exam_type: examType,
-          college,
-          file_url: fileUrl,
-          uploaded_by: user?.name || user?.email || 'Unknown',
-          downloads: 0,
-          approved: false,
-          uploaded_at: new Date().toISOString(),
-        },
-      ]);
-
-      if (dbError) throw dbError;
-
-      setMessage('Paper uploaded successfully!');
+      for (const file of files) {
+        const fileExt = file.name.split('.').pop();
+        const filePath = `papers/${Date.now()}_${file.name}`;
+        // Upload to Supabase Storage
+        const { error: storageError } = await supabase.storage
+          .from('past-papers')
+          .upload(filePath, file);
+        if (storageError) throw storageError;
+        // Get public URL
+        const { data: urlData } = supabase.storage
+          .from('past-papers')
+          .getPublicUrl(filePath);
+        const fileUrl = urlData?.publicUrl;
+        // Save metadata in Supabase Table
+        const { error: dbError } = await supabase.from('past_papers').insert([
+          {
+            title,
+            subject,
+            semester: parseInt(semester),
+            exam_type: examType,
+            college,
+            file_url: fileUrl,
+            uploaded_by: user?.name || user?.email || 'Unknown',
+            downloads: 0,
+            approved: false,
+            uploaded_at: new Date().toISOString(),
+          },
+        ]);
+        if (dbError) throw dbError;
+      }
+      setMessage('All files uploaded successfully!');
       setTitle('');
       setSubject('');
       setSemester('');
       setExamType('');
       setCollege('');
-      setFile(null);
+      setFiles([]);
+      if (typeof onUploadSuccess === 'function') onUploadSuccess();
     } catch (error: any) {
       console.error('Upload failed:', error);
       setMessage(`Failed to upload. ${error.message || 'Try again.'}`);
@@ -159,9 +165,10 @@ export function UploadPaperModal({ onClose, user }: UploadPaperModalProps) {
 
         <Input
           type="file"
-          label="Upload PDF"
-          accept="application/pdf"
-          onChange={(e) => setFile(e.target.files?.[0] || null)}
+          label="Upload Files"
+          accept="application/pdf,image/jpeg,image/png,image/jpg"
+          multiple
+          onChange={e => setFiles(e.target.files ? Array.from(e.target.files) : [])}
         />
 
         {message && (

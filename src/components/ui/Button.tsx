@@ -4,7 +4,7 @@ import { DivideIcon as LucideIcon } from 'lucide-react';
 
 interface ButtonProps {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'destructive';
   size?: 'sm' | 'md' | 'lg';
   icon?: LucideIcon;
   disabled?: boolean;
@@ -33,6 +33,7 @@ export function Button({
     outline: 'border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-indigo-500',
     ghost: 'text-gray-700 hover:bg-gray-100 focus:ring-indigo-500',
     danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
+    destructive: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
   };
 
   const sizes = {

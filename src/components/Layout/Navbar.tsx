@@ -40,7 +40,7 @@ export function Navbar() {
     { to: '/notes', icon: FileText, label: 'Notes' },
     { to: '/past-papers', icon: GraduationCap, label: 'Past Papers' },
     { to: '/colleges', icon: Users, label: 'Colleges' },
-    { to: '/pu-notices', icon: ScrollText, label: "PU Notes" },
+    { to: '/pu-notices', icon: ScrollText, label: "PU Notices" },
   ];
 
   return (
@@ -96,7 +96,7 @@ export function Navbar() {
                       </div>
                       {user.role === 'admin' && (
                         <Link
-                          to="/admin"
+                          to="/admin-dashboard"
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         >
                           Admin Dashboard
@@ -189,7 +189,7 @@ export function Navbar() {
                       </div>
                       {user.role === 'admin' && (
                         <Link
-                          to="/admin"
+                          to="/admin-dashboard"
                           className="block px-3 py-2 text-gray-700 hover:text-indigo-600 hover:bg-gray-50 rounded-md"
                           onClick={() => setIsOpen(false)}
                         >
