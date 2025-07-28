@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import { BookOpen, Users, FileText, GraduationCap, Award, Zap, Shield} from 'lucide-react';
+import {
+  BookOpen, Users, FileText, GraduationCap, Award, Zap, Shield
+} from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Card, CardContent } from '../components/ui/Card';
 import { useAuth } from '../context/AuthContext';
@@ -50,11 +52,7 @@ export function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Simulate content loading
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-
+    const timer = setTimeout(() => setLoading(false), 1500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -92,7 +90,7 @@ export function Home() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-xl md:text-2xl mb-8 text-indigo-100 max-w-3xl mx-auto"
             >
-              Your comprehensive educational platform for BCSIT students at Pokhara University. 
+              Your comprehensive educational platform for BCSIT students at Pokhara University.
               Access notes, past papers, share resources, and excel in your academics.
             </motion.p>
             <motion.div
@@ -103,7 +101,7 @@ export function Home() {
             >
               <Button
                 size="lg"
-                className="bg-black text-white hover:bg-white hover:text-black"
+                className="bg-black text-white hover:bg-white hover:text-black w-full sm:w-auto"
                 onClick={() => {
                   if (!user) navigate('/signup');
                 }}
@@ -113,8 +111,12 @@ export function Home() {
                 <GraduationCap />
                 Get Started Free
               </Button>
-              <Link to="/syllabus">
-                <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-indigo-600">
+              <Link to="/syllabus" className="w-full sm:w-auto">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-white text-white hover:bg-white hover:text-indigo-600 w-full sm:w-auto"
+                >
                   <BookOpen />
                   Explore Syllabus
                 </Button>
@@ -182,7 +184,7 @@ export function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-indigo-600">
+      <section className="py-20 bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-800 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Ready to Transform Your Learning?
@@ -193,7 +195,7 @@ export function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
-              className="bg-black text-white hover:bg-white hover:text-black"
+              className="bg-black text-white hover:bg-white hover:text-black w-full sm:w-auto"
               onClick={() => {
                 if (!user) navigate('/signup');
               }}
@@ -203,8 +205,12 @@ export function Home() {
               <Zap />
               Start Learning Today
             </Button>
-            <Link to="/colleges">
-              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-indigo-600">
+            <Link to="/colleges" className="w-full sm:w-auto">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-white text-white hover:bg-white hover:text-indigo-600 w-full sm:w-auto"
+              >
                 <Shield />
                 Find Your College
               </Button>
