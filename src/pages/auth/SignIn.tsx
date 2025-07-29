@@ -8,8 +8,7 @@ import { Mail, Lock, LogIn, BookOpen } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { Card, CardContent, CardHeader } from '../../components/ui/Card';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../lib/firebase';
+import { useAuth } from '../../context/AuthContext';
 
 const schema = yup.object({
   email: yup.string().email('Invalid email').required('Email is required'),
@@ -30,6 +29,7 @@ export function SignIn() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { signIn } = useAuth();
 
   const {
     register,
@@ -53,8 +53,9 @@ export function SignIn() {
     try {
       setLoading(true);
       setError('');
-      const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
-      const user = userCredential.user;
+      // Use Backendless login via context signIn
+      // You can pass a string like 'backendless' if you want
+      await signIn(data.email, data.password, 'backendless');
 
       if (data.rememberMe) {
         localStorage.setItem('rememberedEmail', data.email);
@@ -62,7 +63,6 @@ export function SignIn() {
         localStorage.removeItem('rememberedEmail');
       }
 
-      console.log('Signed in as', user.email);
       navigate('/');
     } catch (err: any) {
       setError(err.message || 'Failed to sign in');

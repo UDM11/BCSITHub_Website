@@ -3,10 +3,10 @@ import React from 'react';
 import { Button } from '../ui/Button';
 import { Download } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { supabase } from '../../lib/supabase';
+import Backendless from 'backendless';
 
 type Paper = {
-  id: string;
+  objectId: string;    // Backendless uses objectId as the primary key
   title: string;
   file_url: string;
   downloads: number;
@@ -28,18 +28,13 @@ export const PaperCard: React.FC<Props> = ({ paper }) => {
     // Open the file in a new tab
     window.open(paper.file_url, '_blank');
 
-    // Increment download count in Supabase
+    // Increment download count in Backendless
     try {
-      const { error } = await supabase
-        .from('past_papers')
-        .update({ downloads: paper.downloads + 1 })
-        .eq('id', paper.id);
-
-      if (error) {
-        console.error('Failed to update download count:', error.message);
-      }
+      const updatedPaper = { ...paper, downloads: (paper.downloads || 0) + 1 };
+      await Backendless.Data.of("past_papers").save(updatedPaper);
+      // Optionally, you can update local UI state or refetch papers after this
     } catch (err) {
-      console.error('Unexpected error during download update:', err);
+      console.error('Failed to update download count:', err);
     }
   };
 

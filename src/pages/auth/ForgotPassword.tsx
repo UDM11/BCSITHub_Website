@@ -8,8 +8,7 @@ import { Mail, Send } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { Card, CardContent, CardHeader } from '../../components/ui/Card';
-import { sendPasswordResetEmail } from 'firebase/auth';
-import { auth } from '../../lib/firebase';
+import Backendless from 'backendless';
 
 const schema = yup.object({
   email: yup.string().email('Invalid email').required('Email is required'),
@@ -37,7 +36,8 @@ export function ForgotPassword() {
     setError('');
     setMessage('');
     try {
-      await sendPasswordResetEmail(auth, data.email);
+      // Backendless password restore
+      await Backendless.UserService.restorePassword(data.email);
       setMessage('Check your email for the password reset link.');
     } catch (err: any) {
       setError(err.message || 'Failed to send reset email.');

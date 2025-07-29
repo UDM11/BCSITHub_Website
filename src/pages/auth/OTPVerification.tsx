@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import Backendless from 'backendless';
 import { useAuth } from '../../context/AuthContext';
-import { sendEmailVerification } from 'firebase/auth';
-import { auth } from '../../lib/firebase';
 import { Button } from '../../components/ui/Button';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -14,31 +13,33 @@ const OTPVerification = () => {
   const [checking, setChecking] = useState(false);
   const [cooldown, setCooldown] = useState(0);
 
-  // Redirect if no user
+  // Redirect to sign-in if no user
   useEffect(() => {
     if (!user) {
       navigate('/signin');
     }
   }, [user, navigate]);
 
+  // Countdown for resend cooldown
   useEffect(() => {
     if (cooldown === 0) return;
+
     const timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
     return () => clearTimeout(timer);
   }, [cooldown]);
 
-  // Resend verification email handler
+  // Resend email confirmation
   const handleResend = async () => {
-    if (!auth.currentUser) {
-      toast.error('No user logged in.');
+    if (!user?.email) {
+      toast.error('No user email found.');
       return;
     }
 
     try {
       setSending(true);
-      await sendEmailVerification(auth.currentUser);
+      await Backendless.UserService.resendEmailConfirmation(user.email);
       toast.success('Verification email resent. Check your inbox!');
-      setCooldown(60); // 60 seconds cooldown before resend again
+      setCooldown(60); // 60 seconds cooldown
     } catch (error: any) {
       toast.error(error.message || 'Failed to resend verification email.');
     } finally {
@@ -46,15 +47,25 @@ const OTPVerification = () => {
     }
   };
 
-  // Check if email is verified now
+  // Check email verification status
   const handleCheckVerification = async () => {
+    if (!user?.objectId) {
+      toast.error('User ID not found.');
+      return;
+    }
+
     try {
       setChecking(true);
-      await reloadUser(); // Use context reloadUser to refresh current user
 
-      if (auth.currentUser?.emailVerified) {
+      // Corrected: Use Backendless Data API to fetch user by objectId
+      const updatedUser = await Backendless.Data.of('Users').findById(user.objectId);
+
+      // Update user in auth context or local state (make sure reloadUser accepts updated user)
+      await reloadUser(updatedUser);
+
+      if (updatedUser.emailConfirmed) {
         toast.success('Email verified! Redirecting...');
-        navigate('/profile'); // Redirect to protected page after verification
+        navigate('/profile');
       } else {
         toast.error('Email not verified yet. Please check your inbox.');
       }
@@ -65,9 +76,7 @@ const OTPVerification = () => {
     }
   };
 
-  if (!user) {
-    return null; // or loading spinner if you want
-  }
+  if (!user) return null;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
@@ -76,7 +85,7 @@ const OTPVerification = () => {
         <p className="mb-6 text-gray-700">
           A verification email has been sent to <strong>{user.email}</strong>.
           <br />
-          Please check your inbox or Spam and click the verification link to activate your account.
+          Please check your inbox or Spam mail and click the verification link to activate your account.
         </p>
 
         <Button

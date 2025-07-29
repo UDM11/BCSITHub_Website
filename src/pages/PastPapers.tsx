@@ -9,8 +9,7 @@ import { Button } from '../components/ui/Button';
 import { Select } from '../components/ui/Select';
 import { useAuth } from '../context/AuthContext';
 import { UploadPaperModal } from '../components/Notes/UploadPaperModal';
-import { db } from '../lib/firebase';
-import { collection, getDocs, query, where, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import Backendless from 'backendless';
 
 const semesters = [
   { value: '1', label: '1st Semester' },
@@ -30,6 +29,7 @@ const examTypes = [
 ];
 
 const colleges = [
+  { value: 'Pokhara University', label: 'Pokhara University' },
   { value: 'Ace Institute of Management', label: 'Ace Institute of Management' },
   { value: 'SAIM College', label: 'SAIM College' },
   { value: 'Apollo International College', label: 'Apollo International College' },
@@ -51,7 +51,7 @@ const colleges = [
 ];
 
 interface Paper {
-  id: string;
+  objectId?: string;
   title: string;
   subject: string;
   semester: number;
@@ -78,32 +78,33 @@ export function PastPapers() {
     const fetchPapers = async () => {
       try {
         setLoading(true);
-        let q = query(collection(db, 'past-papers'));
-        const filters = [];
-        if (selectedSemester) filters.push(where('semester', '==', Number(selectedSemester)));
-        if (selectedExamType) filters.push(where('exam_type', '==', selectedExamType));
-        if (selectedCollege) filters.push(where('college', '==', selectedCollege));
-        if (filters.length > 0) {
-          q = query(collection(db, 'past-papers'), ...filters);
+        
+        let queryBuilder = Backendless.DataQueryBuilder.create();
+        
+        if (selectedSemester) {
+          queryBuilder.setWhereClause(`semester = ${selectedSemester}`);
         }
-        const snapshot = await getDocs(q);
-        const data = snapshot.docs.map(doc => {
-          const d = doc.data();
-          return {
-            id: doc.id,
-            title: d.title,
-            subject: d.subject,
-            semester: d.semester,
-            examType: d.exam_type, // map to camelCase for UI
-            college: d.college,
-            uploadedAt: d.uploadedAt?.toDate?.() ? d.uploadedAt.toDate().toISOString() : d.uploadedAt,
-            uploadedBy: d.uploaded_by,
-            downloads: d.downloads,
-            approved: d.approved,
-            fileUrl: d.file_url,
-          };
-        }) as Paper[];
-        setPapers(data);
+        
+        if (selectedExamType) {
+          const existingWhere = queryBuilder.getWhereClause();
+          queryBuilder.setWhereClause(
+            existingWhere 
+              ? `${existingWhere} AND examType = '${selectedExamType}'`
+              : `examType = '${selectedExamType}'`
+          );
+        }
+        
+        if (selectedCollege) {
+          const existingWhere = queryBuilder.getWhereClause();
+          queryBuilder.setWhereClause(
+            existingWhere 
+              ? `${existingWhere} AND college = '${selectedCollege}'`
+              : `college = '${selectedCollege}'`
+          );
+        }
+        
+        const result = await Backendless.Data.of('PastPapers').find<Paper>(queryBuilder);
+        setPapers(result);
       } catch (error) {
         console.error("Error fetching papers:", error);
       } finally {
@@ -130,6 +131,8 @@ export function PastPapers() {
 
   const handleDownload = (fileUrl: string) => {
     window.open(fileUrl, '_blank');
+    // Increment download count
+    // Note: You might want to implement this in Backendless with a custom business logic
   };
 
   const handleResetFilters = () => {
@@ -149,17 +152,21 @@ export function PastPapers() {
 
   const handleApprove = async (paperId: string) => {
     try {
-      await updateDoc(doc(db, 'past-papers', paperId), { approved: true });
-      setPapers((prev) => prev.map(p => p.id === paperId ? { ...p, approved: true } : p));
+      await Backendless.Data.of('PastPapers').save<Paper>({ 
+        objectId: paperId, 
+        approved: true 
+      });
+      setPapers((prev) => prev.map(p => p.objectId === paperId ? { ...p, approved: true } : p));
     } catch (error) {
       alert('Failed to approve paper.');
     }
   };
+
   const handleReject = async (paperId: string) => {
     if (!window.confirm('Are you sure you want to reject and delete this paper?')) return;
     try {
-      await deleteDoc(doc(db, 'past-papers', paperId));
-      setPapers((prev) => prev.filter(p => p.id !== paperId));
+      await Backendless.Data.of('PastPapers').remove(`objectId = '${paperId}'`);
+      setPapers((prev) => prev.filter(p => p.objectId !== paperId));
     } catch (error) {
       alert('Failed to reject paper.');
     }
@@ -193,13 +200,12 @@ export function PastPapers() {
               Access and share previous exam papers from different colleges
             </p>
           </div>
-          <br></br>
-          <br></br>
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
+            <br></br>
             <Button icon={Plus} onClick={handleUploadClick}>
               Upload Paper
             </Button>
@@ -281,7 +287,7 @@ export function PastPapers() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredPapers.map((paper, index) => (
             <motion.div
-              key={paper.id}
+              key={paper.objectId}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.1 * index }}
@@ -303,7 +309,7 @@ export function PastPapers() {
                         Sem {paper.semester}
                       </div>
                       <div className={`px-2 py-1 rounded-full text-xs font-medium ${getExamTypeColor(paper.examType)}`}>
-                        {paper.examType.charAt(0).toUpperCase() + paper.examType.slice(1)}
+                        {paper.examType ? paper.examType.charAt(0).toUpperCase() + paper.examType.slice(1) : 'Unknown'}
                       </div>
                       {!paper.approved && user?.role === 'admin' && (
                         <div className="bg-yellow-100 text-yellow-600 px-2 py-1 rounded-full text-xs font-medium">
@@ -339,8 +345,8 @@ export function PastPapers() {
                       </Button>
                     ) : user?.role === 'admin' ? (
                       <div className="flex space-x-2">
-                        <Button variant="outline" size="sm" className="flex-1" onClick={() => handleApprove(paper.id)}>Approve</Button>
-                        <Button variant="danger" size="sm" className="flex-1" onClick={() => handleReject(paper.id)}>Reject</Button>
+                        <Button variant="outline" size="sm" className="flex-1" onClick={() => paper.objectId && handleApprove(paper.objectId)}>Approve</Button>
+                        <Button variant="danger" size="sm" className="flex-1" onClick={() => paper.objectId && handleReject(paper.objectId)}>Reject</Button>
                       </div>
                     ) : (
                       <Button variant="ghost" className="w-full" disabled>

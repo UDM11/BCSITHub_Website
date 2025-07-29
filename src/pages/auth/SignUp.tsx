@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Mail, Lock, User, UserPlus, BookOpen, GraduationCap, MapPin } from 'lucide-react';
+import { Mail, Lock, User, UserPlus, BookOpen, MapPin } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { Select } from '../../components/ui/Select';
@@ -14,8 +14,14 @@ import { useAuth } from '../../context/AuthContext';
 const schema = yup.object({
   name: yup.string().required('Name is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
-  password: yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
-  confirmPassword: yup.string().oneOf([yup.ref('password')], 'Passwords must match').required('Confirm password is required'),
+  password: yup
+    .string()
+    .min(8, 'Password must be at least 8 characters')
+    .required('Password is required'),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref('password')], 'Passwords must match')
+    .required('Confirm password is required'),
   role: yup.string().required('Role is required'),
   semester: yup.number().when('role', {
     is: 'student',
@@ -28,7 +34,6 @@ const schema = yup.object({
     otherwise: (schema) => schema.notRequired(),
   }),
 });
-
 
 interface FormData {
   name: string;
@@ -95,7 +100,7 @@ export function SignUp() {
 
   const getCollegeAddress = () => {
     if (!watchedCollege) return '';
-    const college = collegeOptions.find(c => c.value === watchedCollege);
+    const college = collegeOptions.find((c) => c.value === watchedCollege);
     return college ? college.address : '';
   };
 
@@ -103,7 +108,7 @@ export function SignUp() {
     try {
       setLoading(true);
       setError('');
-      
+
       const additionalData: any = {};
       if (data.role === 'student') {
         additionalData.semester = data.semester;

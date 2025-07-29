@@ -1,22 +1,19 @@
 // services/uploadService.ts
-import { supabase } from "../lib/supabase";
+import Backendless from "backendless";
 
 export const getUserPastPapers = async (userId: string) => {
   try {
-    const { data, error } = await supabase
-      .from("past_papers")
-      .select("*")
-      .eq("uploaded_by", userId)
-      .order("uploaded_at", { ascending: false });
+    // Assuming you have a Backendless Data Table named 'past_papers'
+    // and a column 'uploaded_by' storing the userId.
 
-    if (error) {
-      console.error("[getUserPastPapers] Error fetching past papers:", error.message);
-      return [];
-    }
+    const queryBuilder = Backendless.DataQueryBuilder.create();
+    queryBuilder.setWhereClause(`uploaded_by = '${userId}'`);
+    queryBuilder.setSortBy(['uploaded_at DESC']); // descending order by uploaded_at
 
+    const data = await Backendless.Data.of("past_papers").find(queryBuilder);
     return data || [];
-  } catch (err) {
-    console.error("[getUserPastPapers] Unexpected error:", err);
+  } catch (err: any) {
+    console.error("[getUserPastPapers] Error fetching past papers:", err.message || err);
     return [];
   }
 };

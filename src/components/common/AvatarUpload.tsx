@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Loader2, UploadCloud, XCircle } from 'lucide-react';
+import Backendless from 'backendless';
 
 interface AvatarUploadProps {
   uid: string;
@@ -13,18 +14,17 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
   uid,
   currentAvatarUrl,
   onUploadComplete,
-  maxFileSizeMB = 5,
+  maxFileSizeMB = 1, // max 1MB file size by default
   acceptedFormats = 'image/png,image/jpeg,image/jpg',
 }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  // Generate preview when file changes
   useEffect(() => {
     if (!selectedFile) {
       setPreviewUrl(null);
@@ -81,29 +81,31 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
     e.preventDefault();
   };
 
-  // Dummy upload function (replace with real upload logic, e.g. Firebase Storage)
   const uploadFile = async (file: File): Promise<string> => {
     setUploading(true);
     setUploadProgress(0);
 
-    // Simulate upload progress
-    await new Promise<void>((resolve) => {
-      let progress = 0;
-      const interval = setInterval(() => {
-        progress += 10;
-        setUploadProgress(progress);
-        if (progress >= 100) {
-          clearInterval(interval);
-          resolve();
+    const backendlessPath = `avatars/${uid}/${file.name}`;
+
+    try {
+      const uploadResult = await Backendless.Files.upload(
+        file,
+        backendlessPath,
+        true,
+        (progress) => {
+          setUploadProgress(Math.round(progress * 100));
         }
-      }, 100);
-    });
+      );
 
-    setUploading(false);
-    setUploadProgress(100);
+      setUploading(false);
+      setUploadProgress(100);
 
-    // Return a fake uploaded file URL
-    return `https://your-storage-service.com/avatars/${uid}/${file.name}`;
+      return uploadResult.fileURL;
+    } catch (error: any) {
+      setUploading(false);
+      setUploadProgress(0);
+      throw new Error(error.message || 'Upload failed');
+    }
   };
 
   const handleUpload = async () => {
@@ -116,8 +118,8 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
       const uploadedUrl = await uploadFile(selectedFile);
       onUploadComplete(uploadedUrl);
       setSelectedFile(null);
-    } catch (err) {
-      setError('Upload failed, please try again.');
+    } catch (err: any) {
+      setError(err.message || 'Upload failed, please try again.');
       setUploading(false);
     }
   };

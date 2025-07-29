@@ -90,7 +90,7 @@ export function Footer() {
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
           <p className="text-gray-400">
-            © 2025 BCSITHub. All rights reserved | Designed for BCSIT Students under Pokhara University ❤️
+            © 2025 BCSITHub. All rights reserved | Designed for BCSIT Students under Pokhara University 
           </p>
         </div>
       </div>

@@ -13,7 +13,6 @@ interface ProfileDetailsProps {
 }
 
 const ProfileDetails: React.FC<ProfileDetailsProps> = ({ profile }) => {
-  // Handle null/undefined profile case
   if (!profile) {
     return (
       <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
@@ -46,7 +45,7 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ profile }) => {
           <span className="text-gray-900">{profile.college || '-'}</span>
         </div>
         {profile.avatarUrl && (
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center mt-4">
             <img
               src={profile.avatarUrl}
               alt={`${profile.name || 'User'}'s avatar`}

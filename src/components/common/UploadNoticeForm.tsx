@@ -56,7 +56,7 @@ const UploadNoticeForm: React.FC<UploadNoticeFormProps> = ({ onUploadSuccess }) 
 
     try {
       const uploadedFile = await backendless.Files.upload(file, 'notice-pdfs', true);
-      const publicUrl = `${backendless.serverURL}/api/files/${backendless.appId}/${backendless.apiKey}/notice-pdfs/${uploadedFile.fileURL.split('/').pop()}`;
+      const publicUrl = uploadedFile.fileURL; // ✅ Correct public file URL
 
       const noticeToSave = {
         title: title.trim(),

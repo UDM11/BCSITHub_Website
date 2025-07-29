@@ -1,3 +1,4 @@
+// src/context/AuthContext.tsx
 import React, {
   createContext,
   useContext,
@@ -6,17 +7,18 @@ import React, {
   ReactNode,
   useRef,
 } from 'react';
-import {
-  onAuthStateChanged,
-  signOut as firebaseSignOut,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  User as FirebaseUser,
-} from 'firebase/auth';
-import { auth as firebaseAuth, db } from '../lib/firebase';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { supabase } from '../lib/supabase';
-import { User } from '../types';
+import Backendless from 'backendless';
+import { User as BackendlessUser } from 'backendless'; // Type for Backendless User
+
+export interface User {
+  id: string;
+  email: string;
+  name: string;
+  role: string;
+  created_at: string;
+  emailVerified?: boolean;
+  [key: string]: any;
+}
 
 interface AuthContextType {
   user: User | null;
@@ -24,20 +26,15 @@ interface AuthContextType {
   isAdmin: boolean;
   isAuthenticated: boolean;
   reloadUser: () => Promise<void>;
-  signIn: (
-    email: string,
-    password: string,
-    authProvider: 'supabase' | 'firebase'
-  ) => Promise<void>;
+  signIn: (email: string, password: string) => Promise<void>;
   signUp: (
     email: string,
     password: string,
     name: string,
     role: string,
-    authProvider: 'supabase' | 'firebase',
     additionalData?: Record<string, any>
   ) => Promise<void>;
-  signOut: (authProvider: 'supabase' | 'firebase') => Promise<void>;
+  signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -47,146 +44,106 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
   const mountedRef = useRef(true);
 
   useEffect(() => {
     mountedRef.current = true;
+
+    // On mount, try to get current logged-in user
+    const fetchCurrentUser = async () => {
+      try {
+        const currentUser = await Backendless.UserService.getCurrentUser() as BackendlessUser | null;
+        if (!mountedRef.current) return;
+
+        if (currentUser) {
+          // Fetch extra properties if needed from Backendless database
+          const role = currentUser.role || 'user'; // fallback if role isn't set
+          const appUser: User = {
+            id: currentUser.objectId || '',
+            email: currentUser.email || '',
+            name: currentUser.name || '',
+            role,
+            created_at: currentUser.created || new Date().toISOString(),
+            emailVerified: currentUser.emailVerified, // Backendless may not provide this directly
+            ...currentUser,
+          };
+          setUser(appUser);
+          setIsAdmin(role === 'admin');
+          setIsAuthenticated(true);
+        } else {
+          setUser(null);
+          setIsAdmin(false);
+          setIsAuthenticated(false);
+        }
+      } catch (error) {
+        console.error('Error fetching Backendless user:', error);
+        setUser(null);
+        setIsAdmin(false);
+        setIsAuthenticated(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCurrentUser();
+
     return () => {
       mountedRef.current = false;
     };
   }, []);
 
-  useEffect(() => {
-    const unsubscribeFirebase = onAuthStateChanged(
-      firebaseAuth,
-      async (currentUser: FirebaseUser | null) => {
-        if (!mountedRef.current) return;
-
-        if (currentUser) {
-          try {
-            const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
-            const data = userDoc.exists() ? userDoc.data() : {};
-            const role = (data?.role as string) || 'user';
-
-            const firebaseUser: User = {
-              id: currentUser.uid,
-              email: currentUser.email || '',
-              name: currentUser.displayName || '',
-              role,
-              created_at: (data?.created_at as string) || new Date().toISOString(),
-              emailVerified: currentUser.emailVerified,
-              ...data,
-            };
-
-            setUser(firebaseUser);
-            setIsAdmin(role === 'admin');
-            setIsAuthenticated(true);
-          } catch (error) {
-            console.error('Error fetching Firebase user data:', error);
-            setUser(null);
-            setIsAdmin(false);
-            setIsAuthenticated(false);
-          }
-        } else {
-          setUser(null);
-          setIsAdmin(false);
-          setIsAuthenticated(false);
-        }
-
-        setLoading(false);
-      }
-    );
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        if (!mountedRef.current) return;
-
-        if (session?.user) {
-          try {
-            const { data: profile, error } = await supabase
-              .from('profiles')
-              .select('*')
-              .eq('id', session.user.id)
-              .single();
-
-            if (error) throw error;
-
-            if (profile) {
-              setUser(profile as User);
-              setIsAdmin(profile.role === 'admin');
-              setIsAuthenticated(true);
-            }
-          } catch (error) {
-            console.error('Error fetching Supabase user data:', error);
-            setUser(null);
-            setIsAdmin(false);
-            setIsAuthenticated(false);
-          }
-        } else {
-          setUser(null);
-          setIsAdmin(false);
-          setIsAuthenticated(false);
-        }
-
-        setLoading(false);
-      }
-    );
-
-    return () => {
-      unsubscribeFirebase();
-      if (subscription) subscription.unsubscribe();
-    };
-  }, []);
-
   const reloadUser = async () => {
-    if (firebaseAuth.currentUser) {
-      await firebaseAuth.currentUser.reload();
-      const currentUser = firebaseAuth.currentUser;
-      if (!currentUser) return;
-
-      try {
-        const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
-        const data = userDoc.exists() ? userDoc.data() : {};
-        const role = (data?.role as string) || 'user';
-
-        const firebaseUser: User = {
-          id: currentUser.uid,
-          email: currentUser.email || '',
-          name: currentUser.displayName || '',
-          role,
-          created_at: (data?.created_at as string) || new Date().toISOString(),
-          emailVerified: currentUser.emailVerified,
-          ...data,
-        };
-
-        setUser(firebaseUser);
-        setIsAdmin(role === 'admin');
-        setIsAuthenticated(true);
-      } catch (error) {
-        console.error('Error reloading Firebase user data:', error);
+    setLoading(true);
+    try {
+      const currentUser = await Backendless.UserService.getCurrentUser() as BackendlessUser | null;
+      if (!currentUser) {
         setUser(null);
         setIsAdmin(false);
         setIsAuthenticated(false);
+        return;
       }
+      const role = currentUser.role || 'user';
+      const appUser: User = {
+        id: currentUser.objectId || '',
+        email: currentUser.email || '',
+        name: currentUser.name || '',
+        role,
+        created_at: currentUser.created || new Date().toISOString(),
+        emailVerified: currentUser.emailVerified,
+        ...currentUser,
+      };
+      setUser(appUser);
+      setIsAdmin(role === 'admin');
+      setIsAuthenticated(true);
+    } catch (error) {
+      console.error('Error reloading Backendless user:', error);
+      setUser(null);
+      setIsAdmin(false);
+      setIsAuthenticated(false);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const signIn = async (
-    email: string,
-    password: string,
-    authProvider: 'supabase' | 'firebase'
-  ) => {
+  const signIn = async (email: string, password: string) => {
     setLoading(true);
     try {
-      if (authProvider === 'supabase') {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-      } else {
-        await signInWithEmailAndPassword(firebaseAuth, email, password);
-      }
+      const loggedInUser = await Backendless.UserService.login(email, password, true);
+      const role = loggedInUser.role || 'user';
+      const appUser: User = {
+        id: loggedInUser.objectId || '',
+        email: loggedInUser.email || '',
+        name: loggedInUser.name || '',
+        role,
+        created_at: loggedInUser.created || new Date().toISOString(),
+        emailVerified: loggedInUser.emailVerified,
+        ...loggedInUser,
+      };
+      setUser(appUser);
+      setIsAdmin(role === 'admin');
+      setIsAuthenticated(true);
     } catch (error) {
-      console.error('Sign-in error:', error);
+      console.error('Backendless sign-in error:', error);
       throw error;
     } finally {
       setLoading(false);
@@ -198,66 +155,55 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     password: string,
     name: string,
     role: string,
-    authProvider: 'supabase' | 'firebase',
     additionalData: Record<string, any> = {}
   ) => {
     setLoading(true);
     try {
-      if (authProvider === 'supabase') {
-        const { data, error } = await supabase.auth.signUp({ email, password });
-        if (error) throw error;
+      const user = new Backendless.User();
+      user.email = email;
+      user.password = password;
+      user.name = name;
+      user.role = role;
+      Object.assign(user, additionalData);
 
-        if (data?.user) {
-          const { error: profileError } = await supabase
-            .from('profiles')
-            .insert([
-              {
-                id: data.user.id,
-                email,
-                name,
-                role,
-                created_at: new Date().toISOString(),
-                ...additionalData,
-              },
-            ]);
-          if (profileError) throw profileError;
-        }
-      } else {
-        const userCredential = await createUserWithEmailAndPassword(firebaseAuth, email, password);
-        const firebaseUser = userCredential.user;
+      const registeredUser = await Backendless.UserService.register(user);
 
-        await setDoc(doc(db, 'users', firebaseUser.uid), {
-          uid: firebaseUser.uid,
-          email,
-          name,
-          role,
-          created_at: new Date().toISOString(),
-          ...additionalData,
-        });
-      }
+      // Optionally resend email confirmation if your Backendless setup requires it:
+      // await Backendless.UserService.resendEmailConfirmation(email);
+
+      // Automatically log in user after signup
+      await Backendless.UserService.login(email, password, true);
+
+      const appUser: User = {
+        id: registeredUser.objectId || '',
+        email: registeredUser.email || '',
+        name: registeredUser.name || '',
+        role: registeredUser.role || role,
+        created_at: registeredUser.created || new Date().toISOString(),
+        emailVerified: registeredUser.emailVerified,
+        ...registeredUser,
+      };
+
+      setUser(appUser);
+      setIsAdmin(role === 'admin');
+      setIsAuthenticated(true);
     } catch (error) {
-      console.error('Sign-up error:', error);
+      console.error('Backendless sign-up error:', error);
       throw error;
     } finally {
       setLoading(false);
     }
   };
 
-  const signOut = async (authProvider: 'supabase' | 'firebase') => {
+  const signOut = async () => {
     setLoading(true);
     try {
-      if (authProvider === 'supabase') {
-        const { error } = await supabase.auth.signOut();
-        if (error) throw error;
-      } else {
-        await firebaseSignOut(firebaseAuth);
-      }
-
+      await Backendless.UserService.logout();
       setUser(null);
       setIsAdmin(false);
       setIsAuthenticated(false);
     } catch (error) {
-      console.error('Sign-out error:', error);
+      console.error('Backendless sign-out error:', error);
       throw error;
     } finally {
       setLoading(false);

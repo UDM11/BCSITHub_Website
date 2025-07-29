@@ -1,10 +1,10 @@
 // src/components/Notes/UploadPaperModal.tsx
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../../lib/supabase';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { Select } from '../ui/Select';
 import { motion } from 'framer-motion';
+import Backendless from '../../lib/backendless';
 
 interface User {
   name?: string;
@@ -35,6 +35,7 @@ const examTypes = [
 ];
 
 const colleges = [
+  { value: 'Pokhara University', label: 'Pokhara University' },
   { value: 'Ace Institute of Management', label: 'Ace Institute of Management' },
   { value: 'SAIM College', label: 'SAIM College' },
   { value: 'Apollo International College', label: 'Apollo International College' },
@@ -89,34 +90,28 @@ export function UploadPaperModal({ onClose, user, onUploadSuccess }: UploadPaper
     setMessage('');
     try {
       for (const file of files) {
-        const fileExt = file.name.split('.').pop();
         const filePath = `papers/${Date.now()}_${file.name}`;
-        // Upload to Supabase Storage
-        const { error: storageError } = await supabase.storage
-          .from('past-papers')
-          .upload(filePath, file);
-        if (storageError) throw storageError;
-        // Get public URL
-        const { data: urlData } = supabase.storage
-          .from('past-papers')
-          .getPublicUrl(filePath);
-        const fileUrl = urlData?.publicUrl;
-        // Save metadata in Supabase Table
-        const { error: dbError } = await supabase.from('past_papers').insert([
-          {
-            title,
-            subject,
-            semester: parseInt(semester),
-            exam_type: examType,
-            college,
-            file_url: fileUrl,
-            uploaded_by: user?.name || user?.email || 'Unknown',
-            downloads: 0,
-            approved: false,
-            uploaded_at: new Date().toISOString(),
-          },
-        ]);
-        if (dbError) throw dbError;
+
+        // Upload file to Backendless Storage
+        const savedFile = await Backendless.Files.upload(file, filePath, true);
+
+        // Save metadata in Backendless DB
+        const newRecord = {
+          title,
+          subject,
+          semester: parseInt(semester),
+          examType,
+          college,
+          fileUrl: savedFile.fileURL,
+          fileName: file.name,
+          fileSize: (file.size / 1024).toFixed(2) + ' KB',
+          uploadedBy: user?.name || user?.email || 'Unknown',
+          downloads: 0,
+          approved: false,
+          uploadedAt: new Date(),
+        };
+
+        await Backendless.Data.of('PastPapers').save(newRecord);
       }
       setMessage('All files uploaded successfully!');
       setTitle('');
@@ -135,11 +130,11 @@ export function UploadPaperModal({ onClose, user, onUploadSuccess }: UploadPaper
   };
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4 overflow-auto">
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        className="bg-white p-6 rounded-lg shadow-xl w-full max-w-xl space-y-4"
+        className="bg-white p-6 rounded-lg shadow-xl w-full max-w-xl space-y-4 max-h-[90vh] overflow-auto"
       >
         <h2 className="text-2xl font-semibold text-gray-800">Upload Past Paper</h2>
 

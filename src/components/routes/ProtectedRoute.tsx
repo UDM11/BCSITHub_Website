@@ -26,10 +26,10 @@ const ProtectedRoute = ({ children, adminOnly = false }: ProtectedRouteProps) =>
   }
 
   // Redirect to verify page if email is not verified
-  if (!user.emailVerified) {
-    console.warn('[ProtectedRoute] Email not verified - redirecting to verify page');
-    return <Navigate to="/verify" replace />;
-  }
+  // if (!user.emailVerified) {
+  //   console.warn('[ProtectedRoute] Email not verified - redirecting to verify page');
+  //   return <Navigate to="/verify" replace />;
+  // }
 
   // If route is adminOnly and user is not admin, redirect to home
   if (adminOnly && !isAdmin) {
