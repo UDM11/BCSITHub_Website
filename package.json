@@ -16,6 +16,7 @@
     "@react-pdf-viewer/default-layout": "^3.12.0",
     "@supabase/supabase-js": "^2.52.1",
     "appwrite": "^18.2.0",
+    "backendless": "^7.4.7",
     "better-react-mathjax": "^2.3.0",
     "clsx": "^2.1.1",
     "firebase": "^12.0.0",

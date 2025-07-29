@@ -10,9 +10,10 @@ import {
 import { useAuth } from '../context/AuthContext';
 import UploadNoticeForm from '../components/common/UploadNoticeForm';
 import { motion } from 'framer-motion';
+import Backendless from '../lib/backendless';
 
 interface Notice {
-  id: string;
+  objectId: string;
   title: string;
   date: Date;
   fileUrl: string;
@@ -34,12 +35,29 @@ const PUNotices: React.FC = () => {
   const [showUploadModal, setShowUploadModal] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500);
+    const fetchNotices = async () => {
+      try {
+        const data = await Backendless.Data.of('PU_Notices').find();
 
-    const sampleNotices: Notice[] = [];
-    setNotices(sampleNotices);
+        const formatted = data.map((item: any) => ({
+          objectId: item.objectId,
+          title: item.title,
+          date: new Date(item.date),
+          fileUrl: item.fileUrl,
+          fileName: item.fileName,
+          fileSize: item.fileSize,
+          category: item.category,
+        }));
+
+        setNotices(formatted);
+      } catch (err) {
+        console.error('Error fetching notices:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNotices();
   }, []);
 
   useEffect(() => {
@@ -77,7 +95,11 @@ const PUNotices: React.FC = () => {
 
   const handleDownload = (notice: Notice) => {
     if (notice.fileUrl && notice.fileUrl !== '#') {
-      window.open(notice.fileUrl, '_blank');
+      const link = document.createElement('a');
+      link.href = notice.fileUrl;
+      link.download = notice.fileName;
+      link.target = '_blank';
+      link.click();
     } else {
       alert('File URL not available.');
     }
@@ -85,7 +107,7 @@ const PUNotices: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8 flex justify-center items-center">
+      <div className="min-h-screen bg-gray-50 py-8 flex justify-center items-center px-4">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Preparing PU Notices...</p>
@@ -98,22 +120,22 @@ const PUNotices: React.FC = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay:0.3}}
-      className="min-h-screen bg-gray-50 py-12"
+      transition={{ duration: 0.6, delay: 0.3 }}
+      className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">PU Notices</h1>
-          <p className="text-xl text-gray-600 mb-6">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">PU Notices</h1>
+          <p className="text-lg sm:text-xl text-gray-600 mb-6 max-w-3xl mx-auto">
             Official notices and documents from Pokhara University specifically related to the BCSIT program.
           </p>
 
-          <div className="flex justify-center flex-wrap gap-3 mb-6">
+          <div className="flex flex-col sm:flex-row justify-center flex-wrap gap-3 mb-6">
             <a
               href="https://exam.pu.edu.np:9094/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200"
+              className="inline-flex items-center justify-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-lg font-semibold transition-colors duration-200"
               aria-label="PU Result Portal"
             >
               <ExternalLink className="h-5 w-5" />
@@ -123,7 +145,7 @@ const PUNotices: React.FC = () => {
             {isAdmin && (
               <button
                 onClick={() => setShowUploadModal(true)}
-                className="inline-flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200"
+                className="inline-flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-lg font-semibold transition-colors duration-200"
               >
                 <UploadCloud className="h-5 w-5" />
                 <span>Upload Notice</span>
@@ -133,16 +155,21 @@ const PUNotices: React.FC = () => {
         </div>
 
         {showUploadModal && isAdmin && (
-          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4 sm:p-6 overflow-auto">
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="bg-white p-6 rounded-lg shadow-xl w-full max-w-lg space-y-4"
-              style={{ backgroundColor: 'white' }}
+              className="bg-white p-6 rounded-lg shadow-xl w-full max-w-lg space-y-4 max-h-[90vh] overflow-auto"
             >
               <div className="flex justify-between items-center mb-2">
                 <h2 className="text-2xl font-semibold text-gray-800">Upload Notice</h2>
-                <button onClick={() => setShowUploadModal(false)} className="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                <button
+                  onClick={() => setShowUploadModal(false)}
+                  className="text-gray-500 hover:text-gray-700 text-3xl leading-none"
+                  aria-label="Close Upload Modal"
+                >
+                  &times;
+                </button>
               </div>
               <UploadNoticeForm
                 onUploadSuccess={(newNotice) => {
@@ -164,6 +191,7 @@ const PUNotices: React.FC = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                aria-label="Search Notices"
               />
             </div>
 
@@ -171,6 +199,7 @@ const PUNotices: React.FC = () => {
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              aria-label="Filter by Category"
             >
               <option value="">All Categories</option>
               {categories.map((category) => (
@@ -190,51 +219,51 @@ const PUNotices: React.FC = () => {
           {filteredNotices.length > 0 ? (
             filteredNotices.map((notice) => (
               <div
-                key={notice.id}
-                className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200"
+                key={notice.objectId}
+                className="bg-white rounded-lg shadow-md p-4 sm:p-6 hover:shadow-lg transition-shadow duration-200 flex flex-col sm:flex-row justify-between items-start sm:items-center"
               >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <FileText className="h-6 w-6 text-blue-600" />
-                      <h3 className="text-lg font-semibold text-gray-900">{notice.title}</h3>
-                      <span
-                        className={`px-2 py-1 rounded text-xs font-medium ${getCategoryColor(
-                          notice.category
-                        )}`}
-                      >
-                        {notice.category}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center space-x-6 text-sm text-gray-600 mb-3">
-                      <div className="flex items-center space-x-1">
-                        <Calendar className="h-4 w-4" />
-                        <span>
-                          {notice.date.toLocaleDateString('en-US', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                          })}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="font-medium">File:</span> {notice.fileName}
-                      </div>
-                      <div>
-                        <span className="font-medium">Size:</span> {notice.fileSize}
-                      </div>
-                    </div>
+                <div className="flex-1 mb-4 sm:mb-0">
+                  <div className="flex flex-wrap items-center space-x-3 mb-2">
+                    <FileText className="h-6 w-6 text-blue-600 flex-shrink-0" />
+                    <h3 className="text-lg font-semibold text-gray-900 truncate max-w-full">{notice.title}</h3>
+                    <span
+                      className={`px-2 py-1 rounded text-xs font-medium ${getCategoryColor(
+                        notice.category
+                      )} flex-shrink-0`}
+                    >
+                      {notice.category}
+                    </span>
                   </div>
 
-                  <button
-                    onClick={() => handleDownload(notice)}
-                    className="ml-4 flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
-                  >
-                    <Download className="h-4 w-4" />
-                    <span>Download</span>
-                  </button>
+                  <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+                    <div className="flex items-center space-x-1">
+                      <Calendar className="h-4 w-4" />
+                      <span>
+                        {notice.date.toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                        })}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="font-medium">File:</span>{' '}
+                      <span className="truncate max-w-xs inline-block">{notice.fileName}</span>
+                    </div>
+                    <div>
+                      <span className="font-medium">Size:</span> {notice.fileSize}
+                    </div>
+                  </div>
                 </div>
+
+                <button
+                  onClick={() => handleDownload(notice)}
+                  className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors duration-200 shrink-0"
+                  aria-label={`Download ${notice.fileName}`}
+                >
+                  <Download className="h-4 w-4" />
+                  <span>Download</span>
+                </button>
               </div>
             ))
           ) : (
@@ -246,25 +275,6 @@ const PUNotices: React.FC = () => {
               </p>
             </div>
           )}
-        </div>
-
-        <div className="mt-12 bg-blue-50 rounded-lg p-6">
-          <div className="flex items-start space-x-3">
-            <div className="flex-shrink-0">
-              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                <FileText className="h-5 w-5 text-blue-600" />
-              </div>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">About PU Notices</h3>
-              <p className="text-gray-600 leading-relaxed">
-                This section contains official notices, circulars, and documents published by Pokhara
-                University specifically related to the BCSIT program. All documents are uploaded by
-                authorized administrators and are authentic university communications. For the most
-                up-to-date information, always refer to the official Pokhara University website.
-              </p>
-            </div>
-          </div>
         </div>
       </div>
     </motion.div>

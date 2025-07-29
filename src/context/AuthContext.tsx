@@ -23,7 +23,7 @@ interface AuthContextType {
   loading: boolean;
   isAdmin: boolean;
   isAuthenticated: boolean;
-  reloadUser: () => Promise<void>; // added reloadUser
+  reloadUser: () => Promise<void>;
   signIn: (
     email: string,
     password: string,
@@ -58,7 +58,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    // Firebase Auth Listener
     const unsubscribeFirebase = onAuthStateChanged(
       firebaseAuth,
       async (currentUser: FirebaseUser | null) => {
@@ -76,7 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               name: currentUser.displayName || '',
               role,
               created_at: (data?.created_at as string) || new Date().toISOString(),
-              emailVerified: currentUser.emailVerified, // add this
+              emailVerified: currentUser.emailVerified,
               ...data,
             };
 
@@ -99,7 +98,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     );
 
-    // Supabase Auth Listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
         if (!mountedRef.current) return;
@@ -141,7 +139,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  // Reload Firebase user to refresh emailVerified etc.
   const reloadUser = async () => {
     if (firebaseAuth.currentUser) {
       await firebaseAuth.currentUser.reload();
@@ -175,7 +172,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Sign In
   const signIn = async (
     email: string,
     password: string,
@@ -197,7 +193,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Sign Up
   const signUp = async (
     email: string,
     password: string,
@@ -248,7 +243,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Sign Out
   const signOut = async (authProvider: 'supabase' | 'firebase') => {
     setLoading(true);
     try {
@@ -277,7 +271,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loading,
         isAdmin,
         isAuthenticated,
-        reloadUser, // added here
+        reloadUser,
         signIn,
         signUp,
         signOut,
