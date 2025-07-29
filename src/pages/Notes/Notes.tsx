@@ -3,12 +3,6 @@ import { motion } from 'framer-motion';
 import { BookOpen } from 'lucide-react';
 import { Card, CardContent } from '../../components/ui/Card';
 import { Link } from 'react-router-dom';
-import { storage } from '../../lib/appwrite';
-
-type FileType = {
-  $id: string;
-  name: string;
-};
 
 const semesters = [
   { value: '1', label: '1st Semester' },
@@ -20,52 +14,6 @@ const semesters = [
   { value: '7', label: '7th Semester' },
   { value: '8', label: '8th Semester' },
 ];
-
-const PaperList = () => {
-  const [files, setFiles] = useState<FileType[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchFiles = async () => {
-      try {
-        const res = await storage.listFiles('past-papers'); // Replace with your bucket ID
-        setFiles(res.files);
-      } catch (error) {
-        console.error('Failed to fetch files', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchFiles();
-  }, []);
-
-  const getFileViewUrl = (fileId: string) => {
-    return storage.getFileView('past-papers', fileId).href;
-  };
-
-  if (loading) return <div>Loading papers...</div>;
-
-  return (
-    <div className="mt-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h3 className="text-2xl font-semibold mb-4">Uploaded Past Papers</h3>
-      <ul className="list-disc list-inside space-y-2">
-        {files.map((file) => (
-          <li key={file.$id} className="text-indigo-700 hover:underline">
-            {file.name}{' '}
-            <a
-              href={getFileViewUrl(file.$id)}
-              target="_blank"
-              rel="noreferrer"
-              className="ml-2 text-indigo-500"
-            >
-              Download
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
 
 export function Notes() {
   const [loading, setLoading] = useState(true);
@@ -138,9 +86,6 @@ export function Notes() {
             </motion.div>
           ))}
         </motion.div>
-
-        {/* Past Papers List */}
-        <PaperList />
       </div>
     </div>
   );
