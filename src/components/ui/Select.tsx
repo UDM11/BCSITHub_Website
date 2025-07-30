@@ -6,56 +6,64 @@ interface Option {
 }
 
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  label?: string;
   options: Option[];
-  error?: string;
-  className?: string;
+  label?: string;
   placeholder?: string;
+  error?: string;
+  containerClassName?: string; // Better naming
 }
 
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
   (
     {
-      label,
+      value,
+      onChange,
       options,
+      label,
+      placeholder = 'Select an option',
       error,
       disabled = false,
-      required = false,
       className = '',
-      placeholder = 'Select an option',
+      containerClassName = '', // Separate container classes
       ...rest
     },
     ref
   ) => {
+    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      e.persist(); // For async operations
+      onChange?.(e); // Safe call
+    };
+
     return (
-      <div className={`space-y-1 ${className}`}>
+      <div className={`flex flex-col space-y-1 ${containerClassName}`}>
         {label && (
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="text-sm font-medium text-gray-700">
             {label}
-            {required && <span className="text-red-500 ml-1">*</span>}
+            {rest.required && <span className="text-red-500 ml-1">*</span>}
           </label>
         )}
         <select
           ref={ref}
+          value={value}
+          onChange={handleChange} // Use our handler
           disabled={disabled}
-          required={required}
           className={`
-            block w-full rounded-lg border-gray-300 shadow-sm 
-            focus:border-indigo-500 focus:ring-indigo-500 
-            disabled:bg-gray-50 disabled:text-gray-500
-            px-3 py-2
-            ${error ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : ''}
+            border border-gray-300 rounded-md px-3 py-2
+            focus:outline-none focus:ring-2 focus:ring-indigo-500
+            disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed
+            ${error ? 'border-red-500 focus:ring-red-500' : ''}
+            ${className}
           `}
           {...rest}
         >
           <option value="">{placeholder}</option>
-          {options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
+          {options.map((opt) => (
+            <option key={opt.value} value={opt.value} disabled={opt.value === ''}>
+              {opt.label}
             </option>
           ))}
         </select>
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
       </div>
     );
   }

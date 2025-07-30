@@ -28,19 +28,18 @@ import { SubjectNotes } from './pages/Notes/SubjectNotes';
 import AdminDashboard from './dashboard/admin/AdminDashboard';
 import StudentProfile from './dashboard/student/StudentProfile';
 
-// Email Verification Page (Add this import)
+// Email Verification Page
 import OTPVerification from './pages/auth/OTPVerification';
 
 function App() {
   return (
     <AuthProvider>
+      {/* ProfileProvider must be inside AuthProvider to access currentUser */}
       <ProfileProvider>
         <Router>
           <div className="flex flex-col min-h-screen">
-            {/* Navbar */}
             <Navbar />
 
-            {/* Main content */}
             <main className="flex-1">
               <Routes>
                 <Route path="/" element={<Home />} />
@@ -55,7 +54,6 @@ function App() {
                 <Route path="/colleges" element={<Colleges />} />
                 <Route path="/pu-notices" element={<PUNotices />} />
 
-                {/* Email Verification Page */}
                 <Route path="/verify" element={<OTPVerification />} />
 
                 {/* Protected Routes */}
@@ -78,14 +76,11 @@ function App() {
               </Routes>
             </main>
 
-            {/* Footer */}
             <Footer />
 
-            {/* Toast container for custom styling */}
             <ToastContainer />
           </div>
 
-          {/* Global Toaster for feedback messages */}
           <Toaster
             position="top-right"
             toastOptions={{

@@ -25,7 +25,6 @@ interface Notice {
 
 const categories = ['Exam', 'Admission', 'Result', 'General'];
 
-// Login redirect modal with navigation
 const LoginRedirectModal: React.FC<{
   isOpen: boolean;
   onClose: () => void;
@@ -76,8 +75,6 @@ const PUNotices: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [showUploadModal, setShowUploadModal] = useState(false);
-
-  // For login modal
   const [loginModalOpen, setLoginModalOpen] = useState(false);
 
   useEffect(() => {
@@ -178,14 +175,15 @@ const PUNotices: React.FC = () => {
         />
       )}
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.3 }}
-        className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"
-      >
+      <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
+          {/* Header Section with y: -20 initial animation */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
             <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">PU Notices</h1>
             <p className="text-lg sm:text-xl text-gray-600 mb-6 max-w-3xl mx-auto">
               Official notices and documents from Pokhara University specifically related to the BCSIT program.
@@ -213,7 +211,7 @@ const PUNotices: React.FC = () => {
                 </button>
               )}
             </div>
-          </div>
+          </motion.div>
 
           {showUploadModal && isAdmin && (
             <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4 sm:p-6 overflow-auto">
@@ -242,103 +240,118 @@ const PUNotices: React.FC = () => {
             </div>
           )}
 
-          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="relative md:col-span-2">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                <input
-                  type="text"
-                  placeholder="Search notices..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  aria-label="Search Notices"
-                />
+          {/* Content Section with y: 20 initial animation */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="relative md:col-span-2">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                  <input
+                    type="text"
+                    placeholder="Search notices..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    aria-label="Search Notices"
+                  />
+                </div>
+
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  aria-label="Filter by Category"
+                >
+                  <option value="">All Categories</option>
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
               </div>
 
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                aria-label="Filter by Category"
-              >
-                <option value="">All Categories</option>
-                {categories.map((category) => (
-                  <option key={category} value={category}>
-                    {category}
-                  </option>
-                ))}
-              </select>
+              <div className="mt-4 text-sm text-gray-600">
+                Showing {filteredNotices.length} of {notices.length} notices
+              </div>
             </div>
 
-            <div className="mt-4 text-sm text-gray-600">
-              Showing {filteredNotices.length} of {notices.length} notices
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            {filteredNotices.length > 0 ? (
-              filteredNotices.map((notice) => (
-                <div
-                  key={notice.objectId}
-                  className="bg-white rounded-lg shadow-md p-4 sm:p-6 hover:shadow-lg transition-shadow duration-200 flex flex-col sm:flex-row justify-between items-start sm:items-center"
-                >
-                  <div className="flex-1 mb-4 sm:mb-0">
-                    <div className="flex flex-wrap items-center space-x-3 mb-2">
-                      <FileText className="h-6 w-6 text-blue-600 flex-shrink-0" />
-                      <h3 className="text-lg font-semibold text-gray-900 truncate max-w-full">{notice.title}</h3>
-                      <span
-                        className={`px-2 py-1 rounded text-xs font-medium ${getCategoryColor(
-                          notice.category
-                        )} flex-shrink-0`}
-                      >
-                        {notice.category}
-                      </span>
-                    </div>
-
-                    <div className="flex flex-wrap gap-4 text-sm text-gray-600">
-                      <div className="flex items-center space-x-1">
-                        <Calendar className="h-4 w-4" />
-                        <span>
-                          {notice.date.toLocaleDateString('en-US', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                          })}
+            <div className="space-y-4">
+              {filteredNotices.length > 0 ? (
+                filteredNotices.map((notice) => (
+                  <motion.div
+                    key={notice.objectId}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="bg-white rounded-lg shadow-md p-4 sm:p-6 hover:shadow-lg transition-shadow duration-200 flex flex-col sm:flex-row justify-between items-start sm:items-center"
+                  >
+                    <div className="flex-1 mb-4 sm:mb-0">
+                      <div className="flex flex-wrap items-center space-x-3 mb-2">
+                        <FileText className="h-6 w-6 text-blue-600 flex-shrink-0" />
+                        <h3 className="text-lg font-semibold text-gray-900 truncate max-w-full">{notice.title}</h3>
+                        <span
+                          className={`px-2 py-1 rounded text-xs font-medium ${getCategoryColor(
+                            notice.category
+                          )} flex-shrink-0`}
+                        >
+                          {notice.category}
                         </span>
                       </div>
-                      <div>
-                        <span className="font-medium">File:</span>{' '}
-                        <span className="truncate max-w-xs inline-block">{notice.fileName}</span>
-                      </div>
-                      <div>
-                        <span className="font-medium">Size:</span> {notice.fileSize}
+
+                      <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+                        <div className="flex items-center space-x-1">
+                          <Calendar className="h-4 w-4" />
+                          <span>
+                            {notice.date.toLocaleDateString('en-US', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
+                            })}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="font-medium">File:</span>{' '}
+                          <span className="truncate max-w-xs inline-block">{notice.fileName}</span>
+                        </div>
+                        <div>
+                          <span className="font-medium">Size:</span> {notice.fileSize}
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <button
-                    onClick={() => handleDownload(notice)}
-                    className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors duration-200 shrink-0"
-                    aria-label={`Download ${notice.fileName}`}
-                  >
-                    <Download className="h-4 w-4" />
-                    <span>Download</span>
-                  </button>
-                </div>
-              ))
-            ) : (
-              <div className="text-center py-12">
-                <FileText className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No notices found</h3>
-                <p className="text-gray-500">
-                  Try adjusting your search criteria or check back later for new notices.
-                </p>
-              </div>
-            )}
-          </div>
+                    <button
+                      onClick={() => handleDownload(notice)}
+                      className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors duration-200 shrink-0"
+                      aria-label={`Download ${notice.fileName}`}
+                    >
+                      <Download className="h-4 w-4" />
+                      <span>Download</span>
+                    </button>
+                  </motion.div>
+                ))
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-center py-12"
+                >
+                  <FileText className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">No notices found</h3>
+                  <p className="text-gray-500">
+                    Try adjusting your search criteria or check back later for new notices.
+                  </p>
+                </motion.div>
+              )}
+            </div>
+          </motion.div>
         </div>
-      </motion.div>
+      </div>
     </>
   );
 };

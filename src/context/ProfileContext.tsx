@@ -12,7 +12,6 @@ import { useAuth } from "./AuthContext";
 
 export interface ProfileData {
   objectId?: string;
-  userId: string;
   name: string;
   email: string;
   semester: string;
@@ -24,6 +23,7 @@ export interface ProfileData {
 interface ProfileContextType {
   profile: ProfileData | null;
   loading: boolean;
+  error: string | null;
   updateProfile: (data: Partial<ProfileData>) => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
@@ -31,6 +31,7 @@ interface ProfileContextType {
 const ProfileContext = createContext<ProfileContextType>({
   profile: null,
   loading: true,
+  error: null,
   updateProfile: async () => {},
   refreshProfile: async () => {},
 });
@@ -42,11 +43,13 @@ interface ProfileProviderProps {
 }
 
 export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) => {
-  const { currentUser } = useAuth();
+  const { user } = useAuth(); // user is from Backendless
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const mountedRef = useRef(true);
+
   useEffect(() => {
     mountedRef.current = true;
     return () => {
@@ -55,92 +58,80 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
   }, []);
 
   const fetchProfile = useCallback(async () => {
-    if (!currentUser) {
-      if (mountedRef.current) {
-        setProfile(null);
-        setLoading(false);
-      }
+    if (!user?.objectId && !user?.id) {
+      setProfile(null);
+      setLoading(false);
       return;
     }
 
     setLoading(true);
+    setError(null);
+
+    const userId = user.objectId || user.id;
+
     try {
       const queryBuilder = Backendless.DataQueryBuilder.create();
-      queryBuilder.setWhereClause(`userId = '${currentUser.uid}'`);
+      queryBuilder.setWhereClause(`objectId = '${userId}'`);
       queryBuilder.setPageSize(1);
 
-      const results = await Backendless.Data.of("users").find(queryBuilder);
+      const results = await Backendless.Data.of("Users").find(queryBuilder);
 
       if (results.length > 0) {
         const fetchedProfile = results[0] as ProfileData;
 
-        // Debug log for verification
-        console.log("✅ Profile fetched from Backendless:", fetchedProfile);
-
-        // Validate role, fallback to student if missing or invalid
-        if (!fetchedProfile.role || !["student", "teacher", "admin"].includes(fetchedProfile.role)) {
-          fetchedProfile.role = "student";
-        }
+        // Fallback role safety
+        fetchedProfile.role = ["student", "teacher", "admin"].includes(fetchedProfile.role)
+          ? fetchedProfile.role
+          : "student";
 
         if (mountedRef.current) setProfile(fetchedProfile);
       } else {
-        // Create new profile with default role student
+        // Create new profile if not found
         const newProfile: ProfileData = {
-          userId: currentUser.uid,
-          name: currentUser.displayName || "Anonymous",
-          email: currentUser.email || "",
+          objectId: userId,
+          name: user.name || "Anonymous",
+          email: user.email || "",
           semester: "",
           college: "",
           avatarUrl: "",
           role: "student",
         };
-        const savedProfile = await Backendless.Data.of("users").save(newProfile);
+
+        const savedProfile = await Backendless.Data.of("Users").save(newProfile);
         if (mountedRef.current) setProfile(savedProfile);
       }
-    } catch (error) {
-      console.error("Failed to fetch profile:", error);
+    } catch (err) {
+      console.error("❌ Failed to fetch profile:", err);
+      if (mountedRef.current) {
+        setError("Failed to fetch profile.");
+        setProfile(null);
+      }
     } finally {
       if (mountedRef.current) setLoading(false);
     }
-  }, [currentUser]);
+  }, [user]);
 
   const updateProfile = useCallback(
     async (data: Partial<ProfileData>) => {
-      if (!currentUser) return;
+      if (!user?.objectId && !user?.id) return;
+
+      const userId = user.objectId || user.id;
 
       try {
-        const queryBuilder = Backendless.DataQueryBuilder.create();
-        queryBuilder.setWhereClause(`userId = '${currentUser.uid}'`);
-        queryBuilder.setPageSize(1);
+        const existing = await Backendless.Data.of("Users").findById(userId);
+        const updated = { ...existing, ...data };
 
-        const results = await Backendless.Data.of("users").find(queryBuilder);
+        updated.role = ["student", "teacher", "admin"].includes(updated.role)
+          ? updated.role
+          : "student";
 
-        if (results.length > 0) {
-          const existingProfile = results[0] as ProfileData;
-          const updatedProfile = { ...existingProfile, ...data };
-
-          // Validate role before saving
-          if (!updatedProfile.role || !["student", "teacher", "admin"].includes(updatedProfile.role)) {
-            updatedProfile.role = "student";
-          }
-
-          await Backendless.Data.of("users").save(updatedProfile);
-          if (mountedRef.current) setProfile(updatedProfile);
-        } else {
-          // Create new profile if none exists
-          const newProfile = {
-            userId: currentUser.uid,
-            role: "student",
-            ...data,
-          } as ProfileData;
-          const savedProfile = await Backendless.Data.of("users").save(newProfile);
-          if (mountedRef.current) setProfile(savedProfile);
-        }
-      } catch (error) {
-        console.error("Error updating profile:", error);
+        const saved = await Backendless.Data.of("Users").save(updated);
+        if (mountedRef.current) setProfile(saved);
+      } catch (err) {
+        console.error("❌ Error updating profile:", err);
       }
     },
-    [currentUser]
+    [user]
   );
 
   useEffect(() => {
@@ -152,6 +143,7 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
       value={{
         profile,
         loading,
+        error,
         updateProfile,
         refreshProfile: fetchProfile,
       }}

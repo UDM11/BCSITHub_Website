@@ -29,41 +29,47 @@ const getRoleDisplay = (role?: string) => {
 const ProfileDetails: React.FC<ProfileDetailsProps> = ({ profile }) => {
   if (!profile) {
     return (
-      <div className="w-full max-w-md bg-white shadow-md rounded-xl p-6">
+      <section
+        aria-live="polite"
+        className="w-full max-w-md bg-white shadow-md rounded-xl p-6"
+      >
         <h2 className="text-2xl font-semibold mb-4 text-center">Profile Information</h2>
-        <div className="text-center text-gray-500 py-8">No profile data available</div>
-      </div>
+        <p className="text-center text-gray-500 py-8">No profile data available</p>
+      </section>
     );
   }
 
   return (
-    <div className="w-full max-w-md bg-white shadow-md rounded-xl p-6">
+    <section
+      aria-label="User profile information"
+      className="w-full max-w-md bg-white shadow-md rounded-xl p-6"
+    >
       <h2 className="text-2xl font-semibold mb-6 text-center">Profile Information</h2>
 
-      <div className="flex flex-col gap-4 text-sm sm:text-base">
+      <dl className="flex flex-col gap-4 text-sm sm:text-base">
         <div className="flex items-center justify-between">
-          <span className="font-semibold text-gray-700">Name:</span>
-          <span className="text-gray-900 text-right">{profile.name || "-"}</span>
+          <dt className="font-semibold text-gray-700">Name:</dt>
+          <dd className="text-gray-900 text-right">{profile.name || "-"}</dd>
         </div>
 
         <div className="flex items-center justify-between">
-          <span className="font-semibold text-gray-700">Email:</span>
-          <span className="text-gray-900 text-right">{profile.email || "-"}</span>
+          <dt className="font-semibold text-gray-700">Email:</dt>
+          <dd className="text-gray-900 text-right">{profile.email || "-"}</dd>
         </div>
 
         <div className="flex items-center justify-between">
-          <span className="font-semibold text-gray-700">Semester:</span>
-          <span className="text-gray-900 text-right">{profile.semester || "-"}</span>
+          <dt className="font-semibold text-gray-700">Semester:</dt>
+          <dd className="text-gray-900 text-right">{profile.semester || "-"}</dd>
         </div>
 
         <div className="flex items-center justify-between">
-          <span className="font-semibold text-gray-700">College:</span>
-          <span className="text-gray-900 text-right">{profile.college || "-"}</span>
+          <dt className="font-semibold text-gray-700">College:</dt>
+          <dd className="text-gray-900 text-right">{profile.college || "-"}</dd>
         </div>
 
         <div className="flex items-center justify-between">
-          <span className="font-semibold text-gray-700">Role:</span>
-          <span className="text-gray-900 text-right">{getRoleDisplay(profile.role)}</span>
+          <dt className="font-semibold text-gray-700">Role:</dt>
+          <dd className="text-gray-900 text-right">{getRoleDisplay(profile.role)}</dd>
         </div>
 
         {profile.avatarUrl && (
@@ -72,11 +78,12 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ profile }) => {
               src={profile.avatarUrl}
               alt={`${profile.name || "User"}'s avatar`}
               className="w-32 h-32 rounded-full object-cover border-2 border-gray-300"
+              loading="lazy"
             />
           </div>
         )}
-      </div>
-    </div>
+      </dl>
+    </section>
   );
 };
 

@@ -10,7 +10,7 @@ import { Select } from '../components/ui/Select';
 import { useAuth } from '../context/AuthContext';
 import { UploadPaperModal } from '../components/Notes/UploadPaperModal';
 import Backendless from 'backendless';
-import LoginRedirectModal from '../components/common/LoginRedirectModal'; // Import your modal here
+import LoginRedirectModal from '../components/common/LoginRedirectModal';
 
 const semesters = [
   { value: '1', label: '1st Semester' },
@@ -62,6 +62,7 @@ interface Paper {
   downloads: number;
   approved: boolean;
   fileUrl: string;
+  ownerId?: string;
 }
 
 export function PastPapers() {
@@ -72,8 +73,6 @@ export function PastPapers() {
   const [selectedCollege, setSelectedCollege] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [showUploadModal, setShowUploadModal] = useState(false);
-
-  // New modal state for login/signup redirect
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [loginModalMessage, setLoginModalMessage] = useState('');
 
@@ -85,6 +84,7 @@ export function PastPapers() {
         setLoading(true);
 
         let queryBuilder = Backendless.DataQueryBuilder.create();
+        queryBuilder.setSortBy(['uploadedAt DESC']);
 
         if (selectedSemester) {
           queryBuilder.setWhereClause(`semester = ${selectedSemester}`);
@@ -122,7 +122,7 @@ export function PastPapers() {
 
   const filteredPapers = papers.filter(paper => {
     if (searchQuery && !paper.subject.toLowerCase().includes(searchQuery.toLowerCase())) return false;
-    return paper.approved || (user?.role === 'admin');
+    return paper.approved || (user?.role === 'admin') || (user?.objectId === paper.ownerId);
   });
 
   const getExamTypeColor = (type: string) => {
@@ -134,15 +134,29 @@ export function PastPapers() {
     }
   };
 
-  // Updated: Show modal if user not logged in instead of alert
-  const handleDownload = (fileUrl: string) => {
+  const handleDownload = async (paper: Paper) => {
     if (!user) {
       setLoginModalMessage("Please login or signup to download papers.");
       setShowLoginModal(true);
       return;
     }
-    window.open(fileUrl, '_blank');
-    // TODO: Increment download count in backend if desired
+    
+    try {
+      window.open(paper.fileUrl, '_blank');
+      
+      await Backendless.Data.of('PastPapers').save<Paper>({
+        objectId: paper.objectId,
+        downloads: (paper.downloads || 0) + 1
+      });
+      
+      setPapers(prev => prev.map(p => 
+        p.objectId === paper.objectId 
+          ? { ...p, downloads: (p.downloads || 0) + 1 } 
+          : p
+      ));
+    } catch (error) {
+      console.error("Error updating download count:", error);
+    }
   };
 
   const handleResetFilters = () => {
@@ -152,7 +166,6 @@ export function PastPapers() {
     setSearchQuery('');
   };
 
-  // Updated: Show modal if user not logged in instead of alert
   const handleUploadClick = () => {
     if (!user) {
       setLoginModalMessage("Please login or signup to upload papers.");
@@ -198,27 +211,27 @@ export function PastPapers() {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="flex flex-col md:flex-row justify-between items-center mb-12"
+          className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4"
         >
           <div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">Past Question Papers</h1>
-            <p className="text-xl text-gray-600">
+            <h1 className="text-3xl text-center sm:text-4xl font-bold text-gray-900 mb-2 sm:mb-4">Past Question Papers</h1>
+            <p className="text-lg text-center sm:text-xl text-gray-600">
               Access and share previous exam papers from different colleges
             </p>
           </div>
+          <br></br>
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
+            className="w-full md:w-auto"
           >
-            <br />
-            <Button icon={Plus} onClick={handleUploadClick}>
+            <Button icon={Plus} onClick={handleUploadClick} className="w-full md:w-auto">
               Upload Paper
             </Button>
           </motion.div>
@@ -231,7 +244,7 @@ export function PastPapers() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mb-8 space-y-4"
         >
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row items-center gap-2">
             <input
               type="text"
               placeholder="Search by subject..."
@@ -239,7 +252,7 @@ export function PastPapers() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
-            <Button icon={Search} type="button">Search</Button>
+            <Button icon={Search} type="button" className="w-full sm:w-auto">Search</Button>
           </div>
 
           <Card>
@@ -264,21 +277,21 @@ export function PastPapers() {
                 <Select
                   label="Semester"
                   value={selectedSemester}
-                  onChange={e => { e.preventDefault(); setSelectedSemester(e.target.value); }}
+                  onChange={(e) => setSelectedSemester(e.target.value)}
                   options={semesters}
                   placeholder="All Semesters"
                 />
                 <Select
                   label="Exam Type"
                   value={selectedExamType}
-                  onChange={e => { e.preventDefault(); setSelectedExamType(e.target.value); }}
+                  onChange={(e) => setSelectedExamType(e.target.value)}
                   options={examTypes}
                   placeholder="All Types"
                 />
                 <Select
                   label="College"
                   value={selectedCollege}
-                  onChange={e => { e.preventDefault(); setSelectedCollege(e.target.value); }}
+                  onChange={(e) => setSelectedCollege(e.target.value)}
                   options={colleges}
                   placeholder="All Colleges"
                 />
@@ -323,9 +336,9 @@ export function PastPapers() {
                       <div className={`px-2 py-1 rounded-full text-xs font-medium ${getExamTypeColor(paper.examType)}`}>
                         {paper.examType ? paper.examType.charAt(0).toUpperCase() + paper.examType.slice(1) : 'Unknown'}
                       </div>
-                      {!paper.approved && user?.role === 'admin' && (
+                      {!paper.approved && (
                         <div className="bg-yellow-100 text-yellow-600 px-2 py-1 rounded-full text-xs font-medium">
-                          Pending
+                          {user?.objectId === paper.ownerId ? 'Your Upload' : 'Pending'}
                         </div>
                       )}
                     </div>
@@ -341,12 +354,16 @@ export function PastPapers() {
                     <div><span className="font-medium">By:</span> {paper.uploadedBy}</div>
                     <div className="flex items-center space-x-2">
                       <Download className="w-4 h-4" />
-                      <span>{paper.downloads} downloads</span>
+                      <span>{paper.downloads || 0} downloads</span>
                     </div>
                   </div>
                   <div className="mt-4">
                     {paper.approved ? (
-                      <Button className="w-full" icon={Download} onClick={() => handleDownload(paper.fileUrl)}>
+                      <Button 
+                        className="w-full" 
+                        icon={Download} 
+                        onClick={() => handleDownload(paper)}
+                      >
                         Download Paper
                       </Button>
                     ) : user?.role === 'admin' ? (
@@ -354,6 +371,10 @@ export function PastPapers() {
                         <Button variant="outline" size="sm" className="flex-1" onClick={() => paper.objectId && handleApprove(paper.objectId)}>Approve</Button>
                         <Button variant="danger" size="sm" className="flex-1" onClick={() => paper.objectId && handleReject(paper.objectId)}>Reject</Button>
                       </div>
+                    ) : user?.objectId === paper.ownerId ? (
+                      <Button variant="ghost" className="w-full" disabled>
+                        Waiting for Approval
+                      </Button>
                     ) : (
                       <Button variant="ghost" className="w-full" disabled>
                         Pending Approval
@@ -381,6 +402,17 @@ export function PastPapers() {
                 Clear Filters
               </Button>
             )}
+            {!user && (
+              <Button
+                className="mt-4"
+                onClick={() => {
+                  setLoginModalMessage("Please login or signup to upload papers.");
+                  setShowLoginModal(true);
+                }}
+              >
+                Upload Paper
+              </Button>
+            )}
           </motion.div>
         )}
 
@@ -389,7 +421,8 @@ export function PastPapers() {
           <UploadPaperModal
             onClose={() => setShowUploadModal(false)}
             user={user || {}}
-            onUploadSuccess={() => {
+            onUploadSuccess={(newPaper) => {
+              setPapers(prev => [newPaper, ...prev]);
               setSelectedSemester('');
               setSelectedExamType('');
               setSelectedCollege('');

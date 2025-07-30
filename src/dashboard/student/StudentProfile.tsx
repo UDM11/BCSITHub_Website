@@ -3,6 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useProfile } from "../../context/ProfileContext";
 import AvatarUpload from "../../components/common/AvatarUpload";
 import ProfileDetails from "../../components/common/ProfileDetails";
+import EditProfileForm from "../../components/common/EditProfileForm";
 import { Button } from "../../components/ui/Button";
 import Backendless from "backendless";
 
@@ -19,44 +20,44 @@ const StudentProfile: React.FC = () => {
 
   const [papers, setPapers] = useState<Paper[]>([]);
   const [papersLoading, setPapersLoading] = useState(true);
-  const [role, setRole] = useState<string>("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Fetch user role and papers
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchUserPapers = async () => {
       if (!user) return;
 
+      const userId = user.id || user.objectId;
+      if (!userId) return;
+
+      setPapersLoading(true);
       try {
-        const backendlessUser = await Backendless.UserService.getCurrentUser();
-        if (backendlessUser && backendlessUser.role) {
-          setRole(backendlessUser.role); // student | teacher | admin
-        }
-
-        const userId = user.uid ?? user.id;
-
         const queryBuilder = Backendless.DataQueryBuilder.create()
-          .setWhereClause(`uploadedBy = '${userId}'`)
-          .setSortBy(["uploadDate DESC"]);
+          .setWhereClause(`ownerId = '${userId}'`)
+          .setSortBy(["uploadedAt DESC"]); // Ensure field name matches your DB
 
         const fetched = await Backendless.Data.of("PastPapers").find(queryBuilder);
 
         const mapped = fetched.map((paper: any) => ({
           objectId: paper.objectId,
           title: paper.title,
-          uploadedAt: paper.uploadDate,
+          uploadedAt: paper.uploadedAt,
           approved: paper.approved,
         }));
 
+        // Frontend fallback sort descending by uploadedAt
+        mapped.sort((a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime());
+
         setPapers(mapped);
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error("Error fetching user papers:", error);
         setPapers([]);
       } finally {
         setPapersLoading(false);
       }
     };
 
-    fetchUserData();
+    fetchUserPapers();
   }, [user]);
 
   const handleAvatarUploadComplete = async (uploadedUrl: string) => {
@@ -67,6 +68,19 @@ const StudentProfile: React.FC = () => {
       }
     } catch (err) {
       console.error("Failed to update avatar URL in profile:", err);
+    }
+  };
+
+  const handleProfileUpdate = async (data: any) => {
+    try {
+      setIsSubmitting(true);
+      await updateProfile(data);
+      await refreshProfile();
+      setIsEditing(false);
+    } catch (err) {
+      console.error("Failed to update profile:", err);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -93,11 +107,47 @@ const StudentProfile: React.FC = () => {
     <div className="p-4 max-w-4xl mx-auto">
       <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
         <AvatarUpload
-          uid={user.uid || user.id}
+          uid={user.id || user.objectId}
           currentAvatarUrl={profile?.avatarUrl}
           onUploadComplete={handleAvatarUploadComplete}
         />
-        <ProfileDetails profile={profile} role={role} />
+        <div className="flex-1 w-full">
+          {!isEditing ? (
+            <>
+              <ProfileDetails profile={profile} />
+              <div className="mt-4 flex flex-col sm:flex-row sm:gap-4">
+                <Button
+                  onClick={() => setIsEditing(true)}
+                  className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto"
+                >
+                  Edit Profile
+                </Button>
+              </div>
+            </>
+          ) : (
+            <>
+              <EditProfileForm
+                defaultValues={{
+                  name: profile?.name || "",
+                  email: profile?.email || "",
+                  semester: profile?.semester || "",
+                  college: profile?.college || "",
+                  avatarUrl: profile?.avatarUrl || "",
+                }}
+                onSubmit={handleProfileUpdate}
+                isSubmitting={isSubmitting}
+              />
+              <div className="mt-4 flex flex-col sm:flex-row sm:gap-4">
+                <Button
+                  onClick={() => setIsEditing(false)}
+                  className="bg-gray-500 hover:bg-gray-600 w-full sm:w-auto"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </>
+          )}
+        </div>
       </div>
 
       <div className="mt-10">
@@ -132,7 +182,7 @@ const StudentProfile: React.FC = () => {
       </div>
 
       <Button
-        onClick={() => signOut("backendless")}
+        onClick={() => signOut()}
         className="mt-10 bg-red-600 hover:bg-red-700 w-full md:w-auto"
       >
         Sign Out

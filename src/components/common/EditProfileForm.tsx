@@ -16,14 +16,35 @@ interface EditProfileFormProps {
 }
 
 const semesters = [
-  '1st',
-  '2nd',
-  '3rd',
-  '4th',
-  '5th',
-  '6th',
-  '7th',
-  '8th',
+  { value: '1', label: '1st Semester' },
+  { value: '2', label: '2nd Semester' },
+  { value: '3', label: '3rd Semester' },
+  { value: '4', label: '4th Semester' },
+  { value: '5', label: '5th Semester' },
+  { value: '6', label: '6th Semester' },
+  { value: '7', label: '7th Semester' },
+  { value: '8', label: '8th Semester' },
+];
+
+const colleges = [
+  { value: 'Pokhara University', label: 'Pokhara University' },
+  { value: 'Ace Institute of Management', label: 'Ace Institute of Management' },
+  { value: 'SAIM College', label: 'SAIM College' },
+  { value: 'Apollo International College', label: 'Apollo International College' },
+  { value: 'Quest International College', label: 'Quest International College' },
+  { value: 'Shubhashree College of Management', label: 'Shubhashree College of Management' },
+  { value: 'Liberty College', label: 'Liberty College' },
+  { value: 'Uniglobe College', label: 'Uniglobe College' },
+  { value: 'Medhavi College', label: 'Medhavi College' },
+  { value: 'Crimson College of Technology', label: 'Crimson College of Technology' },
+  { value: 'Rajdhani Model College', label: 'Rajdhani Model College' },
+  { value: 'Excel Business College', label: 'Excel Business College' },
+  { value: 'Malpi International College', label: 'Malpi International College' },
+  { value: 'Nobel College', label: 'Nobel College' },
+  { value: 'Boston International College', label: 'Boston International College' },
+  { value: 'Pokhara College of Management', label: 'Pokhara College of Management' },
+  { value: 'Apex College', label: 'Apex College' },
+  { value: 'Other', label: 'Other College' },
 ];
 
 const EditProfileForm: React.FC<EditProfileFormProps> = ({
@@ -40,7 +61,11 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md space-y-6 bg-white p-6 rounded-lg shadow-md">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="w-full max-w-md space-y-6 bg-white p-6 rounded-lg shadow-md"
+    >
+      {/* Name - Disabled */}
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
           Full Name
@@ -48,15 +73,13 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({
         <input
           id="name"
           type="text"
-          {...register('name', { required: 'Name is required', minLength: { value: 3, message: 'Name must be at least 3 characters' } })}
-          className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${
-            errors.name ? 'border-red-500' : ''
-          }`}
-          disabled={isSubmitting}
+          {...register('name')}
+          className="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 text-gray-600 cursor-not-allowed"
+          disabled
         />
-        {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
       </div>
 
+      {/* Email - Disabled */}
       <div>
         <label htmlFor="email" className="block text-sm font-medium text-gray-700">
           Email Address
@@ -64,18 +87,13 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({
         <input
           id="email"
           type="email"
-          {...register('email', {
-            required: 'Email is required',
-            pattern: { value: /^\S+@\S+$/i, message: 'Invalid email address' },
-          })}
-          className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${
-            errors.email ? 'border-red-500' : ''
-          }`}
-          disabled={isSubmitting}
+          {...register('email')}
+          className="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 text-gray-600 cursor-not-allowed"
+          disabled
         />
-        {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
       </div>
 
+      {/* Semester - Editable */}
       <div>
         <label htmlFor="semester" className="block text-sm font-medium text-gray-700">
           Semester
@@ -90,30 +108,42 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({
         >
           <option value="">Select Semester</option>
           {semesters.map((sem) => (
-            <option key={sem} value={sem}>
-              {sem}
+            <option key={sem.value} value={sem.value}>
+              {sem.label}
             </option>
           ))}
         </select>
-        {errors.semester && <p className="mt-1 text-sm text-red-600">{errors.semester.message}</p>}
+        {errors.semester && (
+          <p className="mt-1 text-sm text-red-600">{errors.semester.message}</p>
+        )}
       </div>
 
+      {/* College - Editable */}
       <div>
         <label htmlFor="college" className="block text-sm font-medium text-gray-700">
           College
         </label>
-        <input
+        <select
           id="college"
-          type="text"
-          {...register('college', { required: 'College is required', minLength: { value: 2, message: 'College name is too short' } })}
+          {...register('college', { required: 'College is required' })}
           className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${
             errors.college ? 'border-red-500' : ''
           }`}
           disabled={isSubmitting}
-        />
-        {errors.college && <p className="mt-1 text-sm text-red-600">{errors.college.message}</p>}
+        >
+          <option value="">Select College</option>
+          {colleges.map((college) => (
+            <option key={college.value} value={college.value}>
+              {college.label}
+            </option>
+          ))}
+        </select>
+        {errors.college && (
+          <p className="mt-1 text-sm text-red-600">{errors.college.message}</p>
+        )}
       </div>
 
+      {/* Submit Button */}
       <button
         type="submit"
         disabled={isSubmitting}
