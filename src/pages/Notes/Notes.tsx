@@ -57,7 +57,7 @@ export function Notes() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg text-gray-600"
           >
-            Access semester-wise notes and resources
+            Access semester-wise notes and resources<br></br><b>(Currently, only the notes for 1st and 2nd semesters are available.)</b>
           </motion.p>
         </div>
 

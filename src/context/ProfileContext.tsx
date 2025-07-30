@@ -11,13 +11,14 @@ import Backendless from "backendless";
 import { useAuth } from "./AuthContext";
 
 export interface ProfileData {
-  objectId?: string;  // Backendless record id
-  userId: string;     // user UID from auth
+  objectId?: string;
+  userId: string;
   name: string;
   email: string;
   semester: string;
   college: string;
   avatarUrl?: string;
+  role: "student" | "teacher" | "admin";
 }
 
 interface ProfileContextType {
@@ -45,7 +46,6 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Avoid state updates after unmount
   const mountedRef = useRef(true);
   useEffect(() => {
     mountedRef.current = true;
@@ -73,9 +73,18 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
 
       if (results.length > 0) {
         const fetchedProfile = results[0] as ProfileData;
+
+        // Debug log for verification
+        console.log("✅ Profile fetched from Backendless:", fetchedProfile);
+
+        // Validate role, fallback to student if missing or invalid
+        if (!fetchedProfile.role || !["student", "teacher", "admin"].includes(fetchedProfile.role)) {
+          fetchedProfile.role = "student";
+        }
+
         if (mountedRef.current) setProfile(fetchedProfile);
       } else {
-        // Create new profile if none found
+        // Create new profile with default role student
         const newProfile: ProfileData = {
           userId: currentUser.uid,
           name: currentUser.displayName || "Anonymous",
@@ -83,6 +92,7 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
           semester: "",
           college: "",
           avatarUrl: "",
+          role: "student",
         };
         const savedProfile = await Backendless.Data.of("users").save(newProfile);
         if (mountedRef.current) setProfile(savedProfile);
@@ -108,11 +118,21 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
         if (results.length > 0) {
           const existingProfile = results[0] as ProfileData;
           const updatedProfile = { ...existingProfile, ...data };
+
+          // Validate role before saving
+          if (!updatedProfile.role || !["student", "teacher", "admin"].includes(updatedProfile.role)) {
+            updatedProfile.role = "student";
+          }
+
           await Backendless.Data.of("users").save(updatedProfile);
           if (mountedRef.current) setProfile(updatedProfile);
         } else {
-          // Create new profile if not exists (unlikely)
-          const newProfile = { userId: currentUser.uid, ...data } as ProfileData;
+          // Create new profile if none exists
+          const newProfile = {
+            userId: currentUser.uid,
+            role: "student",
+            ...data,
+          } as ProfileData;
           const savedProfile = await Backendless.Data.of("users").save(newProfile);
           if (mountedRef.current) setProfile(savedProfile);
         }
