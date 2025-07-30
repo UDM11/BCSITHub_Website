@@ -1,12 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, BookOpen, Users, FileText, GraduationCap, Home, LogIn, UserPlus, LogOut, User, ScrollText } from 'lucide-react';
+import {
+  Menu,
+  X,
+  BookOpen,
+  Users,
+  FileText,
+  GraduationCap,
+  Home,
+  LogIn,
+  UserPlus,
+  LogOut,
+  User,
+  ScrollText,
+} from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // mobile menu
+  const [showUserMenu, setShowUserMenu] = useState(false); // user dropdown
   const [isTablet, setIsTablet] = useState(false);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
@@ -25,6 +38,30 @@ export function Navbar() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Close mobile menu on scroll
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleScroll = () => {
+      setIsOpen(false);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isOpen]);
+
+  // Close user dropdown on scroll
+  useEffect(() => {
+    if (!showUserMenu) return;
+
+    const handleScroll = () => {
+      setShowUserMenu(false);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [showUserMenu]);
+
   const handleSignOut = async () => {
     try {
       await signOut();
@@ -40,7 +77,7 @@ export function Navbar() {
     { to: '/notes', icon: FileText, label: 'Notes' },
     { to: '/past-papers', icon: GraduationCap, label: 'Past Papers' },
     { to: '/colleges', icon: Users, label: 'Colleges' },
-    { to: '/pu-notices', icon: ScrollText, label: "PU Notices" },
+    { to: '/pu-notices', icon: ScrollText, label: 'PU Notices' },
   ];
 
   return (
@@ -102,7 +139,7 @@ export function Navbar() {
                           Admin Dashboard
                         </Link>
                       )}
- 
+
                       <Link
                         to="/profile"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"

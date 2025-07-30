@@ -65,7 +65,6 @@ export function UploadPaperModal({ onClose, user, onUploadSuccess }: UploadPaper
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
-  // Prevent background scroll when modal is open
   useEffect(() => {
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
@@ -79,23 +78,27 @@ export function UploadPaperModal({ onClose, user, onUploadSuccess }: UploadPaper
       setMessage('Please fill all fields and upload at least one file.');
       return;
     }
+
     const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'];
     for (const file of files) {
       if (!allowedTypes.includes(file.type)) {
         setMessage('Only PDF or image files (jpg, png) are allowed.');
         return;
       }
+      if (file.size > 1048576) { // 1MB = 1024 * 1024 = 1048576 bytes
+        setMessage(`❌ File "${file.name}" exceeds the 1MB size limit.`);
+        return;
+      }
     }
+
     setLoading(true);
     setMessage('');
+
     try {
       for (const file of files) {
         const filePath = `papers/${Date.now()}_${file.name}`;
-
-        // Upload file to Backendless Storage
         const savedFile = await Backendless.Files.upload(file, filePath, true);
 
-        // Save metadata in Backendless DB
         const newRecord = {
           title,
           subject,
@@ -113,17 +116,28 @@ export function UploadPaperModal({ onClose, user, onUploadSuccess }: UploadPaper
 
         await Backendless.Data.of('PastPapers').save(newRecord);
       }
-      setMessage('All files uploaded successfully!');
+
+      setMessage('✅ Your file has been uploaded and is now pending admin approval.');
       setTitle('');
       setSubject('');
       setSemester('');
       setExamType('');
       setCollege('');
       setFiles([]);
+
       if (typeof onUploadSuccess === 'function') onUploadSuccess();
+
+      setTimeout(() => {
+        const modal = document.querySelector('.UploadPaperModal');
+        if (modal) modal.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 100);
+
+      setTimeout(() => {
+        onClose();
+      }, 3000);
     } catch (error: any) {
       console.error('Upload failed:', error);
-      setMessage(`Failed to upload. ${error.message || 'Try again.'}`);
+      setMessage(`❌ Failed to upload. ${error.message || 'Try again.'}`);
     } finally {
       setLoading(false);
     }
@@ -134,7 +148,7 @@ export function UploadPaperModal({ onClose, user, onUploadSuccess }: UploadPaper
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        className="bg-white p-6 rounded-lg shadow-xl w-full max-w-xl space-y-4 max-h-[90vh] overflow-auto"
+        className="UploadPaperModal bg-white p-6 rounded-lg shadow-xl w-full max-w-xl space-y-4 max-h-[90vh] overflow-auto"
       >
         <h2 className="text-2xl font-semibold text-gray-800">Upload Past Paper</h2>
 
@@ -167,7 +181,7 @@ export function UploadPaperModal({ onClose, user, onUploadSuccess }: UploadPaper
         />
 
         {message && (
-          <p className={`text-sm text-center ${message.includes('successfully') ? 'text-green-600' : 'text-red-500'}`}>
+          <p className={`text-sm text-center ${message.includes('✅') ? 'text-green-600' : 'text-red-500'}`}>
             {message}
           </p>
         )}

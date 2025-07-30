@@ -6,13 +6,17 @@ import Backendless from "backendless";
 import { PaperCard } from "../../components/Notes/PaperCard";
 
 interface Paper {
-  objectId: string;   // Backendless uses objectId as default PK
-  title?: string;
-  description?: string;
-  fileUrl?: string;
-  uploadBy?: string;
-  uploadDate?: string;
-  approved?: boolean;
+  objectId: string;
+  title: string;
+  subject: string;
+  semester: number;
+  examType: string;
+  college: string;
+  uploadedAt: string | Date;
+  uploadedBy: string;
+  downloads: number;
+  approved: boolean;
+  fileUrl: string;
 }
 
 export default function AdminDashboard() {
@@ -20,15 +24,15 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchPapers();
+    fetchUnapprovedPapers();
   }, []);
 
-  const fetchPapers = async () => {
+  const fetchUnapprovedPapers = async () => {
     setLoading(true);
     try {
-      // Query all papers ordered by timestamp descending
       const queryBuilder = Backendless.DataQueryBuilder.create();
-      queryBuilder.setSortBy(["uploadDate DESC"]);
+      queryBuilder.setWhereClause("approved = false");
+      queryBuilder.setSortBy(["uploadedAt DESC"]);
 
       const data: Paper[] = await Backendless.Data.of("PastPapers").find(queryBuilder);
       setPapers(data);
@@ -47,7 +51,7 @@ export default function AdminDashboard() {
         approved: true,
       });
       toast.success("Paper approved");
-      fetchPapers();
+      fetchUnapprovedPapers();
     } catch (error: any) {
       console.error("Error approving paper:", error);
       toast.error(error.message || "Failed to approve paper");
@@ -55,10 +59,13 @@ export default function AdminDashboard() {
   };
 
   const rejectPaper = async (id: string) => {
+    const confirmed = window.confirm("Are you sure you want to reject this paper?");
+    if (!confirmed) return;
+
     try {
       await Backendless.Data.of("PastPapers").remove(id);
       toast.success("Paper rejected");
-      fetchPapers();
+      fetchUnapprovedPapers();
     } catch (error: any) {
       console.error("Error rejecting paper:", error);
       toast.error(error.message || "Failed to reject paper");
@@ -80,25 +87,25 @@ export default function AdminDashboard() {
               <PaperCard
                 paper={{
                   objectId: paper.objectId,
-                  title: paper.title || "Untitled",
-                  fileUrl: paper.fileUrl || "",
-                  downloads: 0, // Extend schema if needed
+                  title: paper.title,
+                  fileUrl: paper.fileUrl,
+                  downloads: paper.downloads || 0,
                 }}
               />
               <p className="text-xs mt-2 text-gray-600">
-                Uploaded by: {paper.uploadBy || "Unknown"}
-                <br />
-                Uploaded on:{" "}
-                {paper.uploadDate
-                  ? new Date(paper.uploadDate).toLocaleString()
+                <strong>Uploaded by:</strong> {paper.uploadedBy || "Unknown"}<br />
+                <strong>Subject:</strong> {paper.subject} <br />
+                <strong>Semester:</strong> {paper.semester} <br />
+                <strong>College:</strong> {paper.college} <br />
+                <strong>Exam Type:</strong> {paper.examType} <br />
+                <strong>Uploaded on:</strong>{" "}
+                {paper.uploadedAt
+                  ? new Date(paper.uploadedAt).toLocaleString()
                   : "Unknown"}
               </p>
               <div className="flex gap-2 mt-3">
-                <Button
-                  onClick={() => approvePaper(paper.objectId)}
-                  disabled={paper.approved}
-                >
-                  {paper.approved ? "✅ Approved" : "Approve"}
+                <Button onClick={() => approvePaper(paper.objectId)}>
+                  ✅ Approve
                 </Button>
                 <Button onClick={() => rejectPaper(paper.objectId)} variant="destructive">
                   ❌ Reject
@@ -108,7 +115,7 @@ export default function AdminDashboard() {
           ))}
         </div>
       ) : (
-        <p>No papers found.</p>
+        <p className="text-gray-500">No unapproved papers found.</p>
       )}
     </div>
   );

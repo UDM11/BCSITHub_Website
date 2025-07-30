@@ -9,7 +9,7 @@ import LoginRedirectModal from '../common/LoginRedirectModal'; // ✅ Import the
 type Paper = {
   objectId: string; // Backendless uses objectId as the primary key
   title: string;
-  file_url: string;
+  fileUrl: string;
   downloads: number;
 };
 
@@ -28,12 +28,12 @@ export const PaperCard: React.FC<Props> = ({ paper }) => {
     }
 
     // ✅ Open the file in a new tab
-    window.open(paper.file_url, '_blank');
+    window.open(paper.fileUrl, '_blank');
 
     // ✅ Increment download count in Backendless
     try {
       const updatedPaper = { ...paper, downloads: (paper.downloads || 0) + 1 };
-      await Backendless.Data.of("past_papers").save(updatedPaper);
+      await Backendless.Data.of("PastPapers").save(updatedPaper);
     } catch (err) {
       console.error('Failed to update download count:', err);
     }
