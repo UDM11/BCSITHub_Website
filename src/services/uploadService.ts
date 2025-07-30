@@ -7,10 +7,10 @@ export const getUserPastPapers = async (userId: string) => {
     // and a column 'uploaded_by' storing the userId.
 
     const queryBuilder = Backendless.DataQueryBuilder.create();
-    queryBuilder.setWhereClause(`uploaded_by = '${userId}'`);
-    queryBuilder.setSortBy(['uploaded_at DESC']); // descending order by uploaded_at
+    queryBuilder.setWhereClause(`uploadedBy = '${userId}'`);
+    queryBuilder.setSortBy(['uploadedDate DESC']); // descending order by uploaded_at
 
-    const data = await Backendless.Data.of("past_papers").find(queryBuilder);
+    const data = await Backendless.Data.of("PastPapers").find(queryBuilder);
     return data || [];
   } catch (err: any) {
     console.error("[getUserPastPapers] Error fetching past papers:", err.message || err);

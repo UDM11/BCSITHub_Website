@@ -10,6 +10,7 @@ import { Select } from '../components/ui/Select';
 import { useAuth } from '../context/AuthContext';
 import { UploadPaperModal } from '../components/Notes/UploadPaperModal';
 import Backendless from 'backendless';
+import LoginRedirectModal from '../components/common/LoginRedirectModal'; // Import your modal here
 
 const semesters = [
   { value: '1', label: '1st Semester' },
@@ -46,7 +47,6 @@ const colleges = [
   { value: 'Boston International College', label: 'Boston International College' },
   { value: 'Pokhara College of Management', label: 'Pokhara College of Management' },
   { value: 'Apex College', label: 'Apex College' },
-  { value: 'Rajdhani Model College', label: 'Rajdhani Model College' },
   { value: 'Other', label: 'Other College' }
 ];
 
@@ -72,37 +72,42 @@ export function PastPapers() {
   const [selectedCollege, setSelectedCollege] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [showUploadModal, setShowUploadModal] = useState(false);
+
+  // New modal state for login/signup redirect
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [loginModalMessage, setLoginModalMessage] = useState('');
+
   const { user } = useAuth();
 
   useEffect(() => {
     const fetchPapers = async () => {
       try {
         setLoading(true);
-        
+
         let queryBuilder = Backendless.DataQueryBuilder.create();
-        
+
         if (selectedSemester) {
           queryBuilder.setWhereClause(`semester = ${selectedSemester}`);
         }
-        
+
         if (selectedExamType) {
           const existingWhere = queryBuilder.getWhereClause();
           queryBuilder.setWhereClause(
-            existingWhere 
+            existingWhere
               ? `${existingWhere} AND examType = '${selectedExamType}'`
               : `examType = '${selectedExamType}'`
           );
         }
-        
+
         if (selectedCollege) {
           const existingWhere = queryBuilder.getWhereClause();
           queryBuilder.setWhereClause(
-            existingWhere 
+            existingWhere
               ? `${existingWhere} AND college = '${selectedCollege}'`
               : `college = '${selectedCollege}'`
           );
         }
-        
+
         const result = await Backendless.Data.of('PastPapers').find<Paper>(queryBuilder);
         setPapers(result);
       } catch (error) {
@@ -129,10 +134,15 @@ export function PastPapers() {
     }
   };
 
+  // Updated: Show modal if user not logged in instead of alert
   const handleDownload = (fileUrl: string) => {
+    if (!user) {
+      setLoginModalMessage("Please login or signup to download papers.");
+      setShowLoginModal(true);
+      return;
+    }
     window.open(fileUrl, '_blank');
-    // Increment download count
-    // Note: You might want to implement this in Backendless with a custom business logic
+    // TODO: Increment download count in backend if desired
   };
 
   const handleResetFilters = () => {
@@ -142,9 +152,11 @@ export function PastPapers() {
     setSearchQuery('');
   };
 
+  // Updated: Show modal if user not logged in instead of alert
   const handleUploadClick = () => {
     if (!user) {
-      alert('Please login or signup to upload papers.');
+      setLoginModalMessage("Please login or signup to upload papers.");
+      setShowLoginModal(true);
       return;
     }
     setShowUploadModal(true);
@@ -152,9 +164,9 @@ export function PastPapers() {
 
   const handleApprove = async (paperId: string) => {
     try {
-      await Backendless.Data.of('PastPapers').save<Paper>({ 
-        objectId: paperId, 
-        approved: true 
+      await Backendless.Data.of('PastPapers').save<Paper>({
+        objectId: paperId,
+        approved: true
       });
       setPapers((prev) => prev.map(p => p.objectId === paperId ? { ...p, approved: true } : p));
     } catch (error) {
@@ -205,7 +217,7 @@ export function PastPapers() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <br></br>
+            <br />
             <Button icon={Plus} onClick={handleUploadClick}>
               Upload Paper
             </Button>
@@ -238,7 +250,7 @@ export function PastPapers() {
                   <h3 className="text-lg font-semibold text-gray-900">Filter Papers</h3>
                 </div>
                 {(selectedSemester || selectedExamType || selectedCollege) && (
-                  <button 
+                  <button
                     onClick={handleResetFilters}
                     className="text-sm text-indigo-600 hover:text-indigo-800"
                   >
@@ -249,26 +261,26 @@ export function PastPapers() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Select 
-                  label="Semester" 
-                  value={selectedSemester} 
+                <Select
+                  label="Semester"
+                  value={selectedSemester}
                   onChange={e => { e.preventDefault(); setSelectedSemester(e.target.value); }}
-                  options={semesters} 
-                  placeholder="All Semesters" 
+                  options={semesters}
+                  placeholder="All Semesters"
                 />
-                <Select 
-                  label="Exam Type" 
-                  value={selectedExamType} 
+                <Select
+                  label="Exam Type"
+                  value={selectedExamType}
                   onChange={e => { e.preventDefault(); setSelectedExamType(e.target.value); }}
-                  options={examTypes} 
-                  placeholder="All Types" 
+                  options={examTypes}
+                  placeholder="All Types"
                 />
-                <Select 
-                  label="College" 
-                  value={selectedCollege} 
+                <Select
+                  label="College"
+                  value={selectedCollege}
                   onChange={e => { e.preventDefault(); setSelectedCollege(e.target.value); }}
-                  options={colleges} 
-                  placeholder="All Colleges" 
+                  options={colleges}
+                  placeholder="All Colleges"
                 />
               </div>
             </CardContent>
@@ -334,13 +346,7 @@ export function PastPapers() {
                   </div>
                   <div className="mt-4">
                     {paper.approved ? (
-                      <Button className="w-full" icon={Download} onClick={() => {
-                        if (!user) {
-                          alert('Please login or signup to download papers.');
-                          return;
-                        }
-                        handleDownload(paper.fileUrl);
-                      }}>
+                      <Button className="w-full" icon={Download} onClick={() => handleDownload(paper.fileUrl)}>
                         Download Paper
                       </Button>
                     ) : user?.role === 'admin' ? (
@@ -367,9 +373,9 @@ export function PastPapers() {
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No papers found</h3>
             <p className="text-gray-600">Try adjusting your filters or be the first to upload a paper!</p>
             {(selectedSemester || selectedExamType || selectedCollege) && (
-              <Button 
-                variant="outline" 
-                className="mt-4" 
+              <Button
+                variant="outline"
+                className="mt-4"
                 onClick={handleResetFilters}
               >
                 Clear Filters
@@ -391,6 +397,13 @@ export function PastPapers() {
             }}
           />
         )}
+
+        {/* Login Redirect Modal */}
+        <LoginRedirectModal
+          isOpen={showLoginModal}
+          onClose={() => setShowLoginModal(false)}
+          message={loginModalMessage}
+        />
       </div>
     </div>
   );

@@ -1,5 +1,8 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import backendless from '../../lib/backendless';
+import { Input } from '../ui/Input'; // Assuming you have these components
+import { Select } from '../ui/Select';
+import { Button } from '../ui/Button';
 
 interface Notice {
   objectId?: string;
@@ -56,7 +59,7 @@ const UploadNoticeForm: React.FC<UploadNoticeFormProps> = ({ onUploadSuccess }) 
 
     try {
       const uploadedFile = await backendless.Files.upload(file, 'notice-pdfs', true);
-      const publicUrl = uploadedFile.fileURL; // ✅ Correct public file URL
+      const publicUrl = uploadedFile.fileURL;
 
       const noticeToSave = {
         title: title.trim(),
@@ -87,36 +90,32 @@ const UploadNoticeForm: React.FC<UploadNoticeFormProps> = ({ onUploadSuccess }) 
       <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Upload New PU Notice</h2>
       {error && <p className="text-red-600 font-medium">{error}</p>}
 
-      <div>
-        <label htmlFor="title" className="block font-medium text-gray-700 dark:text-gray-300 mb-1">Notice Title</label>
-        <input
-          id="title"
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          disabled={uploading}
-          placeholder="e.g., Exam Schedule for Fall 2025"
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
-        />
-      </div>
+      <Input
+        id="title"
+        label="Notice Title"
+        type="text"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        disabled={uploading}
+        placeholder="e.g., Exam Schedule for Fall 2025"
+      />
+
+      <Select
+        id="category"
+        label="Category"
+        value={category}
+        onChange={(e) => setCategory(e.target.value as Notice['category'])}
+        disabled={uploading}
+        options={categories.map((cat) => ({
+          value: cat,
+          label: cat
+        }))}
+      />
 
       <div>
-        <label htmlFor="category" className="block font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
-        <select
-          id="category"
-          value={category}
-          onChange={(e) => setCategory(e.target.value as Notice['category'])}
-          disabled={uploading}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
-        >
-          {categories.map((cat) => (
-            <option key={cat} value={cat}>{cat}</option>
-          ))}
-        </select>
-      </div>
-
-      <div>
-        <label htmlFor="file" className="block font-medium text-gray-700 dark:text-gray-300 mb-1">PDF File</label>
+        <label htmlFor="file" className="block font-medium text-gray-700 dark:text-gray-300 mb-1">
+          PDF File
+        </label>
         <input
           id="file"
           type="file"
@@ -127,13 +126,14 @@ const UploadNoticeForm: React.FC<UploadNoticeFormProps> = ({ onUploadSuccess }) 
         />
       </div>
 
-      <button
+      <Button
         type="submit"
         disabled={uploading}
-        className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md font-semibold transition-colors duration-200 disabled:opacity-60"
+        variant="primary"
+        className="w-full"
       >
         {uploading ? 'Uploading...' : 'Upload Notice'}
-      </button>
+      </Button>
     </form>
   );
 };

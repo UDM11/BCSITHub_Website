@@ -9,9 +9,9 @@ interface Paper {
   objectId: string;   // Backendless uses objectId as default PK
   title?: string;
   description?: string;
-  file_url?: string;
-  uploaded_by?: string;
-  timestamp?: string;
+  fileUrl?: string;
+  uploadBy?: string;
+  uploadDate?: string;
   approved?: boolean;
 }
 
@@ -28,9 +28,9 @@ export default function AdminDashboard() {
     try {
       // Query all papers ordered by timestamp descending
       const queryBuilder = Backendless.DataQueryBuilder.create();
-      queryBuilder.setSortBy(["timestamp DESC"]);
+      queryBuilder.setSortBy(["uploadDate DESC"]);
 
-      const data: Paper[] = await Backendless.Data.of("past_papers").find(queryBuilder);
+      const data: Paper[] = await Backendless.Data.of("PastPapers").find(queryBuilder);
       setPapers(data);
     } catch (error: any) {
       console.error("Error fetching papers:", error);
@@ -42,7 +42,7 @@ export default function AdminDashboard() {
 
   const approvePaper = async (id: string) => {
     try {
-      await Backendless.Data.of("past_papers").save({
+      await Backendless.Data.of("PastPapers").save({
         objectId: id,
         approved: true,
       });
@@ -56,7 +56,7 @@ export default function AdminDashboard() {
 
   const rejectPaper = async (id: string) => {
     try {
-      await Backendless.Data.of("past_papers").remove(id);
+      await Backendless.Data.of("PastPapers").remove(id);
       toast.success("Paper rejected");
       fetchPapers();
     } catch (error: any) {
@@ -79,18 +79,18 @@ export default function AdminDashboard() {
             >
               <PaperCard
                 paper={{
-                  id: paper.objectId,
+                  objectId: paper.objectId,
                   title: paper.title || "Untitled",
-                  file_url: paper.file_url || "",
+                  fileUrl: paper.fileUrl || "",
                   downloads: 0, // Extend schema if needed
                 }}
               />
               <p className="text-xs mt-2 text-gray-600">
-                Uploaded by: {paper.uploaded_by || "Unknown"}
+                Uploaded by: {paper.uploadBy || "Unknown"}
                 <br />
                 Uploaded on:{" "}
-                {paper.timestamp
-                  ? new Date(paper.timestamp).toLocaleString()
+                {paper.uploadDate
+                  ? new Date(paper.uploadDate).toLocaleString()
                   : "Unknown"}
               </p>
               <div className="flex gap-2 mt-3">

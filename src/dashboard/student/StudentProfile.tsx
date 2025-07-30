@@ -28,15 +28,15 @@ const StudentProfile: React.FC = () => {
           const userId = user.uid ?? user.id;
 
           const queryBuilder = Backendless.DataQueryBuilder.create();
-          queryBuilder.setWhereClause(`uploaded_by = '${userId}'`);
-          queryBuilder.setSortBy(["timestamp DESC"]);
+          queryBuilder.setWhereClause(`uploadedBy = '${userId}'`);
+          queryBuilder.setSortBy(["uploadDate DESC"]);
 
-          const fetched = await Backendless.Data.of("past_papers").find(queryBuilder);
+          const fetched = await Backendless.Data.of("PastPapers").find(queryBuilder);
 
           const mappedPapers = fetched.map((paper: any) => ({
             objectId: paper.objectId,
             title: paper.title,
-            uploadedAt: paper.timestamp,
+            uploadedAt: paper.uploadDate,
             approved: paper.approved,
           }));
 
