@@ -29,7 +29,7 @@ import AdminDashboard from './dashboard/admin/AdminDashboard';
 import StudentProfile from './dashboard/student/StudentProfile';
 
 // Email Verification Page
-import OTPVerification from './pages/auth/OTPVerification';
+import OTPVerification from './pages/auth/EmailVerification';
 
 function App() {
   return (

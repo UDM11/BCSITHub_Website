@@ -5,7 +5,7 @@ import { Button } from '../../components/ui/Button';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
-const OTPVerification = () => {
+const EmailVerification = () => {
   const { user, reloadUser } = useAuth();
   const navigate = useNavigate();
 
@@ -13,18 +13,15 @@ const OTPVerification = () => {
   const [checking, setChecking] = useState(false);
   const [cooldown, setCooldown] = useState(0);
 
-  // Redirect to sign-in if no user
+  // Redirect to signin if user doesn't exist
   useEffect(() => {
-    if (!user) {
-      navigate('/signin');
-    }
+    if (!user) navigate('/signin');
   }, [user, navigate]);
 
   // Countdown for resend cooldown
   useEffect(() => {
     if (cooldown === 0) return;
-
-    const timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
+    const timer = setTimeout(() => setCooldown((prev) => prev - 1), 1000);
     return () => clearTimeout(timer);
   }, [cooldown]);
 
@@ -39,7 +36,7 @@ const OTPVerification = () => {
       setSending(true);
       await Backendless.UserService.resendEmailConfirmation(user.email);
       toast.success('Verification email resent. Check your inbox!');
-      setCooldown(60); // 60 seconds cooldown
+      setCooldown(60); // 1 min cooldown
     } catch (error: any) {
       toast.error(error.message || 'Failed to resend verification email.');
     } finally {
@@ -47,7 +44,7 @@ const OTPVerification = () => {
     }
   };
 
-  // Check email verification status
+  // Check if user has verified their email
   const handleCheckVerification = async () => {
     if (!user?.objectId) {
       toast.error('User ID not found.');
@@ -56,11 +53,7 @@ const OTPVerification = () => {
 
     try {
       setChecking(true);
-
-      // Corrected: Use Backendless Data API to fetch user by objectId
       const updatedUser = await Backendless.Data.of('Users').findById(user.objectId);
-
-      // Update user in auth context or local state (make sure reloadUser accepts updated user)
       await reloadUser(updatedUser);
 
       if (updatedUser.emailConfirmed) {
@@ -70,7 +63,7 @@ const OTPVerification = () => {
         toast.error('Email not verified yet. Please check your inbox.');
       }
     } catch (error: any) {
-      toast.error(error.message || 'Failed to check verification status.');
+      toast.error(error.message || 'Error checking verification status.');
     } finally {
       setChecking(false);
     }
@@ -85,32 +78,28 @@ const OTPVerification = () => {
         <p className="mb-6 text-gray-700">
           A verification email has been sent to <strong>{user.email}</strong>.
           <br />
-          Please check your inbox or Spam mail and click the verification link to activate your account.
+          Please check your inbox folder and click the link to activate your account.
         </p>
 
-        <Button
-          onClick={handleCheckVerification}
-          disabled={checking}
-          className="mb-4 w-full"
-        >
+        <Button onClick={handleCheckVerification} disabled={checking} className="mb-4 w-full">
           {checking ? 'Checking...' : 'I Have Verified My Email'}
         </Button>
 
         <div className="mb-4 text-sm text-gray-600">
-          Didn&apos;t receive the email?{' '}
+          Didn&apos;t receive the email?
           <button
             onClick={handleResend}
             disabled={sending || cooldown > 0}
-            className={`font-semibold underline ml-1 ${
+            className={`ml-1 font-semibold underline ${
               sending || cooldown > 0
-                ? 'cursor-not-allowed text-gray-400'
-                : 'cursor-pointer text-indigo-600 hover:text-indigo-800'
+                ? 'text-gray-400 cursor-not-allowed'
+                : 'text-indigo-600 hover:text-indigo-800'
             }`}
           >
             {sending
               ? 'Sending...'
               : cooldown > 0
-              ? `Resend available in ${cooldown}s`
+              ? `Resend in ${cooldown}s`
               : 'Resend Email'}
           </button>
         </div>
@@ -123,4 +112,4 @@ const OTPVerification = () => {
   );
 };
 
-export default OTPVerification;
+export default EmailVerification;

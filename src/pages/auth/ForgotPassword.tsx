@@ -35,10 +35,20 @@ export function ForgotPassword() {
     setLoading(true);
     setError('');
     setMessage('');
+
     try {
-      // Backendless password restore
-      await Backendless.UserService.restorePassword(data.email);
-      setMessage('Check your email for the password reset link.');
+      // Step 1: Check if user exists
+      const response = await Backendless.Data.of('Users').find({
+        where: `email = '${data.email}'`,
+      });
+
+      if (response.length === 0) {
+        setError('User with this email does not exist.');
+      } else {
+        // Step 2: Send password reset link
+        await Backendless.UserService.restorePassword(data.email);
+        setMessage('Check your email for the password reset link.');
+      }
     } catch (err: any) {
       setError(err.message || 'Failed to send reset email.');
     } finally {
