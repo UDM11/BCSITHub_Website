@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useProfile } from "../../context/ProfileContext";
-import AvatarUpload from "../../components/common/AvatarUpload";
+import AvatarInitials from "../../components/common/AvatarInitials";
 import ProfileDetails from "../../components/common/ProfileDetails";
 import EditProfileForm from "../../components/common/EditProfileForm";
 import { Button } from "../../components/ui/Button";
@@ -34,7 +34,7 @@ const StudentProfile: React.FC = () => {
       try {
         const queryBuilder = Backendless.DataQueryBuilder.create()
           .setWhereClause(`ownerId = '${userId}'`)
-          .setSortBy(["uploadedAt DESC"]); // Ensure field name matches your DB
+          .setSortBy(["uploadedAt DESC"]);
 
         const fetched = await Backendless.Data.of("PastPapers").find(queryBuilder);
 
@@ -45,7 +45,6 @@ const StudentProfile: React.FC = () => {
           approved: paper.approved,
         }));
 
-        // Frontend fallback sort descending by uploadedAt
         mapped.sort((a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime());
 
         setPapers(mapped);
@@ -59,17 +58,6 @@ const StudentProfile: React.FC = () => {
 
     fetchUserPapers();
   }, [user]);
-
-  const handleAvatarUploadComplete = async (uploadedUrl: string) => {
-    try {
-      if (updateProfile) {
-        await updateProfile({ avatarUrl: uploadedUrl });
-        await refreshProfile();
-      }
-    } catch (err) {
-      console.error("Failed to update avatar URL in profile:", err);
-    }
-  };
 
   const handleProfileUpdate = async (data: any) => {
     try {
@@ -106,11 +94,10 @@ const StudentProfile: React.FC = () => {
   return (
     <div className="p-4 max-w-4xl mx-auto">
       <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-        <AvatarUpload
-          uid={user.id || user.objectId}
-          currentAvatarUrl={profile?.avatarUrl}
-          onUploadComplete={handleAvatarUploadComplete}
+        {/* Avatar shows only based on user.role */}
+        <AvatarInitials role={user?.role}
         />
+
         <div className="flex-1 w-full">
           {!isEditing ? (
             <>
@@ -132,7 +119,7 @@ const StudentProfile: React.FC = () => {
                   email: profile?.email || "",
                   semester: profile?.semester || "",
                   college: profile?.college || "",
-                  avatarUrl: profile?.avatarUrl || "",
+                  // avatarUrl removed since no avatar upload now
                 }}
                 onSubmit={handleProfileUpdate}
                 isSubmitting={isSubmitting}

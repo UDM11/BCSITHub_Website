@@ -8,7 +8,7 @@ interface AvatarProps {
 const getInitialAndColor = (role: string = '') => {
   switch (role.toLowerCase()) {
     case 'student':
-      return { initial: 'S', bg: 'black', color: 'green' }; // green
+      return { initial: 'S', bg: '#DBEAFE', color: '#1D4ED8' }; // blue
     case 'teacher':
       return { initial: 'T', bg: '#FEF3C7', color: '#92400E' }; // yellow
     case 'admin':

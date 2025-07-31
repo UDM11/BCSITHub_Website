@@ -77,6 +77,7 @@ const collegeOptions = [
   { value: 'Liberty College', label: 'Liberty College', address: 'Pragati Marg-2, Anamnagar, Kathmandu' },
   { value: 'Uniglobe College', label: 'Uniglobe College', address: 'New Baneshwor, Kathmandu' },
   { value: 'Excel Business College', label: 'Excel Business College', address: 'Lakhechaur Marg, New Baneshwor, Kathmandu' },
+  { value: 'Rajdhani Model College', label: 'Rajdhani Model College', address: 'Old Baneshwor, Kathmandu' },
   { value: 'Other', label: 'Other College', address: '' },
 ];
 

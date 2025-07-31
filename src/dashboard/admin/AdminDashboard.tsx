@@ -1,9 +1,9 @@
-// src/dashboard/admin/AdminDashboard.tsx
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "../../components/ui/Button";
 import Backendless from "backendless";
 import { PaperCard } from "../../components/Notes/PaperCard";
+import ConfirmDialog from "../../components/common/ConfirmDialog";
 
 interface Paper {
   objectId: string;
@@ -22,6 +22,9 @@ interface Paper {
 export default function AdminDashboard() {
   const [papers, setPapers] = useState<Paper[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [selectedPaper, setSelectedPaper] = useState<Paper | null>(null);
 
   useEffect(() => {
     fetchUnapprovedPapers();
@@ -58,17 +61,34 @@ export default function AdminDashboard() {
     }
   };
 
-  const rejectPaper = async (id: string) => {
-    const confirmed = window.confirm("Are you sure you want to reject this paper?");
-    if (!confirmed) return;
+  const handleRejectClick = (paper: Paper) => {
+    setSelectedPaper(paper);
+    setConfirmOpen(true);
+  };
+
+  const handleConfirmReject = async () => {
+    if (!selectedPaper) return;
+    setConfirmOpen(false);
 
     try {
-      await Backendless.Data.of("PastPapers").remove(id);
-      toast.success("Paper rejected");
+      const url = new URL(selectedPaper.fileUrl);
+      const filePath = decodeURIComponent(
+        url.pathname.replace(/^\/[^/]+\/[^/]+\/files/, "")
+      );
+
+      // Log to debug
+      console.log("Deleting file at:", filePath);
+
+      await Backendless.Files.remove(filePath);
+      await Backendless.Data.of("PastPapers").remove(selectedPaper.objectId);
+
+      toast.success("Paper rejected and fully deleted");
       fetchUnapprovedPapers();
     } catch (error: any) {
       console.error("Error rejecting paper:", error);
-      toast.error(error.message || "Failed to reject paper");
+      toast.error(error.message || "Failed to delete paper");
+    } finally {
+      setSelectedPaper(null);
     }
   };
 
@@ -127,7 +147,7 @@ export default function AdminDashboard() {
                   ✅ Approve
                 </Button>
                 <Button
-                  onClick={() => rejectPaper(paper.objectId)}
+                  onClick={() => handleRejectClick(paper)}
                   variant="destructive"
                   className="w-full sm:w-auto"
                 >
@@ -140,6 +160,18 @@ export default function AdminDashboard() {
       ) : (
         <p className="text-gray-500 text-center">No unapproved papers found.</p>
       )}
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        isOpen={confirmOpen}
+        title="Reject Paper"
+        message="Are you sure you want to reject this paper? This will permanently delete the file and its record."
+        onConfirm={handleConfirmReject}
+        onCancel={() => {
+          setConfirmOpen(false);
+          setSelectedPaper(null);
+        }}
+      />
     </div>
   );
 }

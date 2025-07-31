@@ -117,7 +117,7 @@ export function UploadPaperModal({ onClose, user, onUploadSuccess }: UploadPaper
         await Backendless.Data.of('PastPapers').save(newRecord);
       }
 
-      setMessage('✅ Your file has been uploaded and is now pending admin approval.');
+      setMessage('Your file has been uploaded and is now pending admin approval.');
       setTitle('');
       setSubject('');
       setSemester('');
