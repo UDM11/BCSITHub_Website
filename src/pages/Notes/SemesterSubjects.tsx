@@ -9,12 +9,14 @@ import { Button } from '../../components/ui/Button';
 export default function SemesterSubjects() {
   const { semesterId } = useParams();
   const navigate = useNavigate();
-  const semester = semestersData.find(
-    (sem) => sem.id === Number(semesterId)
-  );
+  const semester = semestersData.find((sem) => sem.id === Number(semesterId));
 
   if (!semester) {
-    return <div className="text-center py-12 text-red-600">Semester not found.</div>;
+    return (
+      <div className="text-center py-12 text-red-600">
+        Semester not found.
+      </div>
+    );
   }
 
   return (
@@ -29,7 +31,7 @@ export default function SemesterSubjects() {
             <ChevronLeft className="w-5 h-5" />
             Back to Semesters
           </Button>
-          
+
           <motion.h2
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -38,9 +40,8 @@ export default function SemesterSubjects() {
           >
             {semester.name} - Subjects
           </motion.h2>
-          
-          {/* Empty div for balance */}
-          <div className="w-[120px]"></div>
+
+          <div className="w-[120px]" />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -51,13 +52,21 @@ export default function SemesterSubjects() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.1 * index }}
             >
-              <Link to={`/notes/${semesterId}/subject/${subject.courseCode}`}>
+              <Link
+                to={`/notes/semester/${semesterId}/subject/${encodeURIComponent(
+                  subject.courseCode
+                )}`}
+              >
                 <Card className="cursor-pointer hover:shadow-md transition-shadow">
                   <CardContent className="text-center py-6">
                     <BookOpen className="w-8 h-8 text-indigo-600 mx-auto mb-3" />
-                    <h3 className="text-lg font-semibold text-gray-700">{subject.courseName}</h3>
+                    <h3 className="text-lg font-semibold text-gray-700">
+                      {subject.courseName}
+                    </h3>
                     <p className="text-sm text-gray-500">{subject.courseCode}</p>
-                    <p className="text-sm text-gray-500">Credits: {subject.credits}</p>
+                    <p className="text-sm text-gray-500">
+                      Credits: {subject.credits}
+                    </p>
                   </CardContent>
                 </Card>
               </Link>

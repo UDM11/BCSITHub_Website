@@ -22,7 +22,8 @@ import { PastPapers } from './pages/PastPapers';
 import { Colleges } from './pages/Colleges';
 import PUNotices from './pages/PUNotices';
 import SemesterSubjects from './pages/Notes/SemesterSubjects';
-import { SubjectNotes } from './pages/Notes/SubjectNotes';
+import SubjectChapters from './pages/Notes/SubjectChapters';
+import ChapterNotes from './pages/Notes/ChapterNotes';
 
 // Dashboards
 import AdminDashboard from './dashboard/admin/AdminDashboard';
@@ -34,7 +35,6 @@ import OTPVerification from './pages/auth/EmailVerification';
 function App() {
   return (
     <AuthProvider>
-      {/* ProfileProvider must be inside AuthProvider to access currentUser */}
       <ProfileProvider>
         <Router>
           <div className="flex flex-col min-h-screen">
@@ -49,7 +49,18 @@ function App() {
                 <Route path="/syllabus" element={<Syllabus />} />
                 <Route path="/notes" element={<Notes />} />
                 <Route path="/notes/semester/:semesterId" element={<SemesterSubjects />} />
-                <Route path="/notes/:semesterId/subject/:subjectId" element={<SubjectNotes />} />
+
+                {/* Subject chapters route with 'subject' segment */}
+                <Route
+                  path="/notes/semester/:semesterId/subject/:subjectId"
+                  element={<SubjectChapters />}
+                />
+
+                <Route
+                  path="/notes/semester/:semesterId/subject/:subjectId/chapter/:chapterId"
+                  element={<ChapterNotes />}
+                />
+
                 <Route path="/past-papers" element={<PastPapers />} />
                 <Route path="/colleges" element={<Colleges />} />
                 <Route path="/pu-notices" element={<PUNotices />} />

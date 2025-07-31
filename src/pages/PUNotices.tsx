@@ -80,7 +80,11 @@ const PUNotices: React.FC = () => {
   useEffect(() => {
     const fetchNotices = async () => {
       try {
-        const data = await Backendless.Data.of('PU_Notices').find();
+        // Sort notices by date in descending order (newest first)
+        const queryBuilder = Backendless.DataQueryBuilder.create()
+          .setSortBy(['date DESC']); // Add sorting by date in descending order
+
+        const data = await Backendless.Data.of('PU_Notices').find(queryBuilder);
 
         const formatted = data.map((item: any) => ({
           objectId: item.objectId,

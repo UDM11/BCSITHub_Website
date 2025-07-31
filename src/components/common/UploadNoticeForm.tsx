@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import backendless from '../../lib/backendless';
-import { Input } from '../ui/Input'; // Assuming you have these components
+import { Input } from '../ui/Input';
 import { Select } from '../ui/Select';
 import { Button } from '../ui/Button';
 
@@ -27,12 +27,14 @@ const UploadNoticeForm: React.FC<UploadNoticeFormProps> = ({ onUploadSuccess }) 
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
 
+  const allowedTypes = ['application/pdf', 'image/png', 'image/jpeg'];
+
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (!selectedFile) return;
 
-    if (selectedFile.type !== 'application/pdf') {
-      setError('Only PDF files are allowed.');
+    if (!allowedTypes.includes(selectedFile.type)) {
+      setError('Only PDF and image files (PNG, JPG, JPEG) are allowed.');
       setFile(null);
       return;
     }
@@ -50,7 +52,7 @@ const UploadNoticeForm: React.FC<UploadNoticeFormProps> = ({ onUploadSuccess }) 
     }
 
     if (!file) {
-      setError('Please select a PDF file to upload.');
+      setError('Please select a valid file to upload.');
       return;
     }
 
@@ -97,7 +99,7 @@ const UploadNoticeForm: React.FC<UploadNoticeFormProps> = ({ onUploadSuccess }) 
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         disabled={uploading}
-        placeholder="e.g., Exam Schedule for Fall 2025"
+        placeholder="e.g., Admission Notice 2025"
       />
 
       <Select
@@ -114,12 +116,12 @@ const UploadNoticeForm: React.FC<UploadNoticeFormProps> = ({ onUploadSuccess }) 
 
       <div>
         <label htmlFor="file" className="block font-medium text-gray-700 dark:text-gray-300 mb-1">
-          PDF File
+          File (PDF or Image)
         </label>
         <input
           id="file"
           type="file"
-          accept="application/pdf"
+          accept="application/pdf,image/png,image/jpeg"
           onChange={handleFileChange}
           disabled={uploading}
           className="w-full file:cursor-pointer file:bg-blue-600 file:text-white file:px-4 file:py-2 file:rounded-md"
