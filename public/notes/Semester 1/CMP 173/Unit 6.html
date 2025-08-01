@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 6: Client Side Scripting with JavaScript</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+        text-align: center;
+        color: black;
+        font-size: 16pt;
+        font-weight: bold;
+    }
+    h2 {
+      color: black;
+      font-weight: bold;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #000000;
+      color: #ffffff;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 5px;
+      font-size: 12pt;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      .section {
+        padding: 5px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Unit 6: Client Side Scripting with JavaScript</h1>
+
+  <div class="section">
+    <h2>6.1 Introduction to JavaScript</h2>
+    <p>JavaScript is a high-level, interpreted programming language used to make web pages interactive. It runs in the browser, enabling dynamic content and user interactions.</p>
+    <ul>
+      <li><strong>Purpose</strong>: Adds interactivity to websites.</li>
+      <li><strong>Client-Side</strong>: Executes in the user’s browser, reducing server load.</li>
+      <li><strong>ECMAScript</strong>: The standard JavaScript is based on, with ES6+ introducing modern features.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>6.2 Using JS in HTML</h2>
+    <p>JavaScript can be integrated into HTML using inline scripts, internal scripts, or external files.</p>
+    <ul>
+      <li><strong>Inline</strong>: Directly in HTML tags using event attributes.</li>
+      <li><strong>Internal</strong>: Within a <code>&lt;script&gt;</code> tag in the <code>&lt;head&gt;</code> or <code>&lt;body&gt;</code>.</li>
+      <li><strong>External</strong>: Linked via <code>&lt;script src="file.js"&gt;</code> for modularity.</li>
+    </ul>
+    <pre><code>&lt;!-- Inline --&gt;
+&lt;button onclick="alert('Clicked!')"&gt;Click Me&lt;/button&gt;
+
+&lt;!-- Internal --&gt;
+&lt;script&gt;
+  console.log('Hello, JavaScript!');
+&lt;/script&gt;
+
+&lt;!-- External --&gt;
+&lt;script src="script.js"&gt;&lt;/script&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>6.3 JavaScript Output</h2>
+    <p>JavaScript provides multiple ways to display output, such as writing to the console, DOM, or alerts.</p>
+    <ul>
+      <li><strong>console.log()</strong>: Outputs to the browser’s console for debugging.</li>
+      <li><strong>document.write()</strong>: Writes directly to the HTML document.</li>
+      <li><strong>alert()</strong>: Displays a popup message.</li>
+      <li><strong>innerHTML</strong>: Updates content of an HTML element.</li>
+    </ul>
+    <pre><code>console.log('Debug message');
+alert('Welcome!');
+document.write('Hello World');
+document.getElementById('demo').innerHTML = 'Updated content';</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>6.4 JavaScript Comments</h2>
+    <p>Comments explain code or disable execution, improving readability and maintenance.</p>
+    <ul>
+      <li><strong>Single-line</strong>: Use <code>//</code> for one line.</li>
+      <li><strong>Multi-line</strong>: Use <code>/* */</code> for multiple lines.</li>
+    </ul>
+    <pre><code>// This is a single-line comment
+/* This is a
+   multi-line comment */
+let x = 5; // Initialize x</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>6.5 Variables and Data Types</h2>
+    <p>Variables store data, and JavaScript supports various data types. Variables are declared using <code>let</code>, <code>const</code>, or <code>var</code>.</p>
+    <ul>
+      <li><strong>Primitive Types</strong>: Number, String, Boolean, Null, Undefined, Symbol.</li>
+      <li><strong>Reference Types</strong>: Objects, Arrays, Functions.</li>
+      <li><strong>let/const</strong>: Block-scoped; <code>const</code> prevents reassignment.</li>
+    </ul>
+    <pre><code>let name = 'John'; // String
+const age = 30; // Number
+let isStudent = true; // Boolean
+let data = null; // Null
+let obj = { key: 'value' }; // Object</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>6.6 Operators and Expressions</h2>
+    <p>Operators perform operations on variables and values, forming expressions.</p>
+    <ul>
+      <li><strong>Arithmetic</strong>: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>.</li>
+      <li><strong>Comparison</strong>: <code>==</code>, <code>===</code>, <code>!=</code>, <code>&gt;</code>, <code>&lt;</code>.</li>
+      <li><strong>Logical</strong>: <code>&&</code>, <code>||</code>, <code>!</code>.</li>
+      <li><strong>Assignment</strong>: <code>=</code>, <code>+=</code>, <code>-=</code>.</li>
+    </ul>
+    <pre><code>let a = 10;
+let b = 5;
+console.log(a + b); // 15
+console.log(a === b); // false
+console.log(a &gt; b && b &gt; 0); // true
+a += 5; // a = 15</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>6.7 Control Flow and Conditionals</h2>
+    <p>Conditionals control program flow based on logical conditions.</p>
+    <ul>
+      <li><strong>if/else</strong>: Executes code based on a condition.</li>
+      <li><strong>switch</strong>: Handles multiple conditions with cases.</li>
+      <li><strong>ternary operator</strong>: Concise <code>condition ? expr1 : expr2</code>.</li>
+    </ul>
+    <pre><code>let score = 85;
+if (score &gt;= 90) {
+  console.log('A');
+} else if (score &gt;= 80) {
+  console.log('B');
+}
+let day = 1;
+switch (day) {
+  case 1:
+    console.log('Monday');
+    break;
+}
+let result = score &gt; 80 ? 'Pass' : 'Fail';</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>6.8 Loops</h2>
+    <p>Loops execute code repeatedly based on conditions.</p>
+    <ul>
+      <li><strong>for</strong>: Iterates with initialization, condition, and increment.</li>
+      <li><strong>while</strong>: Runs while a condition is true.</li>
+      <li><strong>do-while</strong>: Executes at least once before checking the condition.</li>
+      <li><strong>for...of</strong>: Iterates over iterable objects like arrays.</li>
+    </ul>
+    <pre><code>for (let i = 0; i &lt; 5; i++) {
+  console.log(i);
+}
+let j = 0;
+while (j &lt; 3) {
+  console.log(j);
+  j++;
+}
+let arr = [1, 2, 3];
+for (let value of arr) {
+  console.log(value);
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>6.9 Functions</h2>
+    <p>Functions are reusable blocks of code that perform specific tasks.</p>
+    <ul>
+      <li><strong>Declaration</strong>: <code>function name() {}</code>.</li>
+      <li><strong>Expression</strong>: <code>const name = function() {}</code>.</li>
+      <li><strong>Arrow Functions</strong>: Concise syntax <code>const name = () => {}</code>.</li>
+      <li><strong>Parameters/Return</strong>: Pass data and return results.</li>
+    </ul>
+    <pre><code>function greet(name) {
+  return `Hello, ${name}`;
+}
+const add = (a, b) => a + b;
+console.log(greet('John')); // Hello, John
+console.log(add(2, 3)); // 5</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>6.10 Arrays</h2>
+    <p>Arrays store ordered lists of data and provide methods for manipulation.</p>
+    <ul>
+      <li><strong>Creation</strong>: <code>let arr = [1, 2, 3]</code>.</li>
+      <li><strong>Methods</strong>: <code>push()</code>, <code>pop()</code>, <code>map()</code>, <code>filter()</code>.</li>
+      <li><strong>Access</strong>: Use index, e.g., <code>arr[0]</code>.</li>
+    </ul>
+    <pre><code>let arr = [1, 2, 3];
+arr.push(4); // [1, 2, 3, 4]
+let doubled = arr.map(x => x * 2); // [2, 4, 6, 8]
+console.log(arr[0]); // 1</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>6.11 Objects</h2>
+    <p>Objects store key-value pairs, representing complex data structures.</p>
+    <ul>
+      <li><strong>Creation</strong>: <code>let obj = { key: value }</code>.</li>
+      <li><strong>Access</strong>: Dot notation (<code>obj.key</code>) or bracket notation (<code>obj['key']</code>).</li>
+      <li><strong>Methods</strong>: Functions as object properties.</li>
+    </ul>
+    <pre><code>let person = {
+  name: 'John',
+  age: 30,
+  greet: function() {
+    return `Hi, I'm ${this.name}`;
+  }
+};
+console.log(person.name); // John
+console.log(person['age']); // 30
+console.log(person.greet()); // Hi, I'm John</code></pre>
+  </div>
+</body>
+</html>

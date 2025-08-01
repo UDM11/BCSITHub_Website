@@ -56,11 +56,12 @@ export default function SubjectChapters() {
           className="flex flex-col sm:flex-row gap-4 justify-center mb-6"
         />
 
-        <div className="flex items-center justify-between mb-8">
+        {/* Responsive container for button + heading */}
+        <div className="flex flex-col sm:flex-row items-center sm:justify-between gap-3 flex-wrap mb-8">
           <Button
             variant="ghost"
             onClick={() => navigate(`/notes/semester/${semesterId}`)}
-            className="flex items-center gap-1 hover:text-indigo-600 transition-colors"
+            className="flex items-center gap-1 transition-colors duration-300 ease-in-out hover:bg-indigo-100 hover:text-indigo-700 rounded-md px-3 py-2 whitespace-nowrap"
           >
             <ChevronLeft className="w-5 h-5" />
             Back to Subjects
@@ -70,12 +71,10 @@ export default function SubjectChapters() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="text-2xl sm:text-3xl font-bold text-gray-800 text-center"
+            className="text-2xl sm:text-3xl font-bold text-black text-center whitespace-nowrap"
           >
             {decodedSubjectId} - Chapters
           </motion.h2>
-
-          <div className="w-[120px]" /> {/* Spacer */}
         </div>
 
         {/* Single-column vertical layout always */}

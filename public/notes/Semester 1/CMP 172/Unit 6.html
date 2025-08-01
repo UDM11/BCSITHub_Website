@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 6: Arrays and String</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+        text-align: center;
+        color: black;
+        font-size: 16pt;
+        font-weight: bold;
+    }
+    h2 {
+      color: black;
+      font-weight: bold;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #000000;
+      color: #ffffff;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 5px;
+      font-size: 12pt;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      .section {
+        padding: 5px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Unit 6: Arrays and String</h1>
+
+  <div class="section">
+    <h2>6.1 Introduction to Array</h2>
+    <p>An array is a collection of elements of the same data type stored in contiguous memory locations, accessed using a common name and index.</p>
+    <ul>
+      <li><strong>Purpose:</strong> Simplifies handling multiple values of the same type.</li>
+      <li><strong>Characteristics:</strong> Fixed size, indexed from 0.</li>
+      <li><strong>Example:</strong> Storing 5 integers in an array instead of 5 separate variables.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>6.2 Declaration</h2>
+    <p>Array declaration specifies the data type, array name, and size.</p>
+    <ul>
+      <li><strong>Syntax:</strong> data_type array_name[size];</li>
+      <li><strong>Examples:</strong>
+        <pre>
+int numbers[5]; // Array of 5 integers
+float scores[10]; // Array of 10 floats
+        </pre>
+      </li>
+      <li><strong>Note:</strong> Size must be a positive integer constant at declaration.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>6.3 Memory Representation of Array</h2>
+    <p>Arrays are stored in contiguous memory locations, with each element occupying a fixed size based on its data type.</p>
+    <ul>
+      <li><strong>Memory Layout:</strong> For int arr[3], if arr[0] is at address 1000 and int size is 4 bytes, arr[1] is at 1004, arr[2] at 1008.</li>
+      <li><strong>Access:</strong> Index calculates address as: base_address + (index * size_of_data_type).</li>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    int arr[3] = {10, 20, 30};
+    printf("Address of arr[0]: %p\n", &arr[0]);
+    printf("Address of arr[1]: %p\n", &arr[1]);
+    return 0;
+}
+        </pre>
+        Output shows consecutive addresses.
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>6.4 Initialization of Array</h2>
+    <p>Arrays can be initialized at declaration or later using loops.</p>
+    <ul>
+      <li><strong>At Declaration:</strong>
+        <pre>
+int arr[5] = {1, 2, 3, 4, 5}; // Full initialization
+int arr2[5] = {1, 2}; // Partial: arr2[2..4] = 0
+int arr3[] = {1, 2, 3}; // Size inferred as 3
+        </pre>
+      </li>
+      <li><strong>Using Loops:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    int arr[5];
+    for (int i = 0; i < 5; i++) {
+        arr[i] = i + 1;
+    }
+    return 0;
+}
+        </pre>
+      </li>
+      <li><strong>Note:</strong> Uninitialized arrays may contain garbage values.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>6.5 Types of Arrays</h2>
+    <h2>6.5.1 Single Dimensional and Multidimensional</h2>
+    <ul>
+      <li><strong>Single Dimensional Array:</strong> A linear array with one index.
+        <pre>
+int arr[5] = {10, 20, 30, 40, 50};
+        </pre>
+      </li>
+      <li><strong>Multidimensional Array:</strong> Arrays with multiple indices, e.g., 2D (matrix) or 3D.
+        <ul>
+          <li><strong>2D Array Syntax:</strong> data_type array_name[rows][columns];</li>
+          <li><strong>Example:</strong>
+            <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    int matrix[2][3] = {{1, 2, 3}, {4, 5, 6}};
+    printf("Element at [1][2]: %d\n", matrix[1][2]); // 6
+    return 0;
+}
+            </pre>
+          </li>
+          <li><strong>Memory:</strong> Stored row-major order (consecutive elements of a row are contiguous).</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>6.7 Character Array and Strings</h2>
+    <p>A character array stores characters, and a string is a character array terminated by a null character (\0).</p>
+    <ul>
+      <li><strong>Character Array:</strong>
+        <pre>
+char arr[5] = {'H', 'e', 'l', 'l', 'o'};
+        </pre>
+      </li>
+      <li><strong>String:</strong>
+        <pre>
+char str[6] = "Hello"; // Includes \0 automatically
+        </pre>
+      </li>
+      <li><strong>Difference:</strong> Strings are null-terminated; character arrays may not be.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>6.8 Reading and Writing Strings</h2>
+    <p>Strings are read and written using specific I/O functions.</p>
+    <ul>
+      <li><strong>Reading Strings:</strong>
+        <ul>
+          <li><strong>scanf("%s", str):</strong> Reads until whitespace, no & needed for arrays.</li>
+          <li><strong>gets(str):</strong> Reads entire line (unsafe, deprecated).</li>
+          <li><strong>fgets(str, size, stdin):</strong> Safer, reads up to size-1 characters or newline.</li>
+          <li><strong>Example:</strong>
+            <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    char str[20];
+    printf("Enter a string: ");
+    fgets(str, 20, stdin);
+    printf("You entered: %s", str);
+    return 0;
+}
+            </pre>
+          </li>
+        </ul>
+      </li>
+      <li><strong>Writing Strings:</strong>
+        <ul>
+          <li><strong>printf("%s", str):</strong> Prints string.</li>
+          <li><strong>puts(str):</strong> Prints string and adds newline.</li>
+          <li><strong>Example:</strong>
+            <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    char str[] = "Hello";
+    puts(str); // Outputs: Hello\n
+    return 0;
+}
+            </pre>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>6.9 Null Character</h2>
+    <p>The null character (\0) marks the end of a string in C.</p>
+    <ul>
+      <li><strong>Purpose:</strong> Indicates string termination for functions like printf, strlen.</li>
+      <li><strong>Representation:</strong> ASCII value 0, written as \0.</li>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    char str[6] = {'H', 'e', 'l', 'l', 'o', '\0'};
+    printf("%s\n", str); // Outputs: Hello
+    return 0;
+}
+        </pre>
+      </li>
+      <li><strong>Note:</strong> String literals automatically include \0, but character arrays do not unless explicitly added.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>6.10 Library Functions for String Handling</h2>
+    <p>The C standard library (string.h) provides functions for string manipulation.</p>
+    <ul>
+      <li><strong>Common Functions:</strong>
+        <ul>
+          <li><strong>strlen(str):</strong> Returns string length (excludes \0).</li>
+          <li><strong>strcpy(dest, src):</strong> Copies src to dest, including \0.</li>
+          <li><strong>strcat(dest, src):</strong> Appends src to dest.</li>
+          <li><strong>strcmp(str1, str2):</strong> Compares strings (returns 0 if equal).</li>
+          <li><strong>strchr(str, ch):</strong> Finds first occurrence of ch in str.</li>
+          <li><strong>strstr(str, substr):</strong> Finds first occurrence of substr in str.</li>
+        </ul>
+      </li>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+int main() {
+    char str1[20] = "Hello";
+    char str2[20] = "World";
+    printf("Length of str1: %zu\n", strlen(str1)); // 5
+    strcat(str1, " ");
+    strcat(str1, str2);
+    printf("Concatenated: %s\n", str1); // Hello World
+    return 0;
+}
+        </pre>
+      </li>
+      <li><strong>Note:</strong> Ensure destination buffers are large enough to avoid buffer overflow.</li>
+    </ul>
+  </div>
+</body>
+</html>

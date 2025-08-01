@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 4: Operating System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.4;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            font-weight: bold;
+        }
+        h1 {
+            text-align: center;
+            font-size: 16pt;
+        }
+        .section {
+            background: #fff;
+            padding: 5px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: justify;
+        }
+        ul {
+            margin: 5px 0;
+            padding-left: 10px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Unit 4: Operating System</h1>
+
+    <div class="section">
+        <h2>4.4 Introduction</h2>
+        <p>An operating system (OS) is a software that acts as an intermediary between computer hardware and users. It manages hardware resources, provides services for software applications, and enables users to interact with the computer system efficiently.</p>
+        <ul>
+            <li><strong>Purpose:</strong> The OS ensures smooth operation of the computer by managing resources and providing a user-friendly interface.</li>
+            <li><strong>Components:</strong> Includes kernel, device drivers, and user interface components like graphical or command-line interfaces.</li>
+            <li><strong>Examples:</strong> Popular operating systems include Windows, Linux, macOS, and Android.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>4.5 Objective of Operating System</h2>
+        <p>The primary objectives of an operating system are to optimize resource utilization, enhance user experience, and ensure system reliability.</p>
+        <ul>
+            <li><strong>Resource Management:</strong> Efficiently allocates CPU, memory, and storage to maximize performance.</li>
+            <li><strong>User Convenience:</strong> Provides an intuitive interface for users to interact with the system.</li>
+            <li><strong>System Efficiency:</strong> Ensures reliable execution of programs and minimizes system downtime.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>4.6 Types of Operating System</h2>
+        <p>Operating systems are classified based on their design, functionality, and intended use.</p>
+        <ul>
+            <li><strong>Batch OS:</strong> Processes jobs in batches without user interaction, used in early mainframes.</li>
+            <li><strong>Multitasking OS:</strong> Allows multiple tasks to run simultaneously, e.g., Windows, Linux.</li>
+            <li><strong>Real-Time OS:</strong> Processes data with strict time constraints, used in embedded systems like medical devices.</li>
+            <li><strong>Distributed OS:</strong> Manages multiple computers working together, appearing as a single system.</li>
+            <li><strong>Mobile OS:</strong> Designed for mobile devices, e.g., Android, iOS.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>4.7 Functions of Operating System</h2>
+        <p>The operating system performs essential functions to manage hardware and software resources effectively.</p>
+        <ul>
+            <li><strong>Process Management:</strong> Handles creation, scheduling, and termination of processes.</li>
+            <li><strong>Memory Management:</strong> Allocates and deallocates memory for processes.</li>
+            <li><strong>File Management:</strong> Organizes, stores, and retrieves files on storage devices.</li>
+            <li><strong>Device Management:</strong> Controls hardware devices through drivers.</li>
+            <li><strong>User Interface:</strong> Provides interfaces like GUI or CLI for user interaction.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>4.8 Process Management</h2>
+        <p>Process management involves handling the execution of processes (running programs) in the system.</p>
+        <ul>
+            <li><strong>Process States:</strong> Manages states like ready, running, waiting, and terminated.</li>
+            <li><strong>Scheduling:</strong> Allocates CPU time to processes using algorithms like Round-Robin or Priority Scheduling.</li>
+            <li><strong>Examples:</strong> Task Manager in Windows or ‘top’ command in Linux monitors active processes.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>4.9 Memory Management</h2>
+        <p>Memory management ensures efficient use of a computer’s memory resources for running processes.</p>
+        <ul>
+            <li><strong>Allocation:</strong> Assigns memory space to processes and deallocates it when no longer needed.</li>
+            <li><strong>Virtual Memory:</strong> Uses disk space as an extension of RAM to run larger programs.</li>
+            <li><strong>Examples:</strong> Paging and segmentation techniques in Windows and Linux manage memory effectively.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>4.10 File Management</h2>
+        <p>File management handles the organization, storage, and retrieval of data in files on storage devices.</p>
+        <ul>
+            <li><strong>File Operations:</strong> Supports creation, deletion, reading, and writing of files.</li>
+            <li><strong>File Systems:</strong> Organizes files using systems like NTFS, FAT32, or ext4.</li>
+            <li><strong>Examples:</strong> File Explorer in Windows or ‘ls’ command in Linux for file navigation.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>4.11 Device Management</h2>
+        <p>Device management controls and coordinates hardware devices connected to the computer.</p>
+        <ul>
+            <li><strong>Device Drivers:</strong> Software that enables communication between the OS and hardware devices.</li>
+            <li><strong>Resource Allocation:</strong> Assigns devices like printers or USB drives to processes as needed.</li>
+            <li><strong>Examples:</strong> Device Manager in Windows or ‘dmesg’ in Linux monitors hardware status.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>4.12 Protection and Security</h2>
+        <p>Protection and security mechanisms safeguard the system and data from unauthorized access and threats.</p>
+        <ul>
+            <li><strong>Protection:</strong> Controls access to resources, ensuring processes operate within their permissions.</li>
+            <li><strong>Security:</strong> Implements authentication (e.g., passwords), encryption, and firewalls to prevent attacks.</li>
+            <li><strong>Examples:</strong> User account controls in Windows or SELinux in Linux enforce security policies.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>4.13 User Interface</h2>
+        <p>The user interface allows users to interact with the operating system and execute tasks.</p>
+        <ul>
+            <li><strong>Graphical User Interface (GUI):</strong> Provides visual elements like windows, icons, and menus, e.g., Windows Desktop or macOS.</li>
+            <li><strong>Command-Line Interface (CLI):</strong> Enables interaction through text commands, e.g., Windows PowerShell or Linux Terminal.</li>
+            <li><strong>Examples:</strong> Start Menu in Windows or ‘bash’ shell in Linux for user interaction.</li>
+        </ul>
+    </div>
+</body>
+</html>

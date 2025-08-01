@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 9: Structure and Union</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+        text-align: center;
+        color: black;
+        font-size: 16pt;
+        font-weight: bold;
+    }
+    h2 {
+      color: black;
+      font-weight: bold;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #000000;
+      color: #ffffff;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 5px;
+      font-size: 12pt;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      .section {
+        padding: 5px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Unit 9: Structure and Union</h1>
+
+  <div class="section">
+    <h2>9.1 Introduction</h2>
+    <p>Structures and unions are user-defined data types in C that allow grouping of variables of different types under a single name, enabling organized data management.</p>
+    <ul>
+      <li><strong>Structure:</strong> Combines multiple variables, each retaining its own memory.</li>
+      <li><strong>Union:</strong> Combines variables that share the same memory location.</li>
+      <li><strong>Purpose:</strong> Simplifies handling complex data, like records or configurations.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>9.2 Declaration and Initialization of Structure</h2>
+    <p>A structure is declared using the <code>struct</code> keyword, and variables can be initialized during or after declaration.</p>
+    <ul>
+      <li><strong>Declaration Syntax:</strong>
+        <pre>
+struct structure_name {
+    data_type member1;
+    data_type member2;
+    // ...
+};
+        </pre>
+      </li>
+      <li><strong>Initialization:</strong> At declaration or later using dot operator.
+        <pre>
+#include &lt;stdio.h&gt;
+struct student {
+    int id;
+    char name[20];
+    float marks;
+};
+int main() {
+    // Initialization at declaration
+    struct student s1 = {101, "Alice", 85.5};
+    // Initialization after declaration
+    struct student s2;
+    s2.id = 102;
+    strcpy(s2.name, "Bob");
+    s2.marks = 90.0;
+    printf("ID: %d, Name: %s, Marks: %.1f\n", s1.id, s1.name, s1.marks);
+    return 0;
+}
+        </pre>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>9.3 Structure Variable</h2>
+    <p>Structure variables are instances of a structure, used to store data for its members.</p>
+    <ul>
+      <li><strong>Declaration:</strong> struct structure_name variable_name;</li>
+      <li><strong>Access:</strong> Use dot operator (.) to access members.
+        <pre>
+#include &lt;stdio.h&gt;
+struct point {
+    int x;
+    int y;
+};
+int main() {
+    struct point p1 = {3, 4};
+    printf("Point: (%d, %d)\n", p1.x, p1.y);
+    return 0;
+}
+        </pre>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>9.4 Array of Structure</h2>
+    <p>An array of structures stores multiple structure instances, useful for managing collections of records.</p>
+    <ul>
+      <li><strong>Syntax:</strong> struct structure_name array_name[size];</li>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+struct student {
+    int id;
+    char name[20];
+};
+int main() {
+    struct student students[3] = {
+        {1, "Alice"},
+        {2, "Bob"},
+        {3, "Charlie"}
+    };
+    for (int i = 0; i < 3; i++) {
+        printf("ID: %d, Name: %s\n", students[i].id, students[i].name);
+    }
+    return 0;
+}
+        </pre>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>9.5 Passing Structure to Function</h2>
+    <p>Structures can be passed to functions by value or by reference (using pointers).</p>
+    <ul>
+      <li><strong>Pass by Value:</strong> Copies the structure, changes don’t affect original.
+        <pre>
+#include &lt;stdio.h&gt;
+struct point {
+    int x;
+    int y;
+};
+void printPoint(struct point p) {
+    printf("Point: (%d, %d)\n", p.x, p.y);
+}
+int main() {
+    struct point p1 = {5, 10};
+    printPoint(p1);
+    return 0;
+}
+        </pre>
+      </li>
+      <li><strong>Pass by Reference:</strong> Uses pointer to modify original structure.
+        <pre>
+#include &lt;stdio.h&gt;
+struct point {
+    int x;
+    int y;
+};
+void modifyPoint(struct point *p) {
+    p->x = 20;
+    p->y = 30;
+}
+int main() {
+    struct point p1 = {5, 10};
+    modifyPoint(&p1);
+    printf("Modified Point: (%d, %d)\n", p1.x, p1.y);
+    return 0;
+}
+        </pre>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>9.6 Passing Array of Structure to Function</h2>
+    <p>An array of structures is passed to functions by reference, allowing modifications to the original data.</p>
+    <ul>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+struct student {
+    int id;
+    char name[20];
+};
+void printStudents(struct student s[], int size) {
+    for (int i = 0; i < size; i++) {
+        printf("ID: %d, Name: %s\n", s[i].id, s[i].name);
+    }
+}
+int main() {
+    struct student students[2] = {{1, "Alice"}, {2, "Bob"}};
+    printStudents(students, 2);
+    return 0;
+}
+        </pre>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>9.7 Nested Structure</h2>
+    <p>A nested structure contains another structure as a member, enabling hierarchical data organization.</p>
+    <ul>
+      <li><strong>Syntax:</strong> Define one structure inside another or separately.
+        <pre>
+#include &lt;stdio.h&gt;
+struct date {
+    int day;
+    int month;
+    int year;
+};
+struct employee {
+    int id;
+    char name[20];
+    struct date dob;
+};
+int main() {
+    struct employee emp = {101, "Alice", {15, 5, 1990}};
+    printf("ID: %d, Name: %s, DOB: %d/%d/%d\n", 
+           emp.id, emp.name, emp.dob.day, emp.dob.month, emp.dob.year);
+    return 0;
+}
+        </pre>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>9.8 Pointer to Structure</h2>
+    <p>A pointer to a structure points to the memory address of a structure variable, accessed using the arrow operator (->).</p>
+    <ul>
+      <li><strong>Syntax:</strong> struct structure_name *pointer_name;</li>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+struct point {
+    int x;
+    int y;
+};
+int main() {
+    struct point p1 = {5, 10};
+    struct point *ptr = &p1;
+    printf("Point: (%d, %d)\n", ptr->x, ptr->y);
+    return 0;
+}
+        </pre>
+      </li>
+      <li><strong>Note:</strong> -> is equivalent to (*ptr).member.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>9.10 Union vs Structure</h2>
+    <p>Unions and structures both group variables, but differ in memory allocation and usage.</p>
+    <ul>
+      <li><strong>Union Declaration:</strong>
+        <pre>
+union data {
+    int i;
+    float f;
+    char c;
+};
+        </pre>
+      </li>
+      <li><strong>Comparison:</strong>
+        <ul>
+          <li><strong>Structure:</strong>
+            <ul>
+              <li>Each member has its own memory.</li>
+              <li>Size is sum of all members’ sizes (plus padding).</li>
+              <li>All members can hold values simultaneously.</li>
+            </ul>
+          </li>
+          <li><strong>Union:</strong>
+            <ul>
+              <li>All members share the same memory.</li>
+              <li>Size is that of the largest member.</li>
+              <li>Only one member can hold a value at a time.</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+union data {
+    int i;
+    float f;
+};
+int main() {
+    union data d;
+    d.i = 10;
+    printf("Integer: %d\n", d.i);
+    d.f = 3.14;
+    printf("Float: %.2f\n", d.f); // i is overwritten
+    return 0;
+}
+        </pre>
+      </li>
+      <li><strong>Use Case:</strong> Unions save memory when only one member is needed at a time; structures are used for multiple simultaneous values.</li>
+    </ul>
+  </div>
+</body>
+</html>

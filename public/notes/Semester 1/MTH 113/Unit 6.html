@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 6: Matrices and Determinants</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.4;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            font-weight: bold;
+        }
+        h1 {
+            text-align: center;
+            font-size: 16pt;
+        }
+        .section {
+            background: #fff;
+            padding: 5px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: justify;
+        }
+        ul {
+            margin: 5px 0;
+            padding-left: 10px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Unit 6: Matrices and Determinants</h1>
+
+    <div class="section">
+        <h2>6.1 Introduction</h2>
+        <p>Matrices and determinants are fundamental tools in linear algebra, used to represent and solve systems of linear equations, transformations, and data in various fields.</p>
+        <ul>
+            <li><strong>Matrices:</strong> Rectangular arrays of numbers arranged in rows and columns, denoted as [a_ij], where a_ij is the element in the i-th row and j-th column.</li>
+            <li><strong>Determinants:</strong> Scalar values computed from square matrices, used to analyze properties like invertibility and to solve linear systems.</li>
+            <li><strong>Applications:</strong> Widely used in computer science (e.g., graphics transformations), engineering (e.g., circuit analysis), and economics (e.g., input-output models).</li>
+            <li><strong>Notation:</strong> A matrix with m rows and n columns is an m×n matrix. For example, a 2×3 matrix has 2 rows and 3 columns.</li>
+        </ul>
+        <p>Matrices and determinants provide a structured approach to handling complex mathematical relationships.</p>
+    </div>
+
+    <div class="section">
+        <h2>6.2 Types of Matrices</h2>
+        <p>Different types of matrices are defined based on their structure and properties, each serving specific purposes in mathematical computations.</p>
+        <ul>
+            <li><strong>Row and Column Matrices:</strong> A row matrix has one row (e.g., [1 2 3]), and a column matrix has one column (e.g., [1; 2; 3]). Used in vector representations.</li>
+            <li><strong>Square Matrix:</strong> Has equal rows and columns (e.g., 2×2 or 3×3). Determinants are defined for square matrices.</li>
+            <li><strong>Diagonal, Identity, and Zero Matrices:</strong> Diagonal matrices have non-zero elements only on the main diagonal (e.g., [2 0; 0 3]). The identity matrix has 1s on the diagonal and 0s elsewhere (e.g., [1 0; 0 1]). The zero matrix has all elements as 0.</li>
+            <li><strong>Symmetric and Skew-Symmetric Matrices:</strong> A symmetric matrix equals its transpose (A = A^T), while a skew-symmetric matrix satisfies A = -A^T.</li>
+        </ul>
+        <p>Understanding matrix types is crucial for selecting appropriate operations and applications.</p>
+    </div>
+
+    <div class="section">
+        <h2>6.3 Matrix Operations</h2>
+        <p>Matrix operations allow manipulation of matrices to solve equations, transform data, or model relationships in various disciplines.</p>
+        <ul>
+            <li><strong>Addition and Subtraction:</strong> For matrices A and B of the same size, (A + B)_ij = a_ij + b_ij; (A - B)_ij = a_ij - b_ij. Example: [1 2] + [3 4] = [4 6].</li>
+            <li><strong>Scalar Multiplication:</strong> Multiply each element by a scalar k: (kA)_ij = k·a_ij. Example: 2·[1 2] = [2 4].</li>
+            <li><strong>Matrix Multiplication:</strong> For an m×n matrix A and n×p matrix B, (AB)_ij = Σ(a_ik·b_kj). Example: [1 2] × [3; 4] = [1·3 + 2·4] = [11].</li>
+            <li><strong>Properties:</strong> Addition is commutative (A + B = B + A), but multiplication is not (AB ≠ BA in general). Associative and distributive laws apply where dimensions permit.</li>
+        </ul>
+        <p>Matrix operations enable complex computations in systems analysis and transformations.</p>
+    </div>
+
+    <div class="section">
+        <h2>6.4 Transpose of a Matrix, Determinant of a Matrix</h2>
+        <p>The transpose and determinant of a matrix provide insights into its structure and properties, essential for linear algebra applications.</p>
+        <ul>
+            <li><strong>Transpose:</strong> The transpose of an m×n matrix A, denoted A^T, is an n×m matrix where (A^T)_ij = a_ji. Example: For A = [1 2; 3 4], A^T = [1 3; 2 4].</li>
+            <li><strong>Determinant:</strong> A scalar value for a square matrix. For a 2×2 matrix [a b; c d], det(A) = ad - bc. For a 3×3 matrix, use expansion by minors (see 6.5).</li>
+            <li><strong>Properties of Transpose:</strong> (A^T)^T = A; (A + B)^T = A^T + B^T; (AB)^T = B^T·A^T. Transposes are used in symmetric matrices and data analysis.</li>
+            <li><strong>Applications:</strong> Determinants indicate invertibility (det(A) ≠ 0 implies A is invertible); transposes are used in machine learning and graphics.</li>
+        </ul>
+        <p>These concepts are fundamental for analyzing matrix properties and solving equations.</p>
+    </div>
+
+    <div class="section">
+        <h2>6.5 Minors and Cofactors of the Matrix</h2>
+        <p>Minors and cofactors are used to compute determinants of larger matrices and analyze their properties.</p>
+        <ul>
+            <li><strong>Minor:</strong> The minor M_ij of element a_ij in a square matrix is the determinant of the submatrix formed by deleting row i and column j. Example: For [1 2 3; 4 5 6; 7 8 9], M_11 is det([5 6; 8 9]) = 5·9 - 6·8 = -3.</li>
+            <li><strong>Cofactor:</strong> The cofactor C_ij = (-1)^(i+j)·M_ij. Example: For the same matrix, C_11 = (-1)^(1+1)·(-3) = -3; C_12 = (-1)^(1+2)·det([4 6; 7 9]) = -(-3) = 3.</li>
+            <li><strong>Determinant Calculation:</strong> For a 3×3 matrix, det(A) = a_11·C_11 + a_12·C_12 + a_13·C_13 (expansion along first row). Example: det([1 2 3; 4 5 6; 7 8 9]) = 1·(-3) + 2·3 + 3·(-3) = 0.</li>
+            <li><strong>Applications:</strong> Cofactors are used in finding matrix inverses and solving systems of equations in engineering and computer science.</li>
+        </ul>
+        <p>Minors and cofactors simplify determinant calculations for larger matrices.</p>
+    </div>
+
+    <div class="section">
+        <h2>6.6 Properties of Determinants (Singular and Non-Singular Matrix)</h2>
+        <p>Properties of determinants reveal key characteristics of matrices, distinguishing singular and non-singular matrices.</p>
+        <ul>
+            <li><strong>Properties:</strong> (1) det(A^T) = det(A); (2) If two rows (or columns) are swapped, det(A) changes sign; (3) If a row is multiplied by k, det(A) is multiplied by k; (4) det(AB) = det(A)·det(B).</li>
+            <li><strong>Singular Matrix:</strong> A square matrix with det(A) = 0, indicating it is not invertible and its rows/columns are linearly dependent. Example: [1 2; 2 4] has det = 1·4 - 2·2 = 0.</li>
+            <li><strong>Non-Singular Matrix:</strong> A matrix with det(A) ≠ 0, indicating it is invertible and has linearly independent rows/columns. Example: [1 2; 3 4] has det = 1·4 - 2·3 = -2.</li>
+            <li><strong>Applications:</strong> Determinants test invertibility in solving linear systems and analyze transformations in graphics or data science.</li>
+        </ul>
+        <p>These properties streamline computations and inform matrix behavior in applications.</p>
+    </div>
+
+    <div class="section">
+        <h2>6.7 Solution of Linear Equations (Cramer's Rule for 2-3 Variables)</h2>
+        <p>Cramer’s rule uses determinants to solve systems of linear equations with a unique solution, efficient for small systems.</p>
+        <ul>
+            <li><strong>Cramer’s Rule (2 Variables):</strong> For ax + by = e, cx + dy = f, let D = det([a b; c d]). Then x = det([e b; f d])/D, y = det([a e; c f])/D, provided D ≠ 0. Example: 2x + y = 5, x + 3y = 4 gives D = 2·3 - 1·1 = 5, x = (5·3 - 4·1)/5 = 11/5, y = (2·4 - 1·5)/5 = 3/5.</li>
+            <li><strong>Cramer’s Rule (3 Variables):</strong> For a system with coefficient matrix A and constants b, x_i = det(A_i)/det(A), where A_i replaces the i-th column of A with b. Example: For a 3×3 system, compute determinants of four matrices (D, D_x, D_y, D_z).</li>
+            <li><strong>Limitations:</strong> Requires det(A) ≠ 0 (non-singular matrix) and is computationally intensive for large systems compared to Gaussian elimination.</li>
+            <li><strong>Applications:</strong> Used in engineering (e.g., circuit analysis) and economics (e.g., equilibrium models) for small-scale linear systems.</li>
+        </ul>
+        <p>Cramer’s rule provides a determinant-based method for solving linear equations efficiently.</p>
+    </div>
+</body>
+</html>

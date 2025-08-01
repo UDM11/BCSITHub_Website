@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 7: Advanced Topics on JavaScript</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+        text-align: center;
+        color: black;
+        font-size: 16pt;
+        font-weight: bold;
+    }
+    h2 {
+      color: black;
+      font-weight: bold;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #000000;
+      color: #ffffff;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 5px;
+      font-size: 12pt;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      .section {
+        padding: 5px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Unit 7: Advanced Topics on JavaScript</h1>
+
+  <div class="section">
+    <h2>7.1 Scope and Closures</h2>
+    <p>Scope determines the accessibility of variables, while closures allow functions to retain access to their outer scope's variables even after the outer function has finished executing.</p>
+    <ul>
+      <li><strong>Scope</strong>: Global, function, and block scope (using <code>let</code> and <code>const</code>).</li>
+      <li><strong>Closures</strong>: A function bundled with its lexical environment, retaining access to variables from its parent scope.</li>
+      <li><strong>Use Cases</strong>: Data privacy, event handlers, and callbacks.</li>
+    </ul>
+    <pre><code>function outer() {
+  let count = 0;
+  return function inner() {
+    return count++;
+  };
+}
+const counter = outer();
+console.log(counter()); // 0
+console.log(counter()); // 1</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>7.2 Error Handling and Debugging</h2>
+    <p>Error handling manages runtime errors, while debugging helps identify and fix issues in code.</p>
+    <ul>
+      <li><strong>try/catch</strong>: Catches and handles errors gracefully.</li>
+      <li><strong>throw</strong>: Creates custom errors.</li>
+      <li><strong>Debugging</strong>: Use browser tools like console, breakpoints, and <code>debugger</code>.</li>
+    </ul>
+    <pre><code>try {
+  let result = undefinedVar;
+} catch (error) {
+  console.error('Error:', error.message);
+}
+throw new Error('Custom error');
+console.log('This will not run');</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>7.3 DOM Manipulation</h2>
+    <p>The Document Object Model (DOM) allows JavaScript to interact with HTML elements, enabling dynamic content updates.</p>
+    <ul>
+      <li><strong>Selecting Elements</strong>: <code>getElementById</code>, <code>querySelector</code>.</li>
+      <li><strong>Modifying Elements</strong>: Change content, styles, or attributes.</li>
+      <li><strong>Event Listeners</strong>: Respond to user actions like clicks or input.</li>
+    </ul>
+    <pre><code>const btn = document.querySelector('#myButton');
+btn.addEventListener('click', () => {
+  document.querySelector('p').textContent = 'Updated!';
+  btn.style.backgroundColor = 'blue';
+});</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>7.4 Asynchronous JavaScript</h2>
+    <p>Asynchronous JavaScript handles operations that take time, such as fetching data, without blocking execution.</p>
+    <ul>
+      <li><strong>Callbacks</strong>: Functions passed as arguments to handle async results.</li>
+      <li><strong>Promises</strong>: Objects representing eventual completion or failure.</li>
+      <li><strong>async/await</strong>: Syntactic sugar for working with Promises.</li>
+    </ul>
+    <pre><code>async function fetchData() {
+  try {
+    const response = await fetch('https://api.example.com/data');
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+fetchData();</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>7.5 JSON and AJAX</h2>
+    <p>JSON (JavaScript Object Notation) is a lightweight data format, and AJAX (Asynchronous JavaScript and XML) enables asynchronous data fetching.</p>
+    <ul>
+      <li><strong>JSON</strong>: Used for data exchange, parsed with <code>JSON.parse</code> and <code>JSON.stringify</code>.</li>
+      <li><strong>AJAX</strong>: Uses <code>XMLHttpRequest</code> or <code>fetch</code> to load data without refreshing.</li>
+    </ul>
+    <pre><code>const data = JSON.stringify({ name: 'John', age: 30 });
+console.log(JSON.parse(data)); // { name: 'John', age: 30 }
+fetch('https://api.example.com/data')
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error(error));</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>7.6 ES6 and Modern JavaScript</h2>
+    <p>ES6 (ECMAScript 2015) introduced modern JavaScript features to improve code readability and functionality.</p>
+    <ul>
+      <li><strong>let/const</strong>: Block-scoped variable declarations.</li>
+      <li><strong>Arrow Functions</strong>: Concise function syntax.</li>
+      <li><strong>Destructuring</strong>: Extract values from arrays/objects.</li>
+      <li><strong>Modules</strong>: Import/export for modular code.</li>
+    </ul>
+    <pre><code>const [a, b] = [1, 2]; // Destructuring
+const add = (x, y) => x + y; // Arrow function
+import { myFunction } from './module.js';
+export const myVar = 42;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>7.7 JavaScript Libraries</h2>
+    <p>JavaScript libraries provide pre-written code to simplify development and enhance functionality.</p>
+    <ul>
+      <li><strong>jQuery</strong>: Simplifies DOM manipulation and AJAX.</li>
+      <li><strong>React</strong>: Component-based library for building user interfaces.</li>
+      <li><strong>Lodash</strong>: Utility library for common tasks like array manipulation.</li>
+      <li><strong>Inclusion</strong>: Use via CDN or package managers like npm.</li>
+    </ul>
+    <pre><code>&lt;script src="https://code.jquery.com/jquery-3.6.0.min.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  $(document).ready(function() {
+    $('p').hide();
+  });
+&lt;/script&gt;</code></pre>
+  </div>
+</body>
+</html>

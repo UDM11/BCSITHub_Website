@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 3: HTML5</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+        text-align: center;
+        color: black;
+        font-size: 16pt;
+        font-weight: bold;
+    }
+    h2 {
+      color: black;
+      font-weight: bold;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #000000;
+      color: #ffffff;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 5px;
+      font-size: 12pt;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      .section {
+        padding: 5px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Unit 3: HTML5</h1>
+
+  <div class="section">
+    <h2>3.1 HTML5 APIs</h2>
+    <p>HTML5 introduces a variety of APIs that enhance web application functionality, allowing developers to create interactive and dynamic experiences directly in the browser.</p>
+    <ul>
+      <li><strong>Geolocation API</strong>: Retrieves the user's geographical location with permission.</li>
+      <li><strong>Canvas API</strong>: Enables 2D drawing and animations using the <code>&lt;canvas&gt;</code> element.</li>
+      <li><strong>Web Storage API</strong>: Provides <code>localStorage</code> and <code>sessionStorage</code> for storing data in the browser.</li>
+      <li><strong>Drag and Drop API</strong>: Supports dragging and dropping elements within or across applications.</li>
+    </ul>
+    <pre><code>&lt;canvas id="myCanvas" width="200" height="100"&gt;&lt;/canvas&gt;
+&lt;script&gt;
+  const canvas = document.getElementById('myCanvas');
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = 'blue';
+  ctx.fillRect(50, 50, 100, 50);
+&lt;/script&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>3.2 HTML5 Forms</h2>
+    <p>HTML5 forms introduce new input types, attributes, and validation features to improve user interaction and data collection.</p>
+    <ul>
+      <li><strong>New Input Types</strong>: <code>email</code>, <code>url</code>, <code>date</code>, <code>range</code>, etc., for specific data entry.</li>
+      <li><strong>Attributes</strong>: <code>required</code>, <code>placeholder</code>, <code>pattern</code> for validation and user guidance.</li>
+      <li><strong>Datalist</strong>: Provides a predefined list of options for input fields.</li>
+    </ul>
+    <pre><code>&lt;form&gt;
+  &lt;label for="email"&gt;Email:&lt;/label&gt;
+  &lt;input type="email" id="email" name="email" required placeholder="Enter your email"&gt;
+  &lt;label for="color"&gt;Favorite Color:&lt;/label&gt;
+  &lt;input type="color" id="color" name="color"&gt;
+  &lt;input type="submit" value="Submit"&gt;
+&lt;/form&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>3.3 Responsive Web Design</h2>
+    <p>Responsive Web Design (RWD) ensures web pages render well on various devices and screen sizes using flexible layouts, images, and CSS media queries.</p>
+    <ul>
+      <li><strong>Viewport Meta Tag</strong>: Controls layout on mobile browsers.</li>
+      <li><strong>Media Queries</strong>: Apply CSS styles based on device characteristics.</li>
+      <li><strong>Flexible Grids</strong>: Use relative units like percentages or <code>vw</code>/<code>vh</code>.</li>
+    </ul>
+    <pre><code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+&lt;style&gt;
+  .container {
+    width: 100%;
+    max-width: 1200px;
+  }
+  @media (max-width: 600px) {
+    .container {
+      padding: 10px;
+    }
+  }
+&lt;/style&gt;
+&lt;div class="container"&gt;Responsive Content&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>3.4 HTML5</h2>
+    <p>HTML5 is the latest version of HTML, offering new elements, APIs, and features to support modern web development, with improved multimedia and semantic capabilities.</p>
+    <ul>
+      <li><strong>New Elements</strong>: <code>&lt;article&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;audio&gt;</code>, <code>&lt;video&gt;</code>.</li>
+      <li><strong>Improved Accessibility</strong>: Better support for screen readers and assistive technologies.</li>
+      <li><strong>Backward Compatibility</strong>: Works with older browsers, though some features may not be supported.</li>
+    </ul>
+    <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;HTML5 Example&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;article&gt;
+    &lt;h1&gt;HTML5 Page&lt;/h1&gt;
+    &lt;video controls&gt;
+      &lt;source src="video.mp4" type="video/mp4"&gt;
+    &lt;/video&gt;
+  &lt;/article&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>3.5 Semantic Markup</h2>
+    <p>Semantic markup in HTML5 uses elements that clearly describe their meaning, improving accessibility, SEO, and code readability.</p>
+    <ul>
+      <li><strong>Semantic Elements</strong>: <code>&lt;header&gt;</code>, <code>&lt;footer&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;aside&gt;</code>.</li>
+      <li><strong>Benefits</strong>: Enhances search engine understanding and assistive technology support.</li>
+      <li><strong>ARIA Roles</strong>: Augment semantics for better accessibility.</li>
+    </ul>
+    <pre><code>&lt;header&gt;
+  &lt;h1&gt;Website Title&lt;/h1&gt;
+&lt;/header&gt;
+&lt;main&gt;
+  &lt;article&gt;
+    &lt;h2&gt;Main Content&lt;/h2&gt;
+    &lt;p&gt;This is the primary content.&lt;/p&gt;
+  &lt;/article&gt;
+&lt;/main&gt;
+&lt;footer&gt;
+  &lt;p&gt;Copyright 2025&lt;/p&gt;
+&lt;/footer&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>3.6 Best Practices and Optimization</h2>
+    <p>Adopting best practices in HTML5 development ensures efficient, maintainable, and accessible web pages.</p>
+    <ul>
+      <li><strong>Minimize Code</strong>: Remove unnecessary tags and use concise attributes.</li>
+      <li><strong>Validate HTML</strong>: Use tools like W3C Validator to ensure standards compliance.</li>
+      <li><strong>Optimize Images</strong>: Use compressed formats and appropriate sizes.</li>
+      <li><strong>Accessibility</strong>: Include <code>alt</code> text, ARIA roles, and keyboard navigation support.</li>
+    </ul>
+    <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Optimized Page&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;main aria-label="Main content"&gt;
+    &lt;img src="image.jpg" alt="Description" width="300"&gt;
+    &lt;p&gt;Accessible and optimized content.&lt;/p&gt;
+  &lt;/main&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+</body>
+</html>

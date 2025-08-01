@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 8: Pointers</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+        text-align: center;
+        color: black;
+        font-size: 16pt;
+        font-weight: bold;
+    }
+    h2 {
+      color: black;
+      font-weight: bold;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #000000;
+      color: #ffffff;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 5px;
+      font-size: 12pt;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      .section {
+        padding: 5px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Unit 8: Pointers</h1>
+
+  <div class="section">
+    <h2>8.1 Introduction</h2>
+    <p>Pointers are variables that store memory addresses, enabling direct memory manipulation in C, which enhances flexibility and efficiency.</p>
+    <ul>
+      <li><strong>Purpose:</strong> Manage memory, pass large data efficiently, and enable dynamic memory allocation.</li>
+      <li><strong>Key Concept:</strong> A pointer holds the address of another variable, not its value.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>8.2 The & and * Operator</h2>
+    <p>Pointers rely on two operators: & (address-of) and * (dereference).</p>
+    <ul>
+      <li><strong>& Operator:</strong> Returns the memory address of a variable.</li>
+      <li><strong>* Operator:</strong> Accesses the value at the address stored in a pointer.</li>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    int x = 10;
+    int *ptr = &x; // &x gets address of x
+    printf("Address: %p\n", ptr);
+    printf("Value: %d\n", *ptr); // *ptr gets value at address
+    return 0;
+}
+        </pre>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>8.3 Declaration of Pointer</h2>
+    <p>Pointer declaration specifies the data type of the variable it points to.</p>
+    <ul>
+      <li><strong>Syntax:</strong> data_type *pointer_name;</li>
+      <li><strong>Examples:</strong>
+        <pre>
+int *intPtr; // Pointer to int
+float *floatPtr; // Pointer to float
+char *charPtr; // Pointer to char
+        </pre>
+      </li>
+      <li><strong>Note:</strong> Uninitialized pointers should be set to NULL to avoid undefined behavior.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>8.4 Chain of Pointers</h2>
+    <p>A chain of pointers involves pointers pointing to other pointers (e.g., pointer to a pointer).</p>
+    <ul>
+      <li><strong>Syntax:</strong> data_type **pointer_name;</li>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    int x = 10;
+    int *ptr1 = &x;
+    int **ptr2 = &ptr1; // Pointer to pointer
+    printf("Value of x: %d\n", **ptr2); // 10
+    return 0;
+}
+        </pre>
+      </li>
+      <li><strong>Use Case:</strong> Useful in dynamic 2D arrays or function arguments modifying pointers.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>8.5 Pointer Arithmetic</h2>
+    <p>Pointer arithmetic allows incrementing/decrementing pointers to navigate memory locations.</p>
+    <ul>
+      <li><strong>Operations:</strong> Addition, subtraction, increment, decrement.</li>
+      <li><strong>Scaling:</strong> Incrementing a pointer adds the size of the data type (e.g., int* increments by 4 bytes).</li>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    int arr[3] = {10, 20, 30};
+    int *ptr = arr;
+    printf("First: %d\n", *ptr); // 10
+    ptr++; // Moves to next int
+    printf("Second: %d\n", *ptr); // 20
+    return 0;
+}
+        </pre>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>8.6 Pointers and Arrays</h2>
+    <p>Arrays and pointers are closely related; an array name acts as a pointer to its first element.</p>
+    <ul>
+      <li><strong>Access:</strong> arr[i] is equivalent to *(arr + i).</li>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    int arr[3] = {10, 20, 30};
+    int *ptr = arr;
+    printf("Element 1: %d\n", *(ptr + 1)); // 20
+    return 0;
+}
+        </pre>
+      </li>
+      <li><strong>Note:</strong> Arrays decay to pointers when passed to functions.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>8.7 Pointers and Character Strings</h2>
+    <p>Strings in C are character arrays, and pointers to char are used to manipulate them.</p>
+    <ul>
+      <li><strong>Declaration:</strong> char *str = "Hello"; points to the first character.</li>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    char *str = "Hello";
+    printf("String: %s\n", str);
+    printf("First char: %c\n", *str); // H
+    return 0;
+}
+        </pre>
+      </li>
+      <li><strong>Note:</strong> String literals are read-only; modifying them causes undefined behavior.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>8.8 Array of Pointers</h2>
+    <p>An array of pointers stores multiple pointers, each pointing to a data element or string.</p>
+    <ul>
+      <li><strong>Syntax:</strong> data_type *array_name[size];</li>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    char *strings[] = {"Apple", "Banana", "Cherry"};
+    for (int i = 0; i < 3; i++) {
+        printf("%s\n", strings[i]);
+    }
+    return 0;
+}
+        </pre>
+      </li>
+      <li><strong>Use Case:</strong> Storing multiple strings or dynamic data structures.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>8.9 Pointers as Function Arguments</h2>
+    <p>Pointers allow functions to modify variables in the caller’s scope (pass by reference).</p>
+    <ul>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+int main() {
+    int x = 5, y = 10;
+    swap(&x, &y);
+    printf("x: %d, y: %d\n", x, y); // x: 10, y: 5
+    return 0;
+}
+        </pre>
+      </li>
+      <li><strong>Advantage:</strong> Enables modifying multiple variables or passing large data efficiently.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>8.10 Dynamic Memory Allocation</h2>
+    <p>Dynamic memory allocation allows programs to allocate memory at runtime using functions from stdlib.h.</p>
+
+    <h2>8.10.1 malloc()</h2>
+    <p>Allocates a block of memory of specified size, returns a void* pointer.</p>
+    <ul>
+      <li><strong>Syntax:</strong> void *malloc(size_t size);</li>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+int main() {
+    int *ptr = (int *)malloc(5 * sizeof(int));
+    if (ptr != NULL) {
+        for (int i = 0; i < 5; i++) {
+            ptr[i] = i + 1;
+            printf("%d ", ptr[i]);
+        }
+        free(ptr);
+    }
+    return 0;
+}
+        </pre>
+      </li>
+    </ul>
+
+    <h2>8.10.2 calloc()</h2>
+    <p>Allocates memory for an array of elements, initializes to zero.</p>
+    <ul>
+      <li><strong>Syntax:</strong> void *calloc(size_t num, size_t size);</li>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+int main() {
+    int *ptr = (int *)calloc(5, sizeof(int));
+    if (ptr != NULL) {
+        for (int i = 0; i < 5; i++) {
+            printf("%d ", ptr[i]); // All 0
+        }
+        free(ptr);
+    }
+    return 0;
+}
+        </pre>
+      </li>
+    </ul>
+
+    <h2>8.10.3 realloc()</h2>
+    <p>Resizes previously allocated memory, preserving existing data.</p>
+    <ul>
+      <li><strong>Syntax:</strong> void *realloc(void *ptr, size_t new_size);</li>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+int main() {
+    int *ptr = (int *)malloc(3 * sizeof(int));
+    if (ptr != NULL) {
+        ptr = (int *)realloc(ptr, 5 * sizeof(int));
+        for (int i = 0; i < 5; i++) {
+            ptr[i] = i + 1;
+            printf("%d ", ptr[i]);
+        }
+        free(ptr);
+    }
+    return 0;
+}
+        </pre>
+      </li>
+    </ul>
+
+    <h2>8.10.4 free()</h2>
+    <p>Deallocates memory previously allocated by malloc(), calloc(), or realloc().</p>
+    <ul>
+      <li><strong>Syntax:</strong> void free(void *ptr);</li>
+      <li><strong>Example:</strong> See above examples (free(ptr)).</li>
+      <li><strong>Note:</strong> Always free dynamically allocated memory to prevent memory leaks.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>8.11 Pass by Value, Pass by Reference</h2>
+    <p>C supports two ways to pass arguments to functions: pass by value and pass by reference.</p>
+    <ul>
+      <li><strong>Pass by Value:</strong> Copies the argument’s value; changes in the function do not affect the original.
+        <pre>
+#include &lt;stdio.h&gt;
+void modify(int x) {
+    x = 20;
+}
+int main() {
+    int a = 10;
+    modify(a);
+    printf("a: %d\n", a); // a: 10
+    return 0;
+}
+        </pre>
+      </li>
+      <li><strong>Pass by Reference:</strong> Passes a pointer to the variable, allowing modifications to the original.
+        <pre>
+#include &lt;stdio.h&gt;
+void modify(int *x) {
+    *x = 20;
+}
+int main() {
+    int a = 10;
+    modify(&a);
+    printf("a: %d\n", a); // a: 20
+    return 0;
+}
+        </pre>
+      </li>
+    </ul>
+  </div>
+</body>
+</html>

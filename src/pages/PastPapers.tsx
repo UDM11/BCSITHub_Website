@@ -6,7 +6,6 @@ import {
 } from 'lucide-react';
 import { Card, CardContent, CardHeader } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
-import { Select } from '../components/ui/Select';
 import { useAuth } from '../context/AuthContext';
 import { UploadPaperModal } from '../components/Notes/UploadPaperModal';
 import Backendless from 'backendless';
@@ -274,27 +273,53 @@ export function PastPapers() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Select
-                  label="Semester"
-                  value={selectedSemester}
-                  onChange={(e) => setSelectedSemester(e.target.value)}
-                  options={semesters}
-                  placeholder="All Semesters"
-                />
-                <Select
-                  label="Exam Type"
-                  value={selectedExamType}
-                  onChange={(e) => setSelectedExamType(e.target.value)}
-                  options={examTypes}
-                  placeholder="All Types"
-                />
-                <Select
-                  label="College"
-                  value={selectedCollege}
-                  onChange={(e) => setSelectedCollege(e.target.value)}
-                  options={colleges}
-                  placeholder="All Colleges"
-                />
+                <div className="space-y-1">
+                  <label className="block text-sm font-medium text-gray-700">Semester</label>
+                  <select
+                    value={selectedSemester}
+                    onChange={(e) => setSelectedSemester(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="">All Semesters</option>
+                    {semesters.map((semester) => (
+                      <option key={semester.value} value={semester.value}>
+                        {semester.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div className="space-y-1">
+                  <label className="block text-sm font-medium text-gray-700">Exam Type</label>
+                  <select
+                    value={selectedExamType}
+                    onChange={(e) => setSelectedExamType(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="">All Types</option>
+                    {examTypes.map((type) => (
+                      <option key={type.value} value={type.value}>
+                        {type.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div className="space-y-1">
+                  <label className="block text-sm font-medium text-gray-700">College</label>
+                  <select
+                    value={selectedCollege}
+                    onChange={(e) => setSelectedCollege(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="">All Colleges</option>
+                    {colleges.map((college) => (
+                      <option key={college.value} value={college.value}>
+                        {college.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
             </CardContent>
           </Card>

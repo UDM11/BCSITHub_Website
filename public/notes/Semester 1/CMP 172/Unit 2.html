@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 2: Elements of C</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+        text-align: center;
+        color: black;
+        font-size: 16pt;
+        font-weight: bold;
+    }
+    h2 {
+      color: black;
+      font-weight: bold;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #000000;
+      color: #ffffff;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 5px;
+      font-size: 12pt;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      .section {
+        padding: 5px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Unit 2: Elements of C</h1>
+
+  <div class="section">
+    <h2>2.1 C Character Set</h2>
+    <p>The C character set consists of the characters that can be used to form valid C programs. These characters are used to create tokens, strings, and other elements in C.</p>
+    <ul>
+      <li><strong>Letters:</strong> A-Z, a-z (both uppercase and lowercase).</li>
+      <li><strong>Digits:</strong> 0-9.</li>
+      <li><strong>Special Characters:</strong> Symbols like +, -, *, /, %, &, |, etc.</li>
+      <li><strong>White Spaces:</strong> Spaces, tabs, newlines, etc.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>2.2 Tokens</h2>
+    <p>Tokens are the smallest individual units in a C program, recognized by the compiler.</p>
+    <ul>
+      <li><strong>Keywords:</strong> Reserved words with specific meanings (e.g., int, for, if).</li>
+      <li><strong>Identifiers:</strong> User-defined names for variables, functions, etc. (e.g., main, sum).</li>
+      <li><strong>Constants:</strong> Fixed values like 10, 3.14, or 'A'.</li>
+      <li><strong>Operators:</strong> Symbols for operations (e.g., +, -, *, /).</li>
+      <li><strong>Punctuators:</strong> Symbols like ;, ,, {}, (), etc., for syntax.</li>
+      <li><strong>Example:</strong>
+        <pre>
+int main() {
+    int x = 5;
+}
+        </pre>
+        Tokens: int, main, (, ), {, int, x, =, 5, ;, }.
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>2.3 Escape Sequence</h2>
+    <p>Escape sequences are special character combinations starting with a backslash (\) used to represent characters that are difficult to include directly in code.</p>
+    <ul>
+      <li><strong>Common Escape Sequences:</strong>
+        <ul>
+          <li>\n: Newline</li>
+          <li>\t: Tab</li>
+          <li>\": Double quote</li>
+          <li>\\ : Backslash</li>
+          <li>\0: Null character</li>
+        </ul>
+      </li>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    printf("Hello\nWorld\t!\\");
+    return 0;
+}
+        </pre>
+        Output: 
+        <pre>
+Hello
+World   !
+        </pre>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>2.4 Variables Declaration and Initialization</h2>
+    <p>Variables are named memory locations used to store data. Declaration specifies the variable's type, and initialization assigns an initial value.</p>
+    <ul>
+      <li><strong>Declaration:</strong> Specifies the data type and name.
+        <pre>
+int age;
+float salary;
+        </pre>
+      </li>
+      <li><strong>Initialization:</strong> Assigns a value at the time of declaration.
+        <pre>
+int age = 25;
+float salary = 50000.50;
+        </pre>
+      </li>
+      <li><strong>Rules:</strong> Variable names must start with a letter or underscore, contain no spaces, and avoid reserved keywords.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>2.5 Data Types</h2>
+    <p>Data types define the type and size of data a variable can hold.</p>
+    <h2>2.5.1 Basic, Derived, and User Defined</h2>
+    <ul>
+      <li><strong>Basic Data Types:</strong>
+        <ul>
+          <li><strong>int:</strong> Integer (e.g., 10, -5).</li>
+          <li><strong>float:</strong> Single-precision floating-point (e.g., 3.14).</li>
+          <li><strong>double:</strong> Double-precision floating-point (e.g., 3.14159).</li>
+          <li><strong>char:</strong> Single character (e.g., 'A').</li>
+        </ul>
+      </li>
+      <li><strong>Derived Data Types:</strong>
+        <ul>
+          <li><strong>Array:</strong> Collection of elements of the same type (e.g., int arr[5]).</li>
+          <li><strong>Pointer:</strong> Stores memory address (e.g., int *ptr).</li>
+          <li><strong>Function:</strong> A block of code with a return type.</li>
+        </ul>
+      </li>
+      <li><strong>User-Defined Data Types:</strong>
+        <ul>
+          <li><strong>struct:</strong> Groups different data types.
+            <pre>
+struct student {
+    int id;
+    char name[50];
+};
+            </pre>
+          </li>
+          <li><strong>union:</strong> Shares memory for different data types.</li>
+          <li><strong>enum:</strong> Defines a set of named integer constants.</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>2.6 Constants/Literals</h2>
+    <p>Constants are fixed values that cannot be modified during program execution.</p>
+    <ul>
+      <li><strong>Types:</strong>
+        <ul>
+          <li><strong>Integer Literals:</strong> Whole numbers (e.g., 10, -5).</li>
+          <li><strong>Floating-Point Literals:</strong> Decimal numbers (e.g., 3.14, -0.001).</li>
+          <li><strong>Character Literals:</strong> Single characters in single quotes (e.g., 'A').</li>
+          <li><strong>String Literals:</strong> Sequence of characters in double quotes (e.g., "Hello").</li>
+        </ul>
+      </li>
+      <li><strong>Defining Constants:</strong>
+        <pre>
+#define MAX 100
+const int MIN = 10;
+        </pre>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>2.7 Expressions</h2>
+    <p>An expression is a combination of variables, constants, and operators that produces a value.</p>
+    <ul>
+      <li><strong>Types:</strong>
+        <ul>
+          <li><strong>Arithmetic:</strong> e.g., a + b, x * y.</li>
+          <li><strong>Relational:</strong> e.g., a > b, x == y.</li>
+          <li><strong>Logical:</strong> e.g., (a > b) && (x < y).</li>
+          <li><strong>Assignment:</strong> e.g., x = 5.</li>
+        </ul>
+      </li>
+      <li><strong>Example:</strong>
+        <pre>
+int x = 5, y = 3;
+int z = x + y * 2; // z = 11 (follows operator precedence)
+        </pre>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>2.8 Statements</h2>
+    <p>Statements are complete instructions in a C program that perform actions.</p>
+    <ul>
+      <li><strong>Types:</strong>
+        <ul>
+          <li><strong>Expression Statements:</strong> e.g., x = 5;.</li>
+          <li><strong>Compound Statements:</strong> Group of statements in {}.</li>
+          <li><strong>Control Statements:</strong> e.g., if, for, while.</li>
+          <li><strong>Jump Statements:</strong> e.g., break, continue, return.</li>
+        </ul>
+      </li>
+      <li><strong>Example:</strong>
+        <pre>
+if (x > 0) {
+    printf("Positive");
+}
+        </pre>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>2.9 Comments</h2>
+    <p>Comments are non-executable text used to explain code, ignored by the compiler.</p>
+    <ul>
+      <li><strong>Single-Line Comments:</strong> Start with //.
+        <pre>
+// This is a single-line comment
+int x = 5;
+        </pre>
+      </li>
+      <li><strong>Multi-Line Comments:</strong> Enclosed in /* */.
+        <pre>
+/* This is a
+   multi-line comment */
+int y = 10;
+        </pre>
+      </li>
+      <li><strong>Purpose:</strong> Improve code readability and maintenance.</li>
+    </ul>
+  </div>
+</body>
+</html>

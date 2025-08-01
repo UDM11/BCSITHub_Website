@@ -10,52 +10,76 @@ export interface SubjectChapters {
 }
 
 export const chapterData: SubjectChapters[] = [
-    // semester 1
+  // Start 1st Semester
   {
-    courseCode: "CMP 172",
+    courseCode: "ENG 111",
     chapters: [
-      { id: "ch1", title: "Introduction to Programming" },
-      { id: "ch2", title: "Variables and Data Types" },
-      { id: "ch3", title: "Operators and Expressions" },
-      { id: "ch4", title: "Control Structures" },
-      { id: "ch5", title: "Functions and Modular Programming" },
-    ],
-  },
-  {
-    courseCode: "CMP 173",
-    chapters: [
-      { id: "ch1", title: "Introduction to Internet" },
-      { id: "ch2", title: "HTML Basics" },
-      { id: "ch3", title: "CSS Fundamentals" },
-      { id: "ch4", title: "JavaScript Introduction" },
-    ],
-  },
-  {
-    courseCode: "CMP 171",
-    chapters: [
-      { id: "ch1", title: "History of Computers" },
-      { id: "ch2", title: "Types of Computers" },
-      { id: "ch3", title: "Components of Computer Systems" },
+        { id: "Unit 1", title: "Unit 1: Introduction to Language Skills" },
+        { id: "Unit 2", title: "Unit 2: Listening Skills" },
+        { id: "Unit 3", title: "Unit 3: Speaking Skills" },
+        { id: "Unit 4", title: "Unit 4: English Grammar for Accuracy" },
+        { id: "Unit 5", title: "Unit 5: Reading Skills" },
+        { id: "Unit 6", title: "Unit 6: Basic Research Skills" },
+        { id: "Unit 7", title: "Unit 7: Writing Skills" }
     ],
   },
   {
     courseCode: "MTH 113",
     chapters: [
-      { id: "ch1", title: "Set Theory" },
-      { id: "ch2", title: "Relations and Functions" },
-      { id: "ch3", title: "Limits and Continuity" },
-    ],
+        { id: "Unit 1", title: "Unit 1: Basic Concept" },
+        { id: "Unit 2", title: "Unit 2: Functions, Limit, and Continuity" },
+        { id: "Unit 3", title: "Unit 3: Derivative" },
+        { id: "Unit 4", title: "Unit 4: Application of Derivatives" },
+        { id: "Unit 5", title: "Unit 5: Integrals" },
+        { id: "Unit 6", title: "Unit 6: Matrices and Determinants" },
+        { id: "Unit 7", title: "Unit 7: Permutations and Combinations" }
+    ]
   },
   {
-    courseCode: "ENG 111",
+    courseCode: "CMP 173",
     chapters: [
-      { id: "Unit 1", title: "Reading Comprehension" },
-      { id: "ch2", title: "Essay Writing" },
-      { id: "ch3", title: "Grammar and Vocabulary" },
-    ],
+        { id: "Unit 1", title: "Unit 1: Introduction to Web Technology" },
+        { id: "Unit 2", title: "Unit 2: Hyper Text Markup Language (HTML)" },
+        { id: "Unit 3", title: "Unit 3: HTML5" },
+        { id: "Unit 4", title: "Unit 4: Cascading Style Sheets (CSS)" },
+        { id: "Unit 5", title: "Unit 5: Advanced CSS" },
+        { id: "Unit 6", title: "Unit 6: Client-Side Scripting with JavaScript" },
+        { id: "Unit 7", title: "Unit 7: Advanced JavaScript" }
+    ]
   },
+  {
+    courseCode: "CMP 171",
+    chapters: [
+        { id: "Unit 1", title: "Unit 1: Introduction to Computer" },
+        { id: "Unit 2", title: "Unit 2: Computer Hardware" },
+        { id: "Unit 3", title: "Unit 3: Computer Software" },
+        { id: "Unit 4", title: "Unit 4: Operating System" },
+        { id: "Unit 5", title: "Unit 5: Data Communication and Computer Network" },
+        { id: "Unit 6", title: "Unit 6: Internet and Internet Services" },
+        { id: "Unit 7", title: "Unit 7: Database Management System" },
+        { id: "Unit 8", title: "Unit 8: Multimedia" },
+        { id: "Unit 9", title: "Unit 9: Computer Security and Privacy" },
+        { id: "Unit 10", title: "Unit 10: Current Trends in Computing" }
+    ]
+  },
+  {
+    courseCode: "CMP 172",
+    chapters: [
+        { id: "Unit 1", title: "Unit 1: Problem Solving with Computer" },
+        { id: "Unit 2", title: "Unit 2: Elements of C" },
+        { id: "Unit 3", title: "Unit 3: Input and Output" },
+        { id: "Unit 4", title: "Unit 4: Operators and Expressions" },
+        { id: "Unit 5", title: "Unit 5: Control Statements" },
+        { id: "Unit 6", title: "Unit 6: Arrays and Strings" },
+        { id: "Unit 7", title: "Unit 7: Functions" },
+        { id: "Unit 8", title: "Unit 8: Pointers" },
+        { id: "Unit 9", title: "Unit 9: Structures and Unions" },
+        { id: "Unit 10", title: "Unit 10: File Handling" }
+    ]
+  },
+  //End 1st Semester
 
-  // Semester 2
+  // Start 2nd Semester
     {
     courseCode: "ENG 112",
     chapters: [

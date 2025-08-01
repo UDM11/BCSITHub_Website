@@ -1,18 +1,37 @@
+// src/pages/notes/ChapterNotes.tsx
 import React, { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/Button";
 import { ChevronLeft, Download } from "lucide-react";
 import html2pdf from "html2pdf.js";
 import { motion } from "framer-motion";
+import { useAuth } from "../../context/AuthContext";
+import AuthRequiredModal from "../../components/common/AuthRequiredModal";
 
 export default function ChapterNotes() {
   const { semesterId, subjectId, chapterId } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const isAuthenticated = !!user;
 
   const [htmlContent, setHtmlContent] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const [showModal, setShowModal] = useState(false);
+
+  // 🛑 Block scroll when modal is open
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto"; // Clean up on unmount
+    };
+  }, [showModal]);
 
   useEffect(() => {
     if (!semesterId || !subjectId || !chapterId) {
@@ -29,15 +48,12 @@ export default function ChapterNotes() {
     setError(null);
     window.scrollTo(0, 0);
 
-    // Simulate delay with fetch
-    const delay = new Promise((res) => setTimeout(res, 1500)); // 1.5 seconds
-
+    const delay = new Promise((res) => setTimeout(res, 1500));
     Promise.all([
-      fetch(filePath)
-        .then((res) => {
-          if (!res.ok) throw new Error("Note not found.");
-          return res.text();
-        }),
+      fetch(filePath).then((res) => {
+        if (!res.ok) throw new Error("Note not found.");
+        return res.text();
+      }),
       delay,
     ])
       .then(([data]) => {
@@ -58,6 +74,11 @@ export default function ChapterNotes() {
   }, [chapterId]);
 
   const downloadAsPDF = () => {
+    if (!isAuthenticated) {
+      setShowModal(true);
+      return;
+    }
+
     if (!contentRef.current) return;
 
     const opt = {
@@ -95,17 +116,6 @@ export default function ChapterNotes() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3, duration: 0.6 }}
       >
-        {/* Breadcrumb */}
-        <motion.div
-          className="text-sm text-gray-600 mb-2"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.4 }}
-        >
-          Notes &gt; Semester {semesterId} &gt; {subjectId?.replace(/-/g, " ")} &gt;{" "}
-          {chapterId}
-        </motion.div>
-
         {/* Header */}
         <motion.div
           className="flex items-center justify-between mb-6 flex-wrap gap-2"
@@ -118,7 +128,7 @@ export default function ChapterNotes() {
             onClick={() =>
               navigate(`/notes/semester/${semesterId}/subject/${subjectId}`)
             }
-            className="flex items-center gap-1"
+            className="flex items-center gap-1 transition-colors duration-300 ease-in-out hover:bg-indigo-100 hover:text-indigo-700 rounded-md px-3 py-2"
           >
             <ChevronLeft className="w-5 h-5" />
             Back to Chapters
@@ -133,7 +143,7 @@ export default function ChapterNotes() {
 
           <Button
             variant="outline"
-            className="flex items-center gap-1"
+            className="flex items-center gap-1 transition-colors duration-300 ease-in-out hover:bg-indigo-600 hover:text-white rounded-md px-3 py-2"
             onClick={downloadAsPDF}
           >
             <Download className="w-4 h-4" />
@@ -149,7 +159,7 @@ export default function ChapterNotes() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.5 }}
         >
-          {error && (
+          {error ? (
             <div className="text-center text-red-600 font-semibold">
               <p>{error}</p>
               <Button
@@ -160,13 +170,14 @@ export default function ChapterNotes() {
                 Retry
               </Button>
             </div>
-          )}
-
-          {!error && (
+          ) : (
             <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
           )}
         </motion.div>
       </motion.div>
+
+      {/* Modal */}
+      {showModal && <AuthRequiredModal onClose={() => setShowModal(false)} />}
     </motion.div>
   );
 }

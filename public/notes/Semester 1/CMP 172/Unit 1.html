@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 1: Problem Solving with Computer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+        text-align: center;
+        color: black;
+        font-size: 16pt;
+        font-weight: bold;
+    }
+    h2 {
+      color: black;
+      font-weight: bold;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #000000;
+      color: #ffffff;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 5px;
+      font-size: 12pt;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      .section {
+        padding: 5px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Unit 1: Problem Solving with Computer</h1>
+
+  <div class="section">
+    <h2>1.1 Problem Analysis</h2>
+    <p>Problem analysis is the initial step in solving a problem using a computer. It involves understanding the problem thoroughly and breaking it down into manageable parts. This process ensures that the solution is well-planned and efficient.</p>
+    <ul>
+      <li><strong>Identify the Problem:</strong> Clearly define what needs to be solved, including inputs, outputs, and constraints.</li>
+      <li><strong>Analyze Requirements:</strong> Determine the functional and non-functional requirements of the solution.</li>
+      <li><strong>Break Down the Problem:</strong> Divide the problem into smaller sub-problems to simplify the solution process.</li>
+      <li><strong>Evaluate Feasibility:</strong> Assess whether the problem can be solved with available resources and technology.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>1.2 Algorithms and Flowchart</h2>
+    <p>An algorithm is a step-by-step procedure for solving a problem, while a flowchart is a graphical representation of that algorithm. Both are essential tools for planning and communicating solutions.</p>
+    <ul>
+      <li><strong>Algorithm:</strong> A finite sequence of well-defined instructions to accomplish a task. For example, to find the sum of two numbers:
+        <pre>
+Input: Two numbers, a and b
+Step 1: Read a and b
+Step 2: Calculate sum = a + b
+Step 3: Output sum
+        </pre>
+      </li>
+      <li><strong>Flowchart:</strong> Uses symbols like ovals (start/end), rectangles (process), and diamonds (decision) to depict the algorithm visually. For the above algorithm, the flowchart would include:
+        <ul>
+          <li>An oval for "Start."</li>
+          <li>A rectangle for "Read a, b."</li>
+          <li>A rectangle for "Sum = a + b."</li>
+          <li>A rectangle for "Output sum."</li>
+          <li>An oval for "End."</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>1.3 History of C</h2>
+    <p>The C programming language, developed in the early 1970s, is a foundational language in computer science, known for its efficiency and flexibility.</p>
+    <ul>
+      <li><strong>Origin:</strong> Developed by Dennis Ritchie at Bell Labs between 1972 and 1973 for the UNIX operating system.</li>
+      <li><strong>Evolution:</strong> Influenced by earlier languages like BCPL and B. Standardized as ANSI C in 1989 (C89) and later as C99, C11, and C17.</li>
+      <li><strong>Impact:</strong> Widely used in system programming, embedded systems, and as a base for languages like C++ and Java.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>1.4 Structure of C Program</h2>
+    <p>A C program follows a specific structure to ensure clarity and functionality. A basic C program includes several key components.</p>
+    <pre>
+#include &lt;stdio.h&gt;
+#define PI 3.14
+
+int main() {
+    printf("Hello, World!\n");
+    return 0;
+}
+    </pre>
+    <ul>
+      <li><strong>Preprocessor Directives:</strong> Lines starting with # (e.g., #include, #define) that instruct the compiler to include files or define constants.</li>
+      <li><strong>Main Function:</strong> The entry point of the program, where execution begins.</li>
+      <li><strong>Statements:</strong> Instructions within curly braces {} that perform the program's tasks.</li>
+      <li><strong>Return Statement:</strong> Indicates the program's termination and returns a value to the operating system.</li>
+    </ul>
+
+    <h2>1.4.1 Debugging</h2>
+    <p>Debugging is the process of identifying and fixing errors in a program. Common types of errors include:</p>
+    <ul>
+      <li><strong>Syntax Errors:</strong> Mistakes in code structure, like missing semicolons.
+        <pre>
+// Syntax error: missing semicolon
+printf("Error")
+        </pre>
+      </li>
+      <li><strong>Logical Errors:</strong> Errors in the program's logic, producing incorrect results.
+        <pre>
+// Logical error: incorrect formula
+int area = length + width; // Should be length * width
+        </pre>
+      </li>
+      <li><strong>Runtime Errors:</strong> Errors during execution, like division by zero.</li>
+      <li><strong>Tools:</strong> Debuggers (e.g., GDB), print statements, and IDEs help locate and fix errors.</li>
+    </ul>
+
+    <h2>1.4.2 Compiling a C Program</h2>
+    <p>Compiling converts C source code into machine code that the computer can execute.</p>
+    <ul>
+      <li><strong>Steps:</strong>
+        <ol>
+          <li>Preprocessing: Expands directives like #include and #define.</li>
+          <li>Compilation: Converts code to assembly language.</li>
+          <li>Assembly: Translates assembly code to object code.</li>
+          <li>Linking: Combines object code with libraries to create an executable.</li>
+        </ol>
+      </li>
+      <li><strong>Command:</strong> Using a compiler like GCC:
+        <pre>
+gcc -o program program.c
+        </pre>
+      </li>
+    </ul>
+
+    <h2>1.4.3 Executing a C Program</h2>
+    <p>Execution runs the compiled program to perform its tasks.</p>
+    <ul>
+      <li><strong>Running the Program:</strong> On Unix/Linux, use:
+        <pre>
+./program
+        </pre>
+        On Windows, run the .exe file directly.
+      </li>
+      <li><strong>Input/Output:</strong> Programs may accept user input (e.g., via scanf) and display output (e.g., via printf).</li>
+      <li><strong>Environment:</strong> Ensure the system has the necessary runtime environment (e.g., libraries).</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>1.5 Testing and Documentation</h2>
+    <p>Testing ensures the program works correctly, while documentation explains its functionality for users and developers.</p>
+    <ul>
+      <li><strong>Testing:</strong>
+        <ul>
+          <li><strong>Unit Testing:</strong> Tests individual functions or modules.</li>
+          <li><strong>Integration Testing:</strong> Tests combined modules.</li>
+          <li><strong>System Testing:</strong> Tests the entire program.</li>
+          <li><strong>Test Cases:</strong> Include normal, boundary, and error conditions.</li>
+        </ul>
+      </li>
+      <li><strong>Documentation:</strong>
+        <ul>
+          <li><strong>Internal:</strong> Comments within code to explain logic.
+            <pre>
+// Calculate area of rectangle
+int area = length * width;
+            </pre>
+          </li>
+          <li><strong>External:</strong> User manuals, design documents, or README files.</li>
+          <li><strong>Importance:</strong> Facilitates maintenance and collaboration.</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>1.6 Preprocessor and Macros</h2>
+    <p>The preprocessor modifies C code before compilation, and macros are shorthand for code snippets.</p>
+    <ul>
+      <li><strong>Preprocessor Directives:</strong>
+        <ul>
+          <li><strong>#include:</strong> Imports header files (e.g., #include &lt;stdio.h&gt;).</li>
+          <li><strong>#define:</strong> Defines constants or macros.
+            <pre>
+#define PI 3.14
+#define SQUARE(x) ((x) * (x))
+            </pre>
+          </li>
+          <li><strong>#ifdef, #endif:</strong> Conditional compilation based on defined macros.</li>
+        </ul>
+      </li>
+      <li><strong>Macros:</strong>
+        <ul>
+          <li><strong>Object-like Macros:</strong> Replace identifiers with values (e.g., #define PI 3.14).</li>
+          <li><strong>Function-like Macros:</strong> Replace calls with expressions (e.g., #define SQUARE(x) ((x) * (x))).</li>
+          <li><strong>Caution:</strong> Macros lack type checking and can cause side effects if not carefully designed.</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</body>
+</html>

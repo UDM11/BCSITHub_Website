@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 7: Database Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.4;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            font-weight: bold;
+        }
+        h1 {
+            text-align: center;
+            font-size: 16pt;
+        }
+        .section {
+            background: #fff;
+            padding: 5px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: justify;
+        }
+        ul {
+            margin: 5px 0;
+            padding-left: 10px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Unit 7: Database Management System</h1>
+
+    <div class="section">
+        <h2>7.1 Introduction to Database</h2>
+        <p>A database is an organized collection of data, typically stored and accessed electronically from a computer system. It allows efficient storage, retrieval, and management of data, supporting multiple users and applications simultaneously.</p>
+        <ul>
+            <li><strong>Purpose:</strong> Databases enable structured data storage, efficient querying, and data integrity for various applications.</li>
+            <li><strong>Components:</strong> Consists of tables (rows and columns) and a Database Management System (DBMS) to manage data.</li>
+            <li><strong>Examples:</strong> MySQL, Oracle, PostgreSQL, and MongoDB are widely used databases.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>7.2 Data Concepts and Characteristics</h2>
+        <p>Data concepts define the fundamental principles of data organization, while characteristics highlight the qualities that make databases effective.</p>
+        <ul>
+            <li><strong>Data Concepts:</strong> Data (raw facts), information (processed data), and metadata (data about data) form the basis of databases.</li>
+            <li><strong>Characteristics:</strong> Includes accuracy (error-free data), consistency (uniform data across the system), security (protection from unauthorized access), and scalability (ability to handle growing data).</li>
+            <li><strong>Examples:</strong> A customer database ensures accurate records (e.g., names, addresses) and consistent formats across entries.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>7.3 Database vs. File System</h2>
+        <p>Databases and file systems both store data but differ in structure, functionality, and efficiency.</p>
+        <ul>
+            <li><strong>Data Organization:</strong> File systems use files and folders with no inherent structure for querying, while databases use structured tables with relationships.</li>
+            <li><strong>Data Redundancy:</strong> File systems often duplicate data, leading to inconsistency; databases reduce redundancy via normalization.</li>
+            <li><strong>Access Control:</strong> Databases provide advanced security and user access controls, unlike basic file-level permissions in file systems.</li>
+            <li><strong>Examples:</strong> Storing records in Excel files (file system) vs. a MySQL database for efficient querying and management.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>7.4 Data Models</h2>
+        <p>Data models define the structure and organization of data within a database, guiding how data is stored and accessed.</p>
+        <ul>
+            <li><strong>Hierarchical Model:</strong> Organizes data in a tree-like structure with parent-child relationships, suitable for structured data like file systems.</li>
+            <li><strong>Network Model:</strong> Allows multiple parent-child relationships, forming a graph structure, offering flexibility but complex management.</li>
+            <li><strong>Relational Model:</strong> Uses tables with rows and columns, linked by keys, widely used for its simplicity and efficiency.</li>
+            <li><strong>NoSQL Models:</strong> Includes key-value, document, or graph models, designed for unstructured data and scalability.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>7.5 Database Management System</h2>
+        <p>A Database Management System (DBMS) is software that facilitates the creation, management, and manipulation of databases, ensuring efficient data handling.</p>
+        <ul>
+            <li><strong>Functions:</strong> Supports data storage, retrieval, updating, and security, while enabling concurrent access by multiple users.</li>
+            <li><strong>Features:</strong> Provides query processing, backup/recovery, and data integrity enforcement.</li>
+            <li><strong>Examples:</strong> Oracle, MySQL, Microsoft SQL Server, and MongoDB are popular DBMSs.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>7.6 RDBMS</h2>
+        <p>A Relational Database Management System (RDBMS) is a DBMS that manages data organized in tables with relationships defined by keys, using Structured Query Language (SQL).</p>
+        <ul>
+            <li><strong>Key Features:</strong> Supports SQL, enforces data integrity with constraints (e.g., primary keys, foreign keys), and ensures ACID properties (Atomicity, Consistency, Isolation, Durability).</li>
+            <li><strong>Structure:</strong> Data is stored in tables, with relationships established through keys for efficient querying.</li>
+            <li><strong>Examples:</strong> MySQL, PostgreSQL, and Oracle Database are widely used RDBMSs.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>7.7 Database Applications</h2>
+        <p>Database applications leverage databases to manage data for various industries and purposes, enhancing efficiency and decision-making.</p>
+        <ul>
+            <li><strong>Business:</strong> Used in inventory management, customer relationship systems (CRM), and financial systems.</li>
+            <li><strong>Healthcare:</strong> Manages patient records, medical histories, and billing information.</li>
+            <li><strong>Education:</strong> Supports student information systems, online learning platforms, and research databases.</li>
+            <li><strong>E-Commerce:</strong> Powers product catalogs, order processing, and customer data management.</li>
+        </ul>
+    </div>
+</body>
+</html>

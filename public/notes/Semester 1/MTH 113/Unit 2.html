@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 2: Functions, Limit and Continuity</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.4;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            font-weight: bold;
+        }
+        h1 {
+            text-align: center;
+            font-size: 16pt;
+        }
+        .section {
+            background: #fff;
+            padding: 5px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: justify;
+        }
+        ul {
+            margin: 5px 0;
+            padding-left: 10px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Unit 2: Functions, Limit and Continuity</h1>
+
+    <div class="section">
+        <h2>2.1 Constants and Variables, Concept of Functions</h2>
+        <p>Constants, variables, and functions form the foundation of mathematical modeling, essential for describing relationships in mathematics, computer science, and economics.</p>
+        <ul>
+            <li><strong>Constants:</strong> Fixed values that do not change, such as π or 5, used as reference points in equations or models.</li>
+            <li><strong>Variables:</strong> Symbols representing quantities that can change, such as x or y, allowing flexibility in mathematical expressions.</li>
+            <li><strong>Functions:</strong> A rule that assigns each input (from a set called the domain) to exactly one output (in a set called the range). Denoted as f(x), e.g., f(x) = x² maps x to x².</li>
+            <li><strong>Notation and Representation:</strong> Functions are expressed as equations, tables, or graphs, with f(x) indicating the output for input x (e.g., f(2) = 4 for f(x) = x²).</li>
+        </ul>
+        <p>Understanding these concepts enables modeling of real-world relationships, such as cost functions in business.</p>
+    </div>
+
+    <div class="section">
+        <h2>2.2 Domain and Range of a Function</h2>
+        <p>The domain and range define the scope and output of a function, critical for understanding its behavior and applicability.</p>
+        <ul>
+            <li><strong>Domain:</strong> The set of all possible input values (x) for which the function is defined. For example, for f(x) = 1/x, the domain is all real numbers except x = 0.</li>
+            <li><strong>Range:</strong> The set of all possible output values (f(x)) produced by the function. For f(x) = x², the range is all non-negative real numbers (y ≥ 0).</li>
+            <li><strong>Determining Domain:</strong> Identify restrictions, such as division by zero or square roots of negative numbers (e.g., f(x) = √x has domain x ≥ 0).</li>
+            <li><strong>Determining Range:</strong> Analyze the function’s behavior or graph to find all possible outputs, often using algebraic methods or testing values.</li>
+        </ul>
+        <p>Domain and range clarify the function’s applicability in fields like programming and economics.</p>
+    </div>
+
+    <div class="section">
+        <h2>2.3 Types of Functions (Algebraic, Logarithmic, Trigonometric, Exponential)</h2>
+        <p>Different types of functions serve distinct purposes in modeling phenomena, each with unique properties and applications.</p>
+        <ul>
+            <li><strong>Algebraic Functions:</strong> Include polynomials (e.g., f(x) = x² + 2x), rational functions (e.g., f(x) = 1/x), and root functions (e.g., f(x) = √x). Used in optimization and data analysis.</li>
+            <li><strong>Logarithmic Functions:</strong> Of the form f(x) = log_b(x), where b is the base (e.g., f(x) = ln(x)). Model growth rates or scales, common in information theory and economics.</li>
+            <li><strong>Trigonometric Functions:</strong> Include sin(x), cos(x), and tan(x), used to model periodic phenomena like waves or oscillations in signal processing and engineering.</li>
+            <li><strong>Exponential Functions:</strong> Of the form f(x) = a^x, where a > 0 (e.g., f(x) = e^x). Model rapid growth or decay, such as compound interest or radioactive decay.</li>
+        </ul>
+        <p>These function types enable diverse modeling in scientific and economic applications.</p>
+    </div>
+
+    <div class="section">
+        <h2>2.4 Graphic Representation</h2>
+        <p>Graphic representation visualizes functions, revealing their behavior, trends, and key features through plots and graphs.</p>
+        <ul>
+            <li><strong>Cartesian Plane:</strong> Functions are plotted on a coordinate system with x (input) and y (output) axes, where each point (x, f(x)) represents a value of the function.</li>
+            <li><strong>Key Features:</strong> Identify intercepts (where f(x) = 0 or x = 0), vertices (for quadratics), asymptotes (for rational functions), and periodicity (for trigonometric functions).</li>
+            <li><strong>Graphing Techniques:</strong> Use tables of values, symmetry, or transformations (e.g., shifts, stretches) to sketch graphs accurately, or employ tools like graphing calculators.</li>
+            <li><strong>Applications:</strong> Graphs visualize trends in data analysis, such as profit functions in business or signal patterns in computing.</li>
+        </ul>
+        <p>Graphic representation aids in interpreting and communicating functional relationships effectively.</p>
+    </div>
+
+    <div class="section">
+        <h2>2.5 Application of Functions to Business and Economics</h2>
+        <p>Functions model relationships in business and economics, enabling analysis and prediction of financial and operational outcomes.</p>
+        <ul>
+            <li><strong>Cost Functions:</strong> Represent total costs as a function of output, e.g., C(q) = 100 + 5q, where q is quantity produced, used to optimize production.</li>
+            <li><strong>Revenue and Profit Functions:</strong> Revenue R(q) = p·q (price times quantity) and profit P(q) = R(q) - C(q) help determine break-even points or maximum profit.</li>
+            <li><strong>Demand Functions:</strong> Model quantity demanded as a function of price, e.g., q = 100 - 2p, used to predict consumer behavior and set pricing strategies.</li>
+            <li><strong>Exponential Models:</strong> Used for compound interest (A = P(1 + r/n)^(nt)) or depreciation, critical for financial planning and investment analysis.</li>
+        </ul>
+        <p>Functions provide quantitative tools for decision-making in business and economic contexts.</p>
+    </div>
+
+    <div class="section">
+        <h2>2.6 Limit of a Function, Properties of Limit</h2>
+        <p>The limit of a function describes its behavior as the input approaches a specific value, foundational for calculus and analytical modeling.</p>
+        <ul>
+            <li><strong>Limit Definition:</strong> The limit of f(x) as x approaches a is L, written lim(x→a) f(x) = L, if f(x) gets arbitrarily close to L as x nears a.</li>
+            <li><strong>Properties of Limits:</strong> For functions f and g, and constants c, k: lim(x→a) [cf(x)] = c·lim(x→a) f(x); lim(x→a) [f(x) + g(x)] = lim(x→a) f(x) + lim(x→a) g(x); lim(x→a) [f(x)·g(x)] = lim(x→a) f(x)·lim(x→a) g(x).</li>
+            <li><strong>Evaluation Techniques:</strong> Use substitution, factoring, or rationalization to compute limits, especially when direct substitution yields indeterminate forms like 0/0.</li>
+            <li><strong>Applications:</strong> Limits model instantaneous rates (e.g., velocity) or asymptotic behavior in algorithms and economic forecasting.</li>
+        </ul>
+        <p>Limits provide a precise way to analyze function behavior near specific points.</p>
+    </div>
+
+    <div class="section">
+        <h2>2.7 Limits of Polynomial and Rational Functions</h2>
+        <p>Limits of polynomial and rational functions are computed using algebraic techniques, critical for understanding their behavior in mathematical models.</p>
+        <ul>
+            <li><strong>Polynomial Functions:</strong> For f(x) = a_n x^n + … + a_0, lim(x→a) f(x) = f(a) by direct substitution, as polynomials are defined everywhere (e.g., lim(x→2) (x² + 3) = 7).</li>
+            <li><strong>Rational Functions:</strong> For f(x) = p(x)/q(x), if q(a) ≠ 0, lim(x→a) f(x) = p(a)/q(a). If q(a) = 0, factor or simplify to resolve indeterminate forms (e.g., lim(x→1) [(x²-1)/(x-1)] = lim(x→1) (x+1) = 2).</li>
+            <li><strong>Indeterminate Forms:</strong> Forms like 0/0 require algebraic manipulation, such as canceling common factors or using L’Hôpital’s rule for advanced cases.</li>
+            <li><strong>Applications:</strong> Used in optimization problems or modeling cost/revenue functions where precise behavior at specific points is needed.</li>
+        </ul>
+        <p>These limits ensure accurate analysis of polynomial and rational models in various fields.</p>
+    </div>
+
+    <div class="section">
+        <h2>2.8 Limits at Infinity</h2>
+        <p>Limits at infinity describe a function’s behavior as the input grows arbitrarily large or small, useful for analyzing long-term trends.</p>
+        <ul>
+            <li><strong>Definition:</strong> lim(x→∞) f(x) = L means f(x) approaches L as x increases without bound; similarly for lim(x→-∞) f(x).</li>
+            <li><strong>Polynomial Functions:</strong> For f(x) = a_n x^n + …, lim(x→∞) f(x) depends on the leading term: if n is even and a_n > 0, lim(x→∞) = ∞; if odd and a_n < 0, lim(x→∞) = -∞.</li>
+            <li><strong>Rational Functions:</strong> For f(x) = p(x)/q(x), compare degrees of numerator and denominator: if deg(p) < deg(q), lim(x→∞) = 0; if equal, lim(x→∞) = leading coefficient ratio; if deg(p) > deg(q), limit is ±∞.</li>
+            <li><strong>Applications:</strong> Model long-term behavior in economics (e.g., market saturation) or algorithm efficiency (e.g., time complexity).</li>
+        </ul>
+        <p>Limits at infinity reveal asymptotic trends critical for strategic planning and analysis.</p>
+    </div>
+
+    <div class="section">
+        <h2>2.9 Continuity, Continuity at a Point</h2>
+        <p>Continuity describes a function’s smoothness, ensuring no breaks or jumps, vital for reliable mathematical and computational models.</p>
+        <ul>
+            <li><strong>Definition:</strong> A function f is continuous at x = a if: (1) f(a) is defined, (2) lim(x→a) f(x) exists, and (3) lim(x→a) f(x) = f(a).</li>
+            <li><strong>Types of Discontinuities:</strong> Removable (e.g., f(x) = (x²-1)/(x-1) at x = 1), jump (e.g., piecewise functions with different limits), or infinite (e.g., f(x) = 1/x at x = 0).</li>
+            <li><strong>Continuity on an Interval:</strong> A function is continuous on [a, b] if it is continuous at every point in the interval, ensuring predictable behavior.</li>
+            <li><strong>Applications:</strong> Ensures stable algorithms, reliable simulations, and valid economic models where abrupt changes are unrealistic.</li>
+        </ul>
+        <p>Continuity guarantees consistent and predictable function behavior in practical applications.</p>
+    </div>
+
+    <div class="section">
+        <h2>2.10 Business Application of Limit</h2>
+        <p>Limits have practical applications in business, enabling precise analysis of trends, costs, and performance metrics.</p>
+        <ul>
+            <li><strong>Marginal Analysis:</strong> Limits calculate marginal cost or revenue (e.g., lim(Δq→0) [C(q+Δq) - C(q)]/Δq), used to optimize production levels.</li>
+            <li><strong>Break-even Points:</strong> Limits help analyze behavior near critical points, such as where cost equals revenue, refining financial strategies.</li>
+            <li><strong>Market Saturation:</strong> Limits at infinity model long-term demand (e.g., lim(q→∞) D(q) = 0 for diminishing demand), aiding strategic planning.</li>
+            <li><strong>Forecasting Trends:</strong> Limits analyze asymptotic behavior of sales or profit functions, predicting steady-state outcomes for investment decisions.</li>
+        </ul>
+        <p>Limits provide quantitative precision for optimizing business operations and planning.</p>
+    </div>
+</body>
+</html>

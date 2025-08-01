@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 10: File Handling</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+        text-align: center;
+        color: black;
+        font-size: 16pt;
+        font-weight: bold;
+    }
+    h2 {
+      color: black;
+      font-weight: bold;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #000000;
+      color: #ffffff;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 5px;
+      font-size: 12pt;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      .section {
+        padding: 5px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Unit 10: File Handling</h1>
+
+  <div class="section">
+    <h2>10.1 Concept of File</h2>
+    <p>A file is a collection of data stored on a secondary storage device, such as a hard disk or USB drive, used for persistent data storage and retrieval.</p>
+    <ul>
+      <li><strong>Types:</strong>
+        <ul>
+          <li>Text Files: Store data as human-readable characters (e.g., .txt).</li>
+          <li>Binary Files: Store data in machine-readable format (e.g., .dat).</li>
+        </ul>
+      </li>
+      <li><strong>Purpose:</strong> Store data permanently, share data between programs, or maintain logs.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>10.2 File Operation Modes</h2>
+    <p>File operation modes determine how a file can be accessed or manipulated when opened.</p>
+    <ul>
+      <li><strong>Common Modes:</strong>
+        <ul>
+          <li><code>r</code>: Read-only, file must exist.</li>
+          <li><code>w</code>: Write-only, creates new file or overwrites existing.</li>
+          <li><code>a</code>: Append, adds data to the end, creates file if it doesn’t exist.</li>
+          <li><code>r+</code>: Read and write, file must exist.</li>
+          <li><code>w+</code>: Read and write, creates new file or overwrites existing.</li>
+          <li><code>a+</code>: Read and append, creates file if it doesn’t exist.</li>
+          <li><code>rb</code>, <code>wb</code>, <code>ab</code>, etc.: Binary mode equivalents.</li>
+        </ul>
+      </li>
+      <li><strong>Note:</strong> Mode is specified when opening a file using <code>fopen()</code>.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>10.3 Opening and Closing of File</h2>
+    <p>Files must be opened before performing operations and closed afterward to free resources.</p>
+    <ul>
+      <li><strong>Opening a File:</strong>
+        <ul>
+          <li><strong>Syntax:</strong> <code>FILE *fopen(const char *filename, const char *mode);</code></li>
+          <li><strong>Return:</strong> Returns a <code>FILE*</code> pointer or <code>NULL</code> if the operation fails.</li>
+        </ul>
+      </li>
+      <li><strong>Closing a File:</strong>
+        <ul>
+          <li><strong>Syntax:</strong> <code>int fclose(FILE *fp);</code></li>
+          <li><strong>Return:</strong> 0 on success, <code>EOF</code> on error.</li>
+        </ul>
+      </li>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    FILE *fp = fopen("example.txt", "w");
+    if (fp == NULL) {
+        printf("Failed to open file\n");
+        return 1;
+    }
+    fprintf(fp, "Hello, File!\n");
+    fclose(fp);
+    return 0;
+}
+        </pre>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>10.4 Input Output Operations in File</h2>
+    <p>Input/output operations read data from or write data to files using specific functions.</p>
+    <ul>
+      <li><strong>Text File Operations:</strong>
+        <ul>
+          <li><strong>Writing:</strong>
+            <ul>
+              <li><code>fputc(char c, FILE *fp)</code>: Writes a single character.</li>
+              <li><code>fputs(const char *str, FILE *fp)</code>: Writes a string.</li>
+              <li><code>fprintf(FILE *fp, const char *format, ...)</code>: Writes formatted data.</li>
+            </ul>
+          </li>
+          <li><strong>Reading:</strong>
+            <ul>
+              <li><code>fgetc(FILE *fp)</code>: Reads a single character.</li>
+              <li><code>fgets(char *str, int size, FILE *fp)</code>: Reads a line or size-1 characters.</li>
+              <li><code>fscanf(FILE *fp, const char *format, ...)</code>: Reads formatted data.</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><strong>Binary File Operations:</strong>
+        <ul>
+          <li><code>fwrite(const void *ptr, size_t size, size_t nmemb, FILE *fp)</code>: Writes binary data.</li>
+          <li><code>fread(void *ptr, size_t size, size_t nmemb, FILE *fp)</code>: Reads binary data.</li>
+        </ul>
+      </li>
+      <li><strong>Example (Text File):</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    FILE *fp = fopen("data.txt", "w+");
+    if (fp != NULL) {
+        fprintf(fp, "Name: %s, Age: %d\n", "Alice", 25);
+        rewind(fp);
+        char buffer[50];
+        fgets(buffer, 50, fp);
+        printf("Read: %s", buffer);
+        fclose(fp);
+    }
+    return 0;
+}
+        </pre>
+      </li>
+      <li><strong>Example (Binary File):</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    FILE *fp = fopen("data.bin", "wb");
+    if (fp != NULL) {
+        int arr[3] = {10, 20, 30};
+        fwrite(arr, sizeof(int), 3, fp);
+        fclose(fp);
+    }
+    return 0;
+}
+        </pre>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>10.5 Random Access in File</h2>
+    <p>Random access allows reading or writing at any position in a file, rather than sequentially.</p>
+    <ul>
+      <li><strong>Functions:</strong>
+        <ul>
+          <li><code>fseek(FILE *fp, long offset, int whence)</code>: Moves file pointer to a specific position.
+            <ul>
+              <li><code>whence</code>: <code>SEEK_SET</code> (start), <code>SEEK_CUR</code> (current), <code>SEEK_END</code> (end).</li>
+            </ul>
+          </li>
+          <li><code>ftell(FILE *fp)</code>: Returns current file pointer position.</li>
+          <li><code>rewind(FILE *fp)</code>: Moves file pointer to the beginning.</li>
+        </ul>
+      </li>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    FILE *fp = fopen("data.txt", "r+");
+    if (fp != NULL) {
+        fseek(fp, 5, SEEK_SET); // Move to 5th byte
+        fputs("World", fp); // Overwrites from that position
+        rewind(fp); // Move back to start
+        char buffer[20];
+        fgets(buffer, 20, fp);
+        printf("Content: %s\n", buffer);
+        fclose(fp);
+    }
+    return 0;
+}
+        </pre>
+      </li>
+      <li><strong>Note:</strong> Random access is efficient for large files but requires careful management to avoid errors.</li>
+    </ul>
+  </div>
+</body>
+</html>

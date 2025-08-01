@@ -47,16 +47,17 @@ export default function SemesterSubjects() {
   return (
     <div className="min-h-screen bg-white py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Responsive container for back button and title */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="flex items-center justify-between mb-10"
+          className="flex flex-col sm:flex-row items-center sm:justify-between gap-3 flex-wrap mb-10"
         >
           <Button
             variant="ghost"
             onClick={() => navigate('/notes')}
-            className="flex items-center gap-1"
+            className="flex items-center gap-1 transition-colors duration-300 ease-in-out hover:bg-indigo-100 hover:text-indigo-700 rounded-md px-3 py-2 whitespace-nowrap"
           >
             <ChevronLeft className="w-5 h-5" />
             Back to Semesters
@@ -66,12 +67,12 @@ export default function SemesterSubjects() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-3xl font-bold text-gray-800"
+            className="text-2xl sm:text-3xl font-bold text-black text-center whitespace-nowrap"
           >
             {semester.name} - Subjects
           </motion.h2>
 
-          <div className="w-[120px]" />
+          <div className="hidden sm:block w-[120px]" />
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 2: Hyper Text Markup Language</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+        text-align: center;
+        color: black;
+        font-size: 16pt;
+        font-weight: bold;
+    }
+    h2 {
+      color: black;
+      font-weight: bold;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #000000;
+      color: #ffffff;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 5px;
+      font-size: 12pt;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      .section {
+        padding: 5px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Unit 2: Hyper Text Markup Language</h1>
+
+  <div class="section">
+    <h2>2.1 Introduction to HTML</h2>
+    <p>HTML (Hyper Text Markup Language) is the standard language used to create and design web pages. It provides the structure for content on the web, allowing browsers to interpret and display text, images, and multimedia. HTML uses tags to define elements and their hierarchy within a document.</p>
+    <ul>
+      <li><strong>Purpose</strong>: Defines the structure and content of web pages.</li>
+      <li><strong>Tags</strong>: Enclosed in angle brackets, e.g., <code>&lt;tag&gt;</code>, used to mark up content.</li>
+      <li><strong>Versions</strong>: HTML5 is the latest standard, offering improved semantics and multimedia support.</li>
+    </ul>
+    <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;My First Web Page&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Welcome to HTML&lt;/h1&gt;
+  &lt;p&gt;This is a simple HTML page.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>2.2 Document Structure</h2>
+    <p>An HTML document follows a specific structure to ensure proper rendering in browsers. The key components include the DOCTYPE declaration, <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, and <code>&lt;body&gt;</code> tags.</p>
+    <ul>
+      <li><strong>&lt;!DOCTYPE html&gt;</strong>: Declares the document as HTML5.</li>
+      <li><strong>&lt;html&gt;</strong>: The root element, containing all other elements.</li>
+      <li><strong>&lt;head&gt;</strong>: Contains metadata, such as the page title and character set.</li>
+      <li><strong>&lt;body&gt;</strong>: Contains the visible content of the page.</li>
+    </ul>
+    <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Document Structure&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;My Page&lt;/h1&gt;
+  &lt;p&gt;This is the content.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>2.3 Text Formatting</h2>
+    <p>HTML provides tags to format text, such as headings, paragraphs, and emphasis, to enhance readability and structure.</p>
+    <ul>
+      <li><strong>&lt;h1&gt; to &lt;h6&gt;</strong>: Define headings of varying importance.</li>
+      <li><strong>&lt;p&gt;</strong>: Defines a paragraph.</li>
+      <li><strong>&lt;b&gt;</strong>, <strong>&lt;i&gt;</strong>: Bold and italic text for visual emphasis.</li>
+      <li><strong>&lt;strong&gt;</strong>, <strong>&lt;em&gt;</strong>: Semantic bold and italic for importance and emphasis.</li>
+    </ul>
+    <pre><code>&lt;h1&gt;Main Heading&lt;/h1&gt;
+&lt;h2&gt;Subheading&lt;/h2&gt;
+&lt;p&gt;This is a &lt;strong&gt;bold&lt;/strong&gt; and &lt;em&gt;italic&lt;/em&gt; text.&lt;/p&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>2.4 Links and Navigation</h2>
+    <p>Links allow users to navigate between pages or sections within a website, created using the <code>&lt;a&gt;</code> tag.</p>
+    <ul>
+      <li><strong>&lt;a href="..."&gt;</strong>: Creates a hyperlink to another page or resource.</li>
+      <li><strong>Attributes</strong>: <code>target="_blank"</code> opens links in a new tab; <code>title</code> provides a tooltip.</li>
+      <li><strong>Navigation Menus</strong>: Use lists (<code>&lt;ul&gt;</code> or <code>&lt;nav&gt;</code>) for structured navigation.</li>
+    </ul>
+    <pre><code>&lt;nav&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href="home.html"&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="about.html" target="_blank"&gt;About&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>2.5 Hyperlink</h2>
+    <p>Hyperlinks connect web pages and resources, enabling seamless navigation across the internet or within a site.</p>
+    <ul>
+      <li><strong>Absolute URLs</strong>: Full web addresses (e.g., <code>https://example.com</code>).</li>
+      <li><strong>Relative URLs</strong>: Paths relative to the current page (e.g., <code>page.html</code>).</li>
+      <li><strong>Anchor Links</strong>: Link to specific sections within a page using <code>#id</code>.</li>
+    </ul>
+    <pre><code>&lt;a href="https://example.com"&gt;Visit Example&lt;/a&gt;
+&lt;a href="about.html"&gt;About Page&lt;/a&gt;
+&lt;a href="#section1"&gt;Go to Section 1&lt;/a&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>2.6 Images and Multimedia</h2>
+    <p>HTML supports embedding images and multimedia (audio, video) to enhance web content.</p>
+    <ul>
+      <li><strong>&lt;img&gt;</strong>: Embeds images with <code>src</code> and <code>alt</code> attributes.</li>
+      <li><strong>&lt;audio&gt;</strong>: Embeds audio files with controls for playback.</li>
+      <li><strong>&lt;video&gt;</strong>: Embeds videos with options for controls and autoplay.</li>
+    </ul>
+    <pre><code>&lt;img src="image.jpg" alt="Description of image"&gt;
+&lt;audio controls&gt;
+  &lt;source src="audio.mp3" type="audio/mpeg"&gt;
+&lt;/audio&gt;
+&lt;video controls&gt;
+  &lt;source src="video.mp4" type="video/mp4"&gt;
+&lt;/video&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>2.7 Lists, Tables, Forms and Input</h2>
+    <p>These elements organize and collect data effectively on web pages.</p>
+    <ul>
+      <li><strong>Lists</strong>: Ordered (<code>&lt;ol&gt;</code>) and unordered (<code>&lt;ul&gt;</code>) lists for structured content.</li>
+      <li><strong>Tables</strong>: <code>&lt;table&gt;</code> organizes data in rows and columns.</li>
+      <li><strong>Forms</strong>: <code>&lt;form&gt;</code> collects user input with elements like <code>&lt;input&gt;</code>, <code>&lt;textarea&gt;</code>.</li>
+    </ul>
+    <pre><code>&lt;ul&gt;
+  &lt;li&gt;Item 1&lt;/li&gt;
+  &lt;li&gt;Item 2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table border="1"&gt;
+  &lt;tr&gt;
+    &lt;th&gt;Header 1&lt;/th&gt;
+    &lt;th&gt;Header 2&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;Data 1&lt;/td&gt;
+    &lt;td&gt;Data 2&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;form&gt;
+  &lt;label for="name"&gt;Name:&lt;/label&gt;
+  &lt;input type="text" id="name" name="name"&gt;
+  &lt;input type="submit" value="Submit"&gt;
+&lt;/form&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>2.8 Semantic HTML</h2>
+    <p>Semantic HTML uses tags that convey meaning about the content’s structure and purpose, improving accessibility and SEO.</p>
+    <ul>
+      <li><strong>&lt;header&gt;</strong>: Defines a header section.</li>
+      <li><strong>&lt;footer&gt;</strong>: Defines a footer section.</li>
+      <li><strong>&lt;article&gt;</strong>, <strong>&lt;section&gt;</strong>: Group related content.</li>
+      <li><strong>&lt;nav&gt;</strong>: Defines navigation links.</li>
+    </ul>
+    <pre><code>&lt;header&gt;
+  &lt;h1&gt;Website Title&lt;/h1&gt;
+&lt;/header&gt;
+&lt;nav&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href="#home"&gt;Home&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;article&gt;
+  &lt;section&gt;
+    &lt;h2&gt;Article Title&lt;/h2&gt;
+    &lt;p&gt;Content here...&lt;/p&gt;
+  &lt;/section&gt;
+&lt;/article&gt;
+&lt;footer&gt;
+  &lt;p&gt;Copyright 2025&lt;/p&gt;
+&lt;/footer&gt;</code></pre>
+  </div>
+</body>
+</html>

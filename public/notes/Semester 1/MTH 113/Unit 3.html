@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 3: Derivative</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.4;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            font-weight: bold;
+        }
+        h1 {
+            text-align: center;
+            font-size: 16pt;
+        }
+        .section {
+            background: #fff;
+            padding: 5px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: justify;
+        }
+        ul {
+            margin: 5px 0;
+            padding-left: 10px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Unit 3: Derivative</h1>
+
+    <div class="section">
+        <h2>3.1 Derivative</h2>
+        <p>The derivative measures the rate at which a function changes at a specific point, forming a cornerstone of calculus with applications in optimization and modeling.</p>
+        <ul>
+            <li><strong>Definition:</strong> For a function f(x), the derivative at x = a, denoted f'(a), is the limit lim(h→0) [f(a+h) - f(a)]/h, if it exists.</li>
+            <li><strong>Notation:</strong> Derivatives are written as f'(x), dy/dx, or df/dx, representing the instantaneous rate of change of f with respect to x.</li>
+            <li><strong>Geometric Interpretation:</strong> The derivative represents the slope of the tangent line to the graph of f(x) at a given point.</li>
+            <li><strong>Applications:</strong> Used in physics (e.g., velocity as the derivative of position), economics (e.g., marginal cost), and machine learning (e.g., gradient descent).</li>
+        </ul>
+        <p>The derivative provides a precise tool for analyzing function behavior and solving real-world problems.</p>
+    </div>
+
+    <div class="section">
+        <h2>3.2 Average Rate of Change</h2>
+        <p>The average rate of change quantifies how a function’s output changes over an interval, serving as a precursor to the instantaneous rate of change.</p>
+        <ul>
+            <li><strong>Definition:</strong> For a function f(x) over [a, b], the average rate of change is [f(b) - f(a)]/(b - a), representing the slope of the secant line between (a, f(a)) and (b, f(b)).</li>
+            <li><strong>Example:</strong> If f(x) = x², the average rate of change from x = 1 to x = 3 is [f(3) - f(1)]/(3 - 1) = (9 - 1)/2 = 4.</li>
+            <li><strong>Applications:</strong> Used in business to calculate average growth rates (e.g., revenue over time) or in physics for average velocity.</li>
+            <li><strong>Relation to Derivative:</strong> As the interval [a, b] shrinks (b → a), the average rate of change approaches the derivative at x = a.</li>
+        </ul>
+        <p>This concept bridges intuitive change measurement with precise derivative calculations.</p>
+    </div>
+
+    <div class="section">
+        <h2>3.3 Derivative as Slope of the Tangent to Curves</h2>
+        <p>The derivative represents the slope of the tangent line to a curve at a specific point, providing insight into the function’s behavior.</p>
+        <ul>
+            <li><strong>Tangent Line:</strong> The line that touches the curve at a single point (x, f(x)) and has the same slope as the curve at that point, given by f'(x).</li>
+            <li><strong>Slope Calculation:</strong> For f(x) = x², the derivative f'(x) = 2x gives the slope at any point; at x = 2, the slope is f'(2) = 4.</li>
+            <li><strong>Geometric Insight:</strong> A positive derivative indicates an upward slope (increasing function), negative indicates downward (decreasing), and zero suggests a horizontal tangent (possible extremum).</li>
+            <li><strong>Applications:</strong> Used in optimization to find maxima/minima (e.g., profit maximization) and in graphics to determine curve behavior in rendering algorithms.</li>
+        </ul>
+        <p>The tangent slope interpretation makes derivatives a powerful tool for analyzing curves.</p>
+    </div>
+
+    <div class="section">
+        <h2>3.4 Methods of Differentiation (Power Rule, Sum Rule, Product Rule, Quotient Rule, Chain Rule)</h2>
+        <p>Differentiation methods provide systematic ways to compute derivatives of various functions, essential for solving complex problems.</p>
+        <ul>
+            <li><strong>Power Rule:</strong> For f(x) = x^n, f'(x) = nx^(n-1). Example: If f(x) = x³, then f'(x) = 3x².</li>
+            <li><strong>Sum Rule:</strong> For f(x) = g(x) + h(x), f'(x) = g'(x) + h'(x). Example: If f(x) = x² + 3x, then f'(x) = 2x + 3.</li>
+            <li><strong>Product Rule:</strong> For f(x) = g(x)·h(x), f'(x) = g'(x)·h(x) + g(x)·h'(x). Example: If f(x) = x·sin(x), then f'(x) = sin(x) + x·cos(x).</li>
+            <li><strong>Quotient Rule:</strong> For f(x) = g(x)/h(x), f'(x) = [g'(x)·h(x) - g(x)·h'(x)]/[h(x)]². Example: If f(x) = x/(x+1), then f'(x) = 1/(x+1)².</li>
+            <li><strong>Chain Rule:</strong> For f(x) = g(h(x)), f'(x) = g'(h(x))·h'(x). Example: If f(x) = (x² + 1)³, then f'(x) = 3(x² + 1)²·2x.</li>
+        </ul>
+        <p>These rules enable efficient derivative calculations for a wide range of functions.</p>
+    </div>
+
+    <div class="section">
+        <h2>3.5 Differentiation of Implicit and Parametric Functions</h2>
+        <p>Implicit and parametric functions require specialized differentiation techniques, as they are not always expressed as y = f(x).</p>
+        <ul>
+            <li><strong>Implicit Differentiation:</strong> For equations like x² + y² = 1, differentiate both sides with respect to x, treating y as a function of x (e.g., 2x + 2y·dy/dx = 0, so dy/dx = -x/y).</li>
+            <li><strong>Parametric Differentiation:</strong> For functions defined parametrically, e.g., x = t², y = t³, compute dy/dx = (dy/dt)/(dx/dt) = (3t²)/(2t) = 3t/2.</li>
+            <li><strong>Applications:</strong> Implicit differentiation is used in economics for constrained optimization (e.g., utility functions); parametric differentiation models motion in physics or animation.</li>
+            <li><strong>Key Considerations:</strong> Ensure all terms are differentiated correctly, and solve for dy/dx carefully, checking for domain restrictions.</li>
+        </ul>
+        <p>These techniques extend differentiation to complex relationships in mathematics and applied fields.</p>
+    </div>
+
+    <div class="section">
+        <h2>3.6 Derivative as Rate of Change, Higher Order Derivatives</h2>
+        <p>The derivative quantifies instantaneous rates of change, and higher order derivatives provide deeper insights into function behavior.</p>
+        <ul>
+            <li><strong>Rate of Change:</strong> The derivative f'(x) measures how f(x) changes per unit change in x, e.g., velocity (dx/dt) or marginal cost (dC/dq) in business.</li>
+            <li><strong>Higher Order Derivatives:</strong> The second derivative f''(x) is the derivative of f'(x), representing the rate of change of the rate of change (e.g., acceleration). Higher orders (f'''(x), etc.) analyze further behavior.</li>
+            <li><strong>Applications:</strong> Second derivatives test concavity (f''(x) > 0 implies concave up, f''(x) < 0 implies concave down) for optimization; higher derivatives model complex systems like oscillations.</li>
+            <li><strong>Notation:</strong> Higher derivatives are denoted f^(n)(x) or d^n y/dx^n, where n is the order of differentiation.</li>
+        </ul>
+        <p>Higher order derivatives enhance analysis of dynamic systems in physics, economics, and engineering.</p>
+    </div>
+</body>
+</html>

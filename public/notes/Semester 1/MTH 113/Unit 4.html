@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 4: Application of Derivatives</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.4;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            font-weight: bold;
+        }
+        h1 {
+            text-align: center;
+            font-size: 16pt;
+        }
+        .section {
+            background: #fff;
+            padding: 5px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: justify;
+        }
+        ul {
+            margin: 5px 0;
+            padding-left: 10px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Unit 4: Application of Derivatives</h1>
+
+    <div class="section">
+        <h2>4.1 Increasing and Decreasing Functions</h2>
+        <p>Increasing and decreasing functions describe how a function’s output changes with its input, analyzed using derivatives to understand trends in various applications.</p>
+        <ul>
+            <li><strong>Increasing Functions:</strong> A function f(x) is increasing on an interval if f'(x) > 0, meaning as x increases, f(x) increases (e.g., f(x) = x² on x > 0 has f'(x) = 2x > 0).</li>
+            <li><strong>Decreasing Functions:</strong> A function is decreasing if f'(x) < 0, meaning as x increases, f(x) decreases (e.g., f(x) = -x² on x > 0 has f'(x) = -2x < 0).</li>
+            <li><strong>Monotonicity:</strong> Functions may be strictly increasing/decreasing (no equalities) or non-strict (allowing f'(x) = 0 at points), determined by the sign of the derivative.</li>
+            <li><strong>Applications:</strong> Used in economics to analyze rising costs or declining demand, and in optimization to identify trends in data models.</li>
+        </ul>
+        <p>Derivatives help determine intervals where functions grow or decline, critical for analysis.</p>
+    </div>
+
+    <div class="section">
+        <h2>4.2 Critical Point, Point of Inflection</h2>
+        <p>Critical points and points of inflection are key features of a function’s graph, identified using derivatives to analyze behavior.</p>
+        <ul>
+            <li><strong>Critical Point:</strong> Occurs where f'(x) = 0 or f'(x) is undefined, indicating potential maxima, minima, or stationary points (e.g., f(x) = x³ has f'(x) = 3x² = 0 at x = 0).</li>
+            <li><strong>Point of Inflection:</strong> Occurs where the second derivative f''(x) = 0 or is undefined and concavity changes (e.g., f(x) = x³ has f''(x) = 6x = 0 at x = 0, changing from concave down to up).</li>
+            <li><strong>Testing Critical Points:</strong> Use the first derivative test (check sign changes of f'(x)) or second derivative test (f''(x) > 0 for minima, f''(x) < 0 for maxima).</li>
+            <li><strong>Applications:</strong> Critical points optimize functions in engineering; inflection points model shifts in trends, like market saturation in economics.</li>
+        </ul>
+        <p>These points reveal key behavioral changes in functions, essential for analysis and optimization.</p>
+    </div>
+
+    <div class="section">
+        <h2>4.3 Maximum and Minimum Value of Functions</h2>
+        <p>Maximum and minimum values of functions, found using derivatives, are critical for optimization problems in mathematics and applied fields.</p>
+        <ul>
+            <li><strong>Local Extrema:</strong> Local maxima/minima occur at critical points where f'(x) = 0 or is undefined. Use the second derivative test: f''(x) > 0 indicates a local minimum, f''(x) < 0 a local maximum.</li>
+            <li><strong>Global Extrema:</strong> The highest/lowest value of f(x) on a domain. Check critical points and endpoints of closed intervals (e.g., for f(x) = x² on [-1, 2], evaluate f(-1), f(2), and critical points).</li>
+            <li><strong>First Derivative Test:</strong> Analyze sign changes of f'(x) around critical points: positive to negative indicates a maximum, negative to positive a minimum.</li>
+            <li><strong>Applications:</strong> Used to maximize profit, minimize cost, or optimize resource allocation in business and engineering.</li>
+        </ul>
+        <p>Finding extrema enables optimization of functions in practical scenarios.</p>
+    </div>
+
+    <div class="section">
+        <h2>4.4 Marginal Analysis in Business and Economics</h2>
+        <p>Marginal analysis uses derivatives to evaluate incremental changes in business and economic variables, aiding decision-making.</p>
+        <ul>
+            <li><strong>Marginal Cost:</strong> The derivative C'(q) of the cost function C(q) represents the cost of producing one additional unit (e.g., if C(q) = 100 + 5q, then C'(q) = 5).</li>
+            <li><strong>Marginal Revenue:</strong> The derivative R'(q) of the revenue function R(q) measures revenue from one additional unit sold (e.g., R(q) = 50q - q², R'(q) = 50 - 2q).</li>
+            <li><strong>Profit Maximization:</strong> Profit P(q) = R(q) - C(q) is maximized where P'(q) = R'(q) - C'(q) = 0, provided P''(q) < 0 (e.g., set marginal revenue equal to marginal cost).</li>
+            <li><strong>Applications:</strong> Used to optimize production levels, pricing strategies, or resource allocation in business operations.</li>
+        </ul>
+        <p>Marginal analysis provides precise insights for optimizing economic decisions.</p>
+    </div>
+
+    <div class="section">
+        <h2>4.5 Concavity of Functions, Marginal Profit Analysis</h2>
+        <p>Concavity describes the shape of a function’s graph, and marginal profit analysis uses derivatives to optimize profitability.</p>
+        <ul>
+            <li><strong>Concavity:</strong> A function is concave up if f''(x) > 0 (graph curves upward, like a bowl), and concave down if f''(x) < 0 (curves downward). Inflection points occur where concavity changes.</li>
+            <li><strong>Marginal Profit:</strong> The derivative P'(q) of the profit function P(q) = R(q) - C(q) measures the additional profit from one more unit. Maximum profit occurs where P'(q) = 0 and P''(q) < 0.</li>
+            <li><strong>Concavity in Profit Analysis:</strong> If P''(q) < 0, the profit function is concave down, confirming a maximum at the critical point, guiding production decisions.</li>
+            <li><strong>Applications:</strong> Concavity helps predict diminishing returns in economics; marginal profit analysis optimizes output in business strategies.</li>
+        </ul>
+        <p>Concavity and marginal profit analysis guide effective decision-making in optimization.</p>
+    </div>
+
+    <div class="section">
+        <h2>4.6 Mean Value Theorem, Optimization Problems</h2>
+        <p>The Mean Value Theorem and optimization problems use derivatives to analyze function behavior and solve practical challenges.</p>
+        <ul>
+            <li><strong>Mean Value Theorem:</strong> If f(x) is continuous on [a, b] and differentiable on (a, b), there exists c in (a, b) such that f'(c) = [f(b) - f(a)]/(b - a), equating the instantaneous rate to the average rate.</li>
+            <li><strong>Optimization Problems:</strong> Involve finding maxima/minima of a function subject to constraints. Steps: define the objective function, find critical points (f'(x) = 0), and verify using the second derivative or boundary checks.</li>
+            <li><strong>Example:</strong> To maximize area A = x·y of a rectangle with fixed perimeter 2x + 2y = P, express y = P/2 - x, so A(x) = x(P/2 - x). Then A'(x) = P/2 - 2x = 0 gives x = P/4, a maximum if A''(x) < 0.</li>
+            <li><strong>Applications:</strong> Mean Value Theorem supports theoretical analysis; optimization solves problems like minimizing material costs or maximizing efficiency in engineering and economics.</li>
+        </ul>
+        <p>These tools enable precise solutions to theoretical and practical optimization challenges.</p>
+    </div>
+</body>
+</html>

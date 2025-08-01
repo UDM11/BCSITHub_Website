@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 4: Cascading Style Sheets</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+        text-align: center;
+        color: black;
+        font-size: 16pt;
+        font-weight: bold;
+    }
+    h2 {
+      color: black;
+      font-weight: bold;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #000000;
+      color: #ffffff;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 5px;
+      font-size: 12pt;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      .section {
+        padding: 5px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Unit 4: Cascading Style Sheets</h1>
+
+  <div class="section">
+    <h2>4.1 Introduction to CSS</h2>
+    <p>Cascading Style Sheets (CSS) is a stylesheet language used to control the presentation and layout of HTML documents. It separates content from design, enabling consistent styling across multiple pages.</p>
+    <ul>
+      <li><strong>Purpose</strong>: Enhances visual appeal and user experience.</li>
+      <li><strong>Cascading</strong>: Styles are applied based on specificity and order of rules.</li>
+      <li><strong>Versions</strong>: CSS3 is the latest, supporting animations, gradients, and more.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>4.2 CSS Syntax</h2>
+    <p>CSS syntax consists of selectors and declaration blocks. A declaration block contains properties and their values, enclosed in curly braces.</p>
+    <ul>
+      <li><strong>Selector</strong>: Targets HTML elements (e.g., <code>h1</code>, <code>.class</code>).</li>
+      <li><strong>Property</strong>: Defines what to style (e.g., <code>color</code>).</li>
+      <li><strong>Value</strong>: Specifies the style (e.g., <code>blue</code>).</li>
+    </ul>
+    <pre><code>h1 {
+  color: blue;
+  font-size: 24px;
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>4.3 Using CSS with HTML</h2>
+    <p>CSS can be applied to HTML in three ways: inline, internal, and external.</p>
+    <ul>
+      <li><strong>Inline CSS</strong>: Uses the <code>style</code> attribute in HTML tags.</li>
+      <li><strong>Internal CSS</strong>: Defined within a <code>&lt;style&gt;</code> tag in the <code>&lt;head&gt;</code>.</li>
+      <li><strong>External CSS</strong>: Linked via a <code>&lt;link&gt;</code> tag to a separate <code>.css</code> file.</li>
+    </ul>
+    <pre><code>&lt;!-- Inline CSS --&gt;
+&lt;p style="color: red;"&gt;Inline text&lt;/p&gt;
+
+&lt;!-- Internal CSS --&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    p { color: blue; }
+  &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;!-- External CSS --&gt;
+&lt;link rel="stylesheet" href="styles.css"&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>4.4 CSS Selectors</h2>
+    <p>Selectors target HTML elements to apply styles. They range from basic to complex for precise targeting.</p>
+    <ul>
+      <li><strong>Element Selector</strong>: Targets HTML tags (e.g., <code>p</code>).</li>
+      <li><strong>Class Selector</strong>: Targets elements with a class (e.g., <code>.class</code>).</li>
+      <li><strong>ID Selector</strong>: Targets a unique element (e.g., <code>#id</code>).</li>
+      <li><strong>Pseudo-classes</strong>: Style elements based on state (e.g., <code>:hover</code>).</li>
+    </ul>
+    <pre><code>p { color: black; }
+.my-class { font-size: 16px; }
+#my-id { background: yellow; }
+a:hover { color: red; }</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>4.5 CSS Comments</h2>
+    <p>Comments in CSS are used to explain code or temporarily disable styles, improving maintainability.</p>
+    <ul>
+      <li><strong>Syntax</strong>: Enclosed in <code>/* */</code>.</li>
+      <li><strong>Use</strong>: Add notes or debug by commenting out code.</li>
+    </ul>
+    <pre><code>/* This is a comment */
+p {
+  color: blue; /* Text color */
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>4.6 CSS Properties</h2>
+    <p>CSS properties define the visual characteristics of elements. Below are key properties:</p>
+
+    <h3>4.6.1 Backgrounds</h3>
+    <p>Sets background color, image, or gradient for elements.</p>
+    <pre><code>.box {
+  background-color: #f0f0f0;
+  background-image: url('image.jpg');
+  background-size: cover;
+}</code></pre>
+
+    <h3>4.6.2 Border, Margin</h3>
+    <p>Defines borders and outer spacing around elements.</p>
+    <pre><code>.box {
+  border: 2px solid black;
+  margin: 10px;
+}</code></pre>
+
+    <h3>4.6.3 Padding</h3>
+    <p>Adds inner spacing between content and borders.</p>
+    <pre><code>.box {
+  padding: 15px;
+}</code></pre>
+
+    <h3>4.6.4 Height</h3>
+    <p>Sets the height of an element.</p>
+    <pre><code>.box {
+  height: 200px;
+}</code></pre>
+
+    <h3>4.6.5 Width</h3>
+    <p>Sets the width of an element.</p>
+    <pre><code>.box {
+  width: 300px;
+}</code></pre>
+
+    <h3>4.6.6 Color (Color Wheel)</h3>
+    <p>Defines text or element color using names, hex, RGB, or HSL.</p>
+    <pre><code>p {
+  color: #ff0000; /* Red */
+  color: rgb(0, 255, 0); /* Green */
+  color: hsl(240, 100%, 50%); /* Blue */
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>4.7 Text</h2>
+    <p>Controls text appearance, such as decoration, transformation, and spacing.</p>
+    <ul>
+      <li><strong>text-decoration</strong>: Adds underline, overline, or strikethrough.</li>
+      <li><strong>text-transform</strong>: Changes case (e.g., uppercase).</li>
+      <li><strong>letter-spacing</strong>: Adjusts space between characters.</li>
+    </ul>
+    <pre><code>p {
+  text-decoration: underline;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>4.8 Font</h2>
+    <p>Defines font properties like family, size, weight, and style.</p>
+    <ul>
+      <li><strong>font-family</strong>: Specifies the font (e.g., Arial).</li>
+      <li><strong>font-size</strong>: Sets text size (e.g., 16px).</li>
+      <li><strong>font-weight</strong>: Controls boldness (e.g., bold).</li>
+    </ul>
+    <pre><code>p {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>4.9 Alignment</h2>
+    <p>Controls the alignment of text or elements within their container.</p>
+    <ul>
+      <li><strong>text-align</strong>: Aligns text (e.g., center, justify).</li>
+      <li><strong>vertical-align</strong>: Aligns inline elements vertically.</li>
+    </ul>
+    <pre><code>p {
+  text-align: center;
+}
+img {
+  vertical-align: middle;
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>4.10 Line Height</h2>
+    <p>Adjusts the vertical spacing between lines of text for readability.</p>
+    <pre><code>p {
+  line-height: 1.8;
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>4.11 Box Model</h2>
+    <p>The CSS box model represents the structure of elements, consisting of content, padding, border, and margin.</p>
+    <ul>
+      <li><strong>Content</strong>: The actual content (text, images).</li>
+      <li><strong>Padding</strong>: Space inside the border.</li>
+      <li><strong>Border</strong>: Surrounds padding and content.</li>
+      <li><strong>Margin</strong>: Space outside the border.</li>
+    </ul>
+    <pre><code>.box {
+  width: 200px;
+  padding: 10px;
+  border: 2px solid black;
+  margin: 15px;
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>4.12 Working with Images</h2>
+    <p>CSS styles images for size, positioning, and effects like borders or filters.</p>
+    <ul>
+      <li><strong>object-fit</strong>: Controls image scaling (e.g., cover, contain).</li>
+      <li><strong>border-radius</strong>: Rounds image corners.</li>
+      <li><strong>filter</strong>: Applies effects like blur or grayscale.</li>
+    </ul>
+    <pre><code>img {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  filter: grayscale(50%);
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>4.13 Layout and Positioning</h2>
+    <p>CSS controls element placement using positioning, flexbox, or grid layouts.</p>
+    <ul>
+      <li><strong>position</strong>: Static, relative, absolute, fixed, or sticky.</li>
+      <li><strong>Flexbox</strong>: Flexible box layout for one-dimensional arrangements.</li>
+      <li><strong>Grid</strong>: Two-dimensional layout system.</li>
+    </ul>
+    <pre><code>.container {
+  display: flex;
+  justify-content: space-between;
+}
+.box {
+  position: relative;
+  top: 10px;
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>4.14 Media Query</h2>
+    <p>Media queries apply styles based on device characteristics, enabling responsive design.</p>
+    <ul>
+      <li><strong>Syntax</strong>: Uses <code>@media</code> to define conditions.</li>
+      <li><strong>Breakpoints</strong>: Common for mobile, tablet, and desktop.</li>
+    </ul>
+    <pre><code>@media (max-width: 600px) {
+  .container {
+    flex-direction: column;
+  }
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>4.15 CSS Website Layout</h2>
+    <p>Combines CSS techniques to create structured, responsive website layouts.</p>
+    <ul>
+      <li><strong>Header, Main, Footer</strong>: Common layout structure.</li>
+      <li><strong>Grid/Flexbox</strong>: Used for multi-column or responsive layouts.</li>
+      <li><strong>Navigation</strong>: Styled menus for user navigation.</li>
+    </ul>
+    <pre><code>body {
+  margin: 0;
+}
+.header {
+  background: #333;
+  color: white;
+  padding: 10px;
+}
+.main {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+}
+@media (max-width: 768px) {
+  .main {
+    grid-template-columns: 1fr;
+  }
+}</code></pre>
+  </div>
+</body>
+</html>

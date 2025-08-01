@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 7: Functions</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+        text-align: center;
+        color: black;
+        font-size: 16pt;
+        font-weight: bold;
+    }
+    h2 {
+      color: black;
+      font-weight: bold;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #000000;
+      color: #ffffff;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 5px;
+      font-size: 12pt;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      .section {
+        padding: 5px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Unit 7: Functions</h1>
+
+  <div class="section">
+    <h2>7.1 Introduction to Functions</h2>
+    <p>Functions are self-contained blocks of code designed to perform specific tasks, promoting modularity and reusability in programs.</p>
+    <ul>
+      <li><strong>Purpose:</strong> Break complex problems into smaller, manageable units.</li>
+      <li><strong>Benefits:</strong> Code reusability, easier debugging, and improved readability.</li>
+      <li><strong>Example:</strong> A function to calculate the square of a number.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>7.2 Types of Functions</h2>
+    <p>Functions in C are classified into two types: library functions and user-defined functions.</p>
+
+    <h2>7.2.1 Library Functions</h2>
+    <p>Library functions are pre-defined in C standard libraries, accessible via header files.</p>
+    <ul>
+      <li><strong>Examples:</strong> printf() (stdio.h), sqrt() (math.h), strlen() (string.h).</li>
+      <li><strong>Usage:</strong> Include the appropriate header file and call the function.
+        <pre>
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+int main() {
+    printf("Square root of 16: %.2f\n", sqrt(16));
+    return 0;
+}
+        </pre>
+      </li>
+    </ul>
+
+    <h2>7.2.2 User-Defined Functions</h2>
+    <p>User-defined functions are created by programmers to perform specific tasks.</p>
+    <ul>
+      <li><strong>Advantages:</strong> Tailored to specific needs, enhances code organization.</li>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+int square(int n) {
+    return n * n;
+}
+int main() {
+    printf("Square of 5: %d\n", square(5));
+    return 0;
+}
+        </pre>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>7.3 Components of Functions</h2>
+    <p>A function consists of three main components: prototype, call, and definition.</p>
+
+    <h2>7.3.1 Function Prototype</h2>
+    <p>A function prototype declares the function’s return type, name, and parameters before its use.</p>
+    <ul>
+      <li><strong>Syntax:</strong> return_type function_name(parameter_list);</li>
+      <li><strong>Example:</strong>
+        <pre>
+int add(int, int); // Prototype
+        </pre>
+      </li>
+      <li><strong>Purpose:</strong> Informs the compiler about the function’s signature.</li>
+    </ul>
+
+    <h2>7.3.2 Function Call</h2>
+    <p>A function call invokes the function, passing arguments if required.</p>
+    <ul>
+      <li><strong>Syntax:</strong> function_name(arguments);</li>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+int add(int, int);
+int main() {
+    int sum = add(3, 4); // Function call
+    printf("Sum: %d\n", sum);
+    return 0;
+}
+int add(int a, int b) {
+    return a + b;
+}
+        </pre>
+      </li>
+    </ul>
+
+    <h2>7.3.3 Function Definition</h2>
+    <p>The function definition contains the actual code to be executed.</p>
+    <ul>
+      <li><strong>Syntax:</strong>
+        <pre>
+return_type function_name(parameter_list) {
+    // Code block
+    return value; // If return_type is not void
+}
+        </pre>
+      </li>
+      <li><strong>Example:</strong> See the add() function in the above example.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>7.4 Function Arguments and Return Types</h2>
+    <p>Functions can accept arguments and return values to communicate with the caller.</p>
+    <ul>
+      <li><strong>Arguments:</strong>
+        <ul>
+          <li><strong>Pass by Value:</strong> Copies of arguments are passed; changes do not affect original variables.</li>
+          <li><strong>Pass by Reference:</strong> Uses pointers to modify original variables.</li>
+        </ul>
+      </li>
+      <li><strong>Return Types:</strong> void (no return), int, float, etc.
+        <pre>
+#include &lt;stdio.h&gt;
+void swap(int *a, int *b) { // Pass by reference
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+int main() {
+    int x = 5, y = 10;
+    swap(&x, &y);
+    printf("x: %d, y: %d\n", x, y); // x: 10, y: 5
+    return 0;
+}
+        </pre>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>7.5 Passing Arrays to Function</h2>
+    <p>Arrays are passed to functions by reference, allowing modifications to the original array.</p>
+    <ul>
+      <li><strong>Syntax:</strong> Use array name or pointer in parameter.
+        <pre>
+#include &lt;stdio.h&gt;
+void printArray(int arr[], int size) {
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+}
+int main() {
+    int arr[] = {1, 2, 3, 4, 5};
+    printArray(arr, 5);
+    return 0;
+}
+        </pre>
+      </li>
+      <li><strong>Note:</strong> Array size is often passed as a separate parameter since arrays decay to pointers.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>7.6 Passing Strings to Function</h2>
+    <p>Strings (character arrays) are passed similarly to arrays, as pointers to the first character.</p>
+    <ul>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+void printString(char str[]) {
+    printf("String: %s\n", str);
+}
+int main() {
+    char str[] = "Hello";
+    printString(str);
+    return 0;
+}
+        </pre>
+      </li>
+      <li><strong>Note:</strong> Strings must be null-terminated (\0).</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>7.7 Storage Class (auto, register, static, extern)</h2>
+    <p>Storage classes define the scope, lifetime, and storage location of variables.</p>
+    <ul>
+      <li><strong>auto:</strong> Default for local variables, allocated on stack, destroyed when scope ends.
+        <pre>
+auto int x = 5; // Same as int x = 5;
+        </pre>
+      </li>
+      <li><strong>register:</strong> Suggests storing variable in CPU register for faster access (compiler may ignore).
+        <pre>
+register int counter = 0;
+        </pre>
+      </li>
+      <li><strong>static:</strong> Retains value between function calls, initialized once.
+        <pre>
+#include &lt;stdio.h&gt;
+void count() {
+    static int c = 0; // Retains value
+    c++;
+    printf("%d ", c);
+}
+int main() {
+    count(); // 1
+    count(); // 2
+    return 0;
+}
+        </pre>
+      </li>
+      <li><strong>extern:</strong> Declares a variable defined in another file.
+        <pre>
+// file1.c
+int global = 10;
+// file2.c
+extern int global;
+        </pre>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>7.8 Scope of Variables (Local and Global)</h2>
+    <p>Scope determines where a variable is accessible in a program.</p>
+    <ul>
+      <li><strong>Local Variables:</strong> Defined within a block or function, accessible only there.
+        <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    int x = 5; // Local to main
+    printf("%d\n", x);
+    return 0;
+}
+        </pre>
+      </li>
+      <li><strong>Global Variables:</strong> Defined outside functions, accessible throughout the program.
+        <pre>
+#include &lt;stdio.h&gt;
+int global = 10; // Global
+void func() {
+    printf("%d\n", global);
+}
+int main() {
+    func();
+    return 0;
+}
+        </pre>
+      </li>
+      <li><strong>Note:</strong> Local variables take precedence over global variables with the same name.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>7.9 Recursive Function</h2>
+    <p>A recursive function calls itself to solve a problem by breaking it into smaller instances.</p>
+    <ul>
+      <li><strong>Components:</strong> Base case (stops recursion), recursive case (calls itself).</li>
+      <li><strong>Example (Factorial):</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+int factorial(int n) {
+    if (n == 0 || n == 1) { // Base case
+        return 1;
+    }
+    return n * factorial(n - 1); // Recursive case
+}
+int main() {
+    printf("Factorial of 5: %d\n", factorial(5)); // 120
+    return 0;
+}
+        </pre>
+      </li>
+      <li><strong>Caution:</strong> Ensure a base case to avoid infinite recursion.</li>
+    </ul>
+  </div>
+</body>
+</html>

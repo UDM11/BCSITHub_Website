@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 3: Input and Output</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+        text-align: center;
+        color: black;
+        font-size: 16pt;
+        font-weight: bold;
+    }
+    h2 {
+      color: black;
+      font-weight: bold;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #000000;
+      color: #ffffff;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 5px;
+      font-size: 12pt;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      .section {
+        padding: 5px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Unit 3: Input and Output</h1>
+
+  <div class="section">
+    <h2>3.1 Unformatted and Formatted I/O</h2>
+    <p>Input and Output (I/O) operations in C allow programs to interact with users by reading input and displaying output. I/O functions are categorized as unformatted and formatted.</p>
+    <ul>
+      <li><strong>Unformatted I/O:</strong> Handles simple input/output without specific formatting, typically for characters or strings.
+        <ul>
+          <li><strong>Examples:</strong> getchar(), putchar(), gets(), puts().</li>
+          <li><strong>Use Case:</strong> Reading/writing single characters or strings without format control.</li>
+          <li><strong>Example:</strong>
+            <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    char ch = getchar();
+    putchar(ch);
+    return 0;
+}
+            </pre>
+          </li>
+        </ul>
+      </li>
+      <li><strong>Formatted I/O:</strong> Allows precise control over input/output format using format specifiers.
+        <ul>
+          <li><strong>Examples:</strong> scanf(), printf().</li>
+          <li><strong>Use Case:</strong> Reading/writing data with specific formats (e.g., integers, floats).</li>
+          <li><strong>Example:</strong>
+            <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    int num;
+    printf("Enter a number: ");
+    scanf("%d", &num);
+    printf("You entered: %d\n", num);
+    return 0;
+}
+            </pre>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>3.2 Conversion Specifier</h2>
+    <p>Conversion specifiers are used in formatted I/O functions like printf() and scanf() to define the type and format of data being read or written.</p>
+    <ul>
+      <li><strong>Common Conversion Specifiers:</strong>
+        <ul>
+          <li>%d: Integer (decimal).</li>
+          <li>%f: Float.</li>
+          <li>%c: Character.</li>
+          <li>%s: String.</li>
+          <li>%x: Hexadecimal.</li>
+          <li>%o: Octal.</li>
+        </ul>
+      </li>
+      <li><strong>Format Modifiers:</strong>
+        <ul>
+          <li>%ld: Long integer.</li>
+          <li>%lf: Double.</li>
+          <li>%.2f: Float with 2 decimal places.</li>
+        </ul>
+      </li>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    float pi = 3.14159;
+    printf("Pi = %.2f\n", pi); // Outputs: Pi = 3.14
+    return 0;
+}
+        </pre>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>3.3 Character Input and Output</h2>
+    <p>Character I/O functions handle individual characters, useful for processing text or single-key inputs.</p>
+    <ul>
+      <li><strong>Input Functions:</strong>
+        <ul>
+          <li><strong>getchar():</strong> Reads a single character from standard input.</li>
+          <li><strong>getc():</strong> Reads a character from a specified stream (e.g., stdin).</li>
+          <li><strong>fgetc():</strong> Similar to getc(), reads from a file stream.</li>
+        </ul>
+      </li>
+      <li><strong>Output Functions:</strong>
+        <ul>
+          <li><strong>putchar():</strong> Writes a single character to standard output.</li>
+          <li><strong>putc():</strong> Writes a character to a specified stream.</li>
+          <li><strong>fputc():</strong> Writes a character to a file stream.</li>
+        </ul>
+      </li>
+      <li><strong>Example:</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    char ch;
+    printf("Enter a character: ");
+    ch = getchar();
+    printf("You entered: ");
+    putchar(ch);
+    printf("\n");
+    return 0;
+}
+        </pre>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>3.4 I/O Operations</h2>
+    <p>I/O operations in C involve reading from and writing to various streams, such as standard input/output (stdin/stdout) or files.</p>
+    <ul>
+      <li><strong>Standard I/O:</strong>
+        <ul>
+          <li><strong>stdin:</strong> Standard input, typically the keyboard.</li>
+          <li><strong>stdout:</strong> Standard output, typically the console.</li>
+          <li><strong>stderr:</strong> Standard error, for error messages.</li>
+        </ul>
+      </li>
+      <li><strong>File I/O:</strong> Reading from and writing to files using functions like fopen(), fread(), fwrite(), fclose().</li>
+      <li><strong>Buffering:</strong>
+        <ul>
+          <li><strong>Line Buffering:</strong> Output is stored until a newline is encountered (e.g., printf with \n).</li>
+          <li><strong>Full Buffering:</strong> Output is stored until the buffer is full or flushed.</li>
+          <li><strong>No Buffering:</strong> Immediate output (e.g., stderr).</li>
+        </ul>
+      </li>
+      <li><strong>Example (File I/O):</strong>
+        <pre>
+#include &lt;stdio.h&gt;
+int main() {
+    FILE *fp;
+    fp = fopen("example.txt", "w");
+    if (fp != NULL) {
+        fputs("Hello, File!\n", fp);
+        fclose(fp);
+    }
+    return 0;
+}
+        </pre>
+      </li>
+    </ul>
+  </div>
+</body>
+</html>
