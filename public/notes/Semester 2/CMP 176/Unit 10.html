@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Growth Functions and Asymptotic Notations</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+      color: black;
+            font-size: 16pt;
+            font-weight: bold;
+    }
+    h2 {
+      color: black;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #272822;
+      color: #f8f8f2;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 5px;
+      }
+      .section {
+        padding: 10px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+    <h1><b>Unit 10: Growth Functions</b></h1>
+
+    <div class="section">
+        <h2><b>10.1 Introduction to Asymptotic Notations</b></h2>
+        <p><b>Asymptotic notations</b> are mathematical tools used to describe the performance or complexity of algorithms, focusing on their behavior as the input size (n) grows large. They provide a simplified way to analyze the efficiency of algorithms by ignoring constants and lower-order terms. The main asymptotic notations are Big O, Omega, and Theta, which describe upper, lower, and tight bounds, respectively.</p>
+    </div>
+
+    <div class="section">
+        <h2><b>10.2 Big O Notation</b></h2>
+        <p><b>Big O notation</b> (O) describes the upper bound of an algorithm's time or space complexity, representing the worst-case scenario. It indicates the maximum time or space an algorithm may take as a function of the input size n.</p>
+        <ul>
+            <li><b>Definition:</b> f(n) = O(g(n)) if there exist constants c > 0 and n₀ > 0 such that f(n) ≤ c * g(n) for all n ≥ n₀.</li>
+            <li><b>Example:</b> If an algorithm takes 3n² + 5n + 2 time, it is O(n²) because n² dominates for large n.</li>
+        </ul>
+        <p>Example:</p>
+        <pre>
+void example(int n) {
+    for (int i = 0; i < n; i++) {
+        System.out.println(i); // O(n) time complexity
+    }
+}
+        </pre>
+        <p>Common Big O complexities: O(1) (constant), O(log n) (logarithmic), O(n) (linear), O(n log n) (log-linear), O(n²) (quadratic).</p>
+    </div>
+
+    <div class="section">
+        <h2><b>10.3 Omega Notation</b></h2>
+        <p><b>Omega notation</b> (Ω) describes the lower bound of an algorithm's time or space complexity, representing the best-case scenario. It indicates the minimum time or space an algorithm will take.</p>
+        <ul>
+            <li><b>Definition:</b> f(n) = Ω(g(n)) if there exist constants c > 0 and n₀ > 0 such that f(n) ≥ c * g(n) for all n ≥ n₀.</li>
+            <li><b>Example:</b> A sorting algorithm like Quick Sort has Ω(n log n) in the best case when the pivot divides the array evenly.</li>
+        </ul>
+        <p>Example:</p>
+        <pre>
+int linearSearch(int[] arr, int target) {
+    for (int i = 0; i < arr.length; i++) {
+        if (arr[i] == target) return i; // Ω(1) if target is at index 0
+    }
+    return -1; // Ω(n) in worst case
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>10.4 Theta Notation</b></h2>
+        <p><b>Theta notation</b> (Θ) describes a tight bound on an algorithm's time or space complexity, indicating that the algorithm's performance is both upper and lower bounded by the same function.</p>
+        <ul>
+            <li><b>Definition:</b> f(n) = Θ(g(n)) if there exist constants c₁, c₂ > 0 and n₀ > 0 such that c₁ * g(n) ≤ f(n) ≤ c₂ * g(n) for all n ≥ n₀.</li>
+            <li><b>Example:</b> Merge Sort has Θ(n log n) time complexity for all cases, as it always divides the array into halves and merges them.</li>
+        </ul>
+        <p>Example:</p>
+        <pre>
+void mergeSort(int[] arr, int l, int r) {
+    if (l < r) {
+        int m = l + (r - l) / 2;
+        mergeSort(arr, l, m);
+        mergeSort(arr, m + 1, r);
+        merge(arr, l, m, r); // Θ(n log n) time complexity
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>10.5 Limitations of Big O Notation</b></h2>
+        <p>While Big O notation is widely used, it has limitations:</p>
+        <ul>
+            <li><b>Ignores Constants:</b> Big O focuses on asymptotic behavior, ignoring constants and lower-order terms, which can be significant for small inputs (e.g., O(n²) may outperform O(n log n) for small n).</li>
+            <li><b>Worst-Case Focus:</b> Big O describes the upper bound, which may not reflect average or best-case performance.</li>
+            <li><b>Implementation Details:</b> It does not account for hardware, caching, or implementation-specific optimizations.</li>
+            <li><b>Not Precise for Small Inputs:</b> For small datasets, practical performance may differ from asymptotic predictions.</li>
+            <li><b>Assumes Large n:</b> Big O is less relevant for small inputs where constant factors dominate.</li>
+        </ul>
+        <p>Example: A linear search (O(n)) may be faster than binary search (O(log n)) for small arrays due to lower overhead, despite worse asymptotic complexity.</p>
+    </div>
+</body>
+</html>

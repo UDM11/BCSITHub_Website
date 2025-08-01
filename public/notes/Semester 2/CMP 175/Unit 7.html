@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GUI Programming with Swing in Java</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+      color: black;
+            font-size: 16pt;
+            font-weight: bold;
+    }
+    h2 {
+      color: black;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #272822;
+      color: #f8f8f2;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 5px;
+      }
+      .section {
+        padding: 10px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+    <h1><b>Unit 7: GUI Programming with Swing</b></h1>
+
+    <div class="section">
+        <h2><b>7.1 Introduction to Graphical User Interface (GUI) Programming in Java</b></h2>
+        <p><b>Graphical User Interface (GUI)</b> programming in Java allows developers to create interactive, user-friendly applications with visual components like buttons, text fields, and windows. Java provides the <code>Swing</code> library in the <code>javax.swing</code> package for building platform-independent GUIs.</p>
+        <ul>
+            <li><b>Swing:</b> A lightweight, platform-independent toolkit for creating GUIs, built on top of the older AWT (Abstract Window Toolkit).</li>
+            <li><b>Features:</b> Rich set of components, customizable look and feel, and support for event-driven programming.</li>
+            <li><b>Key Class:</b> <code>JFrame</code> is the top-level container for Swing applications, acting as the main window.</li>
+        </ul>
+        <p>Example (Basic JFrame):</p>
+        <pre>
+import javax.swing.*;
+
+public class SimpleFrame {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Simple GUI");
+        frame.setSize(300, 200);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>7.2 Using Swing Components</b></h2>
+        <p>Swing provides a variety of components for building GUIs, including buttons, labels, text fields, and text areas. These are part of the <code>javax.swing</code> package and typically start with a "J" prefix (e.g., <code>JButton</code>, <code>JLabel</code>).</p>
+        <ul>
+            <li><b>JButton:</b> A clickable button that triggers an action.</li>
+            <li><b>JLabel:</b> Displays text or images, typically non-interactive.</li>
+            <li><b>JTextField:</b> Allows single-line text input.</li>
+            <li><b>JTextArea:</b> Supports multi-line text input or display.</li>
+            <li><b>JCheckBox, JRadioButton:</b> For selecting options.</li>
+            <li><b>JPanel:</b> A container to group components.</li>
+        </ul>
+        <p>Example (Using Swing Components):</p>
+        <pre>
+import javax.swing.*;
+import java.awt.*;
+
+public class SwingComponents {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Swing Components");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new FlowLayout());
+
+        JLabel label = new JLabel("Enter Name:");
+        JTextField textField = new JTextField(10);
+        JTextArea textArea = new JTextArea(5, 20);
+        JButton button = new JButton("Submit");
+
+        frame.add(label);
+        frame.add(textField);
+        frame.add(textArea);
+        frame.add(button);
+
+        frame.setVisible(true);
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>7.3 Event-Driven Programming and Event Handling: Mouse Event and Key Event</b></h2>
+        <p><b>Event-driven programming</b> is a paradigm where the flow of the program is determined by events such as user actions (e.g., clicks, key presses). In Swing, events are handled using listeners that respond to specific actions.</p>
+        <ul>
+            <li><b>Mouse Events:</b> Handled by <code>MouseListener</code> or <code>MouseMotionListener</code>. Examples include <code>mouseClicked</code>, <code>mousePressed</code>, and <code>mouseMoved</code>.</li>
+            <li><b>Key Events:</b> Handled by <code>KeyListener</code>. Examples include <code>keyPressed</code>, <code>keyReleased</code>, and <code>keyTyped</code>.</li>
+            <li><b>Action Events:</b> Common for buttons, handled by <code>ActionListener</code>.</li>
+        </ul>
+        <p>Example (Handling Mouse and Key Events):</p>
+        <pre>
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class EventHandling {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Event Handling");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new FlowLayout());
+
+        JButton button = new JButton("Click Me");
+        JTextField textField = new JTextField(20);
+
+        // ActionListener for button
+        button.addActionListener(e -> textField.setText("Button Clicked!"));
+
+        // MouseListener for frame
+        frame.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                textField.setText("Mouse Clicked at: " + e.getX() + ", " + e.getY());
+            }
+        });
+
+        // KeyListener for text field
+        textField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                textField.setText("Key Typed: " + e.getKeyChar());
+            }
+        });
+
+        frame.add(button);
+        frame.add(textField);
+        frame.setVisible(true);
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>7.4 Building Simple Interactive Applications</b></h2>
+        <p>Swing enables the creation of interactive applications by combining components, layouts, and event handling. A simple interactive application typically includes a user interface with input/output components and responds to user actions.</p>
+        <p>Example (Simple Calculator Application):</p>
+        <pre>
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class SimpleCalculator {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Simple Calculator");
+        frame.setSize(300, 200);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new FlowLayout());
+
+        JTextField num1 = new JTextField(5);
+        JTextField num2 = new JTextField(5);
+        JLabel resultLabel = new JLabel("Result: ");
+        JButton addButton = new JButton("Add");
+
+        addButton.addActionListener(e -> {
+            try {
+                double n1 = Double.parseDouble(num1.getText());
+                double n2 = Double.parseDouble(num2.getText());
+                double result = n1 + n2;
+                resultLabel.setText("Result: " + result);
+            } catch (NumberFormatException ex) {
+                resultLabel.setText("Invalid input");
+            }
+        });
+
+        frame.add(new JLabel("Number 1: "));
+        frame.add(num1);
+        frame.add(new JLabel("Number 2: "));
+        frame.add(num2);
+        frame.add(addButton);
+        frame.add(resultLabel);
+
+        frame.setVisible(true);
+    }
+}
+        </pre>
+        <p>This example creates a simple calculator with two text fields for input, a button to perform addition, and a label to display the result. It demonstrates the integration of Swing components, layout management, and event handling.</p>
+    </div>
+</body>
+</html>

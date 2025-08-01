@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphs in Data Structures</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+      color: black;
+            font-size: 16pt;
+            font-weight: bold;
+    }
+    h2 {
+      color: black;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #272822;
+      color: #f8f8f2;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 5px;
+      }
+      .section {
+        padding: 10px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+    <h1><b>Unit 9: Graph</b></h1>
+
+    <div class="section">
+        <h2><b>9.1 Introduction</b></h2>
+        <p>A <b>graph</b> is a non-linear data structure consisting of vertices (nodes) connected by edges. It is used to represent relationships between entities, such as networks, social connections, or road maps. Graphs are versatile and widely applied in computer science for problems like shortest path finding, network analysis, and scheduling.</p>
+    </div>
+
+    <div class="section">
+        <h2><b>9.2 Graph Terminology</b></h2>
+        <ul>
+            <li><b>Vertex (Node):</b> A fundamental unit of a graph, representing an entity.</li>
+            <li><b>Edge:</b> A connection between two vertices, representing a relationship.</li>
+            <li><b>Adjacent Vertices:</b> Two vertices connected by an edge.</li>
+            <li><b>Degree:</b> The number of edges incident to a vertex (in directed graphs, in-degree and out-degree).</li>
+            <li><b>Path:</b> A sequence of vertices where each consecutive pair is connected by an edge.</li>
+            <li><b>Cycle:</b> A path that starts and ends at the same vertex.</li>
+            <li><b>Weighted Graph:</b> A graph where edges have weights (e.g., distances or costs).</li>
+            <li><b>Connected Graph:</b> An undirected graph where there is a path between any pair of vertices.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>9.3 Types of Graphs</b></h2>
+        <ul>
+            <li><b>Undirected Graph:</b> Edges have no direction; the relationship is bidirectional (e.g., A-B implies B-A).</li>
+            <li><b>Directed Graph (Digraph):</b> Edges have direction; the relationship is unidirectional (e.g., A→B does not imply B→A).</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>9.4 Graph Representation</b></h2>
+        <p>Graphs can be represented in two main ways:</p>
+        <ul>
+            <li><b>Adjacency Matrix:</b> A 2D array where matrix[i][j] represents an edge (or weight) between vertices i and j. Suitable for dense graphs.
+                <p>Example (Adjacency Matrix for undirected graph):</p>
+                <pre>
+int[][] adjMatrix = {
+    {0, 1, 0},
+    {1, 0, 1},
+    {0, 1, 0}
+};
+                </pre>
+            </li>
+            <li><b>Adjacency List:</b> Each vertex stores a list of adjacent vertices. Suitable for sparse graphs.
+                <p>Example (Adjacency List in Java):</p>
+                <pre>
+import java.util.*;
+
+class Graph {
+    int V;
+    ArrayList<Integer>[] adjList;
+
+    Graph(int V) {
+        this.V = V;
+        adjList = new ArrayList[V];
+        for (int i = 0; i < V; i++) {
+            adjList[i] = new ArrayList<>();
+        }
+    }
+
+    void addEdge(int u, int v) {
+        adjList[u].add(v);
+        adjList[v].add(u); // For undirected graph
+    }
+}
+                </pre>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>9.5 Graph Traversal</b></h2>
+        <p>Graph traversal involves visiting all vertices in a graph. The two main algorithms are:</p>
+        <ul>
+            <li><b>Breadth First Search (BFS):</b> Explores vertices level by level, using a queue to visit neighbors before moving deeper.
+                <p>Example:</p>
+                <pre>
+import java.util.*;
+
+void bfs(int start, ArrayList<Integer>[] adjList, int V) {
+    boolean[] visited = new boolean[V];
+    Queue<Integer> queue = new LinkedList<>();
+    visited[start] = true;
+    queue.add(start);
+
+    while (!queue.isEmpty()) {
+        int vertex = queue.poll();
+        System.out.print(vertex + " ");
+        for (int neighbor : adjList[vertex]) {
+            if (!visited[neighbor]) {
+                visited[neighbor] = true;
+                queue.add(neighbor);
+            }
+        }
+    }
+}
+                </pre>
+            </li>
+            <li><b>Depth First Search (DFS):</b> Explores as far as possible along a branch before backtracking, using recursion or a stack.
+                <p>Example:</p>
+                <pre>
+void dfs(int vertex, ArrayList<Integer>[] adjList, boolean[] visited) {
+    visited[vertex] = true;
+    System.out.print(vertex + " ");
+    for (int neighbor : adjList[vertex]) {
+        if (!visited[neighbor]) {
+            dfs(neighbor, adjList, visited);
+        }
+    }
+}
+                </pre>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>9.6 Spanning Tree and Minimum Spanning Tree</b></h2>
+        <p>A <b>spanning tree</b> is a subgraph of a connected, undirected graph that includes all vertices with no cycles and the minimum number of edges. A <b>minimum spanning tree (MST)</b> is a spanning tree with the minimum total edge weight.</p>
+        <ul>
+            <li><b>Kruskal's Algorithm:</b> Builds an MST by selecting edges in increasing order of weight, adding them if they do not form a cycle (using a disjoint-set data structure).
+                <p>Example:</p>
+                <pre>
+import java.util.*;
+
+class Edge implements Comparable<Edge> {
+    int src, dest, weight;
+    Edge(int src, int dest, int weight) {
+        this.src = src;
+        this.dest = dest;
+        this.weight = weight;
+    }
+    public int compareTo(Edge other) {
+        return this.weight - other.weight;
+    }
+}
+
+class Kruskal {
+    int find(int[] parent, int i) {
+        if (parent[i] == i) return i;
+        return find(parent, parent[i]);
+    }
+
+    void union(int[] parent, int[] rank, int x, int y) {
+        int rootX = find(parent, x);
+        int rootY = find(parent, y);
+        if (rank[rootX] < rank[rootY]) parent[rootX] = rootY;
+        else if (rank[rootX] > rank[rootY]) parent[rootY] = rootX;
+        else {
+            parent[rootY] = rootX;
+            rank[rootX]++;
+        }
+    }
+
+    void kruskalMST(ArrayList<Edge> edges, int V) {
+        Collections.sort(edges);
+        int[] parent = new int[V];
+        int[] rank = new int[V];
+        for (int i = 0; i < V; i++) parent[i] = i;
+
+        ArrayList<Edge> mst = new ArrayList<>();
+        for (Edge edge : edges) {
+            int x = find(parent, edge.src);
+            int y = find(parent, edge.dest);
+            if (x != y) {
+                mst.add(edge);
+                union(parent, rank, x, y);
+            }
+        }
+    }
+}
+                </pre>
+            </li>
+            <li><b>Prim's Algorithm:</b> Builds an MST by growing a tree from a starting vertex, adding the minimum-weight edge connecting a vertex in the tree to a vertex outside it.
+                <p>Example:</p>
+                <pre>
+void primMST(int[][] graph, int V) {
+    int[] parent = new int[V];
+    int[] key = new int[V];
+    boolean[] mstSet = new boolean[V];
+
+    Arrays.fill(key, Integer.MAX_VALUE);
+    Arrays.fill(mstSet, false);
+    key[0] = 0;
+    parent[0] = -1;
+
+    for (int count = 0; count < V - 1; count++) {
+        int u = minKey(key, mstSet, V);
+        mstSet[u] = true;
+        for (int v = 0; v < V; v++) {
+            if (graph[u][v] != 0 && !mstSet[v] && graph[u][v] < key[v]) {
+                parent[v] = u;
+                key[v] = graph[u][v];
+            }
+        }
+    }
+}
+
+int minKey(int[] key, boolean[] mstSet, int V) {
+    int min = Integer.MAX_VALUE, minIndex = -1;
+    for (int v = 0; v < V; v++) {
+        if (!mstSet[v] && key[v] < min) {
+            min = key[v];
+            minIndex = v;
+        }
+    }
+    return minIndex;
+}
+                </pre>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>9.7 Shortest Path Problem: Dijkstra's Algorithm</b></h2>
+        <p><b>Dijkstra's Algorithm</b> finds the shortest path from a source vertex to all other vertices in a weighted graph with non-negative edge weights.</p>
+        <p><b>Algorithm:</b></p>
+        <pre>
+1. Initialize distances to all vertices as infinity, except source (0).
+2. Use a priority queue to select the vertex with the minimum distance.
+3. For each neighbor of the selected vertex, update the distance if a shorter path is found.
+4. Repeat until all vertices are processed.
+        </pre>
+        <p>Example:</p>
+        <pre>
+import java.util.*;
+
+class Dijkstra {
+    void dijkstra(int[][] graph, int src, int V) {
+        int[] dist = new int[V];
+        boolean[] visited = new boolean[V];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[src] = 0;
+
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> dist[a] - dist[b]);
+        pq.add(src);
+
+        while (!pq.isEmpty()) {
+            int u = pq.poll();
+            if (visited[u]) continue;
+            visited[u] = true;
+
+            for (int v = 0; v < V; v++) {
+                if (!visited[v] && graph[u][v] != 0 && dist[u] + graph[u][v] < dist[v]) {
+                    dist[v] = dist[u] + graph[u][v];
+                    pq.add(v);
+                }
+            }
+        }
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>9.8 Graph Applications</b></h2>
+        <p>Graphs have numerous applications in computer science and real-world scenarios:</p>
+        <ul>
+            <li><b>Networks:</b> Modeling computer networks, social networks, or transportation systems.</li>
+            <li><b>Shortest Path Finding:</b> Used in GPS navigation, routing protocols, and logistics.</li>
+            <li><b>Dependency Resolution:</b> Managing dependencies in software builds or task scheduling.</li>
+            <li><b>Graph Algorithms:</b> BFS and DFS for search, cycle detection, or topological sorting.</li>
+            <li><b>Recommendation Systems:</b> Modeling user-item relationships in social media or e-commerce.</li>
+            <li><b>Minimum Spanning Trees:</b> Used in network design, such as minimizing cable length in telecommunications.</li>
+        </ul>
+    </div>
+</body>
+</html>

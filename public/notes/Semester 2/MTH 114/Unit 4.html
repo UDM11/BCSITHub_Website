@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 4: Optimization: Functions of Several Variables</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.4;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            color: black;
+        }
+        h1 {
+            text-align: center;
+            color: black;
+            font-size: 16pt;
+            font-weight: bold;
+        }
+        .section {
+            background: #fff;
+            padding: 5px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: justify;
+        }
+        ul {
+            margin: 5px 0;
+            padding-left: 10px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1><b>Unit 4: Optimization: Functions of Several Variables</b></h1>
+
+    <div class="section">
+        <h2><b>4.1 Introduction</b></h2>
+        <p>Optimization for functions of several variables involves finding the maximum or minimum values of a function with multiple independent variables, often subject to constraints. This is a key concept in multivariable calculus, used to solve problems in economics, engineering, physics, and data science.</p>
+        <ul>
+            <li><strong>Definition:</strong> A function <em>f(x₁, x₂, ..., xₙ)</em> maps multiple variables to a single output. Optimization seeks points where <em>f</em> achieves its highest (maxima) or lowest (minima) values. Example: <em>f(x, y) = x² + y²</em> represents a paraboloid, with a minimum at (0, 0).</li>
+            <li><strong>Types of Extrema:</strong>
+                <ul>
+                    <li><strong>Local Maxima/Minima:</strong> Points where <em>f</em> is higher/lower than nearby points. Example: <em>f(x, y) = x² - y²</em> has a saddle point at (0, 0).</li>
+                    <li><strong>Global Maxima/Minima:</strong> The absolute highest/lowest value of <em>f</em> over its domain.</li>
+                </ul>
+            </li>
+            <li><strong>Applications:</strong> Used in cost minimization (e.g., production costs), profit maximization, machine learning (e.g., minimizing error functions), and design optimization (e.g., minimizing material use).</li>
+            <li><strong>Tools:</strong> Partial derivatives, critical points, and second derivative tests are used to locate and classify extrema.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>4.2 Partial Derivative</b></h2>
+        <p>The partial derivative measures the rate of change of a function with respect to one variable, while holding other variables constant.</p>
+        <ul>
+            <li><strong>Definition:</strong> For a function <em>f(x, y)</em>, the partial derivative with respect to <em>x</em> is <em>∂f/∂x = lim<sub>h→0</sub> [f(x+h, y) - f(x, y)]/h</em>, treating <em>y</em> as a constant. Similarly, <em>∂f/∂y</em> treats <em>x</em> as constant. Example: For <em>f(x, y) = x² + xy + y²</em>, <em>∂f/∂x = 2x + y</em>, <em>∂f/∂y = x + 2y</em>.</li>
+            <li><strong>Notation:</strong> <em>∂f/∂x</em>, <em>fₓ</em>, or <em>∂f/∂y</em>, <em>fᵧ</em>. For functions of more variables, e.g., <em>f(x, y, z)</em>, compute <em>∂f/∂x</em>, <em>∂f/∂y</em>, <em>∂f/∂z</em>.</li>
+            <li><strong>Higher-Order Partial Derivatives:</strong> Second partial derivatives include <em>∂²f/∂x²</em>, <em>∂²f/∂y²</em>, and mixed partials <em>∂²f/∂x∂y</em>, <em>∂²f/∂y∂x</em>. Example: For <em>f(x, y) = x² + xy</em>, <em>∂²f/∂x² = 2</em>, <em>∂²f/∂y∂x = 1</em>. If <em>f</em> is sufficiently smooth, mixed partials are equal: <em>∂²f/∂x∂y = ∂²f/∂y∂x</em>.</li>
+            <li><strong>Applications:</strong> Partial derivatives identify critical points for optimization and describe surfaces (e.g., slopes in different directions).</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>4.3 Rules of Partial Differentiation</b></h2>
+        <p>Partial differentiation follows rules analogous to single-variable calculus, applied to one variable at a time while treating others as constants.</p>
+        <ul>
+            <li><strong>Constant Rule:</strong> If <em>f(x, y) = k</em>, where <em>k</em> is a constant, then <em>∂f/∂x = 0</em>, <em>∂f/∂y = 0</em>. Example: <em>f(x, y) = 5</em>, <em>∂f/∂x = 0</em>.</li>
+            <li><strong>Power Rule:</strong> For <em>f(x, y) = xⁿ</em>, <em>∂f/∂x = n xⁿ⁻¹</em>, <em>∂f/∂y = 0</em>. Example: <em>f(x, y) = x³y</em>, <em>∂f/∂x = 3x²y</em>, <em>∂f/∂y = x³</em>.</li>
+            <li><strong>Sum Rule:</strong> <em>∂/∂x [f(x, y) + g(x, y)] = ∂f/∂x + ∂g/∂x</em>. Example: <em>f(x, y) = x² + y²</em>, <em>∂f/∂x = 2x</em>.</li>
+            <li><strong>Product Rule:</strong> For <em>f(x, y) = u(x, y) · v(x, y)</em>, <em>∂f/∂x = u (∂v/∂x) + v (∂u/∂x)</em>. Example: <em>f(x, y) = xy</em>, <em>∂f/∂x = y · 1 + x · 0 = y</em>.</li>
+            <li><strong>Chain Rule:</strong> If <em>z = f(u, v)</em>, where <em>u = u(x, y)</em>, <em>v = v(x, y)</em>, then <em>∂z/∂x = (∂f/∂u)(∂u/∂x) + (∂f/∂v)(∂v/∂x)</em>. Example: <em>z = u² + v</em>, <em>u = xy</em>, <em>v = y</em>, then <em>∂z/∂x = 2u · y + 0 = 2xy · y = 2xy²</em>.</li>
+            <li><strong>Quotient Rule:</strong> For <em>f(x, y) = u(x, y) / v(x, y)</em>, <em>∂f/∂x = [(∂u/∂x)v - u(∂v/∂x)] / v²</em>. Example: <em>f(x, y) = x/y</em>, <em>∂f/∂x = (1 · y - x · 0) / y² = y/y² = 1/y</em>.</li>
+            <li><strong>Best Practices:</strong> Differentiate with respect to one variable at a time, simplify expressions, and verify higher-order derivatives for accuracy.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>4.4 Maxima and Minima for the Function of Two Variables</b></h2>
+        <p>Finding maxima and minima for a function <em>f(x, y)</em> involves identifying critical points and classifying them using partial derivatives.</p>
+        <ul>
+            <li><strong>Critical Points:</strong> Points where the gradient is zero or undefined, i.e., <em>∂f/∂x = 0</em> and <em>∂f/∂y = 0</em>. Example: For <em>f(x, y) = x² + y²</em>, <em>∂f/∂x = 2x = 0</em>, <em>∂f/∂y = 2y = 0</em>, so (0, 0) is a critical point.</li>
+            <li><strong>Second Derivative Test:</strong> To classify critical points, use the Hessian determinant <em>D = (∂²f/∂x²)(∂²f/∂y²) - (∂²f/∂x∂y)²</em> at the critical point (a, b):
+                <ul>
+                    <li>Let <em>A = ∂²f/∂x²</em>, <em>B = ∂²f/∂x∂y</em>, <em>C = ∂²f/∂y²</em>. Compute <em>D = A · C - B²</em>.</li>
+                    <li>If <em>D > 0</em> and <em>A > 0</em>, then (a, b) is a local minimum.</li>
+                    <li>If <em>D > 0</em> and <em>A < 0</em>, then (a, b) is a local maximum.</li>
+                    <li>If <em>D < 0</em>, then (a, b) is a saddle point.</li>
+                    <li>If <em>D = 0</em>, the test is inconclusive.</li>
+                </ul>
+                Example: For <em>f(x, y) = x² + y²</em>, critical point is (0, 0). Compute <em>∂²f/∂x² = 2</em>, <em>∂²f/∂y² = 2</em>, <em>∂²f/∂x∂y = 0</em>. Then <em>D = 2 · 2 - 0² = 4 > 0</em>, <em>A = 2 > 0</em>, so (0, 0) is a local minimum.</li>
+            <li><strong>Example with Saddle Point:</strong> For <em>f(x, y) = x² - y²</em>, <em>∂f/∂x = 2x = 0</em>, <em>∂f/∂y = -2y = 0</em>, critical point is (0, 0). Second derivatives: <em>∂²f/∂x² = 2</em>, <em>∂²f/∂y² = -2</em>, <em>∂²f/∂x∂y = 0</em>. Then <em>D = 2 · (-2) - 0² = -4 < 0</em>, so (0, 0) is a saddle point.</li>
+            <li><strong>Boundary Points:</strong> To find global extrema, check critical points and evaluate <em>f</em> on the boundary of the domain (if constrained). Example: For <em>f(x, y) = x² + y²</em> on <em>x² + y² ≤ 1</em>, check boundary <em>x² + y² = 1</em> using parameterization or Lagrange multipliers.</li>
+            <li><strong>Applications:</strong> Optimize profit (e.g., <em>f(x, y) = revenue - cost</em>), minimize error in machine learning, or maximize efficiency in resource allocation.</li>
+        </ul>
+    </div>
+</body>
+</html>

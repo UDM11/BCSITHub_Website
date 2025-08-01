@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generics in Java</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+      color: black;
+            font-size: 16pt;
+            font-weight: bold;
+    }
+    h2 {
+      color: black;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #272822;
+      color: #f8f8f2;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 5px;
+      }
+      .section {
+        padding: 10px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+    <h1><b>Unit 8: Generics</b></h1>
+
+    <div class="section">
+        <h2><b>8.1 Advantages of Using Generics</b></h2>
+        <p><b>Generics</b> in Java, introduced in Java 5, allow classes, interfaces, and methods to operate on parameterized types, providing type safety and flexibility. They enable developers to write reusable code that works with different data types without sacrificing compile-time type checking.</p>
+        <ul>
+            <li><b>Type Safety:</b> Generics ensure that only the specified type is used, preventing runtime errors like <code>ClassCastException</code>.</li>
+            <li><b>Code Reusability:</b> Generic classes and methods can work with any data type, reducing code duplication.</li>
+            <li><b>Elimination of Casts:</b> Generics remove the need for explicit type casting when retrieving objects from collections.</li>
+            <li><b>Compile-Time Checking:</b> Type errors are caught at compile-time rather than runtime, improving reliability.</li>
+        </ul>
+        <p>Example (Without vs. With Generics):</p>
+        <pre>
+import java.util.ArrayList;
+
+public class GenericsAdvantage {
+    public static void main(String[] args) {
+        // Without Generics
+        ArrayList list = new ArrayList();
+        list.add("Hello");
+        String str = (String) list.get(0); // Requires casting
+
+        // With Generics
+        ArrayList<String> genericList = new ArrayList<>();
+        genericList.add("Hello");
+        String genericStr = genericList.get(0); // No casting needed
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>8.2 Generic Classes</b></h2>
+        <p>A <b>generic class</b> is a class that can operate on a parameterized type, defined using type parameters in angle brackets (<code><T></code>). The type parameter acts as a placeholder for the actual type used when the class is instantiated.</p>
+        <p>Example:</p>
+        <pre>
+public class Box<T> {
+    private T content;
+
+    public void setContent(T content) {
+        this.content = content;
+    }
+
+    public T getContent() {
+        return content;
+    }
+
+    public static void main(String[] args) {
+        Box<Integer> intBox = new Box<>();
+        intBox.setContent(123);
+        System.out.println("Integer Box: " + intBox.getContent());
+
+        Box<String> strBox = new Box<>();
+        strBox.setContent("Hello");
+        System.out.println("String Box: " + strBox.getContent());
+    }
+}
+        </pre>
+        <p>In this example, <code>Box<T></code> is a generic class that can hold any type, specified when creating instances like <code>Box<Integer></code> or <code>Box<String></code>.</p>
+    </div>
+
+    <div class="section">
+        <h2><b>8.3 Generic Methods</b></h2>
+        <p><b>Generic methods</b> are methods that introduce their own type parameters, independent of the class’s type parameters. They are defined with a type parameter before the return type.</p>
+        <p>Example:</p>
+        <pre>
+public class GenericMethodExample {
+    // Generic method
+    public static <T> void printArray(T[] array) {
+        for (T element : array) {
+            System.out.print(element + " ");
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        Integer[] intArray = {1, 2, 3};
+        String[] strArray = {"A", "B", "C"};
+
+        printArray(intArray); // Output: 1 2 3
+        printArray(strArray); // Output: A B C
+    }
+}
+        </pre>
+        <p>The method <code>printArray</code> uses a type parameter <code>T</code> to handle arrays of any type.</p>
+    </div>
+
+    <div class="section">
+        <h2><b>8.4 Generic Constructors</b></h2>
+        <p><b>Generic constructors</b> allow constructors to use type parameters, either from the class or independently. They are useful when the constructor needs to handle different types dynamically.</p>
+        <p>Example:</p>
+        <pre>
+public class GenericConstructor<T> {
+    private T data;
+
+    // Generic constructor
+     GenericConstructor(U data) {
+        this.data = (T) data; // Cast required if U is not guaranteed to be T
+        System.out.println("Data: " + data);
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public static void main(String[] args) {
+        GenericConstructor<String> strObj = new GenericConstructor<>("Test");
+        System.out.println("Stored: " + strObj.getData());
+
+        GenericConstructor<Integer> intObj = new GenericConstructor<>(100);
+        System.out.println("Stored: " + intObj.getData());
+    }
+}
+        </pre>
+        <p>In this example, the constructor accepts a type <code>U</code> and assigns it to the class’s type <code>T</code>.</p>
+    </div>
+
+    <div class="section">
+        <h2><b>8.5 Polymorphism in Generics</b></h2>
+        <p><b>Polymorphism in generics</b> allows generic types to work with class hierarchies, using bounded type parameters to restrict the types that can be used. There are two main types of bounds:</p>
+        <ul>
+            <li><b>Upper Bounded Types:</b> Restrict the type to a class or its subclasses using <code><T extends Class></code>.</li>
+            <li><b>Lower Bounded Types:</b> Restrict the type to a class or its superclasses using <code><T super Class></code>.</li>
+        </ul>
+        <p>Example (Upper Bounded Generic):</p>
+        <pre>
+public class BoundedGeneric {
+    // Generic method with upper bound
+    public static <T extends Number> double sum(T num1, T num2) {
+        return num1.doubleValue() + num2.doubleValue();
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Sum of Integers: " + sum(10, 20)); // Output: 30.0
+        System.out.println("Sum of Doubles: " + sum(10.5, 20.5)); // Output: 31.0
+    }
+}
+        </pre>
+        <p>Example (Using Wildcards for Polymorphism):</p>
+        <pre>
+import java.util.*;
+
+public class WildcardExample {
+    // Method with wildcard for polymorphism
+    public static void printList(List<? extends Number> list) {
+        for (Number num : list) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        List<Integer> intList = Arrays.asList(1, 2, 3);
+        List<Double> doubleList = Arrays.asList(1.1, 2.2, 3.3);
+
+        printList(intList); // Output: 1 2 3
+        printList(doubleList); // Output: 1.1 2.2 3.3
+    }
+}
+        </pre>
+        <p>Wildcards (<code>?</code>) and bounded types enable flexible and polymorphic behavior in generic code, allowing methods to handle related types in a type-safe manner.</p>
+    </div>
+</body>
+</html>

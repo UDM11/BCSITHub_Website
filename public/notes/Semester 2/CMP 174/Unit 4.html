@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 4: Combinational Logic</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.4;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            color: black;
+        }
+        h1 {
+            text-align: center;
+            color: black;
+            font-size: 16pt;
+            font-weight: bold;
+        }
+        .section {
+            background: #fff;
+            padding: 5px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: justify;
+        }
+        ul {
+            margin: 5px 0;
+            padding-left: 10px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        table {
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1><b>Unit 4: Combinational Logic</b></h1>
+
+    <div class="section">
+        <h2><b>4.1 Introduction to Combinational Logic Circuit</b></h2>
+        <p>Combinational logic circuits produce outputs that depend solely on the current inputs, with no memory or feedback. They are fundamental building blocks in digital systems.</p>
+        <ul>
+            <li><strong>Definition:</strong> A combinational circuit’s output is a function of its inputs at any given time. Example: Adders, multiplexers, and decoders.</li>
+            <li><strong>Characteristics:</strong> No memory elements; outputs are determined by Boolean functions of inputs. Example: A circuit computing <em>F = A · B + C'</em>.</li>
+            <li><strong>Design Process:</strong> Define inputs/outputs, derive truth table, obtain Boolean expression, simplify using K-maps, and implement with logic gates.</li>
+            <li><strong>Applications:</strong> Arithmetic operations, data routing, and code conversion in processors, calculators, and communication systems.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>4.2 Adders and Subtractors</b></h2>
+        <p>Adders and subtractors are combinational circuits used for binary arithmetic operations.</p>
+        <ul>
+            <li><strong>Half Adder:</strong> Adds two single-bit inputs (A, B). Outputs: Sum (<em>S = A ⊕ B</em>) and Carry (<em>C = A · B</em>).
+                <table>
+                    <tr><th>A</th><th>B</th><th>Sum</th><th>Carry</th></tr>
+                    <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                    <tr><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+                    <tr><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+                    <tr><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+                </table>
+            </li>
+            <li><strong>Full Adder:</strong> Adds three single-bit inputs (A, B, Carry-in). Outputs: Sum (<em>S = A ⊕ B ⊕ C_in</em>) and Carry-out (<em>C_out = (A · B) + (B · C_in) + (A · C_in)</em>). Implemented with two half adders and an OR gate.</li>
+            <li><strong>Ripple Carry Adder:</strong> Chains full adders to add multi-bit numbers. Example: 4-bit adder for <em>A = A₃A₂A₁A₀</em> and <em>B = B₃B₂B₁B₀</em>. Drawback: Delay due to carry propagation.</li>
+            <li><strong>Subtractor:</strong>
+                <ul>
+                    <li><strong>Half Subtractor:</strong> Subtracts two bits (A - B). Outputs: Difference (<em>D = A ⊕ B</em>) and Borrow (<em>B_out = A' · B</em>).</li>
+                    <li><strong>Full Subtractor:</strong> Subtracts three bits (A - B - Borrow-in). Outputs: Difference (<em>D = A ⊕ B ⊕ B_in</em>) and Borrow-out (<em>B_out = A' · B + A' · B_in + B · B_in</em>).</li>
+                    <li><strong>Using Two’s Complement:</strong> Subtraction <em>A - B</em> is performed as <em>A + (two’s complement of B)</em> using an adder circuit.</li>
+                </ul>
+            </li>
+            <li><strong>Applications:</strong> Used in ALUs, calculators, and digital signal processing.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>4.3 Decoder and Encoder</b></h2>
+        <p>Decoders and encoders are combinational circuits used for data selection and conversion.</p>
+        <ul>
+            <li><strong>Decoder:</strong> Converts a binary input code to activate one of many outputs.
+                <ul>
+                    <li>Example: 2-to-4 decoder has 2 inputs (A₁, A₀) and 4 outputs (D₀ to D₃). Only one output is 1 based on input. Truth table:
+                        <table>
+                            <tr><th>A₁</th><th>A₀</th><th>D₀</th><th>D₁</th><th>D₂</th><th>D₃</th></tr>
+                            <tr><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+                            <tr><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+                            <tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+                            <tr><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+                        </table>
+                    </li>
+                    <li><strong>Logic:</strong> <em>D₀ = A₁'A₀'</em>, <em>D₁ = A₁'A₀</em>, <em>D₂ = A₁A₀'</em>, <em>D₃ = A₁A₀</em>.</li>
+                </ul>
+            </li>
+            <li><strong>Encoder:</strong> Converts one active input (from many) to a binary output code.
+                <ul>
+                    <li>Example: 4-to-2 encoder has 4 inputs (D₀ to D₃) and 2 outputs (A₁, A₀). Only one input is 1. Outputs: <em>A₁ = D₂ + D₃</em>, <em>A₀ = D₁ + D₃</em>.</li>
+                    <li><strong>Priority Encoder:</strong> Handles multiple active inputs by prioritizing the highest-indexed input.</li>
+                </ul>
+            </li>
+            <li><strong>Applications:</strong> Decoders in memory addressing; encoders in keyboards and data compression.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>4.4 Multiplexer and Demultiplexer</b></h2>
+        <p>Multiplexers and demultiplexers route data by selecting inputs or distributing outputs.</p>
+        <ul>
+            <li><strong>Multiplexer (MUX):</strong> Selects one of many inputs to a single output based on select lines.
+                <ul>
+                    <li>Example: 4-to-1 MUX with 4 inputs (D₀ to D₃), 2 select lines (S₁, S₀), and 1 output (Y). Output: <em>Y = S₁'S₀'D₀ + S₁'S₀D₁ + S₁S₀'D₂ + S₁S₀D₃</em>.</li>
+                    <li><strong>Truth Table (4-to-1 MUX):</strong>
+                        <table>
+                            <tr><th>S₁</th><th>S₀</th><th>Y</th></tr>
+                            <tr><td>0</td><td>0</td><td>D₀</td></tr>
+                            <tr><td>0</td><td>1</td><td>D₁</td></tr>
+                            <tr><td>1</td><td>0</td><td>D₂</td></tr>
+                            <tr><td>1</td><td>1</td><td>D₃</td></tr>
+                        </table>
+                    </li>
+                </ul>
+            </li>
+            <li><strong>Demultiplexer (DEMUX):</strong> Routes one input to one of many outputs based on select lines.
+                <ul>
+                    <li>Example: 1-to-4 DEMUX with 1 input (D), 2 select lines (S₁, S₀), and 4 outputs (Y₀ to Y₃). Outputs: <em>Y₀ = S₁'S₀'D</em>, <em>Y₁ = S₁'S₀D</em>, <em>Y₂ = S₁S₀'D</em>, <em>Y₃ = S₁S₀D</em>.</li>
+                </ul>
+            </li>
+            <li><strong>Applications:</strong> MUX in data selection (e.g., CPU registers); DEMUX in data distribution (e.g., memory systems).</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>4.5 Code Conversion (8421, BCD, Gray, Excess-3, 2421)</b></h2>
+        <p>Code conversion transforms numbers between different binary coding schemes used in digital systems.</p>
+        <ul>
+            <li><strong>8421 (BCD):</strong> Each decimal digit is represented by a 4-bit binary code (0000 to 1001). Example: <em>45₁₀ = 0100 0101_BCD</em>.</li>
+            <li><strong>Gray Code:</strong> Adjacent numbers differ by one bit. Example: <em>3₁₀ = 010_Gray</em>, <em>4₁₀ = 110_Gray</em>. Conversion from binary: <em>Gᵢ = Bᵢ ⊕ Bᵢ₊₁</em> (B₀ = G₀).</li>
+            <li><strong>Excess-3:</strong> BCD code plus 3. Example: <em>5₁₀ = 0101_BCD = 1000_Excess-3</em> (0101 + 0011).</li>
+            <li><strong>2421 Code:</strong> Weighted code with weights 2, 4, 2, 1. Example: <em>5₁₀ = 0101_2421</em> (0·2 + 1·4 + 0·2 + 1·1 = 5).</li>
+            <li><strong>Conversion Example:</strong> Convert BCD <em>0101</em> to Gray. BCD <em>0101 = 5₁₀</em>. Binary <em>5 = 0101</em>. Gray: <em>G₃ = 0 ⊕ 1 = 1</em>, <em>G₂ = 1 ⊕ 0 = 1</em>, <em>G₁ = 0 ⊕ 1 = 1</em>, <em>G₀ = 1</em>. Result: <em>1111_Gray</em>.</li>
+            <li><strong>Applications:</strong> BCD in calculators, Gray in error-free encoding (e.g., rotary encoders), Excess-3 in arithmetic circuits.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>4.6 Programmable Logic Device (PROM)</b></h2>
+        <p>Programmable Read-Only Memory (PROM) is a combinational logic device used to implement complex Boolean functions.</p>
+        <ul>
+            <li><strong>Definition:</strong> PROM is a memory device with a fixed AND array (decodes inputs to minterms) and a programmable OR array (connects minterms to outputs). It stores truth tables for Boolean functions.</li>
+            <li><strong>Structure:</strong>
+                <ul>
+                    <li><strong>AND Array:</strong> Fixed, generates all possible minterms for input combinations.</li>
+                    <li><strong>OR Array:</strong> Programmable fuses connect minterms to outputs, defining the function.</li>
+                    <li>Example: For <em>F(A, B) = A'B + AB</em>, PROM stores 1s for minterms <em>m₁, m₃</em> at the output.</li>
+                </ul>
+            </li>
+            <li><strong>Programming:</strong> Fuses are blown to configure the OR array, making PROM one-time programmable.</li>
+            <li><strong>Applications:</strong> Used in microcontrollers, lookup tables, and implementing combinational logic in embedded systems.</li>
+        </ul>
+    </div>
+</body>
+</html>

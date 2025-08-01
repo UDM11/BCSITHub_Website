@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 1: Complex Numbers</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.4;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            color: black;
+        }
+        h1 {
+            text-align: center;
+            color: black;
+            font-size: 16pt;
+            font-weight: bold;
+        }
+        .section {
+            background: #fff;
+            padding: 5px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: justify;
+        }
+        ul {
+            margin: 5px 0;
+            padding-left: 10px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1><b>Unit 1: Complex Numbers</b></h1>
+
+    <div class="section">
+        <h2><b>1.1 Definition of a Complex Number, Integral Powers of i</b></h2>
+        <p>A complex number is a number of the form <em>z = a + bi</em>, where <em>a</em> and <em>b</em> are real numbers, and <em>i</em> is the imaginary unit with the property <em>i² = -1</em>. Here, <em>a</em> is the real part, and <em>b</em> is the imaginary part.</p>
+        <ul>
+            <li><strong>Definition:</strong> A complex number combines a real number and an imaginary number. Example: <em>3 + 4i</em> has real part 3 and imaginary part 4.</li>
+            <li><strong>Integral Powers of i:</strong> The imaginary unit <em>i</em> follows a cyclic pattern when raised to integer powers:
+                <ul>
+                    <li><em>i¹ = i</em></li>
+                    <li><em>i² = -1</em></li>
+                    <li><em>i³ = i² · i = -i</em></li>
+                    <li><em>i⁴ = (i²)² = (-1)² = 1</em></li>
+                    <li><em>i⁵ = i⁴ · i = 1 · i = i</em>, and the cycle repeats every four powers.</li>
+                </ul>
+                Example: To find <em>i^7</em>, note that <em>7 = 4 + 3</em>, so <em>i^7 = i⁴ · i³ = 1 · (-i) = -i</em>.</li>
+            <li><strong>General Rule:</strong> For any integer <em>n</em>, compute <em>i^n</em> by finding <em>n mod 4</em>: <em>i^0 = 1</em>, <em>i^1 = i</em>, <em>i^2 = -1</em>, <em>i^3 = -i</em>.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>1.2 Algebra of Complex Numbers</b></h2>
+        <p>Complex numbers can be added, subtracted, multiplied, and divided using standard algebraic operations, treating <em>i</em> as a variable with <em>i² = -1</em>.</p>
+        <ul>
+            <li><strong>Sum:</strong> Add real and imaginary parts separately. For <em>z₁ = a + bi</em> and <em>z₂ = c + di</em>, <em>z₁ + z₂ = (a + c) + (b + d)i</em>. Example: <em>(3 + 4i) + (2 - 5i) = (3 + 2) + (4 - 5)i = 5 - i</em>.</li>
+            <li><strong>Difference:</strong> Subtract real and imaginary parts. <em>z₁ - z₂ = (a - c) + (b - d)i</em>. Example: <em>(3 + 4i) - (2 - 5i) = (3 - 2) + (4 - (-5))i = 1 + 9i</em>.</li>
+            <li><strong>Multiplication:</strong> Use the distributive property and simplify using <em>i² = -1</em>. <em>z₁ · z₂ = (a + bi)(c + di) = ac + adi + bci + bdi² = (ac - bd) + (ad + bc)i</em>. Example: <em>(3 + 4i)(2 - 5i) = 6 - 15i + 8i - 20i² = 6 + 20 - 7i = 26 - 7i</em>.</li>
+            <li><strong>Division:</strong> Multiply numerator and denominator by the conjugate of the denominator to make the denominator real. For <em>z₁ / z₂ = (a + bi) / (c + di)</em>, multiply by <em>(c - di) / (c - di)</em>. Example: <em>(3 + 4i) / (2 + i) = [(3 + 4i)(2 - i)] / [(2 + i)(2 - i)] = (6 - 3i + 8i - 4i²) / (4 - i²) = (10 + 5i) / 5 = 2 + i</em>.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>1.3 Properties of Complex Numbers, Conjugate of a Complex Number</b></h2>
+        <p>Complex numbers have specific properties that govern their behavior, and the conjugate is a key concept.</p>
+        <ul>
+            <li><strong>Properties (Without Proof):</strong>
+                <ul>
+                    <li><strong>Commutative:</strong> <em>z₁ + z₂ = z₂ + z₁</em> and <em>z₁ · z₂ = z₂ · z₁</em>.</li>
+                    <li><strong>Associative:</strong> <em>(z₁ + z₂) + z₃ = z₁ + (z₂ + z₃)</em> and <em>(z₁ · z₂) · z₃ = z₁ · (z₂ · z₃)</em>.</li>
+                    <li><strong>Distributive:</strong> <em>z₁ · (z₂ + z₃) = z₁ · z₂ + z₁ · z₃</em>.</li>
+                    <li><strong>Additive Identity:</strong> <em>z + 0 = z</em>, where <em>0 = 0 + 0i</em>.</li>
+                    <li><strong>Multiplicative Identity:</strong> <em>z · 1 = z</em>, where <em>1 = 1 + 0i</em>.</li>
+                </ul>
+            </li>
+            <li><strong>Conjugate:</strong> For <em>z = a + bi</em>, the conjugate is <em>z̅ = a - bi</em>. Example: Conjugate of <em>3 + 4i</em> is <em>3 - 4i</em>.</li>
+            <li><strong>Properties of Conjugate:</strong>
+                <ul>
+                    <li><em>z + z̅ = 2a</em> (real number). Example: <em>(3 + 4i) + (3 - 4i) = 6</em>.</li>
+                    <li><em>z - z̅ = 2bi</em> (purely imaginary). Example: <em>(3 + 4i) - (3 - 4i) = 8i</em>.</li>
+                    <li><em>z · z̅ = a² + b²</em> (real number). Example: <em>(3 + 4i)(3 - 4i) = 9 + 16 = 25</em>.</li>
+                    <li><em>(z̅)̅ = z</em>. Example: Conjugate of <em>3 - 4i</em> is <em>3 + 4i</em>.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>1.4 Modulus of a Complex Number and Argand’s Diagram</b></h2>
+        <p>The modulus measures the magnitude of a complex number, and Argand’s diagram represents it geometrically.</p>
+        <ul>
+            <li><strong>Modulus:</strong> For <em>z = a + bi</em>, the modulus is <em>|z| = √(a² + b²)</em>, representing the distance from the origin in the complex plane. Example: For <em>3 + 4i</em>, <em>|z| = √(3² + 4²) = √25 = 5</em>.</li>
+            <li><strong>Properties of Modulus (Without Proof):</strong>
+                <ul>
+                    <li><em>|z| ≥ 0</em>, and <em>|z| = 0</em> if and only if <em>z = 0</em>.</li>
+                    <li><em>|z₁ · z₂| = |z₁| · |z₂|</em>. Example: For <em>z₁ = 3 + 4i</em> and <em>z₂ = 1 + i</em>, verify using moduli.</li>
+                    <li><em>|z₁ / z₂| = |z₁| / |z₂|</em> (if <em>z₂ ≠ 0</em>).</li>
+                    <li><em>|z̅| = |z|</em>. Example: Modulus of <em>3 - 4i</em> is also 5.</li>
+                </ul>
+            </li>
+            <li><strong>Argand’s Diagram:</strong> Represents a complex number <em>z = a + bi</em> as a point (a, b) in a 2D plane, with the x-axis as the real axis and the y-axis as the imaginary axis. Example: <em>3 + 4i</em> is plotted at (3, 4).</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>1.5 Polar Representation of a Complex Number</b></h2>
+        <p>Polar form expresses a complex number using its modulus and argument (angle).</p>
+        <ul>
+            <li><strong>Definition:</strong> For <em>z = a + bi</em>, polar form is <em>z = r(cosθ + i sinθ)</em>, where <em>r = |z| = √(a² + b²)</em> is the modulus, and <em>θ = tan⁻¹(b/a)</em> is the argument (adjusted for quadrant). Example: For <em>3 + 4i</em>, <em>r = 5</em>, <em>θ ≈ tan⁻¹(4/3) ≈ 53.13°</em>, so <em>z = 5(cos 53.13° + i sin 53.13°)</em>.</li>
+            <li><strong>Argument:</strong> The angle <em>θ</em> is measured from the positive real axis, with <em>-π < θ ≤ π</em> (principal value). Adjust <em>θ</em> based on the quadrant of (a, b).</li>
+            <li><strong>Advantages:</strong> Simplifies multiplication, division, and powers of complex numbers. Example: Multiplication involves multiplying moduli and adding arguments.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>1.6 Square Roots of a Complex Number (Cartesian Form)</b></h2>
+        <p>The square root of a complex number <em>z = a + bi</em> yields two complex numbers whose square equals <em>z</em>.</p>
+        <ul>
+            <li><strong>Method:</strong> Let the square root be <em>w = x + yi</em>. Then <em>w² = z</em>, so <em>(x + yi)² = x² - y² + 2xyi = a + bi</em>. Equate real and imaginary parts:
+                <ul>
+                    <li><em>x² - y² = a</em></li>
+                    <li><em>2xy = b</em></li>
+                    <li>Solve with <em>|w| = √|z|</em>, where <em>x² + y² = √(a² + b²)</em>.</li>
+                </ul>
+                Example: For <em>z = 3 + 4i</em>, solve for <em>w</em>. Let <em>x² + y² = √(3² + 4²) = 5</em>. From <em>2xy = 4</em>, <em>y = 2/x</em>. Substitute into <em>x² - (2/x)² = 3</em>, yielding <em>x⁴ - 3x² - 4 = 0</em>. Solve to get <em>x² = 4</em> or <em>x² = -1</em> (discard negative). Thus, <em>x = ±2</em>, <em>y = ±1</em>. Roots are <em>2 + i</em> and <em>-2 - i</em>.</li>
+            <li><strong>Verification:</strong> Check: <em>(2 + i)² = 4 + 4i + i² = 3 + 4i</em>. Similarly for <em>-2 - i</em>.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>1.7 De Moivre’s Theorem and Its Application</b></h2>
+        <p>De Moivre’s theorem provides a method to compute powers and roots of complex numbers in polar form.</p>
+        <ul>
+            <li><strong>Statement:</strong> For a complex number <em>z = r(cosθ + i sinθ)</em> and integer <em>n</em>, <em>z^n = r^n (cos(nθ) + i sin(nθ))</em>.</li>
+            <li><strong>Applications:</strong>
+                <ul>
+                    <li><strong>Powers:</strong> Simplify high powers of complex numbers. Example: For <em>z = 1 + i</em>, polar form is <em>√2 (cos 45° + i sin 45°)</em>. Then <em>z³ = (√2)³ (cos(3·45°) + i sin(3·45°)) = 2√2 (cos 135° + i sin 135°) = 2√2 (-1/√2 + i/√2) = -2 + 2i</em>.</li>
+                    <li><strong>Roots:</strong> Find <em>n</em>-th roots using <em>z^(1/n) = r^(1/n) [cos((θ + 2kπ)/n) + i sin((θ + 2kπ)/n)]</em> for <em>k = 0, 1, ..., n-1</em>. Example: Cube roots of <em>1 = 1 + 0i</em> (r = 1, θ = 0) are <em>cos(2kπ/3) + i sin(2kπ/3)</em> for <em>k = 0, 1, 2</em>, yielding <em>1</em>, <em>-1/2 + i√3/2</em>, <em>-1/2 - i√3/2</em>.</li>
+                </ul>
+            </li>
+            <li><strong>Best Practices:</strong> Convert to polar form for easier computation, especially for high powers or roots.</li>
+        </ul>
+    </div>
+</body>
+</html>

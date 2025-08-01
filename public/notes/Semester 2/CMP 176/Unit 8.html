@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Searching in Data Structures</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+      color: black;
+            font-size: 16pt;
+            font-weight: bold;
+    }
+    h2 {
+      color: black;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #272822;
+      color: #f8f8f2;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 5px;
+      }
+      .section {
+        padding: 10px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+    <h1><b>Unit 8: Searching</b></h1>
+
+    <div class="section">
+        <h2><b>8.1 Introduction</b></h2>
+        <p><b>Searching</b> is the process of finding a specific element in a collection of data. It is a fundamental operation in computer science, used in applications like databases, file systems, and information retrieval. The efficiency of a search algorithm depends on the data structure and the organization of the data.</p>
+    </div>
+
+    <div class="section">
+        <h2><b>8.2 Searching Techniques</b></h2>
+        <p>Common searching techniques include:</p>
+        <ul>
+            <li><b>Sequential Search:</b> Also known as linear search, it checks each element in a list sequentially until the target is found or the list is exhausted. Suitable for unsorted data.
+                <p>Example:</p>
+                <pre>
+int sequentialSearch(int[] arr, int target) {
+    for (int i = 0; i < arr.length; i++) {
+        if (arr[i] == target) {
+            return i;
+        }
+    }
+    return -1;
+}
+                </pre>
+            </li>
+            <li><b>Binary Search:</b> Used for sorted arrays, it divides the search space in half at each step, significantly reducing the number of comparisons.
+                <p>Example:</p>
+                <pre>
+int binarySearch(int[] arr, int target) {
+    int left = 0, right = arr.length - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (arr[mid] == target) {
+            return mid;
+        }
+        if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return -1;
+}
+                </pre>
+            </li>
+            <li><b>Tree Search:</b> Used in binary search trees (BSTs), where the search follows the tree structure, comparing the target with the current node and moving left or right based on the comparison.
+                <p>Example:</p>
+                <pre>
+class Node {
+    int data;
+    Node left, right;
+    Node(int data) {
+        this.data = data;
+        this.left = this.right = null;
+    }
+}
+Node search(Node root, int target) {
+    if (root == null || root.data == target) {
+        return root;
+    }
+    if (target < root.data) {
+        return search(root.left, target);
+    }
+    return search(root.right, target);
+}
+                </pre>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>8.3 Hashing</b></h2>
+        <p><b>Hashing</b> is a technique that maps data to a fixed-size array (hash table) using a hash function, enabling fast retrieval of elements. It is widely used in databases, caches, and dictionaries.</p>
+        <ul>
+            <li><b>Hash Functions:</b>
+                <ul>
+                    <li><b>Characteristics of Good Hash Functions:</b>
+                        <ul>
+                            <li><b>Uniform Distribution:</b> Distributes keys evenly across the hash table to minimize collisions.</li>
+                            <li><b>Deterministic:</b> Same input always produces the same output.</li>
+                            <li><b>Efficiency:</b> Computes the hash value quickly.</li>
+                            <li><b>Minimal Collisions:</b> Reduces the likelihood of different keys mapping to the same index.</li>
+                        </ul>
+                    </li>
+                    <li><b>Types of Hash Functions:</b>
+                        <ul>
+                            <li><b>Division Method:</b> h(k) = k % m, where m is the table size (preferably prime).</li>
+                            <li><b>Multiplication Method:</b> h(k) = floor(m * (k * A % 1)), where A is a constant (0 < A < 1).</li>
+                            <li><b>Mid-Square Method:</b> Square the key, take middle digits, and apply modulo.</li>
+                            <li><b>Folding Method:</b> Divide the key into parts, sum them, and apply modulo.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><b>Hash Tables and Applications:</b> A hash table stores key-value pairs, where keys are hashed to determine their storage index. Applications include:
+                <ul>
+                    <li><b>Databases:</b> Indexing for fast data retrieval.</li>
+                    <li><b>Caches:</b> Storing frequently accessed data.</li>
+                    <li><b>Symbol Tables:</b> Used in compilers for variable lookup.</li>
+                </ul>
+                <p>Example:</p>
+                <pre>
+class HashTable {
+    int[] table;
+    int size;
+
+    HashTable(int size) {
+        this.size = size;
+        table = new int[size];
+    }
+
+    int hash(int key) {
+        return key % size;
+    }
+
+    void insert(int key) {
+        int index = hash(key);
+        table[index] = key;
+    }
+}
+                </pre>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>8.4 Collision Resolution Techniques</b></h2>
+        <p>A <b>collision</b> occurs when multiple keys hash to the same index. Common resolution techniques include:</p>
+        <ul>
+            <li><b>Open Addressing:</b> Store all elements in the hash table itself by probing for the next available slot (e.g., linear probing, quadratic probing, double hashing).</li>
+            <li><b>Chaining:</b> Each hash table slot contains a linked list of all keys that hash to that index.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>8.5 Hashing with Open Addressing</b></h2>
+        <ul>
+            <li><b>Linear Probing:</b> If a collision occurs at index h(k), check the next slot (h(k) + 1) % m, then (h(k) + 2) % m, and so on.
+                <p>Example:</p>
+                <pre>
+class HashTableLinear {
+    int[] table;
+    int size;
+
+    HashTableLinear(int size) {
+        this.size = size;
+        table = new int[size];
+    }
+
+    void insert(int key) {
+        int index = key % size;
+        while (table[index] != 0) {
+            index = (index + 1) % size;
+        }
+        table[index] = key;
+    }
+}
+                </pre>
+            </li>
+            <li><b>Quadratic Probing:</b> Uses a quadratic function to probe slots, e.g., (h(k) + i²) % m for i = 0, 1, 2, ...
+                <p>Example:</p>
+                <pre>
+void insert(int key) {
+    int index = key % size;
+    int i = 0;
+    while (table[index] != 0) {
+        i++;
+        index = (key % size + i * i) % size;
+    }
+    table[index] = key;
+}
+                </pre>
+            </li>
+            <li><b>Double Hashing:</b> Uses a second hash function to determine the step size, e.g., h(k, i) = (h1(k) + i * h2(k)) % m.
+                <p>Example:</p>
+                <pre>
+int hash2(int key) {
+    return 1 + (key % (size - 1));
+}
+
+void insert(int key) {
+    int index = key % size;
+    int i = 0;
+    while (table[index] != 0) {
+        i++;
+        index = (key % size + i * hash2(key)) % size;
+    }
+    table[index] = key;
+}
+                </pre>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>8.6 Hashing with Chaining</b></h2>
+        <p>In <b>chaining</b>, each hash table slot contains a linked list to store all keys that hash to that index. Collisions are resolved by adding the key to the linked list.</p>
+        <p>Example:</p>
+        <pre>
+import java.util.*;
+
+class HashTableChaining {
+    LinkedList<Integer>[] table;
+    int size;
+
+    HashTableChaining(int size) {
+        this.size = size;
+        table = new LinkedList[size];
+        for (int i = 0; i < size; i++) {
+            table[i] = new LinkedList<>();
+        }
+    }
+
+    int hash(int key) {
+        return key % size;
+    }
+
+    void insert(int key) {
+        int index = hash(key);
+        table[index].add(key);
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>8.7 Rehashing</b></h2>
+        <p><b>Rehashing</b> is the process of resizing a hash table (usually doubling its size) and reinserting all existing keys when the load factor (ratio of elements to table size) exceeds a threshold. This reduces collisions and maintains performance.</p>
+        <p>Example:</p>
+        <pre>
+void rehash() {
+    LinkedList<Integer>[] oldTable = table;
+    size *= 2;
+    table = new LinkedList[size];
+    for (int i = 0; i < size; i++) {
+        table[i] = new LinkedList<>();
+    }
+    for (LinkedList<Integer> list : oldTable) {
+        for (int key : list) {
+            insert(key);
+        }
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>8.8 Efficiency Comparison of Different Search Techniques</b></h2>
+        <p>The efficiency of search techniques depends on the data structure and organization:</p>
+        <ul>
+            <li><b>Sequential Search:</b> Time Complexity: O(n) (worst and average case). Suitable for small or unsorted data.</li>
+            <li><b>Binary Search:</b> Time Complexity: O(log n) (sorted array). Requires sorted data, not suitable for frequent insertions/deletions.</li>
+            <li><b>Tree Search (BST):</b> Time Complexity: O(log n) (average case for balanced BST), O(n) (worst case for unbalanced). Supports dynamic operations.</li>
+            <li><b>Hashing:</b> Time Complexity: O(1) (average case with good hash function and low collisions), O(n) (worst case with many collisions). Ideal for fast lookups but requires good collision resolution.</li>
+        </ul>
+        <p>Comparison Table:</p>
+        <table border="1">
+            <tr>
+                <th>Technique</th>
+                <th>Average Time Complexity</th>
+                <th>Worst Time Complexity</th>
+                <th>Space Complexity</th>
+            </tr>
+            <tr>
+                <td>Sequential Search</td>
+                <td>O(n)</td>
+                <td>O(n)</td>
+                <td>O(1)</td>
+            </tr>
+            <tr>
+                <td>Binary Search</td>
+                <td>O(log n)</td>
+                <td>O(log n)</td>
+                <td>O(1)</td>
+            </tr>
+            <tr>
+                <td>Tree Search (Balanced BST)</td>
+                <td>O(log n)</td>
+                <td>O(n)</td>
+                <td>O(n)</td>
+            </tr>
+            <tr>
+                <td>Hashing</td>
+                <td>O(1)</td>
+                <td>O(n)</td>
+                <td>O(n)</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

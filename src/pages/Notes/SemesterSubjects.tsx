@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { semestersData } from '../../data/notesData';
 import { motion } from 'framer-motion';
@@ -9,11 +9,36 @@ import { Button } from '../../components/ui/Button';
 export default function SemesterSubjects() {
   const { semesterId } = useParams();
   const navigate = useNavigate();
-  const semester = semestersData.find((sem) => sem.id === Number(semesterId));
+
+  const [loading, setLoading] = useState(true);
+  const [semester, setSemester] = useState(() =>
+    semestersData.find((sem) => sem.id === Number(semesterId))
+  );
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const foundSemester = semestersData.find((sem) => sem.id === Number(semesterId));
+      setSemester(foundSemester || null);
+      setLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, [semesterId]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-8 flex justify-center items-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading Subjects...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!semester) {
     return (
-      <div className="text-center py-12 text-red-600">
+      <div className="text-center py-12 text-red-600 text-lg">
         Semester not found.
       </div>
     );
@@ -22,7 +47,12 @@ export default function SemesterSubjects() {
   return (
     <div className="min-h-screen bg-white py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-10">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="flex items-center justify-between mb-10"
+        >
           <Button
             variant="ghost"
             onClick={() => navigate('/notes')}
@@ -42,7 +72,7 @@ export default function SemesterSubjects() {
           </motion.h2>
 
           <div className="w-[120px]" />
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {semester.subjects.map((subject, index) => (

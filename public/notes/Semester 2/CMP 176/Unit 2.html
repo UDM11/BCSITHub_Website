@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recursion in Data Structures</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+      color: black;
+            font-size: 16pt;
+            font-weight: bold;
+    }
+    h2 {
+      color: black;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #272822;
+      color: #f8f8f2;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 5px;
+      }
+      .section {
+        padding: 10px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 2: Recursion</b></h1>
+
+  <div class="section">
+    <h2><b>2.1 Introduction to Recursion</b></h2>
+    <p><b>Recursion</b> is a programming technique where a function calls itself to solve a smaller instance of the same problem. It breaks a complex problem into simpler subproblems, each solved in the same manner, until a base case is reached that stops the recursion. Recursion is widely used in data structures and algorithms for tasks like tree traversals and divide-and-conquer strategies.</p>
+  </div>
+
+  <div class="section">
+    <h2><b>2.2 Principle of Recursion</b></h2>
+    <p>The principle of recursion relies on two key components:</p>
+    <ul>
+      <li><b>Base Case:</b> The condition that terminates the recursion, preventing infinite calls. It provides a direct solution for the smallest subproblem.</li>
+      <li><b>Recursive Case:</b> The part where the function calls itself with a modified input, reducing the problem size toward the base case.</li>
+    </ul>
+    <p>Recursion uses a call stack to manage function calls, where each recursive call is pushed onto the stack until the base case is reached, then the stack unwinds to compute the final result.</p>
+    <p>Example (Factorial):</p>
+    <pre><code>
+int factorial(int n) {
+    if (n == 0 || n == 1) // Base case
+        return 1;
+    return n * factorial(n - 1); // Recursive case
+}
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h2><b>2.3 Types of Recursions</b></h2>
+    <p>Recursion can be categorized based on how the recursive calls are structured:</p>
+    <ul>
+      <li><b>Direct Recursion:</b> A function calls itself directly within its body.
+        <p>Example:</p>
+        <pre><code>
+int sum(int n) {
+    if (n <= 0) return 0;
+    return n + sum(n - 1);
+}
+        </code></pre>
+      </li>
+      <li><b>Indirect Recursion:</b> A function calls another function, which eventually calls the original function, forming a cycle.
+        <p>Example:</p>
+        <pre><code>
+void funcB(int n); // Forward declaration
+
+void funcA(int n) {
+    if (n > 0) {
+        printf("%d\n", n);
+        funcB(n - 1);
+    }
+}
+
+void funcB(int n) {
+    if (n > 0) {
+        printf("%d\n", n);
+        funcA(n - 1);
+    }
+}
+        </code></pre>
+      </li>
+      <li><b>Linear Recursion:</b> A function makes a single recursive call in each invocation.
+        <p>Example: The factorial function above is linear recursion.</p>
+      </li>
+      <li><b>Tail Recursion:</b> The recursive call is the last operation in the function, allowing compilers to optimize it by reusing the same stack frame.
+        <p>Example:</p>
+        <pre><code>
+int factorialTail(int n, int acc) {
+    if (n == 0 || n == 1) return acc;
+    return factorialTail(n - 1, acc * n);
+}
+// Call with factorialTail(n, 1)
+        </code></pre>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><b>2.4 Recursion Examples</b></h2>
+    <p>Below are two classic examples of recursion:</p>
+    <ul>
+      <li><b>Tower of Hanoi (TOH):</b> A puzzle where n disks are moved from one peg to another using an auxiliary peg, following rules that only one disk can be moved at a time, and a larger disk cannot be placed on a smaller one.
+        <p>Example:</p>
+        <pre><code>
+void towerOfHanoi(int n, char source, char auxiliary, char destination) {
+    if (n == 1) {
+        printf("Move disk 1 from %c to %c\n", source, destination);
+        return;
+    }
+    towerOfHanoi(n - 1, source, destination, auxiliary);
+    printf("Move disk %d from %c to %c\n", n, source, destination);
+    towerOfHanoi(n - 1, auxiliary, source, destination);
+}
+        </code></pre>
+        <p>For n=2, it prints steps to move two disks from source to destination.</p>
+      </li>
+      <li><b>Fibonacci Series:</b> A sequence where each number is the sum of the two preceding ones (0, 1, 1, 2, 3, 5, ...).
+        <p>Example:</p>
+        <pre><code>
+int fibonacci(int n) {
+    if (n <= 1) return n;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+        </code></pre>
+        <p>Note: This recursive Fibonacci has exponential time complexity O(2^n), which can be optimized using dynamic programming.</p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><b>2.5 Application of Recursion</b></h2>
+    <p>Recursion is applied in various domains due to its ability to simplify complex problems:</p>
+    <ul>
+      <li><b>Tree and Graph Traversal:</b> Recursive algorithms like depth-first search (DFS) and tree traversals (preorder, inorder, postorder) naturally fit recursive solutions.</li>
+      <li><b>Divide-and-Conquer Algorithms:</b> Algorithms like Merge Sort, Quick Sort, and Binary Search use recursion to break problems into smaller subproblems.</li>
+      <li><b>Mathematical Computations:</b> Calculating factorials, Fibonacci numbers, or solving combinatorial problems like permutations and combinations.</li>
+      <li><b>Backtracking:</b> Solving puzzles like N-Queens, Sudoku, or maze problems by exploring possible solutions recursively.</li>
+      <li><b>Dynamic Programming:</b> Recursive solutions with memoization optimize problems like knapsack or longest common subsequence.</li>
+    </ul>
+    <p>Example (Binary Search using Recursion):</p>
+    <pre><code>
+int binarySearch(int arr[], int left, int right, int x) {
+    if (right >= left) {
+        int mid = left + (right - left) / 2;
+        if (arr[mid] == x) return mid;
+        if (arr[mid] > x)
+            return binarySearch(arr, left, mid - 1, x);
+        return binarySearch(arr, mid + 1, right, x);
+    }
+    return -1;
+}
+    </code></pre>
+  </div>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 5: Ordinary Differential Equation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.4;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            color: black;
+        }
+        h1 {
+            text-align: center;
+            color: black;
+            font-size: 16pt;
+            font-weight: bold;
+        }
+        .section {
+            background: #fff;
+            padding: 5px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: justify;
+        }
+        ul {
+            margin: 5px 0;
+            padding-left: 10px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1><b>Unit 5: Ordinary Differential Equation</b></h1>
+
+    <div class="section">
+        <h2><b>5.1 Introduction</b></h2>
+        <p>An ordinary differential equation (ODE) is an equation involving a function of one independent variable and its derivatives. ODEs describe relationships between a function and its rates of change, widely used to model phenomena in physics, engineering, biology, and economics.</p>
+        <ul>
+            <li><strong>Definition:</strong> An ODE is of the form <em>F(x, y, y', y'', ..., y^(n)) = 0</em>, where <em>y = f(x)</em> is the unknown function, and <em>y', y'', ..., y^(n)</em> are its derivatives. Example: <em>y' + 2y = x</em> is an ODE.</li>
+            <li><strong>Applications:</strong> Model population growth (e.g., <em>dy/dt = ky</em>), motion (e.g., Newton’s second law), or electrical circuits (e.g., <em>L di/dt + Ri = V</em>).</li>
+            <li><strong>Types:</strong> Classified by order, degree, and linearity (linear or nonlinear). Solutions can be explicit, implicit, or numerical.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>5.2 Order and Degree of Differential Equation</b></h2>
+        <p>The order and degree characterize the structure of a differential equation, indicating its complexity and the methods needed for solution.</p>
+        <ul>
+            <li><strong>Order:</strong> The highest derivative in the equation. Example: <em>y'' + 3y' + 2y = 0</em> is second-order (highest derivative is <em>y''</em>); <em>y' = x²</em> is first-order.</li>
+            <li><strong>Degree:</strong> The power of the highest-order derivative when the equation is polynomial in derivatives. Example: <em>(y'')² + y' + y = 0</em> has degree 2 (due to <em>(y'')²</em>); <em>y'' + y = 0</em> has degree 1.</li>
+            <li><strong>Determination:</strong> Rewrite the equation to isolate derivatives. Example: <em>√(y') + y = x</em> has order 1, degree 1/2 (after squaring to eliminate the square root). If the equation is not polynomial in derivatives, degree may be undefined.</li>
+            <li><strong>Applications:</strong> Order determines the number of initial conditions needed; degree affects solution techniques.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>5.3 Solution of the First Order and First Degree Differential Equation</b></h2>
+        <p>First-order, first-degree ODEs have the form <em>dy/dx = f(x, y)</em>. Solutions can be general (family of solutions) or particular (satisfying specific conditions).</p>
+        <ul>
+            <li><strong>General Solution:</strong> Includes an arbitrary constant. Example: For <em>dy/dx = x</em>, integrate: <em>y = ∫ x dx = x²/2 + C</em>.</li>
+            <li><strong>Particular Solution:</strong> Obtained by applying an initial condition. Example: For <em>y(0) = 1</em>, <em>y = x²/2 + 1</em>.</li>
+            <li><strong>Methods:</strong>
+                <ul>
+                    <li><strong>Direct Integration:</strong> If <em>dy/dx = f(x)</em>, then <em>y = ∫ f(x) dx + C</em>. Example: <em>dy/dx = 2x</em>, <em>y = x² + C</em>.</li>
+                    <li><strong>Other Methods:</strong> Separation of variables, integrating factors (for linear equations), or exact equations (covered in 5.4).</li>
+                </ul>
+            </li>
+            <li><strong>Example:</strong> Solve <em>dy/dx = -y/x</em>. This is separable (see 5.4), yielding <em>y = C/x</em>.</li>
+            <li><strong>Applications:</strong> Model exponential growth/decay, cooling processes, or simple motion.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>5.4 Variable Separation, Homogeneous, Linear Differential Equation</b></h2>
+        <p>Specific types of first-order ODEs can be solved using tailored methods, each suited to the equation’s structure.</p>
+        <ul>
+            <li><strong>Variable Separation:</strong> For <em>dy/dx = f(x)g(y)</em>, rewrite as <em>dy/g(y) = f(x) dx</em>, then integrate both sides. Example: Solve <em>dy/dx = xy</em>. Rewrite: <em>dy/y = x dx</em>. Integrate: <em>ln |y| = x²/2 + C</em>, so <em>y = ±e^(C) e^(x²/2) = A e^(x²/2)</em>.</li>
+            <li><strong>Homogeneous Equations:</strong> An equation <em>dy/dx = f(x, y)</em> where <em>f(tx, ty) = f(x, y)</em> (same degree in <em>x</em> and <em>y</em>). Use substitution <em>y = vx</em>, so <em>dy/dx = v + x dv/dx</em>. Example: Solve <em>dy/dx = (x + y)/x</em>. Rewrite as <em>dy/dx = 1 + y/x</em>. Let <em>y = vx</em>, then <em>v + x dv/dx = 1 + v</em>, so <em>x dv/dx = 1</em>. Integrate: <em>v = ln |x| + C</em>, so <em>y = x ln |x| + Cx</em>.</li>
+            <li><strong>Linear Differential Equations:</strong> Form <em>dy/dx + P(x)y = Q(x)</em>. Use integrating factor <em>e^(∫ P(x) dx)</em>. Multiply through by the integrating factor, then integrate. Example: Solve <em>dy/dx + 2y/x = x</em>. Integrating factor: <em>e^(∫ 2/x dx) = e^(2 ln x) = x²</em>. Multiply: <em>x² dy/dx + 2xy = x³</em>, or <em>d/dx (x²y) = x³</em>. Integrate: <em>x²y = x⁴/4 + C</em>, so <em>y = x²/4 + C/x²</em>.</li>
+            <li><strong>Applications:</strong> Used in modeling population dynamics, fluid flow, and electrical circuits.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>5.5 Second-Order Linear Differential Equation with Constant Coefficients</b></h2>
+        <p>Second-order linear ODEs with constant coefficients have the form <em>ay'' + by' + cy = f(x)</em>, where <em>a, b, c</em> are constants.</p>
+        <ul>
+            <li><strong>Homogeneous Case (<em>f(x) = 0</em>):</strong> Solve <em>ay'' + by' + cy = 0</em>. Use characteristic equation <em>ar² + br + c = 0</em>.
+                <ul>
+                    <li><strong>Real Distinct Roots:</strong> If roots <em>r₁, r₂</em> are distinct, solution is <em>y = C₁ e^(r₁x) + C₂ e^(r₂x)</em>. Example: <em>y'' - 3y' + 2y = 0</em>, characteristic equation <em>r² - 3r + 2 = 0</em> gives <em>r = 1, 2</em>, so <em>y = C₁ e^x + C₂ e^(2x)</em>.</li>
+                    <li><strong>Real Repeated Roots:</strong> If <em>r₁ = r₂ = r</em>, solution is <em>y = (C₁ + C₂x) e^(rx)</em>. Example: <em>y'' - 2y' + y = 0</em>, <em>r² - 2r + 1 = 0</em>, <em>r = 1</em>, so <em>y = (C₁ + C₂x) e^x</em>.</li>
+                    <li><strong>Complex Roots:</strong> If <em>r = α ± βi</em>, solution is <em>y = e^(αx) (C₁ cos(βx) + C₂ sin(βx))</em>. Example: <em>y'' + y = 0</em>, <em>r² + 1 = 0</em>, <em>r = ±i</em>, so <em>y = C₁ cos x + C₂ sin x</em>.</li>
+                </ul>
+            </li>
+            <li><strong>Non-Homogeneous Case:</strong> Solve <em>ay'' + by' + cy = f(x)</em>. Solution is <em>y = y_h + y_p</em>, where <em>y_h</em> is the homogeneous solution, and <em>y_p</em> is a particular solution found via:
+                <ul>
+                    <li><strong>Undetermined Coefficients:</strong> Guess <em>y_p</em> based on <em>f(x)</em>. Example: For <em>y'' + y = x</em>, <em>y_h = C₁ cos x + C₂ sin x</em>. Guess <em>y_p = ax + b</em>, solve to get <em>y_p = x</em>, so <em>y = C₁ cos x + C₂ sin x + x</em>.</li>
+                    <li><strong>Variation of Parameters:</strong> Use <em>y_p = u₁(x)y₁ + u₂(x)y₂</em>, where <em>y₁, y₂</em> are homogeneous solutions.</li>
+                </ul>
+            </li>
+            <li><strong>Applications:</strong> Model damped oscillations, electrical circuits, and mechanical systems.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>5.6 Initial and Boundary Value Problems</b></h2>
+        <p>Initial and boundary value problems specify conditions to find particular solutions to ODEs.</p>
+        <ul>
+            <li><strong>Initial Value Problems (IVPs):</strong> Specify conditions at a single point, typically <em>x = x₀</em>. For a second-order ODE, provide <em>y(x₀) = y₀</em> and <em>y'(x₀) = y₁</em>. Example: Solve <em>y'' + y = 0</em>, <em>y(0) = 1</em>, <em>y'(0) = 0</em>. General solution: <em>y = C₁ cos x + C₂ sin x</em>, <em>y' = -C₁ sin x + C₂ cos x</em>. Apply conditions: <em>C₁ = 1</em>, <em>C₂ = 0</em>, so <em>y = cos x</em>.</li>
+            <li><strong>Boundary Value Problems (BVPs):</strong> Specify conditions at different points, e.g., <em>y(a) = y₁</em>, <em>y(b) = y₂</em>. Example: Solve <em>y'' + y = 0</em>, <em>y(0) = 0</em>, <em>y(π) = 0</em>. General solution: <em>y = C₁ cos x + C₂ sin x</em>. Apply <em>y(0) = C₁ = 0</em>, <em>y(π) = C₂ sin π = 0</em>, so <em>y = C₂ sin x</em> (includes trivial solution <em>y = 0</em>).</li>
+            <li><strong>Uniqueness:</strong> IVPs typically have unique solutions for linear ODEs; BVPs may have multiple or no solutions depending on conditions.</li>
+            <li><strong>Applications:</strong> IVPs model dynamic systems (e.g., projectile motion); BVPs model steady-state systems (e.g., beam deflection).</li>
+        </ul>
+    </div>
+</body>
+</html>

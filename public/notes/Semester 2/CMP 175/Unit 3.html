@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object-Oriented Programming in Java</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+      color: black;
+        font-size: 16pt;
+        font-weight: bold;
+    }
+    h2 {
+      color: black;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #272822;
+      color: #f8f8f2;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 5px;
+      }
+      .section {
+        padding: 10px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+    <h1><b>Unit 3: Object-Oriented Programming</b></h1>
+
+    <div class="section">
+        <h2><b>3.1 Classes and Objects: Object Creation, Initializing the Instance Variables</b></h2>
+        <p>A <b>class</b> in Java is a blueprint for creating objects, defining their properties (instance variables) and behaviors (methods). An <b>object</b> is an instance of a class, representing a specific entity with its own state and behavior.</p>
+        <p><b>Object Creation:</b> Objects are created using the <code>new</code> keyword, which allocates memory and invokes a constructor.</p>
+        <p><b>Initializing Instance Variables:</b> Instance variables (non-static fields) can be initialized directly, through constructors, or via setter methods.</p>
+        <p>Example:</p>
+        <pre>
+public class Student {
+    String name; // Instance variable
+    int age;
+
+    // Constructor for initialization
+    public Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public void display() {
+        System.out.println("Name: " + name + ", Age: " + age);
+    }
+
+    public static void main(String[] args) {
+        // Object creation
+        Student s1 = new Student("Alice", 20);
+        s1.display(); // Output: Name: Alice, Age: 20
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>3.2 Access Specifiers and Encapsulation</b></h2>
+        <p><b>Access Specifiers:</b> Control the visibility and accessibility of class members (fields, methods, constructors).</p>
+        <ul>
+            <li><b>public:</b> Accessible from everywhere.</li>
+            <li><b>protected:</b> Accessible within the same package and in subclasses (even if in different packages).</li>
+            <li><b>default:</b> (No specifier) Accessible only within the same package.</li>
+            <li><b>private:</b> Accessible only within the same class.</li>
+        </ul>
+        <p><b>Encapsulation:</b> The process of bundling data (instance variables) and methods that operate on the data into a single unit (class), while restricting direct access to some components. Achieved by making fields <code>private</code> and providing public getter/setter methods.</p>
+        <p>Example:</p>
+        <pre>
+public class BankAccount {
+    private double balance; // Private field
+
+    // Public getter
+    public double getBalance() {
+        return balance;
+    }
+
+    // Public setter
+    public void setBalance(double balance) {
+        if (balance >= 0) {
+            this.balance = balance;
+        }
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>3.3 Constructors and Garbage Collection</b></h2>
+        <p><b>Constructors:</b> Special methods used to initialize objects. They have the same name as the class and no return type.</p>
+        <ul>
+            <li><b>Default Constructor:</b> Provided automatically if no constructors are defined, initializes fields to default values (e.g., 0, null).</li>
+            <li><b>Parameterized Constructor:</b> Accepts parameters to initialize fields.</li>
+            <li><b>Constructor Overloading:</b> Multiple constructors with different parameter lists.</li>
+        </ul>
+        <p><b>Garbage Collection:</b> Java’s automatic memory management system that deallocates memory for objects no longer referenced. The JVM’s garbage collector identifies and frees unused objects, preventing memory leaks.</p>
+        <p>Example:</p>
+        <pre>
+public class Car {
+    String model;
+
+    // Default constructor
+    public Car() {
+        model = "Unknown";
+    }
+
+    // Parameterized constructor
+    public Car(String model) {
+        this.model = model;
+    }
+
+    public static void main(String[] args) {
+        Car c1 = new Car(); // Uses default constructor
+        Car c2 = new Car("Toyota"); // Uses parameterized constructor
+        c1 = null; // c1 eligible for garbage collection
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>3.4 "this" Pointer</b></h2>
+        <p>The <code>this</code> keyword refers to the current object in a method or constructor. It is used to:</p>
+        <ul>
+            <li>Distinguish instance variables from local variables or parameters with the same name.</li>
+            <li>Invoke another constructor of the same class (<code>this()</code>).</li>
+            <li>Pass the current object as a parameter to methods.</li>
+        </ul>
+        <p>Example:</p>
+        <pre>
+public class Employee {
+    String name;
+    int id;
+
+    public Employee(String name, int id) {
+        this.name = name; // Differentiates instance variable from parameter
+        this.id = id;
+    }
+
+    public void display() {
+        System.out.println("Name: " + this.name + ", ID: " + this.id); // Refers to current object
+    }
+
+    public static void main(String[] args) {
+        Employee e = new Employee("Bob", 101);
+        e.display(); // Output: Name: Bob, ID: 101
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>3.5 Static Members</b></h2>
+        <p><b>Static Members:</b> Belong to the class rather than any specific object. Declared with the <code>static</code> keyword. They are shared across all instances of the class.</p>
+        <ul>
+            <li><b>Static Variables:</b> Single copy shared by all objects (e.g., a counter for the number of objects created).</li>
+            <li><b>Static Methods:</b> Can be called without creating an object, often used for utility functions.</li>
+            <li><b>Static Blocks:</b> Used to initialize static variables, executed when the class is loaded.</li>
+        </ul>
+        <p>Example:</p>
+        <pre>
+public class Counter {
+    static int count = 0; // Static variable
+
+    // Constructor increments count
+    public Counter() {
+        count++;
+    }
+
+    // Static method to access count
+    public static int getCount() {
+        return count;
+    }
+
+    public static void main(String[] args) {
+        Counter c1 = new Counter();
+        Counter c2 = new Counter();
+        System.out.println("Total objects: " + Counter.getCount()); // Output: Total objects: 2
+    }
+}
+        </pre>
+    </div>
+</body>
+</html>

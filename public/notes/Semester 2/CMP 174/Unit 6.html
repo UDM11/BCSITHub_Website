@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 6: Registers and Counters</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.4;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            color: black;
+        }
+        h1 {
+            text-align: center;
+            color: black;
+            font-size: 16pt;
+            font-weight: bold;
+        }
+        .section {
+            background: #fff;
+            padding: 5px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: justify;
+        }
+        ul {
+            margin: 5px 0;
+            padding-left: 10px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        table {
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1><b>Unit 6: Registers and Counters</b></h1>
+
+    <div class="section">
+        <h2><b>6.1 Shift Register</b></h2>
+        <p>A shift register is a sequential logic circuit composed of flip-flops connected in series, used to store and shift data in a digital system.</p>
+        <ul>
+            <li><strong>Definition:</strong> A shift register is a cascade of flip-flops where the output of one flip-flop is connected to the input of the next, allowing data to shift left or right with each clock pulse.</li>
+            <li><strong>Operation:</strong> Data bits are shifted by one position per clock cycle, either left (toward higher-order bits) or right (toward lower-order bits). Example: In a 4-bit shift register, <em>1011</em> shifts right to <em>0101</em> with a 0 input.</li>
+            <li><strong>Components:</strong> Typically uses D or JK flip-flops, with a clock signal to synchronize shifts.</li>
+            <li><strong>Applications:</strong> Used in data storage, serial-to-parallel conversion, delay lines, and communication systems.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>6.2 Modes of Shift Register (SISO, SIPO, PISO, PIPO)</b></h2>
+        <p>Shift registers operate in different modes based on how data is input and output.</p>
+        <ul>
+            <li><strong>SISO (Serial-In, Serial-Out):</strong>
+                <ul>
+                    <li>Data enters serially (one bit at a time) and exits serially.</li>
+                    <li>Example: A 4-bit SISO register with input <em>1010</em> shifts in one bit per clock cycle, outputting each bit after 4 cycles.</li>
+                    <li><strong>Use:</strong> Data delay or temporary storage in serial communication.</li>
+                </ul>
+            </li>
+            <li><strong>SIPO (Serial-In, Parallel-Out):</strong>
+                <ul>
+                    <li>Data enters serially but is output from all flip-flops simultaneously.</li>
+                    <li>Example: A 4-bit SIPO register shifts in <em>1010</em> serially, then outputs all 4 bits in parallel.</li>
+                    <li><strong>Use:</strong> Serial-to-parallel conversion (e.g., receiving serial data for parallel processing).</li>
+                </ul>
+            </li>
+            <li><strong>PISO (Parallel-In, Serial-Out):</strong>
+                <ul>
+                    <li>Data is loaded into all flip-flops simultaneously, then shifted out serially.</li>
+                    <li>Example: A 4-bit PISO register loads <em>1010</em> in parallel, then shifts out one bit per cycle.</li>
+                    <li><strong>Use:</strong> Parallel-to-serial conversion (e.g., transmitting parallel data serially).</li>
+                </ul>
+            </li>
+            <li><strong>PIPO (Parallel-In, Parallel-Out):</strong>
+                <ul>
+                    <li>Data is loaded and output in parallel.</li>
+                    <li>Example: A 4-bit PIPO register loads <em>1010</em> and outputs <em>1010</em> in parallel after one clock cycle.</li>
+                    <li><strong>Use:</strong> Data storage and transfer in registers (e.g., CPU registers).</li>
+                </ul>
+            </li>
+            <li><strong>Applications:</strong> SISO for delay lines, SIPO/PISO for data conversion, PIPO for register files.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>6.3 Asynchronous Counter (Binary Ripple, BCD Counter)</b></h2>
+        <p>Asynchronous counters are sequential circuits where flip-flops are not synchronized by a common clock, leading to ripple effects in state changes.</p>
+        <ul>
+            <li><strong>Binary Ripple Counter:</strong>
+                <ul>
+                    <li>Uses T or JK flip-flops, where each flip-flop’s output clocks the next. Counts in binary sequence (e.g., 000 to 111 for 3 bits).</li>
+                    <li><strong>Operation:</strong> First flip-flop toggles on clock pulse; its output toggles the next, causing a ripple effect. Example: 3-bit counter sequence: <em>000, 001, 010, 011, 100, 101, 110, 111</em>.</li>
+                    <li><strong>Drawback:</strong> Propagation delay due to rippling, limiting speed.</li>
+                    <li><strong>Truth Table (3-bit):</strong>
+                        <table>
+                            <tr><th>Clock Pulse</th><th>Q₂</th><th>Q₁</th><th>Q₀</th></tr>
+                            <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                            <tr><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+                            <tr><td>2</td><td>0</td><td>1</td><td>0</td></tr>
+                            <tr><td>3</td><td>0</td><td>1</td><td>1</td></tr>
+                            <tr><td>4</td><td>1</td><td>0</td><td>0</td></tr>
+                            <tr><td>5</td><td>1</td><td>0</td><td>1</td></tr>
+                            <tr><td>6</td><td>1</td><td>1</td><td>0</td></tr>
+                            <tr><td>7</td><td>1</td><td>1</td><td>1</td></tr>
+                        </table>
+                    </li>
+                </ul>
+            </li>
+            <li><strong>BCD Counter (Binary-Coded Decimal):</strong>
+                <ul>
+                    <li>Counts from 0 to 9 (0000 to 1001 in BCD), resetting to 0000 after 1001.</li>
+                    <li><strong>Operation:</strong> Uses additional logic to reset after 9. Example: After <em>1001</em> (9), next state is <em>0000</em> instead of <em>1010</em>.</li>
+                    <li><strong>Use:</strong> Displays decimal digits in digital clocks and calculators.</li>
+                </ul>
+            </li>
+            <li><strong>Applications:</strong> Ripple counters in low-speed applications; BCD counters in decimal displays.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>6.4 Synchronous Counter (Up/Down Counter)</b></h2>
+        <p>Synchronous counters use a common clock to synchronize all flip-flops, eliminating ripple delays.</p>
+        <ul>
+            <li><strong>Operation:</strong> All flip-flops toggle based on a single clock signal and control logic. Example: In a 3-bit synchronous counter, flip-flops toggle based on combinational logic for each bit.</li>
+            <li><strong>Up Counter:</strong> Counts upward (e.g., 000, 001, 010, ..., 111). Example: 3-bit up counter uses T flip-flops where T₀ = 1, T₁ = Q₀, T₂ = Q₀ · Q₁.</li>
+            <li><strong>Down Counter:</strong> Counts downward (e.g., 111, 110, 101, ..., 000). Example: T₁ = Q₀', T₂ = Q₀' · Q₁'.</li>
+            <li><strong>Up/Down Counter:</strong> Switches between up and down counting based on a control input (e.g., Mode = 1 for up, 0 for down). Logic: Combine up/down conditions using multiplexers or additional gates.</li>
+            <li><strong>Truth Table (3-bit Up Counter):</strong>
+                <table>
+                    <tr><th>Clock Pulse</th><th>Q₂</th><th>Q₁</th><th>Q₀</th></tr>
+                    <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                    <tr><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+                    <tr><td>2</td><td>0</td><td>1</td><td>0</td></tr>
+                    <tr><td>3</td><td>0</td><td>1</td><td>1</td></tr>
+                    <tr><td>4</td><td>1</td><td>0</td><td>0</td></tr>
+                    <tr><td>5</td><td>1</td><td>0</td><td>1</td></tr>
+                    <tr><td>6</td><td>1</td><td>1</td><td>0</td></tr>
+                    <tr><td>7</td><td>1</td><td>1</td><td>1</td></tr>
+                </table>
+            </li>
+            <li><strong>Advantages:</strong> Faster than asynchronous counters due to simultaneous updates; no ripple delay.</li>
+            <li><strong>Applications:</strong> Used in high-speed circuits, frequency dividers, and timers in microprocessors.</li>
+        </ul>
+    </div>
+</body>
+</html>

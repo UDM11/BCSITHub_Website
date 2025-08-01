@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 7: Fourier Series and Integrals</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.4;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            color: black;
+        }
+        h1 {
+            text-align: center;
+            color: black;
+            font-size: 16pt;
+            font-weight: bold;
+        }
+        .section {
+            background: #fff;
+            padding: 5px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: justify;
+        }
+        ul {
+            margin: 5px 0;
+            padding-left: 10px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1><b>Unit 7: Fourier Series and Integrals</b></h1>
+
+    <div class="section">
+        <h2><b>7.1 Introduction</b></h2>
+        <p>Fourier series and integrals are mathematical tools used to represent functions as sums or integrals of sine and cosine functions. They are fundamental in analyzing periodic phenomena and solving differential equations in physics, engineering, and signal processing.</p>
+        <ul>
+            <li><strong>Purpose:</strong> Decompose complex functions into simpler trigonometric components to study their behavior. Example: Representing a sound wave as a sum of pure tones.</li>
+            <li><strong>Fourier Series:</strong> Expresses a periodic function as a sum of sines and cosines. Example: A square wave can be approximated by a series of sine terms.</li>
+            <li><strong>Fourier Integrals:</strong> Extend Fourier series to non-periodic functions, representing them as integrals over a continuous range of frequencies.</li>
+            <li><strong>Applications:</strong> Used in signal processing (e.g., audio analysis), heat transfer, vibration analysis, and image compression.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>7.2 Even and Odd Function</b></h2>
+        <p>Even and odd functions have symmetry properties that simplify Fourier series representations.</p>
+        <ul>
+            <li><strong>Even Function:</strong> A function <em>f(x)</em> is even if <em>f(-x) = f(x)</em> for all <em>x</em>. Graphically, it is symmetric about the y-axis. Example: <em>f(x) = cos x</em>, <em>f(x) = x²</em>.</li>
+            <li><strong>Odd Function:</strong> A function <em>f(x)</em> is odd if <em>f(-x) = -f(x)</em>. Graphically, it is symmetric about the origin. Example: <em>f(x) = sin x</em>, <em>f(x) = x³</em>.</li>
+            <li><strong>Properties:</strong>
+                <ul>
+                    <li>Integral of an odd function over a symmetric interval <em>[-a, a]</em> is zero: <em>∫<sub>-a</sub><sup>a</sup> f(x) dx = 0</em>.</li>
+                    <li>Integral of an even function: <em>∫<sub>-a</sub><sup>a</sup> f(x) dx = 2 ∫<sub>0</sub><sup>a</sup> f(x) dx</em>.</li>
+                </ul>
+                Example: For <em>f(x) = x</em> (odd), <em>∫<sub>-1</sub><sup>1</sup> x dx = [x²/2]<sub>-1</sub><sup>1</sup> = 1/2 - 1/2 = 0</em>.</li>
+            <li><strong>Application in Fourier Series:</strong> Even functions yield only cosine terms; odd functions yield only sine terms.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>7.3 Periodic Function</b></h2>
+        <p>A periodic function repeats its values at regular intervals, which is essential for Fourier series.</p>
+        <ul>
+            <li><strong>Definition:</strong> A function <em>f(x)</em> is periodic with period <em>T</em> if <em>f(x + T) = f(x)</em> for all <em>x</em>. The smallest such <em>T</em> is the fundamental period. Example: <em>f(x) = sin x</em> has period <em>2π</em>.</li>
+            <li><strong>Examples:</strong> <em>cos x</em> (period <em>2π</em>), <em>sin(2x)</em> (period <em>π</em>), square wave (period depends on definition).</li>
+            <li><strong>Importance:</strong> Fourier series represent periodic functions as sums of sines and cosines with frequencies that are multiples of the fundamental frequency <em>1/T</em>.</li>
+            <li><strong>Applications:</strong> Model periodic phenomena like electrical signals, seasonal patterns, or mechanical vibrations.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>7.4 Fourier Series and Fourier Coefficients (Without Proof)</b></h2>
+        <p>A Fourier series represents a periodic function as an infinite sum of sines and cosines.</p>
+        <ul>
+            <li><strong>Definition:</strong> For a function <em>f(x)</em> with period <em>2L</em>, the Fourier series is:
+                <p><em>f(x) = a₀/2 + ∑<sub>n=1</sub><sup>∞</sup> [aₙ cos(nπx/L) + bₙ sin(nπx/L)]</em></p>
+                where <em>a₀, aₙ, bₙ</em> are Fourier coefficients.</li>
+            <li><strong>Fourier Coefficients:</strong>
+                <ul>
+                    <li><em>a₀ = (1/L) ∫<sub>-L</sub><sup>L</sup> f(x) dx</em></li>
+                    <li><em>aₙ = (1/L) ∫<sub>-L</sub><sup>L</sup> f(x) cos(nπx/L) dx</em>, for <em>n = 1, 2, ...</em></li>
+                    <li><em>bₙ = (1/L) ∫<sub>-L</sub><sup>L</sup> f(x) sin(nπx/L) dx</em>, for <em>n = 1, 2, ...</em></li>
+                </ul>
+                Example: For <em>f(x) = x</em> on <em>[-π, π]</em>, compute <em>a₀ = (1/π) ∫<sub>-π</sub><sup>π</sup> x dx = 0</em> (odd function), <em>aₙ = 0</em> (since <em>f(x) cos(nπx/π)</em> is odd), <em>bₙ = (2/π) ∫<sub>0</sub><sup>π</sup> x sin(nx) dx = (-2/n)(-1)^n</em>. Thus, <em>f(x) = ∑<sub>n=1</sub><sup>∞</sup> [(-2/n)(-1)^n sin(nx)]</em>.</li>
+            <li><strong>Convergence:</strong> The series converges to <em>f(x)</em> at points of continuity, and to the average of the limits at discontinuities, assuming <em>f(x)</em> is piecewise smooth.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>7.5 Fourier Sine and Cosine Series</b></h2>
+        <p>Fourier sine and cosine series are used for odd or even extensions of functions, simplifying the Fourier series for specific symmetries.</p>
+        <ul>
+            <li><strong>Fourier Cosine Series:</strong> For an even function on <em>[0, L]</em>, extended to <em>[-L, L]</em>, the series contains only cosine terms:
+                <p><em>f(x) = a₀/2 + ∑<sub>n=1</sub><sup>∞</sup> aₙ cos(nπx/L)</em></p>
+                where <em>a₀ = (2/L) ∫<sub>0</sub><sup>L</sup> f(x) dx</em>, <em>aₙ = (2/L) ∫<sub>0</sub><sup>L</sup> f(x) cos(nπx/L) dx</em>. Example: For <em>f(x) = x²</em> on <em>[0, π]</em>, <em>a₀ = (2/π) ∫<sub>0</sub><sup>π</sup> x² dx = 2π²/3</em>, <em>aₙ = (2/π) ∫<sub>0</sub><sup>π</sup> x² cos(nx) dx</em>.</li>
+            <li><strong>Fourier Sine Series:</strong> For an odd function on <em>[0, L]</em>, extended to <em>[-L, L]</em>, the series contains only sine terms:
+                <p><em>f(x) = ∑<sub>n=1</sub><sup>∞</sup> bₙ sin(nπx/L)</em></p>
+                where <em>bₙ = (2/L) ∫<sub>0</sub><sup>L</sup> f(x) sin(nπx/L) dx</em>. Example: For <em>f(x) = x</em> on <em>[0, π]</em>, <em>bₙ = (2/π) ∫<sub>0</sub><sup>π</sup> x sin(nx) dx = (-2/n)(-1)^n</em>.</li>
+            <li><strong>Applications:</strong> Used in solving partial differential equations (e.g., heat equation) with specific boundary conditions.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>7.6 Fourier Integral</b></h2>
+        <p>The Fourier integral extends Fourier series to non-periodic functions, representing them as integrals over a continuous range of frequencies.</p>
+        <ul>
+            <li><strong>Definition:</strong> For a function <em>f(x)</em> defined on <em>(-∞, ∞)</em>, the Fourier integral is:
+                <p><em>f(x) = ∫<sub>0</sub><sup>∞</sup> [A(ω) cos(ωx) + B(ω) sin(ωx)] dω</em></p>
+                where <em>A(ω) = (1/π) ∫<sub>-∞</sub><sup>∞</sup> f(t) cos(ωt) dt</em>, <em>B(ω) = (1/π) ∫<sub>-∞</sub><sup>∞</sup> f(t) sin(ωt) dt</em>.</li>
+            <li><strong>Conditions:</strong> <em>f(x)</em> must be piecewise continuous, have a finite number of discontinuities, and be absolutely integrable (<em>∫<sub>-∞</sub><sup>∞</sup> |f(x)| dx < ∞</em>).</li>
+            <li><strong>Example:</strong> For <em>f(x) = e^(-|x|)</em>, compute <em>A(ω) = (2/π) ∫<sub>0</sub><sup>∞</sup> e^(-t) cos(ωt) dt = (2/π)(1/(1 + ω²))</em>, <em>B(ω) = 0</em> (since <em>f(x)</em> is even). Thus, <em>f(x) = (2/π) ∫<sub>0</sub><sup>∞</sup> [1/(1 + ω²)] cos(ωx) dω</em>.</li>
+            <li><strong>Applications:</strong> Used in signal processing, heat conduction, and wave analysis for non-periodic functions.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>7.7 Fourier Sine and Cosine Integral</b></h2>
+        <p>Fourier sine and cosine integrals represent non-periodic functions using only sine or cosine terms, often for functions defined on <em>[0, ∞)</em>.</p>
+        <ul>
+            <li><strong>Fourier Cosine Integral:</strong> For an even extension of <em>f(x)</em> on <em>[0, ∞)</em>:
+                <p><em>f(x) = (2/π) ∫<sub>0</sub><sup>∞</sup> [∫<sub>0</sub><sup>∞</sup> f(t) cos(ωt) dt] cos(ωx) dω</em></p>
+                Example: For <em>f(x) = 1</em> on <em>[0, 1]</em>, <em>0</em> elsewhere, compute <em>∫<sub>0</sub><sup>∞</sup> f(t) cos(ωt) dt = ∫<sub>0</sub><sup>1</sup> cos(ωt) dt = sin(ω)/ω</em>. Thus, <em>f(x) ≈ (2/π) ∫<sub>0</sub><sup>∞</sup> [sin(ω)/ω] cos(ωx) dω</em>.</li>
+            <li><strong>Fourier Sine Integral:</strong> For an odd extension of <em>f(x)</em> on <em>[0, ∞)</em>:
+                <p><em>f(x) = (2/π) ∫<sub>0</sub><sup>∞</sup> [∫<sub>0</sub><sup>∞</sup> f(t) sin(ωt) dt] sin(ωx) dω</em></p>
+                Example: For <em>f(x) = x</em> on <em>[0, 1]</em>, <em>0</em> elsewhere, compute <em>∫<sub>0</sub><sup>∞</sup> f(t) sin(ωt) dt = ∫<sub>0</sub><sup>1</sup> t sin(ωt) dt</em>, which requires integration by parts.</li>
+            <li><strong>Applications:</strong> Solve boundary value problems (e.g., heat equation with Dirichlet or Neumann conditions) and analyze signals with specific symmetries.</li>
+        </ul>
+    </div>
+</body>
+</html>

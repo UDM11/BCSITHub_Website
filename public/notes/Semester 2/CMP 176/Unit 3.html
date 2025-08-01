@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stacks in Data Structures</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+      color: black;
+            font-size: 16pt;
+            font-weight: bold;
+    }
+    h2 {
+      color: black;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #272822;
+      color: #f8f8f2;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 5px;
+      }
+      .section {
+        padding: 10px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+    <h1><b>Unit 3: Stacks</b></h1>
+
+    <div class="section">
+        <h2><b>3.1 Introduction</b></h2>
+        <p>A <b>stack</b> is a linear data structure that follows the Last-In-First-Out (LIFO) principle, where the last element added is the first to be removed. It can be visualized as a stack of plates, where you can only add or remove plates from the top. Stacks are used in various applications like function call management, expression evaluation, and backtracking algorithms.</p>
+    </div>
+
+    <div class="section">
+        <h2><b>3.2 Operation Stack</b></h2>
+        <p>Stacks support two primary operations:</p>
+        <ul>
+            <li><b>Push:</b> Adds an element to the top of the stack.</li>
+            <li><b>Pop:</b> Removes and returns the top element from the stack.</li>
+        </ul>
+        <p>Additional operations include:</p>
+        <ul>
+            <li><b>Peek/Top:</b> Returns the top element without removing it.</li>
+            <li><b>IsEmpty:</b> Checks if the stack is empty.</li>
+            <li><b>IsFull:</b> Checks if the stack is full (for fixed-size stacks).</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>3.3 Stack Terminology</b></h2>
+        <p>Key terms associated with stacks:</p>
+        <ul>
+            <li><b>Top:</b> The index or pointer indicating the topmost element of the stack.</li>
+            <li><b>Capacity:</b> The maximum number of elements a stack can hold (for array-based stacks).</li>
+            <li><b>Size:</b> The current number of elements in the stack.</li>
+            <li><b>Stack Overflow:</b> Occurs when trying to push an element onto a full stack.</li>
+            <li><b>Stack Underflow:</b> Occurs when trying to pop an element from an empty stack.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>3.4 Algorithm for POP and PUSH</b></h2>
+        <p><b>Push Algorithm:</b></p>
+        <pre>
+Algorithm Push(stack, element, maxSize)
+1. If size(stack) >= maxSize
+    Print "Stack Overflow"
+    Return
+2. top = top + 1
+3. stack[top] = element
+        </pre>
+        <p><b>Pop Algorithm:</b></p>
+        <pre>
+Algorithm Pop(stack)
+1. If isEmpty(stack)
+    Print "Stack Underflow"
+    Return null
+2. element = stack[top]
+3. top = top - 1
+4. Return element
+        </pre>
+        <p>Example Implementation in C:</p>
+        <pre>
+#include <stdio.h>
+#define MAX 100
+
+int stack[MAX];
+int top = -1;
+
+void push(int value) {
+    if (top >= MAX - 1) {
+        printf("Stack Overflow\n");
+    } else {
+        stack[++top] = value;
+    }
+}
+
+int pop() {
+    if (top < 0) {
+        printf("Stack Underflow\n");
+        return -1;
+    } else {
+        return stack[top--];
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>3.5 Stack Applications</b></h2>
+        <ul>
+            <li><b>Stack Frame:</b> Used in function call management during program execution.
+                <p>Example: Recursive function calls use the call stack to manage execution.</p>
+            </li>
+            <li><b>Reverse String:</b> Example in C:
+                <pre>
+#include <stdio.h>
+#include <string.h>
+#define MAX 100
+
+char stack[MAX];
+int top = -1;
+
+void push(char c) {
+    stack[++top] = c;
+}
+
+char pop() {
+    return stack[top--];
+}
+
+void reverse(char *str) {
+    for (int i = 0; i < strlen(str); i++) {
+        push(str[i]);
+    }
+    for (int i = 0; i < strlen(str); i++) {
+        str[i] = pop();
+    }
+}
+
+int main() {
+    char str[MAX] = "hello";
+    reverse(str);
+    printf("Reversed: %s\n", str);
+    return 0;
+}
+                </pre>
+            </li>
+            <li><b>Calculation of Postfix Expression:</b>
+                <pre>
+#include <stdio.h>
+#include <ctype.h>
+
+int stack[100];
+int top = -1;
+
+void push(int x) {
+    stack[++top] = x;
+}
+
+int pop() {
+    return stack[top--];
+}
+
+int evaluate(char* exp) {
+    for (int i = 0; exp[i]; i++) {
+        if (isdigit(exp[i])) {
+            push(exp[i] - '0');
+        } else {
+            int b = pop();
+            int a = pop();
+            switch (exp[i]) {
+                case '+': push(a + b); break;
+                case '-': push(a - b); break;
+                case '*': push(a * b); break;
+                case '/': push(a / b); break;
+            }
+        }
+    }
+    return pop();
+}
+
+int main() {
+    char exp[] = "34+";
+    printf("Result: %d\n", evaluate(exp));
+    return 0;
+}
+                </pre>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>3.6 Algorithm for Converting Infix Expression to Postfix Form</b></h2>
+        <p>An <b>infix expression</b> (e.g., A + B * C) is converted to <b>postfix form</b> (e.g., A B C * +) using a stack.</p>
+        <pre>
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
+#define MAX 100
+char stack[MAX];
+int top = -1;
+
+void push(char c) {
+    stack[++top] = c;
+}
+
+char pop() {
+    return stack[top--];
+}
+
+int precedence(char op) {
+    switch (op) {
+        case '+':
+        case '-': return 1;
+        case '*':
+        case '/': return 2;
+        case '^': return 3;
+    }
+    return 0;
+}
+
+void infixToPostfix(char* infix, char* postfix) {
+    int i, j = 0;
+    char c;
+    for (i = 0; infix[i]; i++) {
+        c = infix[i];
+        if (isalnum(c)) {
+            postfix[j++] = c;
+        } else if (c == '(') {
+            push(c);
+        } else if (c == ')') {
+            while (top != -1 && stack[top] != '(') {
+                postfix[j++] = pop();
+            }
+            pop(); // pop '('
+        } else {
+            while (top != -1 && precedence(stack[top]) >= precedence(c)) {
+                postfix[j++] = pop();
+            }
+            push(c);
+        }
+    }
+    while (top != -1) {
+        postfix[j++] = pop();
+    }
+    postfix[j] = '\0';
+}
+
+int main() {
+    char infix[MAX] = "A+B*C";
+    char postfix[MAX];
+    infixToPostfix(infix, postfix);
+    printf("Postfix: %s\n", postfix);
+    return 0;
+}
+        </pre>
+    </div>
+</body>
+</html>

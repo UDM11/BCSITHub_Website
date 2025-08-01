@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trees in Data Structures</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+      color: black;
+            font-size: 16pt;
+            font-weight: bold;
+    }
+    h2 {
+      color: black;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #272822;
+      color: #f8f8f2;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 5px;
+      }
+      .section {
+        padding: 10px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+    <h1><b>Unit 6: Trees</b></h1>
+
+    <div class="section">
+        <h2><b>6.1 Introduction</b></h2>
+        <p>A <b>tree</b> is a non-linear data structure consisting of nodes connected by edges, forming a hierarchical structure. Unlike linear structures like arrays or linked lists, trees represent relationships in a parent-child hierarchy, with a single root node and no cycles. Trees are widely used in applications like file systems, organizational charts, and search algorithms.</p>
+    </div>
+
+    <div class="section">
+        <h2><b>6.2 Tree Terminology</b></h2>
+        <ul>
+            <li><b>Node:</b> A fundamental unit of a tree, containing data and links to other nodes.</li>
+            <li><b>Root:</b> The topmost node with no parent.</li>
+            <li><b>Parent:</b> A node with one or more child nodes.</li>
+            <li><b>Child:</b> A node directly connected to a parent node.</li>
+            <li><b>Leaf:</b> A node with no children.</li>
+            <li><b>Subtree:</b> A tree formed by a node and its descendants.</li>
+            <li><b>Edge:</b> The connection between two nodes.</li>
+            <li><b>Height:</b> The length of the longest path from the root to a leaf.</li>
+            <li><b>Depth:</b> The length of the path from the root to a specific node.</li>
+            <li><b>Level:</b> The number of edges from the root to a node (depth).</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>6.3 Binary Tree</b></h2>
+        <p>A <b>binary tree</b> is a tree where each node has at most two children, referred to as the left child and the right child.</p>
+        <ul>
+            <li><b>Strictly Binary Tree:</b> Every node has either zero or two children.</li>
+            <li><b>Complete Binary Tree:</b> All levels except possibly the last are fully filled, and all nodes in the last level are as far left as possible.</li>
+            <li><b>Extended Binary Tree:</b> A binary tree where every node has two children or is a leaf, often used to represent incomplete trees by adding dummy nodes.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>6.4 Binary Tree Representation</b></h2>
+        <p>Binary trees can be represented in two ways:</p>
+        <ul>
+            <li><b>Array Representation:</b> Nodes are stored in an array, with parent-child relationships determined by index calculations (e.g., for node at index i, left child at 2i+1, right child at 2i+2). Suitable for complete binary trees.
+                <p>Example: A tree with nodes [A, B, C, D, E] can be stored as an array [A, B, C, D, E].</p>
+            </li>
+            <li><b>Linked List Representation:</b> Each node contains data and pointers to its left and right children.
+                <p>Example:</p>
+                <pre>
+class Node {
+    int data;
+    Node left, right;
+    Node(int data) {
+        this.data = data;
+        this.left = this.right = null;
+    }
+}
+                </pre>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>6.5 Create Binary Tree</b></h2>
+        <p>Creating a binary tree involves defining a node structure and linking nodes to form the tree.</p>
+        <p>Example:</p>
+        <pre>
+class Node {
+    int data;
+    Node left, right;
+    Node(int data) {
+        this.data = data;
+        this.left = this.right = null;
+    }
+}
+class BinaryTree {
+    Node root;
+
+    void create() {
+        root = new Node(1);
+        root.left = new Node(2);
+        root.right = new Node(3);
+        root.left.left = new Node(4);
+        root.left.right = new Node(5);
+    }
+
+    public static void main(String[] args) {
+        BinaryTree tree = new BinaryTree();
+        tree.create();
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>6.6 Traversal of Binary Tree</b></h2>
+        <p>Tree traversal involves visiting all nodes in a specific order. The three main types for binary trees are:</p>
+        <ul>
+            <li><b>Preorder Traversal (Root, Left, Right):</b> Visit root, then recursively traverse left and right subtrees.</li>
+            <li><b>Inorder Traversal (Left, Root, Right):</b> Recursively traverse left subtree, visit root, then right subtree.</li>
+            <li><b>Postorder Traversal (Left, Right, Root):</b> Recursively traverse left and right subtrees, then visit root.</li>
+        </ul>
+        <p>Example:</p>
+        <pre>
+class BinaryTree {
+    Node root;
+
+    void preorder(Node node) {
+        if (node != null) {
+            System.out.print(node.data + " ");
+            preorder(node.left);
+            preorder(node.right);
+        }
+    }
+
+    void inorder(Node node) {
+        if (node != null) {
+            inorder(node.left);
+            System.out.print(node.data + " ");
+            inorder(node.right);
+        }
+    }
+
+    void postorder(Node node) {
+        if (node != null) {
+            postorder(node.left);
+            postorder(node.right);
+            System.out.print(node.data + " ");
+        }
+    }
+
+    public static void main(String[] args) {
+        BinaryTree tree = new BinaryTree();
+        tree.root = new Node(1);
+        tree.root.left = new Node(2);
+        tree.root.right = new Node(3);
+        tree.preorder(tree.root); // Output: 1 2 3
+        tree.inorder(tree.root);  // Output: 2 1 3
+        tree.postorder(tree.root); // Output: 2 3 1
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>6.7 Binary Search Tree</b></h2>
+        <p>A <b>Binary Search Tree (BST)</b> is a binary tree where each node’s left subtree contains values less than the node, and the right subtree contains values greater than the node.</p>
+        <ul>
+            <li><b>Insertion:</b> Insert a new node by comparing it with the current node and moving left or right based on the value.</li>
+            <li><b>Search:</b> Search for a value by traversing left or right based on comparisons.</li>
+            <li><b>Deletion:</b> Remove a node, handling cases for leaf nodes, nodes with one child, or nodes with two children.</li>
+        </ul>
+        <p>Example:</p>
+        <pre>
+class Node {
+    int data;
+    Node left, right;
+    Node(int data) {
+        this.data = data;
+        this.left = this.right = null;
+    }
+}
+class BST {
+    Node root;
+
+    Node insert(Node node, int data) {
+        if (node == null) return new Node(data);
+        if (data < node.data)
+            node.left = insert(node.left, data);
+        else if (data > node.data)
+            node.right = insert(node.right, data);
+        return node;
+    }
+
+    Node search(Node node, int data) {
+        if (node == null || node.data == data) return node;
+        if (data < node.data)
+            return search(node.left, data);
+        return search(node.right, data);
+    }
+
+    Node delete(Node node, int data) {
+        if (node == null) return node;
+        if (data < node.data)
+            node.left = delete(node.left, data);
+        else if (data > node.data)
+            node.right = delete(node.right, data);
+        else {
+            if (node.left == null) return node.right;
+            if (node.right == null) return node.left;
+            Node temp = minValueNode(node.right);
+            node.data = temp.data;
+            node.right = delete(node.right, temp.data);
+        }
+        return node;
+    }
+
+    Node minValueNode(Node node) {
+        Node current = node;
+        while (current.left != null)
+            current = current.left;
+        return current;
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>6.8 Tree Height, Level, and Depth</b></h2>
+        <ul>
+            <li><b>Height:</b> The length of the longest path from the root to a leaf, measured in edges.</li>
+            <li><b>Level:</b> The number of edges from the root to a node (same as depth).</li>
+            <li><b>Depth:</b> The number of edges from the root to a specific node.</li>
+        </ul>
+        <p>Example:</p>
+        <pre>
+class BinaryTree {
+    Node root;
+
+    int height(Node node) {
+        if (node == null) return 0;
+        return 1 + Math.max(height(node.left), height(node.right));
+    }
+
+    public static void main(String[] args) {
+        BinaryTree tree = new BinaryTree();
+        tree.root = new Node(1);
+        tree.root.left = new Node(2);
+        tree.root.right = new Node(3);
+        tree.root.left.left = new Node(4);
+        System.out.println("Height: " + tree.height(tree.root)); // Output: 3
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>6.9 Balanced Tree: AVL Balanced Trees</b></h2>
+        <p>An <b>AVL tree</b> is a self-balancing binary search tree where the height difference (balance factor) between the left and right subtrees of any node is at most 1. It ensures O(log n) time for operations by performing rotations when the balance is violated.</p>
+        <p>Example:</p>
+        <pre>
+class AVLNode {
+    int data, height;
+    AVLNode left, right;
+    AVLNode(int data) {
+        this.data = data;
+        this.height = 1;
+        this.left = this.right = null;
+    }
+}
+class AVLTree {
+    AVLNode root;
+
+    int height(AVLNode node) {
+        if (node == null) return 0;
+        return node.height;
+    }
+
+    int balanceFactor(AVLNode node) {
+        if (node == null) return 0;
+        return height(node.left) - height(node.right);
+    }
+
+    AVLNode rightRotate(AVLNode y) {
+        AVLNode x = y.left;
+        AVLNode T2 = x.right;
+        x.right = y;
+        y.left = T2;
+        y.height = Math.max(height(y.left), height(y.right)) + 1;
+        x.height = Math.max(height(x.left), height(x.right)) + 1;
+        return x;
+    }
+
+    AVLNode insert(AVLNode node, int data) {
+        if (node == null) return new AVLNode(data);
+        if (data < node.data)
+            node.left = insert(node.left, data);
+        else if (data > node.data)
+            node.right = insert(node.right, data);
+        else
+            return node;
+
+        node.height = Math.max(height(node.left), height(node.right)) + 1;
+        int balance = balanceFactor(node);
+
+        if (balance > 1 && data < node.left.data)
+            return rightRotate(node);
+        if (balance < -1 && data > node.right.data)
+            return leftRotate(node);
+        if (balance > 1 && data > node.left.data) {
+            node.left = leftRotate(node.left);
+            return rightRotate(node);
+        }
+        if (balance < -1 && data < node.right.data) {
+            node.right = rightRotate(node.right);
+            return leftRotate(node);
+        }
+        return node;
+    }
+
+    AVLNode leftRotate(AVLNode x) {
+        AVLNode y = x.right;
+        AVLNode T2 = y.left;
+        y.left = x;
+        x.right = T2;
+        x.height = Math.max(height(x.left), height(x.right)) + 1;
+        y.height = Math.max(height(y.left), height(y.right)) + 1;
+        return y;
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>6.10 The Huffman Algorithm</b></h2>
+        <p>The <b>Huffman Algorithm</b> is used for lossless data compression, creating a binary tree (Huffman tree) to assign variable-length codes to characters based on their frequencies. Characters with higher frequencies get shorter codes.</p>
+        <p><b>Algorithm:</b></p>
+        <pre>
+1. Create a min-heap of nodes, each storing a character and its frequency.
+2. While heap has more than one node:
+    a. Extract two nodes with the lowest frequencies.
+    b. Create a new internal node with frequency equal to the sum of the two nodes.
+    c. Make the two nodes as left and right children of the new node.
+    d. Insert the new node into the heap.
+3. The remaining node is the root of the Huffman tree.
+4. Traverse the tree to generate codes (left edge = 0, right edge = 1).
+        </pre>
+        <p>Example:</p>
+        <pre>
+import java.util.*;
+
+class HuffmanNode {
+    int frequency;
+    char data;
+    HuffmanNode left, right;
+}
+
+class Huffman {
+    void printCodes(HuffmanNode root, String code) {
+        if (root == null) return;
+        if (root.data != '\0') {
+            System.out.println(root.data + ": " + code);
+        }
+        printCodes(root.left, code + "0");
+        printCodes(root.right, code + "1");
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>6.11 B-Tree</b></h2>
+        <p>A <b>B-Tree</b> is a self-balancing tree data structure that maintains sorted data and allows efficient insertion, deletion, and search operations. It is widely used in databases and file systems due to its ability to handle large datasets with minimal disk I/O.</p>
+        <ul>
+            <li><b>Properties:</b> Each node can have multiple keys and children, with a maximum degree (order) defining the number of children. Nodes are kept balanced to ensure O(log n) operations.</li>
+            <li><b>Applications:</b> Used in database indexing (e.g., MySQL, MongoDB) and file systems (e.g., NTFS).</li>
+        </ul>
+        <p>Example (Conceptual B-Tree Node):</p>
+        <pre>
+class BTreeNode {
+    int[] keys;
+    BTreeNode[] children;
+    int numKeys;
+    boolean isLeaf;
+
+    BTreeNode(int degree, boolean isLeaf) {
+        this.isLeaf = isLeaf;
+        keys = new int[2 * degree - 1];
+        children = new BTreeNode[2 * degree];
+        numKeys = 0;
+    }
+}
+        </pre>
+    </div>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 3: Application of Antiderivative</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.4;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            color: black;
+        }
+        h1 {
+            text-align: center;
+            color: black;
+            font-size: 16pt;
+            font-weight: bold;
+        }
+        .section {
+            background: #fff;
+            padding: 5px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: justify;
+        }
+        ul {
+            margin: 5px 0;
+            padding-left: 10px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1><b>Unit 3: Application of Antiderivative</b></h1>
+
+    <div class="section">
+        <h2><b>3.1 Definite Integral</b></h2>
+        <p>The definite integral represents the accumulation of a quantity over an interval, often interpreted as the area under a curve or the total change of a function. For a function <em>f(x)</em> continuous on <em>[a, b]</em>, the definite integral is defined as:</p>
+        <p><em>∫<sub>a</sub><sup>b</sup> f(x) dx = F(b) - F(a)</em>, where <em>F(x)</em> is the antiderivative of <em>f(x)</em> (i.e., <em>F'(x) = f(x)</em>).</p>
+        <ul>
+            <li><strong>Purpose:</strong> Computes areas, total quantities, or net change. Example: <em>∫<sub>0</sub><sup>2</sup> x² dx</em> represents the area under <em>y = x²</em> from <em>x = 0</em> to <em>x = 2</em>.</li>
+            <li><strong>Calculation:</strong> Find the antiderivative <em>F(x)</em>, then evaluate <em>F(b) - F(a)</em>. Example: For <em>∫<sub>0</sub><sup>2</sup> x² dx</em>, <em>F(x) = x³/3</em>, so <em>F(2) - F(0) = (8/3) - 0 = 8/3</em>.</li>
+            <li><strong>Geometric Interpretation:</strong> The definite integral gives the signed area between the curve and the x-axis, with areas below the axis counted as negative.</li>
+            <li><strong>Applications:</strong> Used in physics (work, displacement), economics (consumer surplus), and engineering (volume of solids).</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>3.2 Properties of the Definite Integral</b></h2>
+        <p>The definite integral has properties that simplify calculations and aid in understanding its behavior.</p>
+        <ul>
+            <li><strong>Linearity:</strong> <em>∫<sub>a</sub><sup>b</sup> [k f(x) + g(x)] dx = k ∫<sub>a</sub><sup>b</sup> f(x) dx + ∫<sub>a</sub><sup>b</sup> g(x) dx</em>, where <em>k</em> is a constant. Example: <em>∫<sub>0</sub><sup>1</sup> (2x + 3) dx = 2 ∫<sub>0</sub><sup>1</sup> x dx + ∫<sub>0</sub><sup>1</sup> 3 dx</em>.</li>
+            <li><strong>Interval Additivity:</strong> If <em>a < c < b</em>, then <em>∫<sub>a</sub><sup>b</sup> f(x) dx = ∫<sub>a</sub><sup>c</sup> f(x) dx + ∫<sub>c</sub><sup>b</sup> f(x) dx</em>. Example: Split <em>∫<sub>0</sub><sup>4</sup> x dx</em> at <em>x = 2</em>.</li>
+            <li><strong>Reversal of Limits:</strong> <em>∫<sub>a</sub><sup>b</sup> f(x) dx = - ∫<sub>b</sub><sup>a</sup> f(x) dx</em>. Example: <em>∫<sub>2</sub><sup>0</sup> x dx = - ∫<sub>0</sub><sup>2</sup> x dx</em>.</li>
+            <li><strong>Zero Interval:</strong> <em>∫<sub>a</sub><sup>a</sup> f(x) dx = 0</em>. Example: No area is accumulated over a point.</li>
+            <li><strong>Constant Function:</strong> <em>∫<sub>a</sub><sup>b</sup> k dx = k(b - a)</em>. Example: <em>∫<sub>1</sub><sup>3</sup> 5 dx = 5(3 - 1) = 10</em>.</li>
+            <li><strong>Non-negativity:</strong> If <em>f(x) ≥ 0</em> on <em>[a, b]</em>, then <em>∫<sub>a</sub><sup>b</sup> f(x) dx ≥ 0</em>. Example: <em>∫<sub>0</sub><sup>1</sup> x² dx ≥ 0</em> since <em>x² ≥ 0</em>.</li>
+        </ul>
+        <p><strong>Use:</strong> These properties simplify complex integrals and aid in problem-solving.</p>
+    </div>
+
+    <div class="section">
+        <h2><b>3.3 Improper Integral</b></h2>
+        <p>An improper integral is a definite integral where either the interval is infinite or the integrand is unbounded (e.g., has a discontinuity) within the interval.</p>
+        <ul>
+            <li><strong>Types:</strong>
+                <ul>
+                    <li><strong>Infinite Limits:</strong> <em>∫<sub>a</sub><sup>∞</sup> f(x) dx = lim<sub>t→∞</sub> ∫<sub>a</sub><sup>t</sup> f(x) dx</em>. Converges if the limit exists and is finite. Example: <em>∫<sub>1</sub><sup>∞</sup> 1/x² dx = lim<sub>t→∞</sub> [-1/x]<sub>1</sub><sup>t</sup> = lim<sub>t→∞</sub> (-1/t + 1) = 1</em> (converges).</li>
+                    <li><strong>Unbounded Integrand:</strong> If <em>f(x)</em> is unbounded at <em>c ∈ [a, b]</em>, then <em>∫<sub>a</sub><sup>b</sup> f(x) dx = lim<sub>t→c⁻</sub> ∫<sub>a</sub><sup>t</sup> f(x) dx + lim<sub>s→c⁺</sub> ∫<sub>s</sub><sup>b</sup> f(x) dx</em>. Example: <em>∫<sub>0</sub><sup>1</sup> 1/√x dx = lim<sub>t→0⁺</sub> [2√x]<sub>t</sub><sup>1</sup> = lim<sub>t→0⁺</sub> (2 - 2√t) = 2</em> (converges).</li>
+                </ul>
+            </li>
+            <li><strong>Convergence:</strong> An improper integral converges if the limit exists; otherwise, it diverges. Example: <em>∫<sub>1</sub><sup>∞</sup> 1/x dx = lim<sub>t→∞</sub> [ln x]<sub>1</sub><sup>t</sup> = lim<sub>t→∞</sub> ln t = ∞</em> (diverges).</li>
+            <li><strong>Applications:</strong> Used in probability (e.g., normal distribution) and physics (e.g., work over infinite distances).</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>3.4 Quadrature [y = f(x)]</b></h2>
+        <p>Quadrature refers to the process of finding the area under a curve <em>y = f(x)</em> over an interval <em>[a, b]</em> using the definite integral.</p>
+        <ul>
+            <li><strong>Definition:</strong> The area under <em>y = f(x)</em> from <em>x = a</em> to <em>x = b</em> is <em>∫<sub>a</sub><sup>b</sup> f(x) dx</em>, assuming <em>f(x) ≥ 0</em>. If <em>f(x)</em> takes negative values, the integral gives the net signed area.</li>
+            <li><strong>Example:</strong> Find the area under <em>y = x²</em> from <em>x = 0</em> to <em>x = 2</em>. Compute <em>∫<sub>0</sub><sup>2</sup> x² dx = [x³/3]<sub>0</sub><sup>2</sup> = 8/3</em>.</li>
+            <li><strong>Area Between Curves:</strong> For two functions <em>f(x)</em> and <em>g(x)</em>, the area between them from <em>x = a</em> to <em>x = b</em> is <em>∫<sub>a</sub><sup>b</sup> |f(x) - g(x)| dx</em>. Example: Area between <em>y = x</em> and <em>y = x²</em> from <em>x = 0</em> to <em>x = 1</em> is <em>∫<sub>0</sub><sup>1</sup> (x - x²) dx = [x²/2 - x³/3]<sub>0</sub><sup>1</sup> = 1/2 - 1/3 = 1/6</em>.</li>
+            <li><strong>Applications:</strong> Used in economics (e.g., total revenue), physics (e.g., work done), and geometry (e.g., area calculations).</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>< b>3.5 Rectification [y = f(x)]</b></h2>
+        <p>Rectification is the process of finding the arc length of a curve <em>y = f(x)</em> over an interval <em>[a, b]</em>.</p>
+        <ul>
+            <li><strong>Formula:</strong> The arc length <em>L</em> of <em>y = f(x)</em> from <em>x = a</em> to <em>x = b</em>, where <em>f(x)</em> is differentiable, is <em>L = ∫<sub>a</sub><sup>b</sup> √(1 + [f'(x)]²) dx</em>.</li>
+            <li><strong>Example:</strong> Find the arc length of <em>y = x²</em> from <em>x = 0</em> to <em>x = 1</em>. Compute <em>f'(x) = 2x</em>, so <em>L = ∫<sub>0</sub><sup>1</sup> √(1 + 4x²) dx</em>. Use substitution: let <em>u = 2x</em>, <em>du = 2 dx</em>, <em>dx = du/2</em>, and adjust limits (<em>x = 0 → u = 0</em>, <em>x = 1 → u = 2</em>). Then <em>L = (1/2) ∫<sub>0</sub><sup>2</sup> √(1 + u²) du</em>. This integral requires trigonometric substitution or numerical methods, yielding approximately 1.479.</li>
+            <li><strong>Applications:</strong> Used in engineering (e.g., cable length), physics (e.g., particle paths), and computer graphics (e.g., curve modeling).</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>3.6 Beta and Gamma Function</b></h2>
+        <p>The Beta and Gamma functions are special functions used to evaluate integrals, particularly in probability, physics, and statistics.</p>
+        <ul>
+            <li><strong>Gamma Function:</strong>
+                <ul>
+                    <li><strong>Definition:</strong> For <em>x > 0</em>, <em>Γ(x) = ∫<sub>0</sub><sup>∞</sup> t^(x-1) e^(-t) dt</em>. It generalizes the factorial: <em>Γ(n) = (n-1)!</em> for positive integers <em>n</em>.</li>
+                    <li><strong>Properties:</strong> <em>Γ(x+1) = x Γ(x)</em>, <em>Γ(1) = 1</em>, <em>Γ(1/2) = √π</em>. Example: <em>Γ(3) = 2! = 2</em>.</li>
+                    <li><strong>Example:</strong> Evaluate <em>∫<sub>0</sub><sup>∞</sup> x² e^(-x) dx</em>. This is <em>Γ(3) = 2! = 2</em>.</li>
+                    <li><strong>Applications:</strong> Used in probability (e.g., gamma distribution) and solving integrals in physics.</li>
+                </ul>
+            </li>
+            <li><strong>Beta Function:</strong>
+                <ul>
+                    <li><strong>Definition:</strong> For <em>m, n > 0</em>, <em>B(m, n) = ∫<sub>0</sub><sup>1</sup> x^(m-1) (1-x)^(n-1) dx</em>. It is related to the Gamma function: <em>B(m, n) = Γ(m)Γ(n) / Γ(m+n)</em>.</li>
+                    <li><strong>Example:</strong> Evaluate <em>B(2, 3) = ∫<sub>0</sub><sup>1</sup> x (1-x)² dx</em>. Using the Gamma relation, <em>B(2, 3) = Γ(2)Γ(3) / Γ(5) = 1! · 2! / 4! = 2/24 = 1/12</em>. Alternatively, compute directly: <em>∫<sub>0</sub><sup>1</sup> x (1 - 2x + x²) dx = [x²/2 - 2x³/3 + x⁴/4]<sub>0</sub><sup>1</sup> = 1/2 - 2/3 + 1/4 = 1/12</em>.</li>
+                    <li><strong>Applications:</strong> Used in probability (e.g., beta distribution), statistics, and solving integrals in engineering.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

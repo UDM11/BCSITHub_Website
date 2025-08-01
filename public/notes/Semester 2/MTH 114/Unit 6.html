@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 6: Integers and Division</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.4;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            color: black;
+        }
+        h1 {
+            text-align: center;
+            color: black;
+            font-size: 16pt;
+            font-weight: bold;
+        }
+        .section {
+            background: #fff;
+            padding: 5px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: justify;
+        }
+        ul {
+            margin: 5px 0;
+            padding-left: 10px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1><b>Unit 6: Integers and Division</b></h1>
+
+    <div class="section">
+        <h2><b>6.1 Introduction</b></h2>
+        <p>The study of integers and division forms the foundation of number theory, focusing on the properties and relationships of whole numbers (..., -2, -1, 0, 1, 2, ...). Division concepts underpin key ideas like divisibility, prime numbers, and modular arithmetic, which are essential in mathematics and applications like cryptography.</p>
+        <ul>
+            <li><strong>Integers:</strong> The set of all positive and negative whole numbers, including zero, denoted <em>ℤ</em>. Example: -3, 0, 7.</li>
+            <li><strong>Division:</strong> For integers <em>a</em> and <em>b</em> (<em>b ≠ 0</em>), <em>a</em> divided by <em>b</em> yields a quotient and remainder, leading to concepts like greatest common divisor (GCD) and least common multiple (LCM).</li>
+            <li><strong>Applications:</strong> Used in computer science (e.g., algorithms), cryptography (e.g., encryption), and pure mathematics (e.g., solving Diophantine equations).</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>6.2 Division, Primes, The Fundamental Theorem of Arithmetic (Statement Only)</b></h2>
+        <ul>
+            <li><strong>Division:</strong> An integer <em>a</em> is divisible by <em>b</em> (<em>b ≠ 0</em>) if there exists an integer <em>k</em> such that <em>a = b · k</em>. Notation: <em>b | a</em>. Example: <em>6 | 12</em> since <em>12 = 6 · 2</em>.</li>
+            <li><strong>Primes:</strong> A prime number is a positive integer greater than 1 divisible only by 1 and itself. Example: 2, 3, 5, 7. A composite number has divisors other than 1 and itself. Example: 4, 6.</li>
+            <li><strong>Fundamental Theorem of Arithmetic:</strong> Every positive integer greater than 1 can be expressed as a unique product of prime numbers (up to the order of factors). Example: <em>12 = 2² · 3</em>, <em>100 = 2² · 5²</em>.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>6.3 The Infinitude of Primes</b></h2>
+        <p>The infinitude of primes states that there are infinitely many prime numbers. This was famously proven by Euclid around 300 BCE.</p>
+        <ul>
+            <li><strong>Proof Idea (Euclid’s Proof):</strong> Assume there are finitely many primes: <em>p₁, p₂, ..., pₙ</em>. Construct <em>N = p₁ · p₂ · ... · pₙ + 1</em>. <em>N</em> is either prime or composite. If prime, it’s a new prime not in the list. If composite, it must be divisible by a prime, but none of <em>p₁, p₂, ..., pₙ</em> divide <em>N</em> (since <em>N</em> leaves a remainder of 1 when divided by any <em>pᵢ</em>). Thus, there must be another prime, contradicting the assumption. Hence, there are infinitely many primes.</li>
+            <li><strong>Example:</strong> Let primes be <em>2, 3, 5</em>. Then <em>N = 2 · 3 · 5 + 1 = 31</em>, which is prime. Repeating this process generates more primes indefinitely.</li>
+            <li><strong>Applications:</strong> Ensures an infinite supply of primes for cryptography and number theory problems.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>6.4 The Division Algorithm, GCD, and LCM</b></h2>
+        <p>The division algorithm formalizes division of integers, and GCD and LCM are key tools for solving problems involving divisibility.</p>
+        <ul>
+            <li><strong>Division Algorithm:</strong> For integers <em>a</em> and <em>b</em> (<em>b > 0</em>), there exist unique integers <em>q</em> (quotient) and <em>r</em> (remainder) such that <em>a = bq + r</em>, where <em>0 ≤ r < b</em>. Example: Divide <em>a = 17</em> by <em>b = 5</em>. Then <em>17 = 5 · 3 + 2</em>, so <em>q = 3</em>, <em>r = 2</em>.</li>
+            <li><strong>Greatest Common Divisor (GCD):</strong> The largest positive integer that divides both <em>a</em> and <em>b</em> without a remainder. Found using the Euclidean algorithm: If <em>a = bq + r</em>, then <em>GCD(a, b) = GCD(b, r)</em>. Example: Find <em>GCD(48, 18)</em>. Steps: <em>48 = 18 · 2 + 12</em>, <em>18 = 12 · 1 + 6</em>, <em>12 = 6 · 2 + 0</em>. Thus, <em>GCD = 6</em>.</li>
+            <li><strong>Least Common Multiple (LCM):</strong> The smallest positive integer divisible by both <em>a</em> and <em>b</em>. Computed as <em>LCM(a, b) = |a · b| / GCD(a, b)</em>. Example: For <em>48, 18</em>, <em>LCM = (48 · 18) / 6 = 144</em>.</li>
+            <li><strong>Applications:</strong> GCD is used in simplifying fractions and solving Diophantine equations; LCM is used in adding fractions and scheduling problems.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>6.5 Modular Arithmetic</b></h2>
+        <p>Modular arithmetic deals with integers “wrapped around” a modulus, focusing on remainders after division.</p>
+        <ul>
+            <li><strong>Definition:</strong> For integers <em>a</em>, <em>b</em>, and modulus <em>n > 0</em>, <em>a ≡ b (mod n)</em> if <em>n</em> divides <em>a - b</em>, i.e., <em>a</em> and <em>b</em> have the same remainder when divided by <em>n</em>. Example: <em>17 ≡ 5 (mod 12)</em> since <em>17 - 5 = 12</em> is divisible by 12.</li>
+            <li><strong>Properties:</strong>
+                <ul>
+                    <li><strong>Addition:</strong> If <em>a ≡ b (mod n)</em> and <em>c ≡ d (mod n)</em>, then <em>a + c ≡ b + d (mod n)</em>. Example: <em>7 ≡ 2 (mod 5)</em>, <em>4 ≡ 9 (mod 5)</em>, so <em>7 + 4 ≡ 2 + 9 ≡ 11 ≡ 1 (mod 5)</em>.</li>
+                    <li><strong>Multiplication:</strong> <em>a · c ≡ b · d (mod n)</em>. Example: <em>3 ≡ 8 (mod 5)</em>, so <em>3 · 4 ≡ 8 · 4 ≡ 12 ≡ 2 (mod 5)</em>.</li>
+                    <li><strong>Exponentiation:</strong> If <em>a ≡ b (mod n)</em>, then <em>a^k ≡ b^k (mod n)</em>. Example: <em>2 ≡ 7 (mod 5)</em>, so <em>2³ ≡ 7³ ≡ 8 ≡ 3 (mod 5)</em>.</li>
+                </ul>
+            </li>
+            <li><strong>Applications:</strong> Used in computer algorithms, hash functions, and cryptography (e.g., RSA).</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>6.6 Application of Congruences in Cryptology</b></h2>
+        <p>Congruences in modular arithmetic are fundamental to cryptology, particularly in encryption algorithms like RSA.</p>
+        <ul>
+            <li><strong>Congruences in Cryptography:</strong> Congruences ensure secure encoding and decoding of messages by working with modular arithmetic to obscure data. Example: In RSA, a message <em>M</em> is encrypted as <em>C ≡ M^e (mod n)</em>, where <em>e</em> and <em>n</em> are public keys, and decrypted as <em>M ≡ C^d (mod n)</em>, where <em>d</em> is the private key.</li>
+            <li><strong>RSA Encryption Example:</strong> Choose primes <em>p = 3</em>, <em>q = 11</em>, so <em>n = p · q = 33</em>. Compute <em>φ(n) = (p-1)(q-1) = 20</em>. Choose <em>e = 7</em> (coprime to 20), and find <em>d</em> such that <em>e · d ≡ 1 (mod 20)</em>, so <em>d = 3</em> (since <em>7 · 3 = 21 ≡ 1 (mod 20)</em>). To encrypt <em>M = 5</em>, compute <em>C = 5⁷ ≡ 14 (mod 33)</em>. Decrypt: <em>C³ = 14³ ≡ 5 (mod 33)</em>.</li>
+            <li><strong>Other Applications:</strong> Congruences are used in hash functions, digital signatures, and error detection (e.g., ISBN check digits).</li>
+            <li><strong>Best Practices:</strong> Use large primes in RSA for security, ensure proper key management, and verify modular computations for accuracy.</li>
+        </ul>
+    </div>
+</body>
+</html>

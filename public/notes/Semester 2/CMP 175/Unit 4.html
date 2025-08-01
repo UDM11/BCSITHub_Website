@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inheritance and Polymorphism in Java</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+      color: black;
+            font-size: 16pt;
+            font-weight: bold;
+    }
+    h2 {
+      color: black;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #272822;
+      color: #f8f8f2;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 5px;
+      }
+      .section {
+        padding: 10px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+    <h1><b>Unit 4: Inheritance and Polymorphism</b></h1>
+
+    <div class="section">
+        <h2><b>4.1 Inheritance and Reuse</b></h2>
+        <p><b>Inheritance</b> is a mechanism in Java where a class (subclass) inherits properties and methods from another class (superclass). It promotes code reuse and establishes a hierarchical relationship between classes.</p>
+        <p><b>Reuse:</b> By inheriting from a superclass, a subclass can use existing code without rewriting it, reducing redundancy and improving maintainability.</p>
+        <p><b>Keyword:</b> The <code>extends</code> keyword is used to implement inheritance.</p>
+        <p>Example:</p>
+        <pre>
+public class Animal {
+    void eat() {
+        System.out.println("This animal eats food.");
+    }
+}
+
+public class Dog extends Animal {
+    void bark() {
+        System.out.println("Dog barks.");
+    }
+
+    public static void main(String[] args) {
+        Dog dog = new Dog();
+        dog.eat(); // Inherited method
+        dog.bark(); // Subclass method
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>4.2 Types of Inheritance and its Implementation</b></h2>
+        <p>Java supports the following types of inheritance:</p>
+        <ul>
+            <li><b>Single Inheritance:</b> A class inherits from one superclass.</li>
+            <li><b>Multilevel Inheritance:</b> A class inherits from a superclass, which itself inherits from another class (e.g., A → B → C).</li>
+            <li><b>Hierarchical Inheritance:</b> Multiple classes inherit from a single superclass.</li>
+        </ul>
+        <p><b>Note:</b> Java does not support multiple inheritance (a class inheriting from multiple superclasses) directly to avoid complexity, but it can be achieved using interfaces.</p>
+        <p>Example (Hierarchical Inheritance):</p>
+        <pre>
+public class Vehicle {
+    void move() {
+        System.out.println("Vehicle is moving.");
+    }
+}
+
+public class Car extends Vehicle {
+    void honk() {
+        System.out.println("Car honks.");
+    }
+}
+
+public class Bike extends Vehicle {
+    void ringBell() {
+        System.out.println("Bike rings bell.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Car car = new Car();
+        Bike bike = new Bike();
+        car.move(); // Output: Vehicle is moving.
+        car.honk(); // Output: Car honks.
+        bike.move(); // Output: Vehicle is moving.
+        bike.ringBell(); // Output: Bike rings bell.
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>4.3 Polymorphism: Method Overriding, Method Overloading, Dynamic Method Invocation, and Run-time Polymorphism</b></h2>
+        <p><b>Polymorphism</b> allows objects to be treated as instances of their superclass, enabling flexibility in method calls.</p>
+        <p><b>Method Overloading:</b> Defining multiple methods with the same name but different parameter lists (compile-time polymorphism).</p>
+        <p><b>Method Overriding:</b> A subclass provides a specific implementation of a method already defined in its superclass (run-time polymorphism).</p>
+        <p><b>Dynamic Method Invocation/Run-time Polymorphism:</b> The JVM determines the method to execute at runtime based on the object’s actual type, not the reference type.</p>
+        <p>Example (Method Overriding and Run-time Polymorphism):</p>
+        <pre>
+public class Shape {
+    void draw() {
+        System.out.println("Drawing a shape.");
+    }
+}
+
+public class Circle extends Shape {
+    @Override
+    void draw() {
+        System.out.println("Drawing a circle.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Shape shape = new Circle(); // Upcasting
+        shape.draw(); // Output: Drawing a circle. (Run-time polymorphism)
+    }
+}
+        </pre>
+        <p>Example (Method Overloading):</p>
+        <pre>
+public class Calculator {
+    int add(int a, int b) {
+        return a + b;
+    }
+
+    double add(double a, double b) {
+        return a + b;
+    }
+
+    public static void main(String[] args) {
+        Calculator calc = new Calculator();
+        System.out.println(calc.add(5, 3)); // Output: 8
+        System.out.println(calc.add(5.5, 3.3)); // Output: 8.8
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>4.4 Abstract Classes: Abstract Method and Abstract Class</b></h2>
+        <p>An <b>abstract class</b> is a class declared with the <code>abstract</code> keyword that cannot be instantiated. It is used to define common behavior for subclasses.</p>
+        <p>An <b>abstract method</b> is a method declared without an implementation, forcing subclasses to provide their own implementation.</p>
+        <p>Example:</p>
+        <pre>
+public abstract class Animal {
+    abstract void makeSound(); // Abstract method
+
+    void sleep() { // Concrete method
+        System.out.println("Animal is sleeping.");
+    }
+}
+
+public class Cat extends Animal {
+    @Override
+    void makeSound() {
+        System.out.println("Cat meows.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Cat cat = new Cat();
+        cat.makeSound(); // Output: Cat meows.
+        cat.sleep(); // Output: Animal is sleeping.
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>4.5 Packages and Interfaces</b></h2>
+        <p><b>Packages:</b> Organize related classes and interfaces into a namespace to avoid naming conflicts and improve maintainability. Declared using the <code>package</code> keyword.</p>
+        <p>Example:</p>
+        <pre>
+// File: mypackage/MyClass.java
+package mypackage;
+
+public class MyClass {
+    public void display() {
+        System.out.println("Inside MyClass.");
+    }
+}
+
+// File: Main.java
+import mypackage.MyClass;
+
+public class Main {
+    public static void main(String[] args) {
+        MyClass obj = new MyClass();
+        obj.display(); // Output: Inside MyClass.
+    }
+}
+        </pre>
+        <p><b>Interfaces:</b> Define a contract of methods that implementing classes must provide. Declared with the <code>interface</code> keyword, and classes implement them using <code>implements</code>.</p>
+        <p>Example:</p>
+        <pre>
+public interface Drawable {
+    void draw();
+}
+
+public class Rectangle implements Drawable {
+    @Override
+    public void draw() {
+        System.out.println("Drawing a rectangle.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Drawable rect = new Rectangle();
+        rect.draw(); // Output: Drawing a rectangle.
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>4.6 Lambda Function</b></h2>
+        <p><b>Lambda expressions</b> (introduced in Java 8) provide a concise way to implement functional interfaces (interfaces with a single abstract method). They enable functional programming in Java.</p>
+        <p>Syntax: <code>(parameters) -> expression</code> or <code>(parameters) -> { statements; }</code></p>
+        <p>Example:</p>
+        <pre>
+@FunctionalInterface
+interface Operation {
+    int operate(int a, int b);
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Lambda expression
+        Operation add = (a, b) -> a + b;
+        System.out.println("Sum: " + add.operate(5, 3)); // Output: Sum: 8
+
+        // Lambda with block
+        Operation multiply = (a, b) -> {
+            return a * b;
+        };
+        System.out.println("Product: " + multiply.operate(5, 3)); // Output: Product: 15
+    }
+}
+        </pre>
+    </div>
+</body>
+</html>

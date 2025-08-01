@@ -1,22 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '../../components/ui/Button';
-import { ChevronLeft } from 'lucide-react';
-
+import { ChevronLeft, BookOpen } from 'lucide-react';
 import { chapterData, SubjectChapters as SubjectChaptersType } from '../../data/chapterData';
 
 export default function SubjectChapters() {
   const { semesterId, subjectId } = useParams();
   const navigate = useNavigate();
 
-  // Decode subjectId in case it has URL-encoded characters like spaces
+  const [loading, setLoading] = useState(true);
+  const [subjectChapters, setSubjectChapters] = useState<SubjectChaptersType | null>(null);
+
   const decodedSubjectId = decodeURIComponent(subjectId || '');
 
-  // Find chapters for the current subject code (after decoding)
-  const subjectChapters: SubjectChaptersType | undefined = chapterData.find(
-    (subject) => subject.courseCode === decodedSubjectId
-  );
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const data = chapterData.find(
+        (subject) => subject.courseCode === decodedSubjectId
+      );
+      setSubjectChapters(data || null);
+      setLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, [decodedSubjectId]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-8 flex justify-center items-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading Chapters...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!subjectChapters) {
     return (
@@ -29,34 +48,46 @@ export default function SubjectChapters() {
   return (
     <div className="min-h-screen bg-white py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
+        {/* Placeholder motion div for smooth animation entry */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="flex flex-col sm:flex-row gap-4 justify-center mb-6"
+        />
+
         <div className="flex items-center justify-between mb-8">
           <Button
             variant="ghost"
             onClick={() => navigate(`/notes/semester/${semesterId}`)}
-            className="flex items-center gap-1"
+            className="flex items-center gap-1 hover:text-indigo-600 transition-colors"
           >
             <ChevronLeft className="w-5 h-5" />
             Back to Subjects
           </Button>
 
           <motion.h2
-            initial={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="text-3xl font-bold text-gray-800 text-center"
+            className="text-2xl sm:text-3xl font-bold text-gray-800 text-center"
           >
             {decodedSubjectId} - Chapters
           </motion.h2>
 
-          <div className="w-[120px]" /> {/* Empty space to balance layout */}
+          <div className="w-[120px]" /> {/* Spacer */}
         </div>
 
+        {/* Single-column vertical layout always */}
         <div className="grid grid-cols-1 gap-6">
           {subjectChapters.chapters.map((chapter) => (
             <motion.div
               key={chapter.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
               whileHover={{ scale: 1.02 }}
-              className="cursor-pointer bg-gray-100 border border-gray-200 rounded-lg shadow p-4 hover:bg-gray-50"
+              className="cursor-pointer bg-gray-100 border border-gray-200 rounded-lg shadow p-4 hover:bg-gray-50 flex items-center gap-3"
               onClick={() =>
                 navigate(
                   `/notes/semester/${semesterId}/subject/${encodeURIComponent(
@@ -65,10 +96,15 @@ export default function SubjectChapters() {
                 )
               }
             >
-              <h3 className="text-xl font-semibold text-gray-800">{chapter.title}</h3>
-              {chapter.description && (
-                <p className="text-sm text-gray-600 mt-1">{chapter.description}</p>
-              )}
+              <BookOpen className="w-7 h-7 sm:w-8 sm:h-8 text-indigo-500 flex-shrink-0" />
+              <div>
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-800">
+                  {chapter.title}
+                </h3>
+                {chapter.description && (
+                  <p className="text-sm text-gray-600 mt-1 max-w-xl">{chapter.description}</p>
+                )}
+              </div>
             </motion.div>
           ))}
         </div>

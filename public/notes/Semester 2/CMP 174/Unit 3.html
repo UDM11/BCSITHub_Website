@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 3: Simplification of Boolean Functions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.4;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            color: black;
+        }
+        h1 {
+            text-align: center;
+            color: black;
+            font-size: 16pt;
+            font-weight: bold;
+        }
+        .section {
+            background: #fff;
+            padding: 5px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: justify;
+        }
+        ul {
+            margin: 5px 0;
+            padding-left: 10px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        table {
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1><b>Unit 3: Simplification of Boolean Functions</b></h1>
+
+    <div class="section">
+        <h2><b>3.1 Minterms and Maxterms</b></h2>
+        <p>Minterms and maxterms are standard forms of Boolean expressions used to represent any Boolean function in a canonical form.</p>
+        <ul>
+            <li><strong>Minterms:</strong> A minterm is a product (AND) of all variables in a function, where each variable appears exactly once, either complemented or uncomplemented. For <em>n</em> variables, there are <em>2^n</em> minterms. Example: For variables <em>A, B</em>, minterms are <em>A'B'</em>, <em>A'B</em>, <em>AB'</em>, <em>AB</em>. Each corresponds to a row in the truth table where the function is 1. Notation: <em>mᵢ</em>, where <em>i</em> is the decimal equivalent of the binary input. Example: <em>m₂ = AB'</em> (A=1, B=0).</li>
+            <li><strong>Maxterms:</strong> A maxterm is a sum (OR) of all variables, where each variable appears once, either complemented or uncomplemented. For <em>n</em> variables, there are <em>2^n</em> maxterms. Example: For <em>A, B</em>, maxterms are <em>A+B</em>, <em>A+B'</em>, <em>A'+B</em>, <em>A'+B'</em>. Each corresponds to a row where the function is 0. Notation: <em>Mᵢ</em>. Example: <em>M₂ = A'+B</em> (A=0, B=1).</li>
+            <li><strong>Example:</strong> For <em>F(A, B) = 1</em> when <em>AB = 10, 11</em>, the minterm form is <em>F = A'B + AB = m₂ + m₃</em>. The maxterm form is <em>F = (A+B)·(A'+B') = M₀ · M₁</em>.</li>
+            <li><strong>Applications:</strong> Used to express Boolean functions systematically and simplify circuit design.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>3.2 Sum of Products and Product of Sums</b></h2>
+        <p>Sum of Products (SOP) and Product of Sums (POS) are two standard forms for representing Boolean functions.</p>
+        <ul>
+            <li><strong>Sum of Products (SOP):</strong> A Boolean function expressed as a sum (OR) of minterms. Example: <em>F(A, B, C) = A'BC + AB'C + ABC</em> corresponds to minterms <em>m₃, m₅, m₇</em> (decimal 3, 5, 7). Derived from truth table rows where <em>F = 1</em>.</li>
+            <li><strong>Product of Sums (POS):</strong> A Boolean function expressed as a product (AND) of maxterms. Example: <em>F(A, B, C) = (A+B+C)·(A+B'+C)·(A'+B+C')</em> corresponds to maxterms <em>M₀, M₂, M₆</em> (rows where <em>F = 0</em>).</li>
+            <li><strong>Conversion:</strong> Use truth table or algebraic manipulation. Example: For <em>F = A'B + AB</em>, SOP is direct. For POS, find rows where <em>F = 0</em> (e.g., <em>A+B, A'+B'</em>).</li>
+            <li><strong>Example:</strong> Truth table for <em>F(A, B) = 1</em> at <em>AB = 01, 10</em>. SOP: <em>F = A'B + AB'</em>. POS: <em>F = (A+B)·(A'+B)</em>.</li>
+            <li><strong>Applications:</strong> SOP is implemented with AND-OR circuits; POS with OR-AND circuits.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>3.3 Dual and Complement of Boolean Function</b></h2>
+        <p>The dual and complement operations transform Boolean expressions while preserving or altering their logic.</p>
+        <ul>
+            <li><strong>Dual:</strong> Replace AND with OR, OR with AND, 0 with 1, and 1 with 0, while keeping variables unchanged. Example: Dual of <em>F = A · B + C</em> is <em>Fᵈ = (A + B) · C</em>. Note: The dual does not necessarily yield the same function but is useful in circuit design.</li>
+            <li><strong>Complement:</strong> The complement of a function <em>F</em>, denoted <em>F'</em>, gives the opposite output (0 for 1, 1 for 0). Use De Morgan’s theorems or truth table. Example: For <em>F = A · B</em>, <em>F' = (A · B)' = A' + B'</em>. For <em>F = A + B</em>, <em>F' = A' · B'</em>.</li>
+            <li><strong>Example:</strong> For <em>F = A'B + AB'</em>, complement is <em>F' = (A'B + AB')' = (A'B)' · (AB')' = (A + B') · (A' + B)</em>. Dual is <em>Fᵈ = (A' + B) · (A + B')</em>.</li>
+            <li><strong>Applications:</strong> Complements are used in circuit minimization; duals help convert between SOP and POS forms.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>3.4 K-map & Don't Care Conditions</b></h2>
+        <p>Karnaugh maps (K-maps) are graphical tools for simplifying Boolean expressions, and don’t care conditions help further optimize circuits.</p>
+        <ul>
+            <li><strong>K-map:</strong> A grid where each cell represents a minterm, used to simplify SOP or POS expressions by grouping 1s (or 0s). For <em>n</em> variables, the K-map has <em>2^n</em> cells. Example: For 3 variables <em>A, B, C</em>, a 4x2 K-map is used.
+                <ul>
+                    <li><strong>Steps:</strong> Plot 1s for minterms (SOP) or 0s for maxterms (POS). Group adjacent 1s (or 0s) in powers of 2 (1, 2, 4, 8). Each group gives a simplified term.</li>
+                    <li>Example: For <em>F(A, B, C) = Σm(0, 1, 4, 5)</em>, plot 1s in K-map, group <em>A'B'</em> (m₀, m₁) and <em>AB'</em> (m₄, m₅). Result: <em>F = A'B' + AB'</em>.</li>
+                </ul>
+            </li>
+            <li><strong>Don't Care Conditions:</strong> Inputs where the output is unspecified (denoted <em>X</em>) can be treated as 0 or 1 to simplify expressions. Example: For <em>F(A, B, C) = Σm(0, 1) + d(4, 5)</em>, include don’t cares in groups to get <em>F = A'</em> (grouping m₀, m₁, d₄, d₅).</li>
+            <li><strong>Applications:</strong> K-maps minimize logic gates in circuit design; don’t cares optimize incomplete specifications (e.g., unused input combinations).</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>3.5 Two-Level and Multilevel Gate Implementations</b></h2>
+        <p>Boolean functions can be implemented using two-level or multilevel gate circuits, balancing speed, complexity, and cost.</p>
+        <ul>
+            <li><strong>Two-Level Gate Implementation:</strong>
+                <ul>
+                    <li><strong>SOP (AND-OR):</strong> First level: AND gates for each minterm; second level: OR gate to sum them. Example: <em>F = A'B + AB'</em> uses two AND gates (for <em>A'B</em>, <em>AB'</em>) and one OR gate.</li>
+                    <li><strong>POS (OR-AND):</strong> First level: OR gates for each maxterm; second level: AND gate to combine them. Example: <em>F = (A+B)·(A'+B)</em> uses two OR gates and one AND gate.</li>
+                    <li><strong>Advantage:</strong> Fast (only two gate delays). <strong>Drawback:</strong> May require many gates for complex functions.</li>
+                </ul>
+            </li>
+            <li><strong>Multilevel Gate Implementation:</strong> Uses multiple levels of gates (AND, OR, NOT, etc.) to factor expressions, reducing gate count. Example: <em>F = A'B + AB'C</em> can be factored as <em>F = A'(B + BC) = A'(B + C)</em>, implemented with fewer gates but more levels.</li>
+            <li><strong>Example:</strong> For <em>F = A'BC + A'BC' + ABC</em>, SOP needs three AND gates and one OR gate. Factored form <em>F = A'B(C + C') + ABC = A'B + ABC = B(A' + AC)</em> uses fewer gates with three levels.</li>
+            <li><strong>Applications:</strong> Two-level for high-speed circuits (e.g., critical paths in CPUs); multilevel for cost-effective designs (e.g., ASICs).</li>
+        </ul>
+    </div>
+</body>
+</html>

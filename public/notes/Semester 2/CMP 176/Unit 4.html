@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queues in Data Structures</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+      color: black;
+            font-size: 16pt;
+            font-weight: bold;
+    }
+    h2 {
+      color: black;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #272822;
+      color: #f8f8f2;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 5px;
+      }
+      .section {
+        padding: 10px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+    <h1><b>Unit 4: Queue</b></h1>
+
+    <div class="section">
+        <h2><b>4.1 Introduction</b></h2>
+        <p>A <b>queue</b> is a linear data structure that follows the First-In-First-Out (FIFO) principle, where elements are added at the rear and removed from the front. It resembles a line of people waiting, where the first person in line is served first. Queues are used in scheduling, resource sharing, and buffering in computing systems.</p>
+    </div>
+
+    <div class="section">
+        <h2><b>4.2 Queue Terminology</b></h2>
+        <p>Key terms associated with queues:</p>
+        <ul>
+            <li><b>Front:</b> The index or pointer to the first element in the queue, where elements are removed (dequeued).</li>
+            <li><b>Rear:</b> The index or pointer to the last element in the queue, where elements are added (enqueued).</li>
+            <li><b>Enqueue:</b> The operation to add an element to the rear of the queue.</li>
+            <li><b>Dequeue:</b> The operation to remove and return the front element from the queue.</li>
+            <li><b>Capacity:</b> The maximum number of elements a queue can hold (for array-based queues).</li>
+            <li><b>Size:</b> The current number of elements in the queue.</li>
+            <li><b>Queue Overflow:</b> Occurs when trying to enqueue an element into a full queue.</li>
+            <li><b>Queue Underflow:</b> Occurs when trying to dequeue an element from an empty queue.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>4.3 Algorithm for Insertion in Queue (Enqueue)</b></h2>
+        <p><b>Enqueue Algorithm:</b></p>
+        <pre>
+Algorithm Enqueue(queue, element, maxSize)
+1. If size(queue) >= maxSize
+    Print "Queue Overflow"
+    Return
+2. rear = rear + 1
+3. queue[rear] = element
+4. If front == -1
+    front = 0
+        </pre>
+        <p>Example Implementation in Java:</p>
+        <pre>
+public class Queue {
+    int front = -1, rear = -1;
+    int maxSize = 100;
+    int[] queue = new int[maxSize];
+
+    void enqueue(int element) {
+        if (rear >= maxSize - 1) {
+            System.out.println("Queue Overflow");
+            return;
+        }
+        if (front == -1) {
+            front = 0;
+        }
+        queue[++rear] = element;
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>4.4 Algorithm for Deletion in Queue (Dequeue)</b></h2>
+        <p><b>Dequeue Algorithm:</b></p>
+        <pre>
+Algorithm Dequeue(queue)
+1. If front == -1
+    Print "Queue Underflow"
+    Return null
+2. element = queue[front]
+3. If front == rear
+    front = rear = -1
+4. Else
+    front = front + 1
+5. Return element
+        </pre>
+        <p>Example Implementation in Java:</p>
+        <pre>
+public class Queue {
+    int front = -1, rear = -1;
+    int maxSize = 100;
+    int[] queue = new int[maxSize];
+
+    int dequeue() {
+        if (front == -1) {
+            System.out.println("Queue Underflow");
+            return -1;
+        }
+        int element = queue[front];
+        if (front == rear) {
+            front = rear = -1;
+        } else {
+            front++;
+        }
+        return element;
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>4.5 Limitation of Simple Queue</b></h2>
+        <p>A simple queue implemented using an array has the following limitations:</p>
+        <ul>
+            <li><b>Wasted Space:</b> After dequeuing elements, the space at the front of the array cannot be reused, even if the queue is not full.</li>
+            <li><b>Fixed Size:</b> The queue's size is fixed at creation, leading to overflow if more elements are added than the capacity allows.</li>
+            <li><b>Inefficient Memory Usage:</b> As elements are dequeued, the rear pointer moves forward, reducing available space until the queue is considered full, even with free slots at the front.</li>
+        </ul>
+        <p>These limitations are addressed by variations like circular queues and dynamic queues (e.g., linked list-based queues).</p>
+    </div>
+
+    <div class="section">
+        <h2><b>4.6 Variations in Queue</b></h2>
+        <p>Variations of queues overcome the limitations of simple queues and cater to specific needs:</p>
+        <ul>
+            <li><b>Circular Queue:</b> An improved version of the simple queue where the front and rear pointers wrap around to the beginning of the array when they reach the end, forming a circular structure. This allows reuse of space freed by dequeued elements.
+                <p>Enqueue Algorithm for Circular Queue:</p>
+                <pre>
+Algorithm CircularEnqueue(queue, element, maxSize)
+1. If (rear + 1) % maxSize == front
+    Print "Queue Overflow"
+    Return
+2. If front == -1
+    front = 0
+3. rear = (rear + 1) % maxSize
+4. queue[rear] = element
+                </pre>
+                <p>Example Implementation in Java:</p>
+                <pre>
+public class CircularQueue {
+    int front = -1, rear = -1;
+    int maxSize = 100;
+    int[] queue = new int[maxSize];
+
+    void enqueue(int element) {
+        if ((rear + 1) % maxSize == front) {
+            System.out.println("Queue Overflow");
+            return;
+        }
+        if (front == -1) {
+            front = 0;
+        }
+        rear = (rear + 1) % maxSize;
+        queue[rear] = element;
+    }
+}
+                </pre>
+            </li>
+            <li><b>Priority Queue:</b> A queue where elements are dequeued based on priority rather than their order of insertion. Elements with higher priority are removed first. It can be implemented using arrays, linked lists, or heaps.
+                <p>Example: In a hospital, patients with critical conditions are treated before others, regardless of arrival time.</p>
+                <p>Example Implementation in Java (Using PriorityQueue Class):</p>
+                <pre>
+import java.util.PriorityQueue;
+
+public class PriorityQueueExample {
+    public static void main(String[] args) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        pq.add(30);
+        pq.add(10);
+        pq.add(20);
+        while (!pq.isEmpty()) {
+            System.out.println(pq.poll()); // Output: 10, 20, 30
+        }
+    }
+}
+                </pre>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>4.7 Application of Queue</b></h2>
+        <p>Queues are widely used in computing and real-world scenarios due to their FIFO nature:</p>
+        <ul>
+            <li><b>Process Scheduling:</b> Operating systems use queues to manage processes in CPU scheduling (e.g., ready queue).</li>
+            <li><b>Task Management:</b> Print job queues in printers or task queues in multitasking systems.</li>
+            <li><b>Buffering:</b> Queues handle data buffering in input/output operations, such as keyboard input or network packet processing.</li>
+            <li><b>Breadth-First Search (BFS):</b> Queues are used in graph algorithms like BFS to explore nodes level by level.</li>
+            <li><b>Simulation Systems:</b> Queues model real-world systems like customer lines in banks or supermarkets.</li>
+            <li><b>Message Queues:</b> Used in messaging systems to handle asynchronous communication between components.</li>
+        </ul>
+        <p>Example (Queue in BFS):</p>
+        <pre>
+import java.util.*;
+
+public class BFSExample {
+    void bfs(int start, List<List<Integer>> adj, int V) {
+        boolean[] visited = new boolean[V];
+        Queue<Integer> queue = new LinkedList<>();
+        visited[start] = true;
+        queue.add(start);
+
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            System.out.print(node + " ");
+            for (int neighbor : adj.get(node)) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    queue.add(neighbor);
+                }
+            }
+        }
+    }
+}
+        </pre>
+    </div>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 1: Binary Foundation and Digital Representation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.4;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            color: black;
+        }
+        h1 {
+            text-align: center;
+            color: black;
+            font-size: 16pt;
+            font-weight: bold;
+        }
+        .section {
+            background: #fff;
+            padding: 5px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: justify;
+        }
+        ul {
+            margin: 5px 0;
+            padding-left: 10px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Unit 1: Binary Foundation and Digital Representation</h1>
+
+    <div class="section">
+        <h2><b>1.1 Introduction to Digital System</b></h2>
+        <p>A digital system is an electronic system that processes and stores data using discrete values, typically represented as binary digits (0s and 1s). These systems form the backbone of modern computing and communication technologies.</p>
+        <ul>
+            <li><strong>Definition:</strong> Digital systems manipulate discrete signals to perform computations, store information, or control processes. Example: Computers, smartphones, and digital watches.</li>
+            <li><strong>Characteristics:</strong> Operate using binary logic, are noise-resistant, and allow precise data representation. Example: A digital signal with values 0 or 1 is less prone to distortion than analog signals.</li>
+            <li><strong>Components:</strong> Include logic gates, memory units, and processors that handle binary data.</li>
+            <li><strong>Applications:</strong> Used in computing, telecommunications, digital signal processing, and embedded systems.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>1.2 Binary Number System, Hexadecimal and Octal Number Systems</b></h2>
+        <p>Number systems represent numerical values using different bases, with binary, hexadecimal, and octal being critical in digital systems.</p>
+        <ul>
+            <li><strong>Binary Number System (Base-2):</strong> Uses digits 0 and 1. Each position represents a power of 2. Example: <em>1011₂ = 1·2³ + 0·2² + 1·2¹ + 1·2⁰ = 8 + 0 + 2 + 1 = 11₁₀</em>.</li>
+            <li><strong>Hexadecimal Number System (Base-16):</strong> Uses digits 0–9 and letters A–F (A=10, B=11, ..., F=15). Each position represents a power of 16. Example: <em>2A₁₆ = 2·16¹ + 10·16⁰ = 32 + 10 = 42₁₀</em>.</li>
+            <li><strong>Octal Number System (Base-8):</strong> Uses digits 0–7. Each position represents a power of 8. Example: <em>23₈ = 2·8¹ + 3·8⁰ = 16 + 3 = 19₁₀</em>.</li>
+            <li><strong>Applications:</strong> Binary is used in computer hardware; hexadecimal simplifies binary representation (e.g., memory addresses); octal is less common but used in some legacy systems.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>1.3 Number System Conversion</b></h2>
+        <p>Converting between number systems is essential for data representation and processing in digital systems.</p>
+        <ul>
+            <li><strong>Decimal to Binary:</strong> Divide by 2, record remainders in reverse order. Example: Convert <em>19₁₀</em> to binary: 19 ÷ 2 = 9 rem 1, 9 ÷ 2 = 4 rem 1, 4 ÷ 2 = 2 rem 0, 2 ÷ 2 = 1 rem 0, 1 ÷ 2 = 0 rem 1. Result: <em>10011₂</em>.</li>
+            <li><strong>Binary to Decimal:</strong> Sum the powers of 2 for each 1 bit. Example: <em>1011₂ = 1·2³ + 0·2² + 1·2¹ + 1·2⁰ = 8 + 0 + 2 + 1 = 11₁₀</em>.</li>
+            <li><strong>Binary to Hexadecimal:</strong> Group binary digits into sets of 4, convert each to a hex digit. Example: <em>10110110₂ = 1011 0110 = B6₁₆</em> (1011 = B, 0110 = 6).</li>
+            <li><strong>Hexadecimal to Binary:</strong> Convert each hex digit to its 4-bit binary equivalent. Example: <em>2A₁₆ = 0010 1010₂</em>.</li>
+            <li><strong>Decimal to Octal:</strong> Divide by 8, record remainders in reverse order. Example: <em>19₁₀</em>: 19 ÷ 8 = 2 rem 3, 2 ÷ 8 = 0 rem 2. Result: <em>23₈</em>.</li>
+            <li><strong>Octal to Decimal:</strong> Sum the powers of 8. Example: <em>23₈ = 2·8¹ + 3·8⁰ = 16 + 3 = 19₁₀</em>.</li>
+            <li><strong>Best Practices:</strong> Verify conversions by converting back to the original base; use grouping for binary-hex/oct conversions.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>1.4 Binary Codes: Weighted and Non-Weighted Codes</b></h2>
+        <p>Binary codes represent data in binary form, with weighted and non-weighted codes serving different purposes.</p>
+        <ul>
+            <li><strong>Weighted Codes:</strong> Each digit position has a specific weight, and the value is the sum of weights for non-zero digits.
+                <ul>
+                    <li><strong>Binary-Coded Decimal (BCD):</strong> Each decimal digit is represented by a 4-bit binary code (0000 to 1001). Example: <em>45₁₀ = 0100 0101_BCD</em>.</li>
+                    <li><strong>2421 Code:</strong> Weights are 2, 4, 2, 1 for each position. Example: <em>5₁₀ = 0101_2421</em> (0·2 + 1·4 + 0·2 + 1·1 = 5).</li>
+                    <li><strong>Use:</strong> Simplifies decimal arithmetic in digital systems.</li>
+                </ul>
+            </li>
+            <li><strong>Non-Weighted Codes:</strong> No fixed weights; designed for specific properties like error detection.
+                <ul>
+                    <li><strong>Gray Code:</strong> Adjacent numbers differ by one bit. Example: <em>3₁₀ = 010_Gray</em>, <em>4₁₀ = 110_Gray</em>. Used in rotary encoders to reduce errors.</li>
+                    <li><strong>Excess-3 Code:</strong> BCD value plus 3. Example: <em>5₁₀ = 0101_BCD = 1000_Excess-3</em> (0101 + 0011).</li>
+                    <li><strong>Use:</strong> Error detection and minimization in digital transitions.</li>
+                </ul>
+            </li>
+            <li><strong>Applications:</strong> Weighted codes in calculators; non-weighted codes in sensors and communication systems.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>1.5 Alphanumeric Codes (ASCII, EBCDIC)</b></h2>
+        <p>Alphanumeric codes represent letters, digits, and special characters in binary for computer processing.</p>
+        <ul>
+            <li><strong>ASCII (American Standard Code for Information Interchange):</strong>
+                <ul>
+                    <li>Uses 7 or 8 bits to represent 128 or 256 characters. Example: <em>A = 65₁₀ = 1000001₂</em>, <em>a = 97₁₀ = 1100001₂</em>.</li>
+                    <li>Includes letters, digits, punctuation, and control characters (e.g., newline).</li>
+                    <li><strong>Use:</strong> Standard in modern computing, internet protocols, and text files.</li>
+                </ul>
+            </li>
+            <li><strong>EBCDIC (Extended Binary Coded Decimal Interchange Code):</strong>
+                <ul>
+                    <li>Uses 8 bits for 256 characters, developed by IBM. Example: <em>A = 11000001₂</em> in EBCDIC.</li>
+                    <li>Primarily used in IBM mainframes and legacy systems.</li>
+                    <li><strong>Use:</strong> Common in older enterprise systems.</li>
+                </ul>
+            </li>
+            <li><strong>Comparison:</strong> ASCII is more universal; EBCDIC is specific to IBM systems. ASCII is simpler for text interchange.</li>
+            <li><strong>Applications:</strong> Text storage, data transmission, and programming interfaces.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>1.6 Representation of Negative Numbers</b></h2>
+        <p>Negative numbers in digital systems are represented using specific formats to facilitate arithmetic operations.</p>
+        <ul>
+            <li><strong>Sign-Magnitude:</strong> The most significant bit indicates sign (0 for positive, 1 for negative), with the remaining bits representing the magnitude. Example: In 8 bits, <em>+5 = 00000101₂</em>, <em>-5 = 10000101₂</em>. Drawback: Complex arithmetic.</li>
+            <li><strong>One’s Complement:</strong> For a negative number, invert all bits of the positive number. Example: <em>+5 = 00000101₂</em>, <em>-5 = 11111010₂</em>. Drawback: Two representations of zero (<em>00000000₂</em>, <em>11111111₂</em>).</li>
+            <li><strong>Two’s Complement:</strong> Invert bits of the positive number and add 1. Example: <em>+5 = 00000101₂</em>, <em>-5 = 11111010₂ + 1 = 11111011₂</em>. Advantage: Simplifies arithmetic; only one zero representation.</li>
+            <li><strong>Applications:</strong> Two’s complement is standard in modern computers for efficient addition and subtraction.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>1.7 Subtraction Using Complements</b></h2>
+        <p>Complements simplify subtraction in digital systems by converting it to addition.</p>
+        <ul>
+            <li><strong>One’s Complement Subtraction:</strong> To subtract <em>a - b</em>, compute <em>a + (one’s complement of b)</em>. If there’s a carry-out, add 1 to the result (end-around carry). Example: <em>7 - 4</em> in 4 bits: <em>7 = 0111₂</em>, <em>4 = 0100₂</em>, one’s complement of 4 = <em>1011₂</em>. Compute <em>0111 + 1011 = 10010₂</em>, discard carry, result <em>0010 + 1 = 0011₂ = 3₁₀</em>.</li>
+            <li><strong>Two’s Complement Subtraction:</strong> To subtract <em>a - b</em>, compute <em>a + (two’s complement of b)</em>. Example: <em>7 - 4</em> in 4 bits: <em>7 = 0111₂</em>, <em>4 = 0100₂</em>, two’s complement of 4 = <em>1011₂ + 1 = 1100₂</em>. Compute <em>0111 + 1100 = 10011₂</em>, discard carry, result <em>0011₂ = 3₁₀</em>.</li>
+            <li><strong>Advantages:</strong> Two’s complement is preferred in computers due to simpler circuitry and no need for end-around carry.</li>
+            <li><strong>Applications:</strong> Used in CPU arithmetic operations, ensuring efficient and accurate subtraction.</li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streams in Java</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+      color: black;
+            font-size: 16pt;
+            font-weight: bold;
+    }
+    h2 {
+      color: black;
+    }
+    .section {
+      background: #fff;
+      padding: 5px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: justify;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    pre {
+      background-color: #272822;
+      color: #f8f8f2;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 5px;
+      }
+      .section {
+        padding: 10px;
+      }
+      pre {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+    <h1><b>Unit 6: Streams in Java</b></h1>
+
+    <div class="section">
+        <h2><b>6.1 Introduction to Stream, Byte Stream, and Character Stream</b></h2>
+        <p>A <b>stream</b> in Java is a sequence of data elements made available over time, used for input/output (I/O) operations such as reading from or writing to files, networks, or other sources. Java provides a robust I/O framework through the <code>java.io</code> package.</p>
+        <ul>
+            <li><b>Byte Streams:</b> Handle raw binary data (bytes). Used for reading/writing data like images, audio, or raw files. Classes include <code>InputStream</code> and <code>OutputStream</code>.</li>
+            <li><b>Character Streams:</b> Handle text data (Unicode characters). Used for reading/writing text files or strings. Classes include <code>Reader</code> and <code>Writer</code>.</li>
+        </ul>
+        <p>Example (Byte Stream vs. Character Stream):</p>
+        <pre>
+import java.io.*;
+
+public class StreamExample {
+    public static void main(String[] args) throws IOException {
+        // Byte Stream
+        FileInputStream fis = new FileInputStream("bytefile.txt");
+        int data = fis.read(); // Reads a byte
+        fis.close();
+
+        // Character Stream
+        FileReader fr = new FileReader("charfile.txt");
+        int charData = fr.read(); // Reads a character
+        fr.close();
+    }
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2><b>6.2 I/O Class Hierarchy</b></h2>
+        <p>The <code>java.io</code> package provides a hierarchy of classes for handling I/O operations. The main base classes are:</p>
+        <ul>
+            <li><b>InputStream:</b> Abstract class for byte input streams (e.g., <code>FileInputStream</code>, <code>ObjectInputStream</code>).</li>
+            <li><b>OutputStream:</b> Abstract class for byte output streams (e.g., <code>FileOutputStream</code>, <code>ObjectOutputStream</code>).</li>
+            <li><b>Reader:</b> Abstract class for character input streams (e.g., <code>FileReader</code>, <code>BufferedReader</code>).</li>
+            <li><b>Writer:</b> Abstract class for character output streams (e.g., <code>FileWriter</code>, <code>BufferedWriter</code>).</li>
+        </ul>
+        <p>Key characteristics:</p>
+        <ul>
+            <li>Byte stream classes handle raw binary data, while character stream classes handle text with proper encoding.</li>
+            <li>Buffered streams (e.g., <code>BufferedInputStream</code>, <code>BufferedReader</code>) improve performance by reducing direct access to underlying resources.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><b>6.3 Manipulating File</b></h2>
+        <p>Java provides several classes for file manipulation under the <code>java.io</code> package. Below are key classes for handling file I/O:</p>
+
+        <h3><b>File Input Stream</b></h3>
+        <p><code>FileInputStream</code> reads raw bytes from a file. Used for binary data or non-text files.</p>
+        <p>Example:</p>
+        <pre>
+import java.io.*;
+
+public class FileInputStreamExample {
+    public static void main(String[] args) throws IOException {
+        FileInputStream fis = new FileInputStream("input.txt");
+        int data;
+        while ((data = fis.read()) != -1) { // Read byte by byte
+            System.out.print((char) data);
+        }
+        fis.close();
+    }
+}
+        </pre>
+
+        <h3><b>File Output Stream</b></h3>
+        <p><code>FileOutputStream</code> writes raw bytes to a file. Used for binary data or non-text files.</p>
+        <p>Example:</p>
+        <pre>
+import java.io.*;
+
+public class FileOutputStreamExample {
+    public static void main(String[] args) throws IOException {
+        FileOutputStream fos = new FileOutputStream("output.txt");
+        String text = "Hello, Java!";
+        fos.write(text.getBytes()); // Write bytes
+        fos.close();
+    }
+}
+        </pre>
+
+        <h3><b>Data Input Stream</b></h3>
+        <p><code>DataInputStream</code> reads primitive Java data types (e.g., int, double) from an underlying input stream in a machine-independent way.</p>
+        <p>Example:</p>
+        <pre>
+import java.io.*;
+
+public class DataInputStreamExample {
+    public static void main(String[] args) throws IOException {
+        FileInputStream fis = new FileInputStream("data.bin");
+        DataInputStream dis = new DataInputStream(fis);
+        int number = dis.readInt(); // Read an integer
+        System.out.println("Number: " + number);
+        dis.close();
+        fis.close();
+    }
+}
+        </pre>
+
+        <h3><b>Data Output Stream</b></h3>
+        <p><code>DataOutputStream</code> writes primitive Java data types to an output stream in a machine-independent way.</p>
+        <p>Example:</p>
+        <pre>
+import java.io.*;
+
+public class DataOutputStreamExample {
+    public static void main(String[] args) throws IOException {
+        FileOutputStream fos = new FileOutputStream("data.bin");
+        DataOutputStream dos = new DataOutputStream(fos);
+        dos.writeInt(100); // Write an integer
+        dos.close();
+        fos.close();
+    }
+}
+        </pre>
+
+        <h3><b>Object Input Stream</b></h3>
+        <p><code>ObjectInputStream</code> deserializes Java objects and primitive data from an input stream. The objects must implement the <code>Serializable</code> interface.</p>
+        <p>Example:</p>
+        <pre>
+import java.io.*;
+
+public class ObjectInputStreamExample {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        FileInputStream fis = new FileInputStream("object.dat");
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        Object obj = ois.readObject(); // Read an object
+        System.out.println("Object: " + obj);
+        ois.close();
+        fis.close();
+    }
+}
+        </pre>
+
+        <h3><b>Object Output Stream</b></h3>
+        <p><code>ObjectOutputStream</code> serializes Java objects and primitive data to an output stream. The objects must implement the <code>Serializable</code> interface.</p>
+        <p>Example:</p>
+        <pre>
+import java.io.*;
+
+public class ObjectOutputStreamExample {
+    public static void main(String[] args) throws IOException {
+        FileOutputStream fos = new FileOutputStream("object.dat");
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject("Hello, Java!"); // Write an object
+        oos.close();
+        fos.close();
+    }
+}
+        </pre>
+    </div>
+</body>
+</html>
