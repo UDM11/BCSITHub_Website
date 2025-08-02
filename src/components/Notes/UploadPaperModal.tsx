@@ -85,8 +85,8 @@ export function UploadPaperModal({ onClose, user, onUploadSuccess }: UploadPaper
         setMessage('Only PDF or image files (jpg, png) are allowed.');
         return;
       }
-      if (file.size > 1048576) { // 1MB = 1024 * 1024 = 1048576 bytes
-        setMessage(`❌ File "${file.name}" exceeds the 1MB size limit.`);
+      if (file.size > 5242880) { // 5MB = 5 * 1024 * 1024 bytes
+        setMessage(`File "${file.name}" exceeds the 5MB size limit.`);
         return;
       }
     }
@@ -137,7 +137,7 @@ export function UploadPaperModal({ onClose, user, onUploadSuccess }: UploadPaper
       }, 3000);
     } catch (error: any) {
       console.error('Upload failed:', error);
-      setMessage(`❌ Failed to upload. ${error.message || 'Try again.'}`);
+      setMessage(`Failed to upload. ${error.message || 'Try again.'}`);
     } finally {
       setLoading(false);
     }
