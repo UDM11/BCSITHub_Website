@@ -84,6 +84,7 @@ export function PastPapers() {
 
         let queryBuilder = Backendless.DataQueryBuilder.create();
         queryBuilder.setSortBy(['uploadedAt DESC']);
+        queryBuilder.setPageSize(50);
 
         if (selectedSemester) {
           queryBuilder.setWhereClause(`semester = ${selectedSemester}`);

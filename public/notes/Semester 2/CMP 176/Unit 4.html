@@ -90,23 +90,25 @@ Algorithm Enqueue(queue, element, maxSize)
 4. If front == -1
     front = 0
         </pre>
-        <p>Example Implementation in Java:</p>
+        <p>Example Implementation in C:</p>
         <pre>
-public class Queue {
-    int front = -1, rear = -1;
-    int maxSize = 100;
-    int[] queue = new int[maxSize];
+#include <stdio.h>
+#define MAX_SIZE 100
 
-    void enqueue(int element) {
-        if (rear >= maxSize - 1) {
-            System.out.println("Queue Overflow");
-            return;
-        }
-        if (front == -1) {
-            front = 0;
-        }
-        queue[++rear] = element;
+typedef struct {
+    int front, rear;
+    int queue[MAX_SIZE];
+} Queue;
+
+void enqueue(Queue* q, int element) {
+    if (q->rear >= MAX_SIZE - 1) {
+        printf("Queue Overflow\n");
+        return;
     }
+    if (q->front == -1) {
+        q->front = 0;
+    }
+    q->queue[++(q->rear)] = element;
 }
         </pre>
     </div>
@@ -126,26 +128,28 @@ Algorithm Dequeue(queue)
     front = front + 1
 5. Return element
         </pre>
-        <p>Example Implementation in Java:</p>
+        <p>Example Implementation in C:</p>
         <pre>
-public class Queue {
-    int front = -1, rear = -1;
-    int maxSize = 100;
-    int[] queue = new int[maxSize];
+#include <stdio.h>
+#define MAX_SIZE 100
 
-    int dequeue() {
-        if (front == -1) {
-            System.out.println("Queue Underflow");
-            return -1;
-        }
-        int element = queue[front];
-        if (front == rear) {
-            front = rear = -1;
-        } else {
-            front++;
-        }
-        return element;
+typedef struct {
+    int front, rear;
+    int queue[MAX_SIZE];
+} Queue;
+
+int dequeue(Queue* q) {
+    if (q->front == -1) {
+        printf("Queue Underflow\n");
+        return -1;
     }
+    int element = q->queue[q->front];
+    if (q->front == q->rear) {
+        q->front = q->rear = -1;
+    } else {
+        q->front++;
+    }
+    return element;
 }
         </pre>
     </div>
@@ -177,43 +181,83 @@ Algorithm CircularEnqueue(queue, element, maxSize)
 3. rear = (rear + 1) % maxSize
 4. queue[rear] = element
                 </pre>
-                <p>Example Implementation in Java:</p>
+                <p>Example Implementation in C:</p>
                 <pre>
-public class CircularQueue {
-    int front = -1, rear = -1;
-    int maxSize = 100;
-    int[] queue = new int[maxSize];
+#include <stdio.h>
+#define MAX_SIZE 100
 
-    void enqueue(int element) {
-        if ((rear + 1) % maxSize == front) {
-            System.out.println("Queue Overflow");
-            return;
-        }
-        if (front == -1) {
-            front = 0;
-        }
-        rear = (rear + 1) % maxSize;
-        queue[rear] = element;
+typedef struct {
+    int front, rear;
+    int queue[MAX_SIZE];
+} CircularQueue;
+
+void enqueue(CircularQueue* q, int element) {
+    if ((q->rear + 1) % MAX_SIZE == q->front) {
+        printf("Queue Overflow\n");
+        return;
     }
+    if (q->front == -1) {
+        q->front = 0;
+    }
+    q->rear = (q->rear + 1) % MAX_SIZE;
+    q->queue[q->rear] = element;
 }
                 </pre>
             </li>
             <li><b>Priority Queue:</b> A queue where elements are dequeued based on priority rather than their order of insertion. Elements with higher priority are removed first. It can be implemented using arrays, linked lists, or heaps.
                 <p>Example: In a hospital, patients with critical conditions are treated before others, regardless of arrival time.</p>
-                <p>Example Implementation in Java (Using PriorityQueue Class):</p>
+                <p>Example Implementation in C (Using Array):</p>
                 <pre>
-import java.util.PriorityQueue;
+#include <stdio.h>
+#define MAX_SIZE 100
 
-public class PriorityQueueExample {
-    public static void main(String[] args) {
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
-        pq.add(30);
-        pq.add(10);
-        pq.add(20);
-        while (!pq.isEmpty()) {
-            System.out.println(pq.poll()); // Output: 10, 20, 30
+typedef struct {
+    int queue[MAX_SIZE];
+    int size;
+} PriorityQueue;
+
+void init(PriorityQueue* pq) {
+    pq->size = 0;
+}
+
+void add(PriorityQueue* pq, int element) {
+    if (pq->size >= MAX_SIZE) {
+        printf("Queue Overflow\n");
+        return;
+    }
+    pq->queue[pq->size++] = element;
+}
+
+int poll(PriorityQueue* pq) {
+    if (pq->size == 0) {
+        printf("Queue Underflow\n");
+        return -1;
+    }
+    int min = pq->queue[0];
+    int minIndex = 0;
+    for (int i = 1; i < pq->size; i++) {
+        if (pq->queue[i] < min) {
+            min = pq->queue[i];
+            minIndex = i;
         }
     }
+    for (int i = minIndex; i < pq->size - 1; i++) {
+        pq->queue[i] = pq->queue[i + 1];
+    }
+    pq->size--;
+    return min;
+}
+
+int main() {
+    PriorityQueue pq;
+    init(&pq);
+    add(&pq, 30);
+    add(&pq, 10);
+    add(&pq, 20);
+    while (pq.size > 0) {
+        printf("%d\n", poll(&pq)); // Output: 10, 20, 30
+    }
+    return 0;
 }
                 </pre>
             </li>
@@ -233,23 +277,41 @@ public class PriorityQueueExample {
         </ul>
         <p>Example (Queue in BFS):</p>
         <pre>
-import java.util.*;
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_SIZE 100
 
-public class BFSExample {
-    void bfs(int start, List<List<Integer>> adj, int V) {
-        boolean[] visited = new boolean[V];
-        Queue<Integer> queue = new LinkedList<>();
-        visited[start] = true;
-        queue.add(start);
+typedef struct {
+    int front, rear;
+    int queue[MAX_SIZE];
+} Queue;
 
-        while (!queue.isEmpty()) {
-            int node = queue.poll();
-            System.out.print(node + " ");
-            for (int neighbor : adj.get(node)) {
-                if (!visited[neighbor]) {
-                    visited[neighbor] = true;
-                    queue.add(neighbor);
-                }
+void enqueue(Queue* q, int element) {
+    if (q->rear >= MAX_SIZE - 1) return;
+    if (q->front == -1) q->front = 0;
+    q->queue[++(q->rear)] = element;
+}
+
+int dequeue(Queue* q) {
+    if (q->front == -1) return -1;
+    int element = q->queue[q->front];
+    if (q->front == q->rear) q->front = q->rear = -1;
+    else q->front++;
+    return element;
+}
+
+void bfs(int start, int** adj, int V, int* visited) {
+    Queue q = {-1, -1, {0}};
+    visited[start] = 1;
+    enqueue(&q, start);
+
+    while (q.front != -1) {
+        int node = dequeue(&q);
+        printf("%d ", node);
+        for (int i = 0; i < V; i++) {
+            if (adj[node][i] && !visited[i]) {
+                visited[i] = 1;
+                enqueue(&q, i);
             }
         }
     }

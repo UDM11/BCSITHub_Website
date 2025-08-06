@@ -72,13 +72,14 @@
 
     <div class="section">
         <h2><b>7.3 Common Sorting Algorithms</b></h2>
-        <p>Below are common sorting algorithms with their implementations in Java:</p>
+        <p>Below are common sorting algorithms with their implementations in C:</p>
         <ul>
             <li><b>Bubble Sort:</b> Repeatedly compares adjacent elements and swaps them if they are in the wrong order.
                 <p>Example:</p>
                 <pre>
-void bubbleSort(int[] arr) {
-    int n = arr.length;
+#include <stdio.h>
+
+void bubbleSort(int arr[], int n) {
     for (int i = 0; i < n - 1; i++) {
         for (int j = 0; j < n - i - 1; j++) {
             if (arr[j] > arr[j + 1]) {
@@ -94,8 +95,10 @@ void bubbleSort(int[] arr) {
             <li><b>Insertion Sort:</b> Builds a sorted array one element at a time by inserting each element into its correct position.
                 <p>Example:</p>
                 <pre>
-void insertionSort(int[] arr) {
-    for (int i = 1; i < arr.length; i++) {
+#include <stdio.h>
+
+void insertionSort(int arr[], int n) {
+    for (int i = 1; i < n; i++) {
         int key = arr[i];
         int j = i - 1;
         while (j >= 0 && arr[j] > key) {
@@ -110,8 +113,9 @@ void insertionSort(int[] arr) {
             <li><b>Selection Sort:</b> Repeatedly selects the smallest element from the unsorted portion and places it at the beginning.
                 <p>Example:</p>
                 <pre>
-void selectionSort(int[] arr) {
-    int n = arr.length;
+#include <stdio.h>
+
+void selectionSort(int arr[], int n) {
     for (int i = 0; i < n - 1; i++) {
         int minIdx = i;
         for (int j = i + 1; j < n; j++) {
@@ -129,47 +133,47 @@ void selectionSort(int[] arr) {
             <li><b>Quick Sort:</b> Uses a divide-and-conquer approach, selecting a pivot and partitioning the array around it.
                 <p>Example:</p>
                 <pre>
-void quickSort(int[] arr, int low, int high) {
+#include <stdio.h>
+
+void swap(int* a, int* b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+    for (int j = low; j < high; j++) {
+        if (arr[j] <= pivot) {
+            i++;
+            swap(&arr[i], &arr[j]);
+        }
+    }
+    swap(&arr[i + 1], &arr[high]);
+    return i + 1;
+}
+
+void quickSort(int arr[], int low, int high) {
     if (low < high) {
         int pi = partition(arr, low, high);
         quickSort(arr, low, pi - 1);
         quickSort(arr, pi + 1, high);
     }
 }
-int partition(int[] arr, int low, int high) {
-    int pivot = arr[high];
-    int i = low - 1;
-    for (int j = low; j < high; j++) {
-        if (arr[j] <= pivot) {
-            i++;
-            int temp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = temp;
-        }
-    }
-    int temp = arr[i + 1];
-    arr[i + 1] = arr[high];
-    arr[high] = temp;
-    return i + 1;
-}
                 </pre>
             </li>
             <li><b>Merge Sort:</b> Divides the array into halves, recursively sorts them, and merges the sorted halves.
                 <p>Example:</p>
                 <pre>
-void mergeSort(int[] arr, int l, int r) {
-    if (l < r) {
-        int m = l + (r - l) / 2;
-        mergeSort(arr, l, m);
-        mergeSort(arr, m + 1, r);
-        merge(arr, l, m, r);
-    }
-}
-void merge(int[] arr, int l, int m, int r) {
+#include <stdio.h>
+#include <stdlib.h>
+
+void merge(int arr[], int l, int m, int r) {
     int n1 = m - l + 1;
     int n2 = r - m;
-    int[] L = new int[n1];
-    int[] R = new int[n2];
+    int* L = (int*)malloc(n1 * sizeof(int));
+    int* R = (int*)malloc(n2 * sizeof(int));
     for (int i = 0; i < n1; i++) L[i] = arr[l + i];
     for (int i = 0; i < n2; i++) R[i] = arr[m + 1 + i];
     int i = 0, j = 0, k = l;
@@ -193,14 +197,26 @@ void merge(int[] arr, int l, int m, int r) {
         j++;
         k++;
     }
+    free(L);
+    free(R);
+}
+
+void mergeSort(int arr[], int l, int r) {
+    if (l < r) {
+        int m = l + (r - l) / 2;
+        mergeSort(arr, l, m);
+        mergeSort(arr, m + 1, r);
+        merge(arr, l, m, r);
+    }
 }
                 </pre>
             </li>
             <li><b>Shell Sort:</b> An optimization of insertion sort that uses a gap sequence to sort elements farther apart first.
                 <p>Example:</p>
                 <pre>
-void shellSort(int[] arr) {
-    int n = arr.length;
+#include <stdio.h>
+
+void shellSort(int arr[], int n) {
     for (int gap = n / 2; gap > 0; gap /= 2) {
         for (int i = gap; i < n; i++) {
             int temp = arr[i];
@@ -217,19 +233,9 @@ void shellSort(int[] arr) {
             <li><b>Binary Sort (Binary Insertion Sort):</b> A variant of insertion sort that uses binary search to find the insertion point.
                 <p>Example:</p>
                 <pre>
-void binaryInsertionSort(int[] arr) {
-    for (int i = 1; i < arr.length; i++) {
-        int key = arr[i];
-        int j = i - 1;
-        int loc = binarySearch(arr, key, 0, i);
-        while (j >= loc) {
-            arr[j + 1] = arr[j];
-            j--;
-        }
-        arr[loc] = key;
-    }
-}
-int binarySearch(int[] arr, int key, int low, int high) {
+#include <stdio.h>
+
+int binarySearch(int arr[], int key, int low, int high) {
     while (low < high) {
         int mid = low + (high - low) / 2;
         if (arr[mid] <= key) {
@@ -239,6 +245,19 @@ int binarySearch(int[] arr, int key, int low, int high) {
         }
     }
     return low;
+}
+
+void binaryInsertionSort(int arr[], int n) {
+    for (int i = 1; i < n; i++) {
+        int key = arr[i];
+        int j = i - 1;
+        int loc = binarySearch(arr, key, 0, i);
+        while (j >= loc) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[loc] = key;
+    }
 }
                 </pre>
             </li>

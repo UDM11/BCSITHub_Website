@@ -91,7 +91,7 @@
             <li><b>Adjacency Matrix:</b> A 2D array where matrix[i][j] represents an edge (or weight) between vertices i and j. Suitable for dense graphs.
                 <p>Example (Adjacency Matrix for undirected graph):</p>
                 <pre>
-int[][] adjMatrix = {
+int adjMatrix[3][3] = {
     {0, 1, 0},
     {1, 0, 1},
     {0, 1, 0}
@@ -99,26 +99,43 @@ int[][] adjMatrix = {
                 </pre>
             </li>
             <li><b>Adjacency List:</b> Each vertex stores a list of adjacent vertices. Suitable for sparse graphs.
-                <p>Example (Adjacency List in Java):</p>
+                <p>Example (Adjacency List in C):</p>
                 <pre>
-import java.util.*;
+#include <stdio.h>
+#include <stdlib.h>
 
-class Graph {
+typedef struct Node {
+    int vertex;
+    struct Node* next;
+} Node;
+
+typedef struct {
     int V;
-    ArrayList<Integer>[] adjList;
+    Node** adjList;
+} Graph;
 
-    Graph(int V) {
-        this.V = V;
-        adjList = new ArrayList[V];
-        for (int i = 0; i < V; i++) {
-            adjList[i] = new ArrayList<>();
-        }
-    }
+Node* createNode(int vertex) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->vertex = vertex;
+    newNode->next = NULL;
+    return newNode;
+}
 
-    void addEdge(int u, int v) {
-        adjList[u].add(v);
-        adjList[v].add(u); // For undirected graph
-    }
+Graph* createGraph(int V) {
+    Graph* graph = (Graph*)malloc(sizeof(Graph));
+    graph->V = V;
+    graph->adjList = (Node**)calloc(V, sizeof(Node*));
+    return graph;
+}
+
+void addEdge(Graph* graph, int u, int v) {
+    Node* newNode = createNode(v);
+    newNode->next = graph->adjList[u];
+    graph->adjList[u] = newNode;
+    
+    newNode = createNode(u); // For undirected graph
+    newNode->next = graph->adjList[v];
+    graph->adjList[v] = newNode;
 }
                 </pre>
             </li>
@@ -132,38 +149,100 @@ class Graph {
             <li><b>Breadth First Search (BFS):</b> Explores vertices level by level, using a queue to visit neighbors before moving deeper.
                 <p>Example:</p>
                 <pre>
-import java.util.*;
+#include <stdio.h>
+#include <stdlib.h>
 
-void bfs(int start, ArrayList<Integer>[] adjList, int V) {
-    boolean[] visited = new boolean[V];
-    Queue<Integer> queue = new LinkedList<>();
-    visited[start] = true;
-    queue.add(start);
+typedef struct Node {
+    int vertex;
+    struct Node* next;
+} Node;
 
-    while (!queue.isEmpty()) {
-        int vertex = queue.poll();
-        System.out.print(vertex + " ");
-        for (int neighbor : adjList[vertex]) {
-            if (!visited[neighbor]) {
-                visited[neighbor] = true;
-                queue.add(neighbor);
+typedef struct {
+    int V;
+    Node** adjList;
+} Graph;
+
+typedef struct {
+    int* array;
+    int front, rear, size;
+} Queue;
+
+Queue* createQueue(int size) {
+    Queue* queue = (Queue*)malloc(sizeof(Queue));
+    queue->size = size;
+    queue->array = (int*)malloc(size * sizeof(int));
+    queue->front = 0;
+    queue->rear = -1;
+    return queue;
+}
+
+void enqueue(Queue* queue, int item) {
+    queue->array[++queue->rear] = item;
+}
+
+int dequeue(Queue* queue) {
+    return queue->array[queue->front++];
+}
+
+int isEmpty(Queue* queue) {
+    return queue->front > queue->rear;
+}
+
+void bfs(Graph* graph, int start) {
+    int V = graph->V;
+    int* visited = (int*)calloc(V, sizeof(int));
+    Queue* queue = createQueue(V);
+    
+    visited[start] = 1;
+    enqueue(queue, start);
+    
+    while (!isEmpty(queue)) {
+        int vertex = dequeue(queue);
+        printf("%d ", vertex);
+        for (Node* neighbor = graph->adjList[vertex]; neighbor != NULL; neighbor = neighbor->next) {
+            if (!visited[neighbor->vertex]) {
+                visited[neighbor->vertex] = 1;
+                enqueue(queue, neighbor->vertex);
             }
         }
     }
+    
+    free(queue->array);
+    free(queue);
+    free(visited);
 }
                 </pre>
             </li>
             <li><b>Depth First Search (DFS):</b> Explores as far as possible along a branch before backtracking, using recursion or a stack.
                 <p>Example:</p>
                 <pre>
-void dfs(int vertex, ArrayList<Integer>[] adjList, boolean[] visited) {
-    visited[vertex] = true;
-    System.out.print(vertex + " ");
-    for (int neighbor : adjList[vertex]) {
-        if (!visited[neighbor]) {
-            dfs(neighbor, adjList, visited);
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int vertex;
+    struct Node* next;
+} Node;
+
+typedef struct {
+    int V;
+    Node** adjList;
+} Graph;
+
+void dfs(Graph* graph, int vertex, int* visited) {
+    visited[vertex] = 1;
+    printf("%d ", vertex);
+    for (Node* neighbor = graph->adjList[vertex]; neighbor != NULL; neighbor = neighbor->next) {
+        if (!visited[neighbor->vertex]) {
+            dfs(graph, neighbor->vertex, visited);
         }
     }
+}
+
+void dfsStart(Graph* graph, int start) {
+    int* visited = (int*)calloc(graph->V, sizeof(int));
+    dfs(graph, start, visited);
+    free(visited);
 }
                 </pre>
             </li>
@@ -177,83 +256,71 @@ void dfs(int vertex, ArrayList<Integer>[] adjList, boolean[] visited) {
             <li><b>Kruskal's Algorithm:</b> Builds an MST by selecting edges in increasing order of weight, adding them if they do not form a cycle (using a disjoint-set data structure).
                 <p>Example:</p>
                 <pre>
-import java.util.*;
+#include <stdio.h>
+#include <stdlib.h>
 
-class Edge implements Comparable<Edge> {
+typedef struct {
     int src, dest, weight;
-    Edge(int src, int dest, int weight) {
-        this.src = src;
-        this.dest = dest;
-        this.weight = weight;
-    }
-    public int compareTo(Edge other) {
-        return this.weight - other.weight;
+} Edge;
+
+typedef struct {
+    int V, E;
+    Edge* edges;
+} Graph;
+
+int find(int* parent, int i) {
+    if (parent[i] == i) return i;
+    return parent[i] = find(parent, parent[i]);
+}
+
+void unionSet(int* parent, int* rank, int x, int y) {
+    int rootX = find(parent, x);
+    int rootY = find(parent, y);
+    if (rank[rootX] < rank[rootY]) parent[rootX] = rootY;
+    else if (rank[rootX] > rank[rootY]) parent[rootY] = rootX;
+    else {
+        parent[rootY] = rootX;
+        rank[rootX]++;
     }
 }
 
-class Kruskal {
-    int find(int[] parent, int i) {
-        if (parent[i] == i) return i;
-        return find(parent, parent[i]);
-    }
+int compareEdges(const void* a, const void* b) {
+    return ((Edge*)a)->weight - ((Edge*)b)->weight;
+}
 
-    void union(int[] parent, int[] rank, int x, int y) {
-        int rootX = find(parent, x);
-        int rootY = find(parent, y);
-        if (rank[rootX] < rank[rootY]) parent[rootX] = rootY;
-        else if (rank[rootX] > rank[rootY]) parent[rootY] = rootX;
-        else {
-            parent[rootY] = rootX;
-            rank[rootX]++;
+void kruskalMST(Graph* graph) {
+    qsort(graph->edges, graph->E, sizeof(Edge), compareEdges);
+    int* parent = (int*)malloc(graph->V * sizeof(int));
+    int* rank = (int*)calloc(graph->V, sizeof(int));
+    Edge* mst = (Edge*)malloc((graph->V - 1) * sizeof(Edge));
+    int mstIndex = 0;
+
+    for (int i = 0; i < graph->V; i++) parent[i] = i;
+
+    for (int i = 0; i < graph->E && mstIndex < graph->V - 1; i++) {
+        int x = find(parent, graph->edges[i].src);
+        int y = find(parent, graph->edges[i].dest);
+        if (x != y) {
+            mst[mstIndex++] = graph->edges[i];
+            unionSet(parent, rank, x, y);
         }
     }
 
-    void kruskalMST(ArrayList<Edge> edges, int V) {
-        Collections.sort(edges);
-        int[] parent = new int[V];
-        int[] rank = new int[V];
-        for (int i = 0; i < V; i++) parent[i] = i;
-
-        ArrayList<Edge> mst = new ArrayList<>();
-        for (Edge edge : edges) {
-            int x = find(parent, edge.src);
-            int y = find(parent, edge.dest);
-            if (x != y) {
-                mst.add(edge);
-                union(parent, rank, x, y);
-            }
-        }
-    }
+    free(parent);
+    free(rank);
+    free(mst);
 }
                 </pre>
             </li>
             <li><b>Prim's Algorithm:</b> Builds an MST by growing a tree from a starting vertex, adding the minimum-weight edge connecting a vertex in the tree to a vertex outside it.
                 <p>Example:</p>
                 <pre>
-void primMST(int[][] graph, int V) {
-    int[] parent = new int[V];
-    int[] key = new int[V];
-    boolean[] mstSet = new boolean[V];
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
 
-    Arrays.fill(key, Integer.MAX_VALUE);
-    Arrays.fill(mstSet, false);
-    key[0] = 0;
-    parent[0] = -1;
-
-    for (int count = 0; count < V - 1; count++) {
-        int u = minKey(key, mstSet, V);
-        mstSet[u] = true;
-        for (int v = 0; v < V; v++) {
-            if (graph[u][v] != 0 && !mstSet[v] && graph[u][v] < key[v]) {
-                parent[v] = u;
-                key[v] = graph[u][v];
-            }
-        }
-    }
-}
-
-int minKey(int[] key, boolean[] mstSet, int V) {
-    int min = Integer.MAX_VALUE, minIndex = -1;
+int minKey(int* key, int* mstSet, int V) {
+    int min = INT_MAX, minIndex = -1;
     for (int v = 0; v < V; v++) {
         if (!mstSet[v] && key[v] < min) {
             min = key[v];
@@ -261,6 +328,31 @@ int minKey(int[] key, boolean[] mstSet, int V) {
         }
     }
     return minIndex;
+}
+
+void primMST(int** graph, int V) {
+    int* parent = (int*)malloc(V * sizeof(int));
+    int* key = (int*)malloc(V * sizeof(int));
+    int* mstSet = (int*)calloc(V, sizeof(int));
+
+    for (int i = 0; i < V; i++) key[i] = INT_MAX;
+    key[0] = 0;
+    parent[0] = -1;
+
+    for (int count = 0; count < V - 1; count++) {
+        int u = minKey(key, mstSet, V);
+        mstSet[u] = 1;
+        for (int v = 0; v < V; v++) {
+            if (graph[u][v] && !mstSet[v] && graph[u][v] < key[v]) {
+                parent[v] = u;
+                key[v] = graph[u][v];
+            }
+        }
+    }
+
+    free(parent);
+    free(key);
+    free(mstSet);
 }
                 </pre>
             </li>
@@ -279,33 +371,99 @@ int minKey(int[] key, boolean[] mstSet, int V) {
         </pre>
         <p>Example:</p>
         <pre>
-import java.util.*;
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
 
-class Dijkstra {
-    void dijkstra(int[][] graph, int src, int V) {
-        int[] dist = new int[V];
-        boolean[] visited = new boolean[V];
-        Arrays.fill(dist, Integer.MAX_VALUE);
-        dist[src] = 0;
+typedef struct {
+    int vertex, dist;
+} PQNode;
 
-        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> dist[a] - dist[b]);
-        pq.add(src);
+typedef struct {
+    PQNode* nodes;
+    int size, capacity;
+} PriorityQueue;
 
-        while (!pq.isEmpty()) {
-            int u = pq.poll();
-            if (visited[u]) continue;
-            visited[u] = true;
+PriorityQueue* createPQ(int capacity) {
+    PriorityQueue* pq = (PriorityQueue*)malloc(sizeof(PriorityQueue));
+    pq->nodes = (PQNode*)malloc(capacity * sizeof(PQNode));
+    pq->size = 0;
+    pq->capacity = capacity;
+    return pq;
+}
 
-            for (int v = 0; v < V; v++) {
-                if (!visited[v] && graph[u][v] != 0 && dist[u] + graph[u][v] < dist[v]) {
-                    dist[v] = dist[u] + graph[u][v];
-                    pq.add(v);
-                }
+void swap(PQNode* a, PQNode* b) {
+    PQNode temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void heapify(PriorityQueue* pq, int i) {
+    int smallest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+    if (left < pq->size && pq->nodes[left].dist < pq->nodes[smallest].dist)
+        smallest = left;
+    if (right < pq->size && pq->nodes[right].dist < pq->nodes[smallest].dist)
+        smallest = right;
+    if (smallest != i) {
+        swap(&pq->nodes[i], &pq->nodes[smallest]);
+        heapify(pq, smallest);
+    }
+}
+
+void push(PriorityQueue* pq, int vertex, int dist) {
+    pq->nodes[pq->size].vertex = vertex;
+    pq->nodes[pq->size].dist = dist;
+    int i = pq->size++;
+    while (i && pq->nodes[i].dist < pq->nodes[(i - 1) / 2].dist) {
+        swap(&pq->nodes[i], &pq->nodes[(i - 1) / 2]);
+        i = (i - 1) / 2;
+    }
+}
+
+PQNode pop(PriorityQueue* pq) {
+    PQNode min = pq->nodes[0];
+    pq->nodes[0] = pq->nodes[--pq->size];
+    heapify(pq, 0);
+    return min;
+}
+
+int isEmpty(PriorityQueue* pq) {
+    return pq->size == 0;
+}
+
+void dijkstra(int** graph, int src, int V) {
+    int* dist = (int*)malloc(V * sizeof(int));
+    int* visited = (int*)calloc(V, sizeof(int));
+    PriorityQueue* pq = createPQ(V);
+
+    for (int i = 0; i < V; i++) dist[i] = INT_MAX;
+    dist[src] = 0;
+    push(pq, src, 0);
+
+    while (!isEmpty(pq)) {
+        PQNode node = pop(pq);
+        int u = node.vertex;
+        if (visited[u]) continue;
+        visited[u] = 1;
+
+        for (int v = 0; v < V; v++) {
+            if (!visited[v] && graph[u][v] && dist[u] != INT_MAX && dist[u] + graph[u][v] < dist[v]) {
+                dist[v] = dist[u] + graph[u][v];
+                push(pq, v, dist[v]);
             }
         }
     }
+
+    free(dist);
+    free(visited);
+    free(pq->nodes);
+    free(pq);
 }
-        </pre>
+                </pre>
+            </li>
+        </ul>
     </div>
 
     <div class="section">

@@ -71,9 +71,11 @@
         </ul>
         <p>Example:</p>
         <pre>
+#include <stdio.h>
+
 void example(int n) {
     for (int i = 0; i < n; i++) {
-        System.out.println(i); // O(n) time complexity
+        printf("%d\n", i); // O(n) time complexity
     }
 }
         </pre>
@@ -89,8 +91,10 @@ void example(int n) {
         </ul>
         <p>Example:</p>
         <pre>
-int linearSearch(int[] arr, int target) {
-    for (int i = 0; i < arr.length; i++) {
+#include <stdio.h>
+
+int linearSearch(int arr[], int n, int target) {
+    for (int i = 0; i < n; i++) {
         if (arr[i] == target) return i; // Ω(1) if target is at index 0
     }
     return -1; // Ω(n) in worst case
@@ -107,7 +111,42 @@ int linearSearch(int[] arr, int target) {
         </ul>
         <p>Example:</p>
         <pre>
-void mergeSort(int[] arr, int l, int r) {
+#include <stdio.h>
+#include <stdlib.h>
+
+void merge(int arr[], int l, int m, int r) {
+    int n1 = m - l + 1;
+    int n2 = r - m;
+    int* L = (int*)malloc(n1 * sizeof(int));
+    int* R = (int*)malloc(n2 * sizeof(int));
+    for (int i = 0; i < n1; i++) L[i] = arr[l + i];
+    for (int i = 0; i < n2; i++) R[i] = arr[m + 1 + i];
+    int i = 0, j = 0, k = l;
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k] = L[i];
+            i++;
+        } else {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+    while (i < n1) {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+    while (j < n2) {
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+    free(L);
+    free(R);
+}
+
+void mergeSort(int arr[], int l, int r) {
     if (l < r) {
         int m = l + (r - l) / 2;
         mergeSort(arr, l, m);

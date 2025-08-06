@@ -69,8 +69,10 @@
             <li><b>Sequential Search:</b> Also known as linear search, it checks each element in a list sequentially until the target is found or the list is exhausted. Suitable for unsorted data.
                 <p>Example:</p>
                 <pre>
-int sequentialSearch(int[] arr, int target) {
-    for (int i = 0; i < arr.length; i++) {
+#include <stdio.h>
+
+int sequentialSearch(int arr[], int n, int target) {
+    for (int i = 0; i < n; i++) {
         if (arr[i] == target) {
             return i;
         }
@@ -82,8 +84,10 @@ int sequentialSearch(int[] arr, int target) {
             <li><b>Binary Search:</b> Used for sorted arrays, it divides the search space in half at each step, significantly reducing the number of comparisons.
                 <p>Example:</p>
                 <pre>
-int binarySearch(int[] arr, int target) {
-    int left = 0, right = arr.length - 1;
+#include <stdio.h>
+
+int binarySearch(int arr[], int n, int target) {
+    int left = 0, right = n - 1;
     while (left <= right) {
         int mid = left + (right - left) / 2;
         if (arr[mid] == target) {
@@ -102,22 +106,31 @@ int binarySearch(int[] arr, int target) {
             <li><b>Tree Search:</b> Used in binary search trees (BSTs), where the search follows the tree structure, comparing the target with the current node and moving left or right based on the comparison.
                 <p>Example:</p>
                 <pre>
-class Node {
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
     int data;
-    Node left, right;
-    Node(int data) {
-        this.data = data;
-        this.left = this.right = null;
-    }
+    struct Node* left;
+    struct Node* right;
+} Node;
+
+Node* createNode(int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
 }
-Node search(Node root, int target) {
-    if (root == null || root.data == target) {
+
+Node* search(Node* root, int target) {
+    if (root == NULL || root->data == target) {
         return root;
     }
-    if (target < root.data) {
-        return search(root.left, target);
+    if (target < root->data) {
+        return search(root->left, target);
     }
-    return search(root.right, target);
+    return search(root->right, target);
 }
                 </pre>
             </li>
@@ -126,7 +139,9 @@ Node search(Node root, int target) {
 
     <div class="section">
         <h2><b>8.3 Hashing</b></h2>
-        <p><b>Hashing</b> is a technique that maps data to a fixed-size array (hash table) using a hash function, enabling fast retrieval of elements. It is widely used in databases, caches, and dictionaries.</p>
+        <p><b>Hashing</b> is
+
+ a technique that maps data to a fixed-size array (hash table) using a hash function, enabling fast retrieval of elements. It is widely used in databases, caches, and dictionaries.</p>
         <ul>
             <li><b>Hash Functions:</b>
                 <ul>
@@ -156,23 +171,28 @@ Node search(Node root, int target) {
                 </ul>
                 <p>Example:</p>
                 <pre>
-class HashTable {
-    int[] table;
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    int* table;
     int size;
+} HashTable;
 
-    HashTable(int size) {
-        this.size = size;
-        table = new int[size];
-    }
+HashTable* createHashTable(int size) {
+    HashTable* ht = (HashTable*)malloc(sizeof(HashTable));
+    ht->size = size;
+    ht->table = (int*)calloc(size, sizeof(int));
+    return ht;
+}
 
-    int hash(int key) {
-        return key % size;
-    }
+int hash(HashTable* ht, int key) {
+    return key % ht->size;
+}
 
-    void insert(int key) {
-        int index = hash(key);
-        table[index] = key;
-    }
+void insert(HashTable* ht, int key) {
+    int index = hash(ht, key);
+    ht->table[index] = key;
 }
                 </pre>
             </li>
@@ -194,54 +214,89 @@ class HashTable {
             <li><b>Linear Probing:</b> If a collision occurs at index h(k), check the next slot (h(k) + 1) % m, then (h(k) + 2) % m, and so on.
                 <p>Example:</p>
                 <pre>
-class HashTableLinear {
-    int[] table;
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    int* table;
     int size;
+} HashTableLinear;
 
-    HashTableLinear(int size) {
-        this.size = size;
-        table = new int[size];
-    }
+HashTableLinear* createHashTableLinear(int size) {
+    HashTableLinear* ht = (HashTableLinear*)malloc(sizeof(HashTableLinear));
+    ht->size = size;
+    ht->table = (int*)calloc(size, sizeof(int));
+    return ht;
+}
 
-    void insert(int key) {
-        int index = key % size;
-        while (table[index] != 0) {
-            index = (index + 1) % size;
-        }
-        table[index] = key;
+void insert(HashTableLinear* ht, int key) {
+    int index = key % ht->size;
+    while (ht->table[index] != 0) {
+        index = (index + 1) % ht->size;
     }
+    ht->table[index] = key;
 }
                 </pre>
             </li>
             <li><b>Quadratic Probing:</b> Uses a quadratic function to probe slots, e.g., (h(k) + i²) % m for i = 0, 1, 2, ...
                 <p>Example:</p>
                 <pre>
-void insert(int key) {
-    int index = key % size;
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    int* table;
+    int size;
+} HashTable;
+
+HashTable* createHashTable(int size) {
+    HashTable* ht = (HashTable*)malloc(sizeof(HashTable));
+    ht->size = size;
+    ht->table = (int*)calloc(size, sizeof(int));
+    return ht;
+}
+
+void insert(HashTable* ht, int key) {
+    int index = key % ht->size;
     int i = 0;
-    while (table[index] != 0) {
+    while (ht->table[index] != 0) {
         i++;
-        index = (key % size + i * i) % size;
+        index = (key % ht->size + i * i) % ht->size;
     }
-    table[index] = key;
+    ht->table[index] = key;
 }
                 </pre>
             </li>
             <li><b>Double Hashing:</b> Uses a second hash function to determine the step size, e.g., h(k, i) = (h1(k) + i * h2(k)) % m.
                 <p>Example:</p>
                 <pre>
-int hash2(int key) {
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    int* table;
+    int size;
+} HashTable;
+
+HashTable* createHashTable(int size) {
+    HashTable* ht = (HashTable*)malloc(sizeof(HashTable));
+    ht->size = size;
+    ht->table = (int*)calloc(size, sizeof(int));
+    return ht;
+}
+
+int hash2(int key, int size) {
     return 1 + (key % (size - 1));
 }
 
-void insert(int key) {
-    int index = key % size;
+void insert(HashTable* ht, int key) {
+    int index = key % ht->size;
     int i = 0;
-    while (table[index] != 0) {
+    while (ht->table[index] != 0) {
         i++;
-        index = (key % size + i * hash2(key)) % size;
+        index = (key % ht->size + i * hash2(key, ht->size)) % ht->size;
     }
-    table[index] = key;
+    ht->table[index] = key;
 }
                 </pre>
             </li>
@@ -253,30 +308,44 @@ void insert(int key) {
         <p>In <b>chaining</b>, each hash table slot contains a linked list to store all keys that hash to that index. Collisions are resolved by adding the key to the linked list.</p>
         <p>Example:</p>
         <pre>
-import java.util.*;
+#include <stdio.h>
+#include <stdlib.h>
 
-class HashTableChaining {
-    LinkedList<Integer>[] table;
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+typedef struct {
+    Node** table;
     int size;
+} HashTableChaining;
 
-    HashTableChaining(int size) {
-        this.size = size;
-        table = new LinkedList[size];
-        for (int i = 0; i < size; i++) {
-            table[i] = new LinkedList<>();
-        }
-    }
-
-    int hash(int key) {
-        return key % size;
-    }
-
-    void insert(int key) {
-        int index = hash(key);
-        table[index].add(key);
-    }
+Node* createNode(int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
 }
-        </pre>
+
+HashTableChaining* createHashTableChaining(int size) {
+    HashTableChaining* ht = (HashTableChaining*)malloc(sizeof(HashTableChaining));
+    ht->size = size;
+    ht->table = (Node**)calloc(size, sizeof(Node*));
+    return ht;
+}
+
+int hash(HashTableChaining* ht, int key) {
+    return key % ht->size;
+}
+
+void insert(HashTableChaining* ht, int key) {
+    int index = hash(ht, key);
+    Node* newNode = createNode(key);
+    newNode->next = ht->table[index];
+    ht->table[index] = newNode;
+}
+                </pre>
     </div>
 
     <div class="section">
@@ -284,20 +353,61 @@ class HashTableChaining {
         <p><b>Rehashing</b> is the process of resizing a hash table (usually doubling its size) and reinserting all existing keys when the load factor (ratio of elements to table size) exceeds a threshold. This reduces collisions and maintains performance.</p>
         <p>Example:</p>
         <pre>
-void rehash() {
-    LinkedList<Integer>[] oldTable = table;
-    size *= 2;
-    table = new LinkedList[size];
-    for (int i = 0; i < size; i++) {
-        table[i] = new LinkedList<>();
-    }
-    for (LinkedList<Integer> list : oldTable) {
-        for (int key : list) {
-            insert(key);
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+typedef struct {
+    Node** table;
+    int size;
+} HashTableChaining;
+
+Node* createNode(int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+HashTableChaining* createHashTableChaining(int size) {
+    HashTableChaining* ht = (HashTableChaining*)malloc(sizeof(HashTableChaining));
+    ht->size = size;
+    ht->table = (Node**)calloc(size, sizeof(Node*));
+    return ht;
+}
+
+int hash(HashTableChaining* ht, int key) {
+    return key % ht->size;
+}
+
+void insert(HashTableChaining* ht, int key) {
+    int index = hash(ht, key);
+    Node* newNode = createNode(key);
+    newNode->next = ht->table[index];
+    ht->table[index] = newNode;
+}
+
+void rehash(HashTableChaining* ht) {
+    Node** oldTable = ht->table;
+    int oldSize = ht->size;
+    ht->size *= 2;
+    ht->table = (Node**)calloc(ht->size, sizeof(Node*));
+    for (int i = 0; i < oldSize; i++) {
+        Node* current = oldTable[i];
+        while (current != NULL) {
+            Node* next = current->next;
+            insert(ht, current->data);
+            free(current);
+            current = next;
         }
     }
+    free(oldTable);
 }
-        </pre>
+                </pre>
     </div>
 
     <div class="section">
@@ -306,7 +416,7 @@ void rehash() {
         <ul>
             <li><b>Sequential Search:</b> Time Complexity: O(n) (worst and average case). Suitable for small or unsorted data.</li>
             <li><b>Binary Search:</b> Time Complexity: O(log n) (sorted array). Requires sorted data, not suitable for frequent insertions/deletions.</li>
-            <li><b>Tree Search (BST):</b> Time Complexity: O(log n) (average case for balanced BST), O(n) (worst case for unbalanced). Supports dynamic operations.</li>
+            <li><b>Tree Search (Balanced BST):</b> Time Complexity: O(log n) (average case for balanced BST), O(n) (worst case for unbalanced). Supports dynamic operations.</li>
             <li><b>Hashing:</b> Time Complexity: O(1) (average case with good hash function and low collisions), O(n) (worst case with many collisions). Ideal for fast lookups but requires good collision resolution.</li>
         </ul>
         <p>Comparison Table:</p>

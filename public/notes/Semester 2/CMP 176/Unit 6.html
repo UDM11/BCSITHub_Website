@@ -98,13 +98,20 @@
             <li><b>Linked List Representation:</b> Each node contains data and pointers to its left and right children.
                 <p>Example:</p>
                 <pre>
-class Node {
+#include <stdlib.h>
+
+typedef struct Node {
     int data;
-    Node left, right;
-    Node(int data) {
-        this.data = data;
-        this.left = this.right = null;
-    }
+    struct Node* left;
+    struct Node* right;
+} Node;
+
+Node* createNode(int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
 }
                 </pre>
             </li>
@@ -116,29 +123,39 @@ class Node {
         <p>Creating a binary tree involves defining a node structure and linking nodes to form the tree.</p>
         <p>Example:</p>
         <pre>
-class Node {
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
     int data;
-    Node left, right;
-    Node(int data) {
-        this.data = data;
-        this.left = this.right = null;
-    }
+    struct Node* left;
+    struct Node* right;
+} Node;
+
+typedef struct {
+    Node* root;
+} BinaryTree;
+
+Node* createNode(int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
 }
-class BinaryTree {
-    Node root;
 
-    void create() {
-        root = new Node(1);
-        root.left = new Node(2);
-        root.right = new Node(3);
-        root.left.left = new Node(4);
-        root.left.right = new Node(5);
-    }
+void create(BinaryTree* tree) {
+    tree->root = createNode(1);
+    tree->root->left = createNode(2);
+    tree->root->right = createNode(3);
+    tree->root->left->left = createNode(4);
+    tree->root->left->right = createNode(5);
+}
 
-    public static void main(String[] args) {
-        BinaryTree tree = new BinaryTree();
-        tree.create();
-    }
+int main() {
+    BinaryTree tree;
+    create(&tree);
+    return 0;
 }
         </pre>
     </div>
@@ -153,42 +170,63 @@ class BinaryTree {
         </ul>
         <p>Example:</p>
         <pre>
-class BinaryTree {
-    Node root;
+#include <stdio.h>
+#include <stdlib.h>
 
-    void preorder(Node node) {
-        if (node != null) {
-            System.out.print(node.data + " ");
-            preorder(node.left);
-            preorder(node.right);
-        }
-    }
+typedef struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+} Node;
 
-    void inorder(Node node) {
-        if (node != null) {
-            inorder(node.left);
-            System.out.print(node.data + " ");
-            inorder(node.right);
-        }
-    }
+typedef struct {
+    Node* root;
+} BinaryTree;
 
-    void postorder(Node node) {
-        if (node != null) {
-            postorder(node.left);
-            postorder(node.right);
-            System.out.print(node.data + " ");
-        }
-    }
+Node* createNode(int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
 
-    public static void main(String[] args) {
-        BinaryTree tree = new BinaryTree();
-        tree.root = new Node(1);
-        tree.root.left = new Node(2);
-        tree.root.right = new Node(3);
-        tree.preorder(tree.root); // Output: 1 2 3
-        tree.inorder(tree.root);  // Output: 2 1 3
-        tree.postorder(tree.root); // Output: 2 3 1
+void preorder(Node* node) {
+    if (node != NULL) {
+        printf("%d ", node->data);
+        preorder(node->left);
+        preorder(node->right);
     }
+}
+
+void inorder(Node* node) {
+    if (node != NULL) {
+        inorder(node->left);
+        printf("%d ", node->data);
+        inorder(node->right);
+    }
+}
+
+void postorder(Node* node) {
+    if (node != NULL) {
+        postorder(node->left);
+        postorder(node->right);
+        printf("%d ", node->data);
+    }
+}
+
+int main() {
+    BinaryTree tree;
+    tree.root = createNode(1);
+    tree.root->left = createNode(2);
+    tree.root->right = createNode(3);
+    preorder(tree.root); // Output: 1 2 3
+    printf("\n");
+    inorder(tree.root);  // Output: 2 1 3
+    printf("\n");
+    postorder(tree.root); // Output: 2 3 1
+    printf("\n");
+    return 0;
 }
         </pre>
     </div>
@@ -203,55 +241,72 @@ class BinaryTree {
         </ul>
         <p>Example:</p>
         <pre>
-class Node {
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
     int data;
-    Node left, right;
-    Node(int data) {
-        this.data = data;
-        this.left = this.right = null;
-    }
+    struct Node* left;
+    struct Node* right;
+} Node;
+
+typedef struct {
+    Node* root;
+} BST;
+
+Node* createNode(int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
 }
-class BST {
-    Node root;
 
-    Node insert(Node node, int data) {
-        if (node == null) return new Node(data);
-        if (data < node.data)
-            node.left = insert(node.left, data);
-        else if (data > node.data)
-            node.right = insert(node.right, data);
-        return node;
-    }
+Node* insert(Node* node, int data) {
+    if (node == NULL) return createNode(data);
+    if (data < node->data)
+        node->left = insert(node->left, data);
+    else if (data > node->data)
+        node->right = insert(node->right, data);
+    return node;
+}
 
-    Node search(Node node, int data) {
-        if (node == null || node.data == data) return node;
-        if (data < node.data)
-            return search(node.left, data);
-        return search(node.right, data);
-    }
+Node* search(Node* node, int data) {
+    if (node == NULL || node->data == data) return node;
+    if (data < node->data)
+        return search(node->left, data);
+    return search(node->right, data);
+}
 
-    Node delete(Node node, int data) {
-        if (node == null) return node;
-        if (data < node.data)
-            node.left = delete(node.left, data);
-        else if (data > node.data)
-            node.right = delete(node.right, data);
-        else {
-            if (node.left == null) return node.right;
-            if (node.right == null) return node.left;
-            Node temp = minValueNode(node.right);
-            node.data = temp.data;
-            node.right = delete(node.right, temp.data);
+Node* minValueNode(Node* node) {
+    Node* current = node;
+    while (current && current->left != NULL)
+        current = current->left;
+    return current;
+}
+
+Node* delete(Node* node, int data) {
+    if (node == NULL) return node;
+    if (data < node->data)
+        node->left = delete(node->left, data);
+    else if (data > node->data)
+        node->right = delete(node->right, data);
+    else {
+        if (node->left == NULL) {
+            Node* temp = node->right;
+            free(node);
+            return temp;
         }
-        return node;
+        if (node->right == NULL) {
+            Node* temp = node->left;
+            free(node);
+            return temp;
+        }
+        Node* temp = minValueNode(node->right);
+        node->data = temp->data;
+        node->right = delete(node->right, temp->data);
     }
-
-    Node minValueNode(Node node) {
-        Node current = node;
-        while (current.left != null)
-            current = current.left;
-        return current;
-    }
+    return node;
 }
         </pre>
     </div>
@@ -265,22 +320,44 @@ class BST {
         </ul>
         <p>Example:</p>
         <pre>
-class BinaryTree {
-    Node root;
+#include <stdio.h>
+#include <stdlib.h>
 
-    int height(Node node) {
-        if (node == null) return 0;
-        return 1 + Math.max(height(node.left), height(node.right));
-    }
+typedef struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+} Node;
 
-    public static void main(String[] args) {
-        BinaryTree tree = new BinaryTree();
-        tree.root = new Node(1);
-        tree.root.left = new Node(2);
-        tree.root.right = new Node(3);
-        tree.root.left.left = new Node(4);
-        System.out.println("Height: " + tree.height(tree.root)); // Output: 3
-    }
+typedef struct {
+    Node* root;
+} BinaryTree;
+
+Node* createNode(int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+
+int height(Node* node) {
+    if (node == NULL) return 0;
+    return 1 + max(height(node->left), height(node->right));
+}
+
+int main() {
+    BinaryTree tree;
+    tree.root = createNode(1);
+    tree.root->left = createNode(2);
+    tree.root->right = createNode(3);
+    tree.root->left->left = createNode(4);
+    printf("Height: %d\n", height(tree.root)); // Output: 3
+    return 0;
 }
         </pre>
     </div>
@@ -290,74 +367,87 @@ class BinaryTree {
         <p>An <b>AVL tree</b> is a self-balancing binary search tree where the height difference (balance factor) between the left and right subtrees of any node is at most 1. It ensures O(log n) time for operations by performing rotations when the balance is violated.</p>
         <p>Example:</p>
         <pre>
-class AVLNode {
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct AVLNode {
     int data, height;
-    AVLNode left, right;
-    AVLNode(int data) {
-        this.data = data;
-        this.height = 1;
-        this.left = this.right = null;
-    }
+    struct AVLNode* left;
+    struct AVLNode* right;
+} AVLNode;
+
+typedef struct {
+    AVLNode* root;
+} AVLTree;
+
+AVLNode* createAVLNode(int data) {
+    AVLNode* newNode = (AVLNode*)malloc(sizeof(AVLNode));
+    newNode->data = data;
+    newNode->height = 1;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
 }
-class AVLTree {
-    AVLNode root;
 
-    int height(AVLNode node) {
-        if (node == null) return 0;
-        return node.height;
-    }
+int max(int a, int b) {
+    return (a > b) ? a : b;
+}
 
-    int balanceFactor(AVLNode node) {
-        if (node == null) return 0;
-        return height(node.left) - height(node.right);
-    }
+int height(AVLNode* node) {
+    if (node == NULL) return 0;
+    return node->height;
+}
 
-    AVLNode rightRotate(AVLNode y) {
-        AVLNode x = y.left;
-        AVLNode T2 = x.right;
-        x.right = y;
-        y.left = T2;
-        y.height = Math.max(height(y.left), height(y.right)) + 1;
-        x.height = Math.max(height(x.left), height(x.right)) + 1;
-        return x;
-    }
+int balanceFactor(AVLNode* node) {
+    if (node == NULL) return 0;
+    return height(node->left) - height(node->right);
+}
 
-    AVLNode insert(AVLNode node, int data) {
-        if (node == null) return new AVLNode(data);
-        if (data < node.data)
-            node.left = insert(node.left, data);
-        else if (data > node.data)
-            node.right = insert(node.right, data);
-        else
-            return node;
+AVLNode* rightRotate(AVLNode* y) {
+    AVLNode* x = y->left;
+    AVLNode* T2 = x->right;
+    x->right = y;
+    y->left = T2;
+    y->height = max(height(y->left), height(y->right)) + 1;
+    x->height = max(height(x->left), height(x->right)) + 1;
+    return x;
+}
 
-        node.height = Math.max(height(node.left), height(node.right)) + 1;
-        int balance = balanceFactor(node);
+AVLNode* leftRotate(AVLNode* x) {
+    AVLNode* y = x->right;
+    AVLNode* T2 = y->left;
+    y->left = x;
+    x->right = T2;
+    x->height = max(height(x->left), height(x->right)) + 1;
+    y->height = max(height(y->left), height(y->right)) + 1;
+    return y;
+}
 
-        if (balance > 1 && data < node.left.data)
-            return rightRotate(node);
-        if (balance < -1 && data > node.right.data)
-            return leftRotate(node);
-        if (balance > 1 && data > node.left.data) {
-            node.left = leftRotate(node.left);
-            return rightRotate(node);
-        }
-        if (balance < -1 && data < node.right.data) {
-            node.right = rightRotate(node.right);
-            return leftRotate(node);
-        }
+AVLNode* insert(AVLNode* node, int data) {
+    if (node == NULL) return createAVLNode(data);
+    if (data < node->data)
+        node->left = insert(node->left, data);
+    else if (data > node->data)
+        node->right = insert(node->right, data);
+    else
         return node;
-    }
 
-    AVLNode leftRotate(AVLNode x) {
-        AVLNode y = x.right;
-        AVLNode T2 = y.left;
-        y.left = x;
-        x.right = T2;
-        x.height = Math.max(height(x.left), height(x.right)) + 1;
-        y.height = Math.max(height(y.left), height(y.right)) + 1;
-        return y;
+    node->height = max(height(node->left), height(node->right)) + 1;
+    int balance = balanceFactor(node);
+
+    if (balance > 1 && data < node->left->data)
+        return rightRotate(node);
+    if (balance < -1 && data > node->right->data)
+        return leftRotate(node);
+    if (balance > 1 && data > node->left->data) {
+        node->left = leftRotate(node->left);
+        return rightRotate(node);
     }
+    if (balance < -1 && data < node->right->data) {
+        node->right = rightRotate(node->right);
+        return leftRotate(node);
+    }
+    return node;
 }
         </pre>
     </div>
@@ -378,23 +468,47 @@ class AVLTree {
         </pre>
         <p>Example:</p>
         <pre>
-import java.util.*;
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-class HuffmanNode {
+typedef struct HuffmanNode {
     int frequency;
     char data;
-    HuffmanNode left, right;
+    struct HuffmanNode* left;
+    struct HuffmanNode* right;
+} HuffmanNode;
+
+HuffmanNode* createHuffmanNode(char data, int frequency) {
+    HuffmanNode* newNode = (HuffmanNode*)malloc(sizeof(HuffmanNode));
+    newNode->data = data;
+    newNode->frequency = frequency;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
 }
 
-class Huffman {
-    void printCodes(HuffmanNode root, String code) {
-        if (root == null) return;
-        if (root.data != '\0') {
-            System.out.println(root.data + ": " + code);
-        }
-        printCodes(root.left, code + "0");
-        printCodes(root.right, code + "1");
+void printCodes(HuffmanNode* root, char* code, int top) {
+    if (root == NULL) return;
+    if (root->data != '\0') {
+        code[top] = '\0';
+        printf("%c: %s\n", root->data, code);
     }
+    if (root->left) {
+        code[top] = '0';
+        printCodes(root->left, code, top + 1);
+    }
+    if (root->right) {
+        code[top] = '1';
+        printCodes(root->right, code, top + 1);
+    }
+}
+
+void freeTree(HuffmanNode* root) {
+    if (root == NULL) return;
+    freeTree(root->left);
+    freeTree(root->right);
+    free(root);
 }
         </pre>
     </div>
@@ -408,18 +522,24 @@ class Huffman {
         </ul>
         <p>Example (Conceptual B-Tree Node):</p>
         <pre>
-class BTreeNode {
-    int[] keys;
-    BTreeNode[] children;
-    int numKeys;
-    boolean isLeaf;
+#include <stdlib.h>
 
-    BTreeNode(int degree, boolean isLeaf) {
-        this.isLeaf = isLeaf;
-        keys = new int[2 * degree - 1];
-        children = new BTreeNode[2 * degree];
-        numKeys = 0;
-    }
+typedef struct BTreeNode {
+    int* keys;
+    struct BTreeNode** children;
+    int numKeys;
+    int isLeaf;
+} BTreeNode;
+
+BTreeNode* createBTreeNode(int degree, int isLeaf) {
+    BTreeNode* newNode = (BTreeNode*)malloc(sizeof(BTreeNode));
+    newNode->isLeaf = isLeaf;
+    newNode->keys = (int*)malloc((2 * degree - 1) * sizeof(int));
+    newNode->children = (BTreeNode**)malloc(2 * degree * sizeof(BTreeNode*));
+    newNode->numKeys = 0;
+    for (int i = 0; i < 2 * degree; i++)
+        newNode->children[i] = NULL;
+    return newNode;
 }
         </pre>
     </div>
