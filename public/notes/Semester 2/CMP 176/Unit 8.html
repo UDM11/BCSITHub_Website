@@ -69,7 +69,7 @@
             <li><b>Sequential Search:</b> Also known as linear search, it checks each element in a list sequentially until the target is found or the list is exhausted. Suitable for unsorted data.
                 <p>Example:</p>
                 <pre>
-#include <stdio.h>
+#include &lt;stdio.h&gt;
 
 int sequentialSearch(int arr[], int n, int target) {
     for (int i = 0; i < n; i++) {
@@ -84,7 +84,7 @@ int sequentialSearch(int arr[], int n, int target) {
             <li><b>Binary Search:</b> Used for sorted arrays, it divides the search space in half at each step, significantly reducing the number of comparisons.
                 <p>Example:</p>
                 <pre>
-#include <stdio.h>
+#include &lt;stdio.h&gt;
 
 int binarySearch(int arr[], int n, int target) {
     int left = 0, right = n - 1;
@@ -106,8 +106,8 @@ int binarySearch(int arr[], int n, int target) {
             <li><b>Tree Search:</b> Used in binary search trees (BSTs), where the search follows the tree structure, comparing the target with the current node and moving left or right based on the comparison.
                 <p>Example:</p>
                 <pre>
-#include <stdio.h>
-#include <stdlib.h>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
 
 typedef struct Node {
     int data;
@@ -171,8 +171,8 @@ Node* search(Node* root, int target) {
                 </ul>
                 <p>Example:</p>
                 <pre>
-#include <stdio.h>
-#include <stdlib.h>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
 
 typedef struct {
     int* table;
@@ -214,8 +214,8 @@ void insert(HashTable* ht, int key) {
             <li><b>Linear Probing:</b> If a collision occurs at index h(k), check the next slot (h(k) + 1) % m, then (h(k) + 2) % m, and so on.
                 <p>Example:</p>
                 <pre>
-#include <stdio.h>
-#include <stdlib.h>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
 
 typedef struct {
     int* table;
@@ -241,8 +241,8 @@ void insert(HashTableLinear* ht, int key) {
             <li><b>Quadratic Probing:</b> Uses a quadratic function to probe slots, e.g., (h(k) + i²) % m for i = 0, 1, 2, ...
                 <p>Example:</p>
                 <pre>
-#include <stdio.h>
-#include <stdlib.h>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
 
 typedef struct {
     int* table;
@@ -270,8 +270,8 @@ void insert(HashTable* ht, int key) {
             <li><b>Double Hashing:</b> Uses a second hash function to determine the step size, e.g., h(k, i) = (h1(k) + i * h2(k)) % m.
                 <p>Example:</p>
                 <pre>
-#include <stdio.h>
-#include <stdlib.h>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
 
 typedef struct {
     int* table;
@@ -308,8 +308,8 @@ void insert(HashTable* ht, int key) {
         <p>In <b>chaining</b>, each hash table slot contains a linked list to store all keys that hash to that index. Collisions are resolved by adding the key to the linked list.</p>
         <p>Example:</p>
         <pre>
-#include <stdio.h>
-#include <stdlib.h>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
 
 typedef struct Node {
     int data;
@@ -353,8 +353,8 @@ void insert(HashTableChaining* ht, int key) {
         <p><b>Rehashing</b> is the process of resizing a hash table (usually doubling its size) and reinserting all existing keys when the load factor (ratio of elements to table size) exceeds a threshold. This reduces collisions and maintains performance.</p>
         <p>Example:</p>
         <pre>
-#include <stdio.h>
-#include <stdlib.h>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
 
 typedef struct Node {
     int data;

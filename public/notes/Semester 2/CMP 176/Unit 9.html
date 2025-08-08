@@ -101,8 +101,8 @@ int adjMatrix[3][3] = {
             <li><b>Adjacency List:</b> Each vertex stores a list of adjacent vertices. Suitable for sparse graphs.
                 <p>Example (Adjacency List in C):</p>
                 <pre>
-#include <stdio.h>
-#include <stdlib.h>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
 
 typedef struct Node {
     int vertex;
@@ -149,8 +149,8 @@ void addEdge(Graph* graph, int u, int v) {
             <li><b>Breadth First Search (BFS):</b> Explores vertices level by level, using a queue to visit neighbors before moving deeper.
                 <p>Example:</p>
                 <pre>
-#include <stdio.h>
-#include <stdlib.h>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
 
 typedef struct Node {
     int vertex;
@@ -216,8 +216,8 @@ void bfs(Graph* graph, int start) {
             <li><b>Depth First Search (DFS):</b> Explores as far as possible along a branch before backtracking, using recursion or a stack.
                 <p>Example:</p>
                 <pre>
-#include <stdio.h>
-#include <stdlib.h>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
 
 typedef struct Node {
     int vertex;
@@ -256,8 +256,8 @@ void dfsStart(Graph* graph, int start) {
             <li><b>Kruskal's Algorithm:</b> Builds an MST by selecting edges in increasing order of weight, adding them if they do not form a cycle (using a disjoint-set data structure).
                 <p>Example:</p>
                 <pre>
-#include <stdio.h>
-#include <stdlib.h>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
 
 typedef struct {
     int src, dest, weight;
@@ -315,9 +315,9 @@ void kruskalMST(Graph* graph) {
             <li><b>Prim's Algorithm:</b> Builds an MST by growing a tree from a starting vertex, adding the minimum-weight edge connecting a vertex in the tree to a vertex outside it.
                 <p>Example:</p>
                 <pre>
-#include <stdio.h>
-#include <stdlib.h>
-#include <limits.h>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;limits.h&gt;
 
 int minKey(int* key, int* mstSet, int V) {
     int min = INT_MAX, minIndex = -1;
@@ -371,9 +371,9 @@ void primMST(int** graph, int V) {
         </pre>
         <p>Example:</p>
         <pre>
-#include <stdio.h>
-#include <stdlib.h>
-#include <limits.h>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;limits.h&gt;
 
 typedef struct {
     int vertex, dist;

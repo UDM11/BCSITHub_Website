@@ -98,7 +98,7 @@
             <li><b>Linked List Representation:</b> Each node contains data and pointers to its left and right children.
                 <p>Example:</p>
                 <pre>
-#include <stdlib.h>
+#include &lt;stdlib.h&gt;
 
 typedef struct Node {
     int data;
@@ -123,8 +123,8 @@ Node* createNode(int data) {
         <p>Creating a binary tree involves defining a node structure and linking nodes to form the tree.</p>
         <p>Example:</p>
         <pre>
-#include <stdio.h>
-#include <stdlib.h>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
 
 typedef struct Node {
     int data;
@@ -170,8 +170,8 @@ int main() {
         </ul>
         <p>Example:</p>
         <pre>
-#include <stdio.h>
-#include <stdlib.h>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
 
 typedef struct Node {
     int data;
@@ -241,8 +241,8 @@ int main() {
         </ul>
         <p>Example:</p>
         <pre>
-#include <stdio.h>
-#include <stdlib.h>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
 
 typedef struct Node {
     int data;
@@ -320,8 +320,8 @@ Node* delete(Node* node, int data) {
         </ul>
         <p>Example:</p>
         <pre>
-#include <stdio.h>
-#include <stdlib.h>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
 
 typedef struct Node {
     int data;
@@ -367,8 +367,8 @@ int main() {
         <p>An <b>AVL tree</b> is a self-balancing binary search tree where the height difference (balance factor) between the left and right subtrees of any node is at most 1. It ensures O(log n) time for operations by performing rotations when the balance is violated.</p>
         <p>Example:</p>
         <pre>
-#include <stdio.h>
-#include <stdlib.h>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
 
 typedef struct AVLNode {
     int data, height;
@@ -468,9 +468,9 @@ AVLNode* insert(AVLNode* node, int data) {
         </pre>
         <p>Example:</p>
         <pre>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
 
 typedef struct HuffmanNode {
     int frequency;
@@ -522,7 +522,7 @@ void freeTree(HuffmanNode* root) {
         </ul>
         <p>Example (Conceptual B-Tree Node):</p>
         <pre>
-#include <stdlib.h>
+#include &lt;stdlib.h&gt;
 
 typedef struct BTreeNode {
     int* keys;
