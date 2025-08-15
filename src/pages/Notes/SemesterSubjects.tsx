@@ -14,9 +14,16 @@ export default function SemesterSubjects() {
   const [semester, setSemester] = useState(null);
 
   useEffect(() => {
-    const foundSemester = semestersData.find((sem) => sem.id === Number(semesterId));
-    setSemester(foundSemester || null);
-    setLoading(false);
+    setLoading(true);
+
+    // simulate async fetch to show loading effect
+    const timer = setTimeout(() => {
+      const foundSemester = semestersData.find((sem) => sem.id === Number(semesterId));
+      setSemester(foundSemester || null);
+      setLoading(false);
+    }, 1000); // delay so spinner is visible
+
+    return () => clearTimeout(timer);
   }, [semesterId]);
 
   if (loading) {
@@ -51,7 +58,6 @@ export default function SemesterSubjects() {
   return (
     <div className="min-h-screen bg-white py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header with back button and title */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -79,13 +85,11 @@ export default function SemesterSubjects() {
             </h2>
           </motion.div>
 
-          {/* Responsive spacer using flex-grow */}
           <div className="flex-grow" />
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {semester.subjects.map((subject, index) => {
-            // Default available true if not specified
             const available = subject.available !== false;
 
             const cardContent = (
@@ -101,16 +105,10 @@ export default function SemesterSubjects() {
               >
                 <CardContent className="text-center py-6 relative">
                   <BookOpen
-                    className={`w-8 h-8 mx-auto mb-3 ${
-                      available ? 'text-indigo-600' : 'text-gray-400'
-                    }`}
+                    className={`w-8 h-8 mx-auto mb-3 ${available ? 'text-indigo-600' : 'text-gray-400'}`}
                     aria-hidden="true"
                   />
-                  <h3
-                    className={`text-lg font-semibold ${
-                      available ? 'text-gray-700' : 'text-gray-500'
-                    }`}
-                  >
+                  <h3 className={`text-lg font-semibold ${available ? 'text-gray-700' : 'text-gray-500'}`}>
                     {subject.courseName}
                   </h3>
                   <p className={`text-sm ${available ? 'text-gray-500' : 'text-gray-400'}`}>
@@ -137,9 +135,7 @@ export default function SemesterSubjects() {
               >
                 {available ? (
                   <Link
-                    to={`/notes/semester/${semesterId}/subject/${encodeURIComponent(
-                      subject.courseCode
-                    )}`}
+                    to={`/notes/semester/${semesterId}/subject/${encodeURIComponent(subject.courseCode)}`}
                     aria-label={`View notes for subject ${subject.courseName}`}
                   >
                     {cardContent}

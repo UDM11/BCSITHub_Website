@@ -2,12 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  BookOpen, Users, FileText, GraduationCap, Award, Zap, Shield
+  BookOpen,
+  Users,
+  FileText,
+  GraduationCap,
+  Award,
+  Zap,
+  Shield,
 } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Card, CardContent } from '../components/ui/Card';
 import { useAuth } from '../context/AuthContext';
 
+// Features data
 const features = [
   {
     icon: BookOpen,
@@ -39,6 +46,7 @@ const features = [
   },
 ];
 
+// Stats data
 const stats = [
   { label: 'Active Students', value: '2,500+', icon: Users },
   { label: 'Practice Questions', value: '10,000+', icon: FileText },
@@ -46,14 +54,45 @@ const stats = [
   { label: 'College Partners', value: '25+', icon: Award },
 ];
 
+// Reusable button component
+const PrimaryButton = ({ icon: Icon, children, disabled, onClick }) => (
+  <Button
+    size="lg"
+    className={`bg-black text-white hover:bg-white hover:text-black w-full sm:w-auto ${
+      disabled ? 'opacity-70 cursor-not-allowed' : ''
+    }`}
+    onClick={onClick}
+    disabled={disabled}
+  >
+    {Icon && <Icon />}
+    {children}
+  </Button>
+);
+
+// Reusable info card component
+const InfoCard = ({ icon: Icon, title, description, color, bgColor }) => (
+  <Card className="h-full hover:scale-105 transition-transform duration-300">
+    <CardContent className="text-center">
+      <div className={`w-16 h-16 ${bgColor} rounded-xl flex items-center justify-center mx-auto mb-4`}>
+        <Icon className={`w-8 h-8 ${color}`} />
+      </div>
+      <h3 className="text-xl font-semibold text-gray-900 mb-2">{title}</h3>
+      <p className="text-gray-600">{description}</p>
+    </CardContent>
+  </Card>
+);
+
 export function Home() {
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1500);
-    return () => clearTimeout(timer);
+    async function init() {
+      await new Promise((res) => setTimeout(res, 1500));
+      setLoading(false);
+    }
+    init();
   }, []);
 
   if (loading) {
@@ -61,7 +100,7 @@ export function Home() {
       <div className="min-h-screen bg-gray-50 py-8 flex justify-center items-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-          <p className="text-gray-600">Preparing your learning resources...</p>
+          <p className="text-gray-600 mt-4">Preparing your learning resources...</p>
         </div>
       </div>
     );
@@ -71,58 +110,51 @@ export function Home() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-800 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="text-center">
-            <motion.h1
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-4xl md:text-6xl font-bold mb-6"
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+          <motion.h1
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-4xl md:text-6xl font-bold mb-6"
+          >
+            Welcome to{' '}
+            <span className="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
+              BCSITHub
+            </span>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-xl md:text-2xl mb-8 text-indigo-100 max-w-3xl mx-auto"
+          >
+            Your comprehensive educational platform for BCSIT students at Pokhara University.
+            Access notes, past papers, share resources, and excel in your academics.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+          >
+            <PrimaryButton
+              icon={GraduationCap}
+              onClick={() => !user && navigate('/signup')}
+              disabled={!!user}
             >
-              Welcome to{' '}
-              <span className="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
-                BCSITHub
-              </span>
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-xl md:text-2xl mb-8 text-indigo-100 max-w-3xl mx-auto"
-            >
-              Your comprehensive educational platform for BCSIT students at Pokhara University.
-              Access notes, past papers, share resources, and excel in your academics.
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center"
-            >
+              Get Started Free
+            </PrimaryButton>
+            <Link to="/syllabus" className="w-full sm:w-auto">
               <Button
+                variant="outline"
                 size="lg"
-                className="bg-black text-white hover:bg-white hover:text-black w-full sm:w-auto"
-                onClick={() => {
-                  if (!user) navigate('/signup');
-                }}
-                style={user ? { cursor: 'not-allowed', opacity: 0.7 } : {}}
-                disabled={!!user}
+                className="border-white text-white hover:bg-white hover:text-indigo-600 w-full sm:w-auto"
               >
-                <GraduationCap />
-                Get Started Free
+                <BookOpen />
+                Explore Syllabus
               </Button>
-              <Link to="/syllabus" className="w-full sm:w-auto">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="border-white text-white hover:bg-white hover:text-indigo-600 w-full sm:w-auto"
-                >
-                  <BookOpen />
-                  Explore Syllabus
-                </Button>
-              </Link>
-            </motion.div>
-          </div>
+            </Link>
+          </motion.div>
         </div>
       </section>
 
@@ -137,26 +169,24 @@ export function Home() {
               Comprehensive tools and resources designed specifically for BCSIT students
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: {},
+              visible: { transition: { staggerChildren: 0.1 } },
+            }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          >
+            {features.map((feature) => (
               <motion.div
                 key={feature.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
               >
-                <Card className="h-full">
-                  <CardContent className="text-center">
-                    <div className={`w-16 h-16 ${feature.bgColor} rounded-xl flex items-center justify-center mx-auto mb-4`}>
-                      <feature.icon className={`w-8 h-8 ${feature.color}`} />
-                    </div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">{feature.title}</h3>
-                    <p className="text-gray-600">{feature.description}</p>
-                  </CardContent>
-                </Card>
+                <InfoCard {...feature} />
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -193,18 +223,13 @@ export function Home() {
             Join thousands of BCSIT students who are already excelling with BCSITHub
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              className="bg-black text-white hover:bg-white hover:text-black w-full sm:w-auto"
-              onClick={() => {
-                if (!user) navigate('/signup');
-              }}
-              style={user ? { cursor: 'not-allowed', opacity: 0.7 } : {}}
+            <PrimaryButton
+              icon={Zap}
+              onClick={() => !user && navigate('/signup')}
               disabled={!!user}
             >
-              <Zap />
               Start Learning Today
-            </Button>
+            </PrimaryButton>
             <Link to="/colleges" className="w-full sm:w-auto">
               <Button
                 variant="outline"
