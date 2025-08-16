@@ -1,12 +1,13 @@
 // src/pages/notes/ChapterNotes.tsx
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/Button";
-import { ChevronLeft, Download } from "lucide-react";
+import { ChevronLeft, ChevronRight, Download } from "lucide-react";
 import html2pdf from "html2pdf.js";
 import { motion } from "framer-motion";
 import { useAuth } from "../../context/AuthContext";
 import AuthRequiredModal from "../../components/common/AuthRequiredModal";
+import { chapterData } from "../../data/chapterData";
 
 export default function ChapterNotes() {
   const { semesterId, subjectId, chapterId } = useParams();
@@ -20,11 +21,7 @@ export default function ChapterNotes() {
   const contentRef = useRef<HTMLDivElement>(null);
   const [showModal, setShowModal] = useState(false);
 
-  // For next/previous navigation
-  const [chapters, setChapters] = useState<string[]>([]);
-  const [currentIndex, setCurrentIndex] = useState<number>(-1);
-
-  // 🛑 Block scroll when modal is open
+  // Block scroll when modal is open
   useEffect(() => {
     document.body.style.overflow = showModal ? "hidden" : "auto";
     return () => {
@@ -32,29 +29,18 @@ export default function ChapterNotes() {
     };
   }, [showModal]);
 
-  // Load chapter list (replace this with actual API or dynamic fetch later)
-  useEffect(() => {
-    const chapterList = [
-      "Unit 1",
-      "Unit 2",
-      "Unit 3",
-      "Unit 4",
-      "Unit 5",
-    ]; // Must match exactly how they appear in your URL
-    setChapters(chapterList);
-  }, []);
+  // Get subject chapters
+  const subjectChapters = useMemo(() => {
+    if (!subjectId) return null;
+    return chapterData.find((s) => s.courseCode === decodeURIComponent(subjectId)) || null;
+  }, [subjectId]);
 
-  // Track index of current chapter
-  useEffect(() => {
-    if (chapters.length > 0 && chapterId) {
-      const index = chapters.findIndex(
-        (ch) => decodeURIComponent(ch) === decodeURIComponent(chapterId)
-      );
-      setCurrentIndex(index);
-    }
-  }, [chapters, chapterId]);
+  const chapters = subjectChapters?.chapters || [];
+  const currentIndex = chapters.findIndex((c) => c.id === chapterId);
+  const prevChapter = currentIndex > 0 ? chapters[currentIndex - 1] : null;
+  const nextChapter = currentIndex < chapters.length - 1 ? chapters[currentIndex + 1] : null;
 
-  // Fetch current chapter content
+  // Fetch HTML notes
   useEffect(() => {
     if (!semesterId || !subjectId || !chapterId) {
       setError("Missing URL parameters.");
@@ -64,8 +50,7 @@ export default function ChapterNotes() {
 
     const encodedSemester = encodeURIComponent(`Semester ${semesterId}`);
     const encodedSubject = encodeURIComponent(subjectId);
-    const encodedChapter = encodeURIComponent(chapterId);
-    const filePath = `/notes/${encodedSemester}/${encodedSubject}/${encodedChapter}.html`;
+    const filePath = `/notes/${encodedSemester}/${encodedSubject}/${chapterId}.html`;
 
     setLoading(true);
     setError(null);
@@ -79,25 +64,15 @@ export default function ChapterNotes() {
       }),
       delay,
     ])
-      .then(([data]) => {
-        setHtmlContent(data);
-      })
-      .catch(() => {
-        setError("This chapter note does not exist or failed to load.");
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      .then(([data]) => setHtmlContent(data))
+      .catch(() => setError("This chapter note does not exist or failed to load."))
+      .finally(() => setLoading(false));
   }, [semesterId, subjectId, chapterId]);
 
-  // Set page title
   useEffect(() => {
-    if (chapterId) {
-      document.title = `${chapterId} Notes | BCSITHub`;
-    }
+    if (chapterId) document.title = `${chapterId.toUpperCase()} Notes | BCSITHub`;
   }, [chapterId]);
 
-  // PDF Download
   const downloadAsPDF = () => {
     if (!isAuthenticated) {
       setShowModal(true);
@@ -116,26 +91,6 @@ export default function ChapterNotes() {
     html2pdf().set(opt).from(contentRef.current).save();
   };
 
-  // Navigation handlers
-  const goToPrevious = () => {
-    if (currentIndex > 0) {
-      const prevChapter = chapters[currentIndex - 1];
-      navigate(
-        `/notes/semester/${semesterId}/subject/${subjectId}/chapter/${encodeURIComponent(prevChapter)}`
-      );
-    }
-  };
-
-  const goToNext = () => {
-    if (currentIndex < chapters.length - 1) {
-      const nextChapter = chapters[currentIndex + 1];
-      navigate(
-        `/notes/semester/${semesterId}/subject/${subjectId}/chapter/${encodeURIComponent(nextChapter)}`
-      );
-    }
-  };
-
-  // Loader
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 py-8 flex justify-center items-center">
@@ -154,12 +109,7 @@ export default function ChapterNotes() {
       transition={{ duration: 0.6 }}
       className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8"
     >
-      <motion.div
-        className="max-w-4xl mx-auto"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.6 }}
-      >
+      <motion.div className="max-w-4xl mx-auto" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3, duration: 0.6 }}>
         {/* Header */}
         <motion.div
           className="flex items-center justify-between mb-6 flex-wrap gap-2"
@@ -169,22 +119,20 @@ export default function ChapterNotes() {
         >
           <Button
             variant="ghost"
-            onClick={() =>
-              navigate(`/notes/semester/${semesterId}/subject/${subjectId}`)
-            }
-            className="flex items-center gap-1 hover:bg-indigo-100 hover:text-indigo-700 rounded-md px-3 py-2"
+            onClick={() => navigate(`/notes/semester/${semesterId}/subject/${subjectId}`)}
+            className="flex items-center gap-1 transition-colors duration-300 ease-in-out hover:bg-indigo-100 hover:text-indigo-700 rounded-md px-3 py-2"
           >
             <ChevronLeft className="w-5 h-5" />
             Back to Chapters
           </Button>
 
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 text-center">
-            {chapterId} Notes
+            {chapterId?.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())} Notes
           </h2>
 
           <Button
             variant="outline"
-            className="flex items-center gap-1 hover:bg-indigo-600 hover:text-white rounded-md px-3 py-2"
+            className="flex items-center gap-1 transition-colors duration-300 ease-in-out hover:bg-indigo-600 hover:text-white rounded-md px-3 py-2"
             onClick={downloadAsPDF}
           >
             <Download className="w-4 h-4" />
@@ -203,11 +151,7 @@ export default function ChapterNotes() {
           {error ? (
             <div className="text-center text-red-600 font-semibold">
               <p>{error}</p>
-              <Button
-                variant="outline"
-                className="mt-3"
-                onClick={() => window.location.reload()}
-              >
+              <Button variant="outline" className="mt-3" onClick={() => window.location.reload()}>
                 Retry
               </Button>
             </div>
@@ -218,20 +162,35 @@ export default function ChapterNotes() {
 
         {/* Next & Previous Buttons */}
         <div className="flex justify-between mt-8">
-          <Button
-            onClick={goToPrevious}
-            disabled={currentIndex <= 0}
-            className="transition-transform duration-200 hover:scale-105 disabled:opacity-50"
-          >
-            ← Previous Chapter
-          </Button>
-          <Button
-            onClick={goToNext}
-            disabled={currentIndex >= chapters.length - 1}
-            className="transition-transform duration-200 hover:scale-105 disabled:opacity-50"
-          >
-            Next Chapter →
-          </Button>
+          {prevChapter ? (
+            <Button
+              variant="outline"
+              className="flex items-center gap-2 hover:bg-indigo-100 hover:text-indigo-700"
+              onClick={() =>
+                navigate(`/notes/semester/${semesterId}/subject/${subjectId}/chapter/${prevChapter.id}`)
+              }
+            >
+              <ChevronLeft className="w-4 h-4" />
+              Previous Chapter
+            </Button>
+          ) : (
+            <div />
+          )}
+
+          {nextChapter ? (
+            <Button
+              variant="outline"
+              className="flex items-center gap-2 hover:bg-indigo-100 hover:text-indigo-700"
+              onClick={() =>
+                navigate(`/notes/semester/${semesterId}/subject/${subjectId}/chapter/${nextChapter.id}`)
+              }
+            >
+              Next Chapter
+              <ChevronRight className="w-4 h-4" />
+            </Button>
+          ) : (
+            <div />
+          )}
         </div>
       </motion.div>
 
