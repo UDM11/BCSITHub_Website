@@ -23,6 +23,7 @@ import { PastPapers } from './pages/PastPapers';
 import { Colleges } from './pages/Colleges';
 import { CGPACalculator } from './pages/CGPACalculator';
 import PUNotices from './pages/PUNotices';
+import UploadPaper from './pages/UploadPaper';
 import SemesterSubjects from './pages/Notes/SemesterSubjects';
 import SubjectChapters from './pages/Notes/SubjectChapters';
 import ChapterNotes from './pages/Notes/ChapterNotes';
@@ -30,6 +31,7 @@ import ChapterNotes from './pages/Notes/ChapterNotes';
 // Dashboards
 import AdminDashboard from './dashboard/admin/AdminDashboard';
 import StudentProfile from './dashboard/student/StudentProfile';
+import TeacherDashboard from './dashboard/teacher/TeacherDashboard';
 
 // Email Verification Page
 import OTPVerification from './pages/auth/EmailVerification';
@@ -73,6 +75,14 @@ function App() {
 
                 {/* Protected Routes */}
                 <Route
+                  path="/upload-paper"
+                  element={
+                    <ProtectedRoute>
+                      <UploadPaper />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
                   path="/admin-dashboard"
                   element={
                     <ProtectedRoute adminOnly>
@@ -81,7 +91,23 @@ function App() {
                   }
                 />
                 <Route
+                  path="/teacher-dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <TeacherDashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
                   path="/profile"
+                  element={
+                    <ProtectedRoute>
+                      <StudentProfile />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/dashboard"
                   element={
                     <ProtectedRoute>
                       <StudentProfile />
