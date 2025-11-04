@@ -7,6 +7,7 @@ import { ProfileProvider } from './context/ProfileContext';
 import { Navbar } from './components/Layout/Navbar';
 import { Footer } from './components/Layout/Footer';
 import ProtectedRoute from './components/routes/ProtectedRoute';
+import ScrollToTop from './components/ScrollToTop';
 
 import { Toaster } from 'react-hot-toast';
 import { ToastContainer } from './components/ui/Toast';
@@ -20,6 +21,7 @@ import { Syllabus } from './pages/Syllabus';
 import { Notes } from './pages/Notes/Notes';
 import { PastPapers } from './pages/PastPapers';
 import { Colleges } from './pages/Colleges';
+import { CGPACalculator } from './pages/CGPACalculator';
 import PUNotices from './pages/PUNotices';
 import SemesterSubjects from './pages/Notes/SemesterSubjects';
 import SubjectChapters from './pages/Notes/SubjectChapters';
@@ -37,6 +39,7 @@ function App() {
     <AuthProvider>
       <ProfileProvider>
         <Router>
+          <ScrollToTop />
           <div className="flex flex-col min-h-screen">
             <Navbar />
 
@@ -63,6 +66,7 @@ function App() {
 
                 <Route path="/past-papers" element={<PastPapers />} />
                 <Route path="/colleges" element={<Colleges />} />
+                <Route path="/cgpa-calculator" element={<CGPACalculator />} />
                 <Route path="/pu-notices" element={<PUNotices />} />
 
                 <Route path="/verify" element={<OTPVerification />} />

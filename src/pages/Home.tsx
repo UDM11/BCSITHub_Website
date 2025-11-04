@@ -72,6 +72,9 @@ import {
 import { Button } from '../components/ui/Button';
 import { Card, CardContent } from '../components/ui/Card';
 import { useAuth } from '../context/AuthContext';
+import { useProfile } from '../context/ProfileContext';
+import { collegesData } from '../data/collegesData';
+import { semesterData } from '../data/syllabusData';
 
 // Features data
 const features = [
@@ -224,15 +227,7 @@ const faqs = [
   },
 ];
 
-// Partner colleges
-const partnerColleges = [
-  'Gandaki College of Engineering',
-  'Cosmos College of Management',
-  'Pokhara Engineering College',
-  'Herald College Kathmandu',
-  'Kantipur Engineering College',
-  'Prime College',
-];
+
 
 // Success stories data
 const successStories = [
@@ -448,6 +443,7 @@ export function Home() {
   const [email, setEmail] = useState('');
   const [liveStatsValues, setLiveStatsValues] = useState(liveStats);
   const { user } = useAuth();
+  const { profile } = useProfile();
   const navigate = useNavigate();
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 300], [0, 50]);
@@ -481,23 +477,30 @@ export function Home() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex justify-center items-center">
-        <div className="text-center">
+      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center">
+        <motion.div 
+          className="text-center"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+        >
           <motion.div 
-            className="relative"
+            className="relative w-20 h-20 mx-auto mb-6"
             animate={{ rotate: 360 }}
             transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
           >
-            <div className="w-16 h-16 border-4 border-indigo-200 border-t-indigo-600 rounded-full mx-auto"></div>
+            <div className="absolute inset-0 rounded-full border-4 border-indigo-200"></div>
+            <div className="absolute inset-0 rounded-full border-4 border-indigo-600 border-t-transparent"></div>
           </motion.div>
-          <motion.p 
-            className="text-gray-600 mt-6 text-lg"
-            animate={{ opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 2, repeat: Infinity }}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
           >
-            Preparing your learning experience...
-          </motion.p>
-        </div>
+            <h3 className="text-xl font-semibold text-gray-700 mb-2">Loading BCSITHub</h3>
+            <p className="text-gray-500">Preparing your learning experience...</p>
+          </motion.div>
+        </motion.div>
       </div>
     );
   }
@@ -598,14 +601,14 @@ export function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto"
             >
               {quickFeatures.map((feature, index) => (
-                <div key={feature.title} className="flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                  <feature.icon className="w-6 h-6 text-indigo-200 mr-3" />
-                  <div className="text-left">
-                    <h4 className="font-semibold text-sm">{feature.title}</h4>
-                    <p className="text-xs text-indigo-200">{feature.description}</p>
+                <div key={feature.title} className="flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-xl p-3 sm:p-4">
+                  <feature.icon className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-200 mr-2 sm:mr-3 flex-shrink-0" />
+                  <div className="text-left min-w-0">
+                    <h4 className="font-semibold text-xs sm:text-sm truncate">{feature.title}</h4>
+                    <p className="text-xs text-indigo-200 leading-tight">{feature.description}</p>
                   </div>
                 </div>
               ))}
@@ -651,7 +654,7 @@ export function Home() {
             </p>
           </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {features.map((feature, index) => (
               <FeatureCard key={feature.title} {...feature} index={index} />
             ))}
@@ -676,7 +679,7 @@ export function Home() {
             <p className="text-xl text-gray-600">Join the growing community of successful BCSIT students</p>
           </motion.div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {stats.map((stat, index) => (
               <motion.div
                 key={stat.label}
@@ -712,38 +715,9 @@ export function Home() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-24 bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <div className="inline-flex items-center bg-yellow-100 text-yellow-600 rounded-full px-6 py-2 mb-6">
-              <Star className="w-5 h-5 mr-2 fill-current" />
-              <span className="font-semibold">Student Success Stories</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              What Students Say About
-              <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"> BCSITHub</span>
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Real feedback from BCSIT students who transformed their academic journey with us
-            </p>
-          </motion.div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <TestimonialCard key={testimonial.name} testimonial={testimonial} index={index} />
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Popular Courses Section */}
+
+      {/* Semester Courses Section */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
@@ -755,21 +729,21 @@ export function Home() {
           >
             <div className="inline-flex items-center bg-green-100 text-green-600 rounded-full px-6 py-2 mb-6">
               <TrendingUp className="w-5 h-5 mr-2" />
-              <span className="font-semibold">Most Popular</span>
+              <span className="font-semibold">{user ? 'Your Current Semester' : 'Start Your Journey'}</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Top Courses This
-              <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent"> Semester</span>
+              {user && profile?.semester ? semesterData[profile.semester]?.title : semesterData['1']?.title}
+              <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent"> Courses</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Join thousands of students mastering these essential BCSIT subjects
+              {user ? 'Master your current semester subjects with our comprehensive study materials' : 'Begin your BCSIT journey with first semester fundamentals'}
             </p>
           </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {popularCourses.map((course, index) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {(user && profile?.semester ? semesterData[profile.semester]?.courses : semesterData['1']?.courses)?.slice(0, 6).map((course, index) => (
               <motion.div
-                key={course.title}
+                key={course.code || course.name}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
@@ -778,32 +752,43 @@ export function Home() {
                 className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100"
               >
                 <div className="p-8">
-                  <div className="text-4xl mb-4">{course.image}</div>
+                  <div className="text-4xl mb-4">📚</div>
                   <div className="flex items-center justify-between mb-4">
                     <span className="bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-sm font-medium">
-                      {course.semester}
+                      {course.code || 'Course'}
                     </span>
                     <div className="flex items-center">
-                      <Star className="w-4 h-4 text-yellow-400 fill-current mr-1" />
-                      <span className="text-sm font-medium">{course.rating}</span>
+                      <span className="text-sm font-medium text-gray-600">{course.credits} Credits</span>
                     </div>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">{course.title}</h3>
-                  <p className="text-gray-600 mb-4">{course.students} students enrolled</p>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {course.topics.map((topic) => (
-                      <span key={topic} className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">
-                        {topic}
-                      </span>
-                    ))}
-                  </div>
-                  <Button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700">
-                    Start Learning
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">{course.name}</h3>
+                  <p className="text-gray-600 mb-6">Access notes, past papers, and study materials</p>
+                  <Button 
+                    className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+                    onClick={() => {
+                      const currentSemester = user && profile?.semester ? profile.semester : '1';
+                      const subjectCode = course.code || course.name;
+                      navigate(`/notes/semester/${currentSemester}/subject/${encodeURIComponent(subjectCode)}`);
+                    }}
+                  >
+                    Study Now
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </div>
               </motion.div>
             ))}
+          </div>
+          
+          <div className="text-center mt-12">
+            <Button 
+              variant="outline" 
+              size="lg"
+              onClick={() => navigate('/syllabus')}
+              className="border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white"
+            >
+              View All Courses
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
           </div>
         </div>
       </section>
@@ -831,7 +816,7 @@ export function Home() {
             </p>
           </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {howItWorksSteps.map((step, index) => (
               <motion.div
                 key={step.step}
@@ -928,7 +913,7 @@ export function Home() {
                   <p className="text-indigo-100 mb-6">
                     Get notified when our mobile app launches with exclusive features and offline access.
                   </p>
-                  <Button className="bg-white text-indigo-600 hover:bg-gray-100">
+                  <Button className="text-indigo-600 hover:bg-gray-100">
                     Notify Me
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
@@ -1043,106 +1028,9 @@ export function Home() {
         </div>
       </section>
 
-      {/* Success Stories Section */}
-      <section className="py-24 bg-gradient-to-br from-green-50 to-blue-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <div className="inline-flex items-center bg-green-100 text-green-600 rounded-full px-6 py-2 mb-6">
-              <Trophy className="w-5 h-5 mr-2" />
-              <span className="font-semibold">Success Stories</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              From Students to
-              <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent"> Industry Leaders</span>
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Real success stories from BCSIT graduates who transformed their careers with BCSITHub
-            </p>
-          </motion.div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {successStories.map((story, index) => (
-              <motion.div
-                key={story.name}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                viewport={{ once: true }}
-                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 relative overflow-hidden"
-              >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-100 to-blue-100 rounded-full -translate-y-16 translate-x-16 opacity-50" />
-                <div className="relative z-10">
-                  <div className="flex items-center mb-6">
-                    <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-blue-600 rounded-2xl flex items-center justify-center text-white font-bold text-xl mr-4">
-                      {story.image}
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900">{story.name}</h3>
-                      <p className="text-green-600 font-semibold">{story.achievement}</p>
-                      <p className="text-sm text-gray-500">{story.semester}</p>
-                    </div>
-                  </div>
-                  <p className="text-gray-700 mb-6 italic leading-relaxed">"{story.story}"</p>
-                  <div className="border-t pt-4">
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <p className="font-semibold text-gray-900">{story.company}</p>
-                        <p className="text-sm text-gray-600">{story.salary}</p>
-                      </div>
-                      <Trophy className="w-8 h-8 text-yellow-500" />
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Live Stats Section */}
-      <section className="py-16 bg-gray-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            className="text-center mb-12"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <div className="inline-flex items-center bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 mb-6">
-              <Activity className="w-5 h-5 text-green-400 mr-2" />
-              <span className="font-semibold">Live Activity</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Real-time Platform
-              <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent"> Activity</span>
-            </h2>
-          </motion.div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {liveStatsValues.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-gray-800 rounded-2xl p-6 text-center hover:bg-gray-700 transition-colors"
-              >
-                <stat.icon className={`w-8 h-8 ${stat.color} mx-auto mb-3`} />
-                <div className="text-2xl font-bold mb-1">{stat.value}</div>
-                <div className="text-gray-400 text-sm">{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+
+
 
       {/* Study Tools Section */}
       <section className="py-24 bg-white">
@@ -1167,7 +1055,7 @@ export function Home() {
             </p>
           </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {studyTools.map((tool, index) => (
               <motion.div
                 key={tool.title}
@@ -1177,6 +1065,7 @@ export function Home() {
                 viewport={{ once: true }}
                 whileHover={{ y: -10 }}
                 className="group cursor-pointer"
+                onClick={() => tool.title === 'CGPA Calculator' ? navigate('/cgpa-calculator') : undefined}
               >
                 <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 relative overflow-hidden">
                   <div className={`absolute inset-0 bg-gradient-to-br ${tool.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
@@ -1198,52 +1087,7 @@ export function Home() {
         </div>
       </section>
 
-      {/* Community Features Section */}
-      <section className="py-24 bg-gradient-to-br from-purple-50 to-pink-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <div className="inline-flex items-center bg-purple-100 text-purple-600 rounded-full px-6 py-2 mb-6">
-              <Heart className="w-5 h-5 mr-2" />
-              <span className="font-semibold">Community</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Learn Together,
-              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"> Grow Together</span>
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Join a vibrant community of BCSIT students helping each other succeed
-            </p>
-          </motion.div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {communityFeatures.map((feature, index) => (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center"
-              >
-                <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <feature.icon className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-                <p className="text-gray-600 mb-4">{feature.description}</p>
-                <div className="bg-purple-100 text-purple-600 px-4 py-2 rounded-full text-sm font-medium">
-                  {feature.count}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* Achievements Section */}
       <section className="py-24 bg-gray-900 text-white">
@@ -1288,94 +1132,7 @@ export function Home() {
         </div>
       </section>
 
-      {/* Pricing Comparison Section */}
-      <section className="py-24 bg-gradient-to-br from-blue-50 to-indigo-50">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <div className="inline-flex items-center bg-blue-100 text-blue-600 rounded-full px-6 py-2 mb-6">
-              <Gift className="w-5 h-5 mr-2" />
-              <span className="font-semibold">Pricing</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Choose Your
-              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"> Learning Path</span>
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Start free and upgrade when you're ready for advanced features
-            </p>
-          </motion.div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Free Plan */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-3xl p-8 shadow-lg border-2 border-gray-200"
-            >
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">Free Plan</h3>
-                <div className="text-4xl font-bold text-gray-900 mb-2">₹0</div>
-                <p className="text-gray-600">Forever free for all students</p>
-              </div>
-              <ul className="space-y-4 mb-8">
-                {pricingFeatures.map((feature, index) => (
-                  <li key={index} className="flex items-center">
-                    {feature.free ? (
-                      <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                    ) : (
-                      <div className="w-5 h-5 rounded-full border-2 border-gray-300 mr-3" />
-                    )}
-                    <span className={feature.free ? 'text-gray-900' : 'text-gray-400'}>
-                      {feature.feature}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              <Button className="w-full bg-gray-900 hover:bg-gray-800">
-                Get Started Free
-              </Button>
-            </motion.div>
-            
-            {/* Premium Plan */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="bg-gradient-to-br from-indigo-600 to-purple-600 rounded-3xl p-8 shadow-2xl text-white relative overflow-hidden"
-            >
-              <div className="absolute top-0 right-0 bg-yellow-400 text-gray-900 px-4 py-2 rounded-bl-2xl font-bold text-sm">
-                POPULAR
-              </div>
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold mb-2">Premium Plan</h3>
-                <div className="text-4xl font-bold mb-2">₹99</div>
-                <p className="text-indigo-100">Per month, cancel anytime</p>
-              </div>
-              <ul className="space-y-4 mb-8">
-                {pricingFeatures.map((feature, index) => (
-                  <li key={index} className="flex items-center">
-                    <CheckCircle className="w-5 h-5 text-green-400 mr-3" />
-                    <span className="text-white">{feature.feature}</span>
-                  </li>
-                ))}
-              </ul>
-              <Button className="w-full bg-white text-indigo-600 hover:bg-gray-100">
-                Upgrade to Premium
-                <Sparkles className="w-4 h-4 ml-2" />
-              </Button>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+
 
       {/* Partner Colleges Section */}
       <section className="py-16 bg-white">
@@ -1391,22 +1148,40 @@ export function Home() {
             <p className="text-gray-600">Students from top BCSIT colleges choose BCSITHub</p>
           </motion.div>
           
-          <motion.div 
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            {partnerColleges.map((college, index) => (
-              <div key={college} className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                  <GraduationCap className="w-8 h-8 text-indigo-600" />
-                </div>
-                <p className="text-sm text-gray-600 font-medium">{college}</p>
-              </div>
-            ))}
-          </motion.div>
+          <div className="relative overflow-hidden">
+            <motion.div 
+              className="flex gap-8 items-center"
+              animate={{ x: [0, -100 * collegesData.length] }}
+              transition={{ 
+                duration: collegesData.length * 3,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            >
+              {[...collegesData, ...collegesData].map((college, index) => (
+                <motion.div
+                  key={`${college.id}-${index}`}
+                  className="flex-shrink-0 text-center group cursor-pointer"
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="w-16 h-16 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:shadow-lg transition-shadow duration-300">
+                    <img
+                      src={college.logo}
+                      alt={college.name}
+                      className="max-w-full max-h-full object-contain"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://via.placeholder.com/64';
+                      }}
+                    />
+                  </div>
+                  <p className="text-sm text-gray-600 font-medium max-w-[120px] truncate group-hover:text-indigo-600 transition-colors">
+                    {college.name}
+                  </p>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
         </div>
       </section>
 
