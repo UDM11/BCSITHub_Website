@@ -14,12 +14,19 @@ import {
   LogOut,
   User,
   ScrollText,
+  Calculator,
+  Clock,
+  Code,
+  Brain,
+  ChevronDown,
+  Wrench,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false); // mobile menu
   const [showUserMenu, setShowUserMenu] = useState(false); // user dropdown
+  const [showToolsMenu, setShowToolsMenu] = useState(false); // tools dropdown
   const [isTablet, setIsTablet] = useState(false);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
@@ -63,6 +70,18 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [showUserMenu]);
 
+  // Close tools dropdown on scroll
+  useEffect(() => {
+    if (!showToolsMenu) return;
+
+    const handleScroll = () => {
+      setShowToolsMenu(false);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [showToolsMenu]);
+
   const handleSignOut = async () => {
     try {
       await signOut();
@@ -81,6 +100,13 @@ export function Navbar() {
     { to: '/pu-notices', icon: ScrollText, label: 'PU Notices' },
   ];
 
+  const toolsLinks = [
+    { to: '/cgpa-calculator', icon: Calculator, label: 'CGPA Calculator' },
+    { to: '/pomodoro-timer', icon: Clock, label: 'Pomodoro Timer' },
+    { to: '/code-compiler', icon: Code, label: 'Code Compiler' },
+    { to: '/quiz-generator', icon: Brain, label: 'Quiz Generator' },
+  ];
+
   // Helper to check if link is active
   const isActive = (path: string) => {
     // exact match for root, otherwise startsWith to cover subpages if any
@@ -88,6 +114,11 @@ export function Navbar() {
       return location.pathname === '/';
     }
     return location.pathname.startsWith(path);
+  };
+
+  // Helper to check if any tools link is active
+  const isToolsActive = () => {
+    return toolsLinks.some(tool => location.pathname.startsWith(tool.to));
   };
 
   return (
@@ -134,7 +165,30 @@ export function Navbar() {
       `}</style>
 
       <nav className="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-50">
+        {/* Tools Row - Large Devices Only */}
+        <div className={`${isTablet ? 'hidden lg:block' : 'hidden md:block'} bg-gradient-to-r from-indigo-500 to-purple-600 w-full`}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-center items-center py-2">
+              {toolsLinks.map(({ to, icon: Icon, label }) => (
+                <Link
+                  key={to}
+                  to={to}
+                  className={`flex items-center space-x-1 px-4 py-1 mx-2 text-sm transition-colors duration-200 rounded-md ${
+                    isActive(to)
+                      ? 'bg-white/20 text-white font-semibold'
+                      : 'text-white/90 hover:text-white hover:bg-white/10'
+                  }`}
+                >
+                  <Icon className="w-3 h-3" />
+                  <span>{label}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+        
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2">
@@ -291,6 +345,29 @@ export function Navbar() {
                       <span className="hover-underline">{label}</span>
                     </Link>
                   ))}
+                  
+                  {/* Tools Section in Mobile */}
+                  <div className="border-t border-gray-200 pt-3 mt-3">
+                    <div className="px-3 py-2 text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                      Tools
+                    </div>
+                    {toolsLinks.map(({ to, icon: Icon, label }) => (
+                      <Link
+                        key={to}
+                        to={to}
+                        className={`flex items-center space-x-3 px-3 py-2 rounded-md transition-colors duration-200 ${
+                          isActive(to)
+                            ? 'active-link'
+                            : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'
+                        }`}
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <Icon className={`w-5 h-5 ${isActive(to) ? 'text-white' : ''}`} />
+                        <span className="hover-underline">{label}</span>
+                      </Link>
+                    ))}
+                  </div>
+                  
                   <div className="border-t border-gray-200 pt-3 mt-3">
                     {user ? (
                       <>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calculator, Download, BookOpen, Award, TrendingUp, GraduationCap, FileText, BarChart3, Target, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
+import { Calculator, Download, BookOpen, Award, TrendingUp, GraduationCap, FileText, BarChart3, Target, Sparkles, ChevronDown, ChevronUp, ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { Card, CardContent } from '../components/ui/Card';
 import { semesterData, specializationData } from '../data/syllabusData';
@@ -366,7 +367,26 @@ export function CGPACalculator() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-      {/* Animated Header */}
+      {/* Header */}
+      <div className="bg-white shadow-sm border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center space-x-4">
+              <Link to="/" className="flex items-center text-gray-600 hover:text-indigo-600 transition-colors">
+                <ArrowLeft className="w-5 h-5 mr-2" />
+                Back to Home
+              </Link>
+              <div className="h-6 w-px bg-gray-300" />
+              <div className="flex items-center">
+                <Calculator className="w-6 h-6 mr-2 text-indigo-600" />
+                <h1 className="text-xl font-bold text-gray-900">CGPA Calculator</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 text-white overflow-hidden">
         <div className="absolute inset-0">
           <motion.div 

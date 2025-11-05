@@ -899,26 +899,95 @@ export function Home() {
             </motion.div>
             
             <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl p-8 text-white relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16" />
-                <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full translate-y-12 -translate-x-12" />
+              <motion.div 
+                className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white relative overflow-hidden"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+              >
+                {/* Floating elements with staggered animation */}
+                <motion.div 
+                  className="absolute top-4 right-4 w-16 h-16 sm:w-20 sm:h-20 bg-white/10 rounded-full"
+                  animate={{ 
+                    y: [0, -10, 0],
+                    rotate: [0, 180, 360]
+                  }}
+                  transition={{ 
+                    duration: 6, 
+                    repeat: Infinity, 
+                    ease: "easeInOut" 
+                  }}
+                />
+                <motion.div 
+                  className="absolute bottom-4 left-4 w-12 h-12 sm:w-16 sm:h-16 bg-white/10 rounded-full"
+                  animate={{ 
+                    y: [0, 10, 0],
+                    x: [0, 5, 0]
+                  }}
+                  transition={{ 
+                    duration: 4, 
+                    repeat: Infinity, 
+                    ease: "easeInOut",
+                    delay: 1
+                  }}
+                />
+                <motion.div 
+                  className="absolute top-1/2 right-8 w-8 h-8 bg-white/10 rounded-full"
+                  animate={{ 
+                    scale: [1, 1.2, 1],
+                    opacity: [0.3, 0.6, 0.3]
+                  }}
+                  transition={{ 
+                    duration: 3, 
+                    repeat: Infinity, 
+                    ease: "easeInOut",
+                    delay: 2
+                  }}
+                />
+                
                 <div className="relative z-10">
-                  <h3 className="text-2xl font-bold mb-4">📱 Mobile App Coming Soon!</h3>
-                  <p className="text-indigo-100 mb-6">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    viewport={{ once: true }}
+                  >
+                    <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">📱 Mobile App Coming Soon!</h3>
+                  </motion.div>
+                  <motion.p 
+                    className="text-indigo-100 mb-4 sm:mb-6 text-sm sm:text-base leading-relaxed"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                    viewport={{ once: true }}
+                  >
                     Get notified when our mobile app launches with exclusive features and offline access.
-                  </p>
-                  <Button className="text-indigo-600 hover:bg-gray-100">
-                    Notify Me
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
+                  </motion.p>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                    viewport={{ once: true }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 hover:from-yellow-500 hover:to-orange-600 font-semibold px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base shadow-lg">
+                      Notify Me
+                      <motion.div
+                        animate={{ x: [0, 4, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      >
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </motion.div>
+                    </Button>
+                  </motion.div>
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
           </div>
         </div>
@@ -1065,7 +1134,17 @@ export function Home() {
                 viewport={{ once: true }}
                 whileHover={{ y: -10 }}
                 className="group cursor-pointer"
-                onClick={() => tool.title === 'CGPA Calculator' ? navigate('/cgpa-calculator') : undefined}
+                onClick={() => {
+                  if (tool.title === 'CGPA Calculator') {
+                    navigate('/cgpa-calculator');
+                  } else if (tool.title === 'Pomodoro Timer') {
+                    navigate('/pomodoro-timer');
+                  } else if (tool.title === 'Code Compiler') {
+                    navigate('/code-compiler');
+                  } else if (tool.title === 'Quiz Generator') {
+                    navigate('/quiz-generator');
+                  }
+                }}
               >
                 <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 relative overflow-hidden">
                   <div className={`absolute inset-0 bg-gradient-to-br ${tool.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />

@@ -46,6 +46,13 @@ export function Footer() {
     { name: 'PU Notices', href: '/pu-notices' }
   ];
 
+  const learningTools = [
+    { name: 'CGPA Calculator', href: '/cgpa-calculator' },
+    { name: 'Quiz Generator', href: '/quiz-generator' },
+    { name: 'Pomodoro Timer', href: '/pomodoro-timer' },
+    { name: 'Code Compiler', href: '/code-compiler' }
+  ];
+
 
 
   return (
@@ -89,23 +96,15 @@ export function Footer() {
         >
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
             {/* Brand Section */}
-            <motion.div variants={itemVariants} className="lg:col-span-2">
-              <motion.div 
-                className="flex items-center space-x-3 mb-6"
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <motion.div 
-                  className="w-12 h-12 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center"
-                  whileHover={{ rotate: 360 }}
-                  transition={{ duration: 0.6 }}
-                >
+            <motion.div variants={itemVariants} className="lg:col-span-1">
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="w-12 h-12 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center">
                   <BookOpen className="w-6 h-6 text-white" />
-                </motion.div>
+                </div>
                 <span className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                   BCSITHub
                 </span>
-              </motion.div>
+              </div>
               
               <p className="text-gray-300 mb-6 max-w-md leading-relaxed">
                 Empowering BCSIT students with comprehensive educational resources, 
@@ -157,6 +156,30 @@ export function Footer() {
                     >
                       <ExternalLink className="w-4 h-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" />
                       {link.name}
+                    </motion.a>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* Learning Tools */}
+            <motion.div variants={itemVariants}>
+              <h3 className="text-xl font-bold mb-6 text-white">Powerful Tools for Better Learning</h3>
+              <ul className="space-y-3">
+                {learningTools.map((tool, index) => (
+                  <motion.li 
+                    key={tool.name}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <motion.a
+                      href={tool.href}
+                      className="text-gray-300 hover:text-white transition-colors duration-200 flex items-center group"
+                      whileHover={{ x: 5 }}
+                    >
+                      <ExternalLink className="w-4 h-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      {tool.name}
                     </motion.a>
                   </motion.li>
                 ))}
@@ -218,11 +241,11 @@ export function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
-              <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+              <a href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</a>
               <span>•</span>
-              <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+              <a href="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</a>
               <span>•</span>
-              <a href="#" className="hover:text-white transition-colors">Support</a>
+              <a href="/support" className="hover:text-white transition-colors">Support</a>
             </motion.div>
           </div>
         </motion.div>

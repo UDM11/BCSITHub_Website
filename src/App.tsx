@@ -22,6 +22,12 @@ import { Notes } from './pages/Notes/Notes';
 import { PastPapers } from './pages/PastPapers';
 import { Colleges } from './pages/Colleges';
 import { CGPACalculator } from './pages/CGPACalculator';
+import { PomodoroTimer } from './pages/PomodoroTimer';
+import { CodeCompiler } from './pages/CodeCompiler';
+import { QuizGenerator } from './pages/QuizGenerator';
+import { PrivacyPolicy } from './pages/PrivacyPolicy';
+import { TermsOfService } from './pages/TermsOfService';
+import { Support } from './pages/Support';
 import PUNotices from './pages/PUNotices';
 import UploadPaper from './pages/UploadPaper';
 import SemesterSubjects from './pages/Notes/SemesterSubjects';
@@ -69,6 +75,12 @@ function App() {
                 <Route path="/past-papers" element={<PastPapers />} />
                 <Route path="/colleges" element={<Colleges />} />
                 <Route path="/cgpa-calculator" element={<CGPACalculator />} />
+                <Route path="/pomodoro-timer" element={<PomodoroTimer />} />
+                <Route path="/code-compiler" element={<CodeCompiler />} />
+                <Route path="/quiz-generator" element={<QuizGenerator />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms-of-service" element={<TermsOfService />} />
+                <Route path="/support" element={<Support />} />
                 <Route path="/pu-notices" element={<PUNotices />} />
 
                 <Route path="/verify" element={<OTPVerification />} />
