@@ -67,6 +67,19 @@ export default function ChapterNotes() {
   const prevChapter = currentIndex > 0 ? chapters[currentIndex - 1] : null;
   const nextChapter = currentIndex < chapters.length - 1 ? chapters[currentIndex + 1] : null;
 
+  // Re-render MathJax when note content changes (for LaTeX formulas in STT 220 etc.)
+  useEffect(() => {
+    if (!htmlContent || !contentRef.current) return;
+    const el = contentRef.current;
+    const run = () => {
+      if (typeof (window as unknown as { MathJax?: { typesetPromise?: (nodes?: unknown[]) => Promise<unknown> } }).MathJax?.typesetPromise === 'function') {
+        (window as unknown as { MathJax: { typesetPromise: (nodes: HTMLElement[]) => Promise<unknown> } }).MathJax.typesetPromise([el]).catch(() => {});
+      }
+    };
+    const t = setTimeout(run, 100);
+    return () => clearTimeout(t);
+  }, [htmlContent]);
+
   // Fetch HTML notes
   useEffect(() => {
     if (!semesterId || !subjectId || !chapterId) {

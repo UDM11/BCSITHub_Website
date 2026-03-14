@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 2: Data Models [8 Hrs.]</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #111;
+      font-size: 20pt;
+      font-weight: bold;
+      margin: 30px 0;
+    }
+    h2 {
+      color: #222;
+      border-bottom: 3px solid #aaa;
+      padding-bottom: 10px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #444;
+      margin-top: 25px;
+      font-size: 1.3em;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+      text-align: justify;
+    }
+    ul, ol {
+      padding-left: 35px;
+    }
+    li {
+      margin-bottom: 14px;
+    }
+    pre {
+      background-color: #111;
+      color: #0f8;
+      padding: 18px;
+      overflow-x: auto;
+      border-radius: 10px;
+      font-size: 13pt;
+      margin: 20px 0;
+      line-height: 1.5;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.95em;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #e0e0e0;
+      font-weight: bold;
+    }
+    .note {
+      background-color: #e8f4fd;
+      border-left: 5px solid #2196f3;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .warning {
+      background-color: #fff3cd;
+      border-left: 5px solid #ff9800;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 18px; margin-bottom: 25px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin: 20px 0; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 14px; margin-bottom: 20px; }
+      pre { font-size: 11.5pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 2: Data Models [8 Hrs.]</b></h1>
+
+  <div class="section">
+    <h2><b>2.1 Conceptual, Logical and Physical Model</b></h2>
+
+    <p>Database design follows a three-level schema architecture (ANSI/SPARC) that separates concerns across different abstraction levels.</p>
+
+    <table>
+      <tr><th>Level</th><th>Purpose</th><th>Focus</th><th>Who Uses It</th><th>Typical Artifacts</th><th>Independence</th></tr>
+      <tr><td><b>Conceptual Model</b></td><td>What data is needed & how entities relate (real-world view)</td><td>Business concepts, entities, relationships, no implementation details</td><td>Business analysts, domain experts, DB designers</td><td>ER Diagram, Conceptual Schema</td><td>Logical & Physical independent</td></tr>
+      <tr><td><b>Logical Model</b></td><td>How data is structured logically (DBMS-independent)</td><td>Tables, columns, keys, constraints, normalization (usually relational)</td><td>Database designers, developers</td><td>Relational Schema, Logical ERD (with tables & keys)</td><td>Physical independent</td></tr>
+      <tr><td><b>Physical Model</b></td><td>How data is stored & accessed on hardware</td><td>File structures, indexes, partitions, storage engines, compression</td><td>DBAs, performance engineers</td><td>Physical DDL, Index definitions, Storage parameters</td><td>—</td></tr>
+    </table>
+
+    <p><b>Mapping Example (University Database):</b></p>
+    <ul>
+      <li><b>Conceptual:</b> Student enrolls in Course taught by Professor</li>
+      <li><b>Logical:</b> Tables: Student(sid, name, …), Course(cid, title, …), Enrollment(sid, cid, grade)</li>
+      <li><b>Physical:</b> B-tree index on Enrollment(sid, cid), partitioning by semester, InnoDB tablespace</li>
+    </ul>
+
+    <div class="note">
+      <b>Key Benefit of Separation:</b> Change storage engine (InnoDB → MyRocks) or add index → only physical level changes. Add new attribute to Course → only logical & physical affected (if view exists, external level may remain unchanged).
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>2.2 Introduction to Entity Relationship Model</b></h2>
+
+    <p>The Entity-Relationship (ER) Model, proposed by Peter Chen in 1976, is the most widely used **conceptual modeling** tool for databases.</p>
+
+    <p><b>Purpose:</b> Represent real-world data requirements in a high-level, user-understandable way before translating to any specific DBMS model (usually relational).</p>
+
+    <p><b>Basic Components:</b></p>
+    <ul>
+      <li>Entity (thing of interest)</li>
+      <li>Attribute (property of entity)</li>
+      <li>Relationship (association between entities)</li>
+    </ul>
+
+    <p><b>Extended ER (EER) additions:</b> Specialization/Generalization, Categories, Aggregation.</p>
+
+    <div class="note">
+      <b>Strengths of ER Model:</b> Intuitive for non-technical stakeholders, supports top-down design, easy translation to relational schema.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>2.3 Entities Type</b></h2>
+
+    <ul>
+      <li><b>Strong / Regular Entity:</b> Has its own unique identifier (primary key). Exists independently.
+        <br>Example: Student, Book, Department</li>
+      <li><b>Weak / Dependent Entity:</b> Cannot exist without an owner entity. Identifier includes owner’s key + partial key.
+        <br>Example: Dependent (of Employee), LoanPayment (of Loan), Section (of Course)</li>
+    </ul>
+
+    <pre><code>
+// Strong Entity
+Student (sid PK, name, email)
+
+// Weak Entity
+Dependent (emp_id FK + dependent_name PK composite, relation, dob)
+// Identifying relationship: Employee → Dependent (total participation, identifying)
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h2><b>2.4 Entity Set</b></h2>
+
+    <p>An <b>entity set</b> (or entity type) is a collection of similar entities that share the same attributes.</p>
+
+    <ul>
+      <li><b>Entity Set:</b> The collection (table concept in relational terms)</li>
+      <li><b>Entity Instance / Entity:</b> A single member of the set (row / tuple)</li>
+    </ul>
+
+    <p><b>Examples:</b></p>
+    <ul>
+      <li>Entity Set: STUDENT</li>
+      <li>Entity Instances: Ram Sharma (sid=075BCT001), Sita Gurung (sid=075BCT015)</li>
+    </ul>
+
+    <p><b>Notation in ER Diagram:</b> Rectangle for entity set</p>
+  </div>
+
+  <div class="section">
+    <h2><b>2.5 Attributes and Keys</b></h2>
+
+    <h3>Types of Attributes</h3>
+    <table>
+      <tr><th>Type</th><th>Description</th><th>Example</th><th>Symbol</th></tr>
+      <tr><td>Simple / Atomic</td><td>Indivisible</td><td>Age, PhoneNo</td><td>Oval</td></tr>
+      <tr><td>Composite</td><td>Divisible into sub-parts</td><td>Address (street, city, zip)</td><td>Oval with branches</td></tr>
+      <tr><td>Single-valued</td><td>One value per entity</td><td>DateOfBirth</td><td>—</td></tr>
+      <tr><td>Multi-valued</td><td>Multiple values</td><td>PhoneNumbers, Skills</td><td>Double oval</td></tr>
+      <tr><td>Derived</td><td>Computed from others</td><td>Age (from DOB), TotalSalary</td><td>Dashed oval</td></tr>
+      <tr><td>Stored</td><td>Physically stored</td><td>BasicSalary</td><td>—</td></tr>
+      <tr><td>Key / Discriminator</td><td>Uniquely identifies</td><td>StudentID, ISBN</td><td>Underlined oval</td></tr>
+    </table>
+
+    <h3>Types of Keys</h3>
+    <ul>
+      <li><b>Super Key:</b> Any set of attributes that uniquely identifies an entity</li>
+      <li><b>Candidate Key:</b> Minimal super key (no subset is super key)</li>
+      <li><b>Primary Key:</b> Chosen candidate key</li>
+      <li><b>Composite Key:</b> More than one attribute</li>
+      <li><b>Foreign Key:</b> References primary key of another entity</li>
+      <li><b>Partial Key (Discriminator):</b> Distinguishes weak entities within owner</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><b>2.6 Relationship Types and Sets</b></h2>
+
+    <p>A <b>relationship</b> associates two or more entities.</p>
+
+    <ul>
+      <li><b>Relationship Type:</b> Schema level (e.g., "Enrolls", "WorksIn")</li>
+      <li><b>Relationship Set:</b> Instance level (actual associations)</li>
+    </ul>
+
+    <h3>Degree of Relationship</h3>
+    <ul>
+      <li>Unary / Recursive (degree 1): Employee supervises Employee</li>
+      <li>Binary (degree 2): most common (Student enrolls Course)</li>
+      <li>Ternary (degree 3): Supplier provides Part to Project</li>
+    </ul>
+
+    <h3>Cardinality / Mapping Constraints</h3>
+    <table>
+      <tr><th>Ratio</th><th>Symbol</th><th>Description</th><th>Example</th></tr>
+      <tr><td>One-to-One (1:1)</td><td>1 — 1</td><td>One entity relates to exactly one</td><td>Person has Passport</td></tr>
+      <tr><td>One-to-Many (1:N)</td><td>1 — N</td><td>One relates to many</td><td>Department has Employees</td></tr>
+      <tr><td>Many-to-One (N:1)</td><td>N — 1</td><td>Many relate to one</td><td>Students belong to Department</td></tr>
+      <tr><td>Many-to-Many (N:M)</td><td>N — M</td><td>Many to many</td><td>Students enroll in Courses</td></tr>
+    </table>
+
+    <h3>Participation Constraints</h3>
+    <ul>
+      <li><b>Total Participation:</b> Every entity must participate (double line)</li>
+      <li><b>Partial Participation:</b> Optional (single line)</li>
+    </ul>
+
+    <h3>Recursive Relationship Example</h3>
+    <pre><code>
+Employee (eid, name, …)
+Supervision (supervisor_eid → Employee, supervisee_eid → Employee)
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h2><b>2.7 E-R Diagrams</b></h2>
+
+    <p>Graphical representation using standard Chen notation (most common in academia).</p>
+
+    <h3>Basic Symbols (Chen Notation)</h3>
+    <ul>
+      <li>Entity Type: Rectangle</li>
+      <li>Weak Entity Type: Double rectangle</li>
+      <li>Attribute: Oval (key = underlined)</li>
+      <li>Multi-valued attribute: Double oval</li>
+      <li>Derived attribute: Dashed oval</li>
+      <li>Relationship Type: Diamond</li>
+      <li>Identifying relationship (for weak entity): Double diamond</li>
+      <li>Cardinality: 1, N, M near lines</li>
+      <li>Total participation: Double line from entity to relationship</li>
+    </ul>
+
+    <h3>Example: University Mini ERD (Textual Representation)</h3>
+    <pre><code>
+[Student] ---- enrolls ---- [Course]
+  |  N                  M  |
+  |                         |
+ double line (total)     single line (partial)
+
+[Department] ---- offers ---- [Course]
+  |  1                    N  |
+
+[Professor] ---- teaches ---- [Course]
+  |  N                    1  |
+
+[Student] ---- has ---- [Dependent]   ← weak entity
+  |  1                    N  |        double rectangle + double diamond
+    </code></pre>
+
+    <h3>Steps to Construct ER Diagram</h3>
+    <ol>
+      <li>Identify entities and entity sets</li>
+      <li>Identify attributes and classify them</li>
+      <li>Determine keys (primary, partial)</li>
+      <li>Identify relationships and their types</li>
+      <li>Specify cardinality and participation constraints</li>
+      <li>Handle weak entities and identifying relationships</li>
+      <li>Refine with specialization/generalization if needed</li>
+    </ol>
+
+    <div class="warning">
+      <b>Common Mistakes:</b><br>
+      • Using relationships instead of attributes (e.g., "hasPhone" as relationship instead of multi-valued attribute)<br>
+      • Forgetting total participation for weak entities<br>
+      • Confusing cardinality direction
+    </div>
+  </div>
+</body>
+</html>

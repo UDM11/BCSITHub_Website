@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 9: Backup and Recovery [3 Hrs.]</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #111;
+      font-size: 20pt;
+      font-weight: bold;
+      margin: 30px 0;
+    }
+    h2 {
+      color: #222;
+      border-bottom: 3px solid #aaa;
+      padding-bottom: 10px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #444;
+      margin-top: 25px;
+      font-size: 1.3em;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+      text-align: justify;
+    }
+    ul, ol {
+      padding-left: 35px;
+    }
+    li {
+      margin-bottom: 14px;
+    }
+    pre {
+      background-color: #111;
+      color: #0f8;
+      padding: 18px;
+      overflow-x: auto;
+      border-radius: 10px;
+      font-size: 13pt;
+      margin: 20px 0;
+      line-height: 1.5;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.95em;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #e0e0e0;
+      font-weight: bold;
+    }
+    .note {
+      background-color: #e8f4fd;
+      border-left: 5px solid #2196f3;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .warning {
+      background-color: #fff3cd;
+      border-left: 5px solid #ff9800;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 18px; margin-bottom: 25px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin: 20px 0; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 14px; margin-bottom: 20px; }
+      pre { font-size: 11.5pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 9: Backup and Recovery [3 Hrs.]</b></h1>
+
+  <div class="section">
+    <h2><b>9.1 Failure Classifications</b></h2>
+
+    <p>Database failures are classified based on their cause, scope, and impact. Understanding failure types helps design appropriate recovery mechanisms.</p>
+
+    <h3>Main Categories of Failures</h3>
+    <table>
+      <tr><th>Failure Type</th><th>Description</th><th>Examples</th><th>Recovery Approach</th><th>Durability Affected?</th></tr>
+      <tr><td>Transaction Failure</td><td>Logical error inside transaction</td><td>Division by zero, deadlock, explicit ROLLBACK</td><td>Rollback only that transaction</td><td>No</td></tr>
+      <tr><td>System Crash (Soft Crash)</td><td>Volatile memory (RAM) lost, disk intact</td><td>Power failure, OS crash, hardware fault in memory</td><td>Redo committed, undo uncommitted (ARIES style)</td><td>Yes (volatile lost)</td></tr>
+      <tr><td>Media Failure (Hard Crash)</td><td>Disk / storage device permanently damaged</td><td>Head crash, disk corruption, fire/flood</td><td>Restore from backup + redo logs</td><td>Yes (persistent lost)</td></tr>
+      <tr><td>Network Failure</td><td>Communication breakdown</td><td>Network partition in distributed DB</td><td>Retry, timeout, two-phase commit recovery</td><td>Depends</td></tr>
+      <tr><td>Logical / Software Bug</td><td>Application or DBMS bug</td><td>Wrong UPDATE query, constraint violation not caught</td><td>Manual correction or point-in-time recovery</td><td>Yes</td></tr>
+    </table>
+
+    <div class="note">
+      <b>Most common in practice:</b> System crashes (power outage) and transaction failures (deadlock, logic errors).<br>
+      <b>Rarest but most destructive:</b> Media failure → requires backups.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>9.2 Recovery and Atomicity</b></h2>
+
+    <p>Recovery ensures that after any failure, the database returns to a consistent state while preserving ACID properties — especially **Atomicity** and **Durability**.</p>
+
+    <h3>Recovery Goals</h3>
+    <ul>
+      <li><b>Atomicity:</b> Either all operations of a transaction are reflected or none</li>
+      <li><b>Durability:</b> Committed transactions survive crashes</li>
+      <li>Undo uncommitted transactions</li>
+      <li>Redo committed transactions that may not have reached disk</li>
+    </ul>
+
+    <h3>Steal vs Force Policy</h3>
+    <table>
+      <tr><th>Policy</th><th>Description</th><th>Advantage</th><th>Disadvantage</th><th>Used In</th></tr>
+      <tr><td>No-Steal</td><td>Uncommitted changes never written to disk</td><td>No undo needed after crash</td><td>High memory pressure</td><td>Rare</td></tr>
+      <tr><td>Steal</td><td>Uncommitted changes can be written to disk</td><td>Better buffer utilization</td><td>Undo needed on recovery</td><td>Most DBMS</td></tr>
+      <tr><td>No-Force</td><td>Committed changes need not be forced to disk immediately</td><td>Faster commit</td><td>Redo needed on recovery</td><td>Most DBMS</td></tr>
+      <tr><td>Force</td><td>Committed changes forced to disk at commit</td><td>No redo needed</td><td>Slow commit</td><td>Rare (high durability need)</td></tr>
+    </table>
+
+    <p><b>Most common combination:</b> Steal + No-Force → requires both undo and redo → achieved via **Write-Ahead Logging (WAL)**.</p>
+  </div>
+
+  <div class="section">
+    <h2><b>9.4 Log-based Recovery</b></h2>
+
+    <p>Log-based recovery (most widely used) relies on a sequential log file that records every database change before it is applied to data pages.</p>
+
+    <h3>Write-Ahead Logging (WAL) Rule</h3>
+    <ul>
+      <li>Log record must be flushed to stable storage before corresponding data page is written</li>
+      <li>Log record for commit must be flushed before transaction is considered committed</li>
+    </ul>
+
+    <h3>Log Record Contents (ARIES-style – most common)</h3>
+    <pre><code>Typical Log Record:
+<LSN, TransactionID, PrevLSN, Type, PageID, RedoInfo, UndoInfo, ...>
+
+Types of Log Records:
+- Update: <T, PageID, Offset, OldValue, NewValue>
+- Commit: <T, commit>
+- Abort: <T, abort>
+- Begin: <T, begin>
+- Checkpoint: <checkpoint, active transactions list>
+- End: <T, end> (after rollback or commit completed)
+    </code></pre>
+
+    <h3>Recovery Phases (ARIES Algorithm – Industry Standard)</h3>
+    <ol>
+      <li><b>Analysis Phase:</b> Scan log from last checkpoint forward
+        <ul>
+          <li>Build Dirty Page Table</li>
+          <li>Build Transaction Table (active transactions)</li>
+        </ul>
+      </li>
+      <li><b>Redo Phase:</b> Redo all committed changes from earliest dirty page LSN
+        <ul>
+          <li>Redo even if page already has change (idempotent)</li>
+        </ul>
+      </li>
+      <li><b>Undo Phase:</b> Undo uncommitted transactions (backward from end)
+        <ul>
+          <li>CLR (Compensation Log Record) written for each undo</li>
+        </ul>
+      </li>
+    </ol>
+
+    <div class="note">
+      <b>ARIES advantages:</b> Fast recovery (only redo from min RecLSN), supports fuzzy checkpointing, handles partial transaction rollback.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>9.5 Shadow Paging</b></h2>
+
+    <p>Shadow paging is an alternative to log-based recovery that avoids logging data changes by maintaining two copies of the database page table (current & shadow).</p>
+
+    <h3>How Shadow Paging Works</h3>
+    <ol>
+      <li>Two page tables: current & shadow (initially identical)</li>
+      <li>When a transaction modifies a page:
+        <ul>
+          <li>Copy modified page to new disk location</li>
+          <li>Update shadow page table to point to new location</li>
+        </ul>
+      </li>
+      <li>At commit:
+        <ul>
+          <li>Atomically swap current ↔ shadow page table pointer (single disk write)</li>
+          <li>Discard old pages (garbage collection later)</li>
+        </ul>
+      </li>
+      <li>At crash: discard shadow table → old current table remains consistent</li>
+    </ol>
+
+    <h3>Advantages & Disadvantages</h3>
+    <table>
+      <tr><th>Aspect</th><th>Advantage</th><th>Disadvantage</th></tr>
+      <tr><td>Recovery</td><td>Very fast (no redo/undo)</td><td>—</td></tr>
+      <tr><td>Atomicity</td><td>Single page-table swap</td><td>—</td></tr>
+      <tr><td>Overhead</td><td>No logging of data changes</td><td>Copy-on-write → high I/O for updates</td></tr>
+      <tr><td>Concurrency</td><td>Difficult (needs multi-version or locking)</td><td>Limited support in practice</td></tr>
+      <tr><td>Use</td><td>Early systems, some file systems (ZFS, Btrfs)</td><td>Rare in modern relational DBMS</td></tr>
+    </table>
+
+    <div class="warning">
+      <b>Shadow paging is rarely used in relational DBMS today</b> — log-based (ARIES) is dominant due to better concurrency, lower update cost, and support for partial rollbacks.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>9.6 Local Recovery Manager</b></h2>
+
+    <p>The **Local Recovery Manager (LRM)** is the component within a DBMS responsible for ensuring atomicity and durability for transactions on a single node (in centralized or distributed systems).</p>
+
+    <h3>Responsibilities of Local Recovery Manager</h3>
+    <ul>
+      <li>Write-ahead logging of all updates</li>
+      <li>Flush log records at commit</li>
+      <li>Perform checkpointing (fuzzy or crisp)</li>
+      <li>Execute recovery after crash:
+        <ul>
+          <li>Analysis → Redo → Undo</li>
+        </ul>
+      </li>
+      <li>Handle transaction rollback (undo changes)</li>
+      <li>Manage log buffer & log file</li>
+      <li>Coordinate with buffer manager (force/steal policy)</li>
+    </ul>
+
+    <p><b>In distributed databases:</b> Each site has its own LRM; global recovery uses 2PC (Two-Phase Commit) coordinator.</p>
+  </div>
+
+  <div class="section">
+    <h2><b>9.7 Backup System</b></h2>
+
+    <p>Backup is the last line of defense against media failure, logical corruption, accidental deletion, or ransomware.</p>
+
+    <h3>Types of Backup</h3>
+    <table>
+      <tr><th>Type</th><th>Description</th><th>Backup Size</th><th>Recovery Time</th><th>Frequency</th></tr>
+      <tr><td>Full Backup</td><td>Complete copy of entire database</td><td>Large</td><td>Fast</td><td>Weekly / Monthly</td></tr>
+      <tr><td>Differential Backup</td><td>Changes since last full backup</td><td>Medium</td><td>Medium</td><td>Daily</td></tr>
+      <tr><td>Incremental Backup</td><td>Changes since last backup (full or incremental)</td><td>Smallest</td><td>Slowest (apply all incrementals)</td><td>Multiple times/day</td></tr>
+      <tr><td>Log Backup</td><td>Transaction log since last log backup</td><td>Small</td><td>Point-in-time recovery</td><td>Every 5–60 min</td></tr>
+    </table>
+
+    <h3>Recovery Strategies Using Backup</h3>
+    <ol>
+      <li>Restore last full backup</li>
+      <li>Apply differential (if any) or all incrementals in order</li>
+      <li>Apply log backups (roll forward) to desired point-in-time</li>
+      <li>Recovery to consistent state using redo/undo from logs</li>
+    </ol>
+
+    <h3>Modern Backup Techniques</h3>
+    <ul>
+      <li>Snapshot backups (storage-level – fast, low overhead)</li>
+      <li>Continuous archiving (WAL shipping to standby server)</li>
+      <li>Hot / Online backup (backup while database running)</li>
+      <li>Cloud backups (AWS RDS snapshots, Azure Backup, Google Cloud)</li>
+    </ul>
+
+    <div class="note">
+      <b>Best Practice (3-2-1 Rule):</b><br>
+      • 3 copies of data<br>
+      • 2 different media types<br>
+      • 1 copy offsite / off-cloud
+    </div>
+  </div>
+</body>
+</html>

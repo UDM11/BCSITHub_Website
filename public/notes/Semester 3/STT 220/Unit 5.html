@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 5: Probability Distribution (8 hours)</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.7;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #1a3c6d;
+      font-size: 22pt;
+      margin-bottom: 30px;
+    }
+    h2 {
+      color: #34495e;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 8px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #2980b9;
+      margin-top: 25px;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: justify;
+    }
+    pre, .formula {
+      background-color: #f8f9fa;
+      border-left: 5px solid #3498db;
+      padding: 14px;
+      margin: 15px 0;
+      border-radius: 6px;
+      font-family: Consolas, monospace;
+      font-size: 13.5pt;
+    }
+    .formula {
+      font-size: 15pt;
+      text-align: center;
+      background: #e8f5ff;
+      font-weight: bold;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.97em;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+    .note {
+      background-color: #e8f5ff;
+      border-left: 5px solid #3498db;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .tip {
+      background-color: #e8fff5;
+      border-left: 5px solid #27ae60;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .example {
+      background: #f0f8ff;
+      padding: 12px;
+      border-left: 5px solid #1e90ff;
+      margin: 15px 0;
+    }
+    .interpretation {
+      background: #fdf2e9;
+      padding: 12px;
+      border-left: 5px solid #e67e22;
+      margin: 15px 0;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; margin-bottom: 24px; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 20px; margin-bottom: 28px; }
+      pre, .formula { font-size: 12pt; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin-bottom: 20px; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 16px; margin-bottom: 22px; }
+      pre, .formula { font-size: 12pt; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1><b>Unit 5: Probability Distribution (8 hours)</b></h1>
+
+  <div class="section">
+    <h2>5.1 Random Variable and its Types</h2>
+
+    <p>A <b>random variable</b> is a numerical outcome of a random experiment / process. It assigns a real number to each possible outcome in the sample space.</p>
+
+    <h3>Two Main Types of Random Variables</h3>
+
+    <table>
+      <tr>
+        <th>Type</th>
+        <th>Definition</th>
+        <th>Possible Values</th>
+        <th>Examples (IT related)</th>
+        <th>Probability Representation</th>
+      </tr>
+      <tr>
+        <td><b>Discrete Random Variable</b></td>
+        <td>Can take only a countable number of distinct values</td>
+        <td>Finite or countably infinite (0,1,2,3,…)</td>
+        <td>
+          • Number of users online at a given time<br>
+          • Number of failed login attempts in 1 hour<br>
+          • Number of bugs found in a module<br>
+          • Number of packets lost in transmission
+        </td>
+        <td>Probability Mass Function (PMF): P(X = x)</td>
+      </tr>
+      <tr>
+        <td><b>Continuous Random Variable</b></td>
+        <td>Can take any value in a given interval</td>
+        <td>Infinite values (any real number in range)</td>
+        <td>
+          • Server response time (in ms)<br>
+          • Download speed (Mbps)<br>
+          • CPU utilization percentage<br>
+          • Time between two consecutive website visits
+        </td>
+        <td>Probability Density Function (PDF): f(x)<br>P(a ≤ X ≤ b) = area under curve</td>
+      </tr>
+    </table>
+
+    <div class="tip">
+      <b>Quick check:</b><br>
+      • Can you count the possible values? → Discrete<br>
+      • Can it take any value in a range (including decimals)? → Continuous
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>5.2 Expectation and Variance of a Discrete Random Variable</h2>
+
+    <h3>Expected Value / Mean / Expectation (E(X) or μ)</h3>
+    <p>The long-run average value of repetitions of the experiment.</p>
+
+    <div class="formula">
+      E(X) = μ = Σ [xᵢ · P(X = xᵢ)]    (for discrete random variable)
+    </div>
+
+    <h3>Variance (Var(X) or σ²)</h3>
+    <p>Measures the average squared deviation from the mean — shows spread / risk.</p>
+
+    <div class="formula">
+      Var(X) = σ² = Σ [(xᵢ – μ)² · P(X = xᵢ)] = E(X²) – [E(X)]²
+    </div>
+
+    <h3>Standard Deviation</h3>
+    <div class="formula">
+      σ = √Var(X) = √σ²
+    </div>
+
+    <div class="example">
+      <b>Number of daily website crashes (X):</b><br>
+      X | P(X)<br>
+      0 | 0.4<br>
+      1 | 0.3<br>
+      2 | 0.2<br>
+      3 | 0.1<br>
+
+      E(X) = 0·0.4 + 1·0.3 + 2·0.2 + 3·0.1 = 1.0 crash/day<br>
+      E(X²) = 0²·0.4 + 1²·0.3 + 2²·0.2 + 3²·0.1 = 1.6<br>
+      Var(X) = 1.6 – (1.0)² = 0.6<br>
+      σ ≈ 0.7746 crashes/day
+    </div>
+
+    <div class="note">
+      In IT: Expectation → average server load, average bugs per sprint<br>
+      Variance → risk / unpredictability (high variance = unstable system)
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>5.3 Binomial Probability Distribution</h2>
+
+    <p>Binomial distribution describes the number of successes in a fixed number of independent Bernoulli trials (yes/no experiments).</p>
+
+    <h3>Conditions for Binomial Distribution</h3>
+    <ol>
+      <li>Fixed number of trials (n)</li>
+      <li>Each trial has exactly two outcomes (success / failure)</li>
+      <li>Probability of success (p) is constant for each trial</li>
+      <li>Trials are independent</li>
+    </ol>
+
+    <div class="formula">
+      P(X = k) = C(n,k) · pᵏ · (1–p)ⁿ⁻ᵏ
+    </div>
+
+    <p>Where C(n,k) = n! / (k! · (n–k)! ) = binomial coefficient</p>
+
+    <h3>Mean, Variance & Standard Deviation</h3>
+    <div class="formula">
+      Mean = μ = n·p<br>
+      Variance = σ² = n·p·(1–p)<br>
+      Standard deviation = σ = √[n·p·(1–p)]
+    </div>
+
+    <div class="example">
+      <b>A web server has 5% chance of failing to respond to a request (p = 0.05). What is the probability that exactly 2 out of 20 requests fail?</b><br>
+
+      n = 20, k = 2, p = 0.05<br>
+      P(X=2) = C(20,2) × (0.05)² × (0.95)¹⁸ ≈ 0.1887 (18.87%)
+    </div>
+
+    <div class="tip">
+      <b>Common IT applications:</b><br>
+      • Probability that k servers fail out of n<br>
+      • Number of defective code modules in a release<br>
+      • Number of successful login attempts vs failed (brute-force detection)
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>5.4 Poisson Probability Distribution</h2>
+
+    <p>Poisson distribution models the number of times an event occurs in a fixed interval of time or space when events occur independently and at a constant average rate.</p>
+
+    <h3>Conditions for Poisson Distribution</h3>
+    <ol>
+      <li>Events occur independently</li>
+      <li>Average rate (λ) is constant</li>
+      <li>Two events cannot occur at exactly the same instant</li>
+      <li>Probability of more than one event in very small interval → 0</li>
+    </ol>
+
+    <div class="formula">
+      P(X = k) = (e⁻ˡ · λᵏ) / k!
+    </div>
+
+    <p>(λ = average number of events per interval, e ≈ 2.71828)</p>
+
+    <h3>Mean, Variance & Standard Deviation</h3>
+    <div class="formula">
+      Mean = μ = λ<br>
+      Variance = σ² = λ<br>
+      Standard deviation = σ = √λ
+    </div>
+
+    <div class="example">
+      <b>A web server receives on average 3.2 requests per second (λ = 3.2). Find probability of exactly 5 requests in one second.</b><br>
+
+      P(X=5) = (e⁻³.² × 3.2⁵) / 5! ≈ 0.1088 (10.88%)
+    </div>
+
+    <div class="tip">
+      <b>Common IT applications:</b><br>
+      • Number of server crashes per day<br>
+      • Number of customer support tickets per hour<br>
+      • Number of packets arriving at router per second<br>
+      • Number of bugs reported per week
+    </div>
+
+    <div class="note">
+      Poisson is often used to approximate Binomial when n is large and p is small (np = λ remains constant).
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>5.5 Normal Probability Distribution</h2>
+
+    <p>The <b>normal distribution</b> (Gaussian / bell curve) is the most important continuous probability distribution in statistics. Many natural and IT phenomena approximate normal distribution when sample size is large (Central Limit Theorem).</p>
+
+    <h3>Properties of Normal Distribution</h3>
+    <ul>
+      <li>Symmetric about mean (μ)</li>
+      <li>Mean = Median = Mode = μ</li>
+      <li>Bell-shaped, extends infinitely in both directions</li>
+      <li>Defined by two parameters: mean (μ) and standard deviation (σ)</li>
+      <li>68-95-99.7 rule:
+        <ul>
+          <li>≈68% within μ ± 1σ</li>
+          <li>≈95% within μ ± 2σ</li>
+          <li>≈99.7% within μ ± 3σ</li>
+        </ul>
+      </li>
+    </ul>
+
+    <div class="formula">
+      PDF: f(x) = (1 / (σ √(2π))) · e^(-(x-μ)² / (2σ²))
+    </div>
+
+    <h3>Standard Normal Distribution (Z-distribution)</h3>
+    <p>Normal distribution with μ = 0 and σ = 1</p>
+
+    <div class="formula">
+      Z = (X – μ) / σ
+    </div>
+
+    <p>Z-score tells how many standard deviations a value is from the mean. Use standard normal table (Z-table) to find probabilities.</p>
+
+    <div class="example">
+      <b>Server response time is normally distributed with mean 220 ms and SD 35 ms. What is P(response time < 250 ms)?</b><br>
+
+      Z = (250 – 220) / 35 = 0.857<br>
+      From Z-table: P(Z < 0.86) ≈ 0.8051 → 80.51%
+    </div>
+
+    <div class="tip">
+      <b>Common IT applications:</b><br>
+      • Response time, load time, file size distribution<br>
+      • Error rates, network latency<br>
+      • Performance benchmarking<br>
+      • Anomaly detection (values > μ + 3σ often outliers)
+    </div>
+
+    <div class="note">
+      Central Limit Theorem (CLT): Sum / mean of large number of independent random variables tends to normal distribution — even if original variables are not normal.
+    </div>
+  </div>
+
+</body>
+</html>

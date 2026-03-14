@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 6: Theory of Estimation (6 hours) – Statistics / Probability & Statistics</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.7;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #1a3c6d;
+      font-size: 22pt;
+      margin-bottom: 30px;
+    }
+    h2 {
+      color: #34495e;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 8px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #2980b9;
+      margin-top: 25px;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: justify;
+    }
+    ul, ol {
+      padding-left: 30px;
+    }
+    li {
+      margin-bottom: 12px;
+    }
+    pre, .formula {
+      background-color: #f8f9fa;
+      border-left: 5px solid #3498db;
+      padding: 14px;
+      margin: 15px 0;
+      border-radius: 6px;
+      font-family: Consolas, monospace;
+      font-size: 13.5pt;
+    }
+    .formula {
+      font-size: 15pt;
+      text-align: center;
+      background: #e8f5ff;
+      font-weight: bold;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.97em;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+    .note {
+      background-color: #e8f5ff;
+      border-left: 5px solid #3498db;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .tip {
+      background-color: #e8fff5;
+      border-left: 5px solid #27ae60;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .example {
+      background: #f0f8ff;
+      padding: 12px;
+      border-left: 5px solid #1e90ff;
+      margin: 15px 0;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; margin-bottom: 24px; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 20px; margin-bottom: 28px; }
+      pre, .formula { font-size: 12pt; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin-bottom: 20px; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 16px; margin-bottom: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1><b>Unit 6: Theory of Estimation (6 hours)</b></h1>
+
+  <div class="section">
+    <h2><b>6.1 Sampling Distribution</b></h2>
+
+    <p>A <b>sampling distribution</b> is the probability distribution of a statistic (e.g., sample mean, sample proportion) when we take many random samples of the same size from a population. It describes how the statistic varies from sample to sample.</p>
+
+    <h3>Key Ideas</h3>
+    <ul>
+      <li><b>Statistic:</b> A number computed from sample data (e.g., sample mean <span style="font-style: italic;">x̄</span>, sample proportion <span style="font-style: italic;">p̂</span>).</li>
+      <li><b>Sampling distribution of the statistic:</b> The distribution of all possible values of that statistic over all possible samples of size <i>n</i> from the population.</li>
+      <li><b>Standard error (SE):</b> The standard deviation of the sampling distribution. It measures how much the statistic typically varies from sample to sample.</li>
+    </ul>
+
+    <h3>Sampling Distribution of the Sample Mean (x̄)</h3>
+    <p>If we take random samples of size <i>n</i> from a population with mean μ and standard deviation σ:</p>
+    <ul>
+      <li>The mean of the sampling distribution of <i>x̄</i> equals the population mean: <b>μ<sub>x̄</sub> = μ</b>.</li>
+      <li>The standard deviation of the sampling distribution (standard error of the mean) is:</li>
+    </ul>
+    <div class="formula">
+      SE(x̄) = σ / √n
+    </div>
+    <p>If the population is normally distributed, the sampling distribution of <i>x̄</i> is also normal. If <i>n</i> is large (e.g., n ≥ 30), the <b>Central Limit Theorem (CLT)</b> says the sampling distribution of <i>x̄</i> is approximately normal regardless of the population shape.</p>
+
+    <h3>Sampling Distribution of the Sample Proportion (p̂)</h3>
+    <p>For a proportion <i>p</i> in the population, the sample proportion <i>p̂</i> from samples of size <i>n</i> has:</p>
+    <ul>
+      <li>Mean: μ<sub>p̂</sub> = p</li>
+      <li>Standard error: SE(p̂) = √[p(1−p) / n]</li>
+    </ul>
+    <p>For large <i>n</i> (with np ≥ 5 and n(1−p) ≥ 5), the sampling distribution of <i>p̂</i> is approximately normal.</p>
+
+    <div class="note">
+      <b>Why it matters:</b> Sampling distributions are the foundation of confidence intervals and hypothesis testing. We use the standard error to quantify uncertainty in our estimates.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>6.2 Parameters, Statistic, Point Estimation and Interval Estimation</b></h2>
+
+    <h3>Parameters vs Statistic</h3>
+    <table>
+      <tr>
+        <th>Term</th>
+        <th>Definition</th>
+        <th>Example</th>
+      </tr>
+      <tr>
+        <td><b>Parameter</b></td>
+        <td>A numerical characteristic of the <b>population</b> (usually unknown).</td>
+        <td>Population mean μ, population proportion p, population standard deviation σ.</td>
+      </tr>
+      <tr>
+        <td><b>Statistic</b></td>
+        <td>A numerical characteristic of a <b>sample</b>; used to estimate the parameter.</td>
+        <td>Sample mean x̄, sample proportion p̂, sample standard deviation s.</td>
+      </tr>
+    </table>
+
+    <h3>Point Estimation</h3>
+    <p><b>Point estimation</b> uses a single value (a statistic) from the sample to estimate the population parameter. The statistic used is called a <b>point estimator</b>.</p>
+    <ul>
+      <li>Point estimate of population mean μ → sample mean <i>x̄</i></li>
+      <li>Point estimate of population proportion p → sample proportion <i>p̂</i></li>
+      <li>Point estimate of population standard deviation σ → sample standard deviation <i>s</i></li>
+    </ul>
+    <p>Desirable properties of a good estimator: <b>unbiasedness</b> (mean of estimator equals parameter), <b>consistency</b> (gets closer to parameter as n increases), and <b>efficiency</b> (smaller variance is better).</p>
+
+    <h3>Interval Estimation (Confidence Interval)</h3>
+    <p><b>Interval estimation</b> gives a range (interval) of values within which the population parameter is likely to fall, with a specified level of confidence (e.g., 95%). This range is called a <b>confidence interval (CI)</b>.</p>
+
+    <p><b>Confidence interval for population mean μ</b> (when population is normal or n is large, and σ known):</p>
+    <div class="formula">
+      x̄ ± z<sub>α/2</sub> · (σ / √n)
+    </div>
+    <p>When σ is unknown, use sample standard deviation <i>s</i> and the <i>t</i>-distribution with (n−1) degrees of freedom:</p>
+    <div class="formula">
+      x̄ ± t<sub>α/2, n−1</sub> · (s / √n)
+    </div>
+
+    <p><b>Confidence interval for population proportion p</b> (large n):</p>
+    <div class="formula">
+      p̂ ± z<sub>α/2</sub> · √[p̂(1−p̂) / n]
+    </div>
+
+    <p>Here, z<sub>α/2</sub> (or t<sub>α/2</sub>) is the critical value for the chosen confidence level (e.g., 1.96 for 95% when using z).</p>
+
+    <div class="tip">
+      <b>Interpretation:</b> “We are 95% confident that the true population mean (or proportion) lies within this interval.” The 95% refers to the long-run proportion of such intervals that would contain the parameter if we repeated the process many times.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>6.3 Sample Size Determination</b></h2>
+
+    <p>Sample size determination answers: <b>How large should <i>n</i> be</b> so that our estimate has a desired margin of error (E) at a given confidence level?</p>
+
+    <h3>Sample Size for Estimating Population Mean μ</h3>
+    <p>Margin of error for the mean: E = z<sub>α/2</sub> · (σ / √n). Solving for <i>n</i>:</p>
+    <div class="formula">
+      n = (z<sub>α/2</sub> · σ / E)²
+    </div>
+    <p>If σ is unknown, use a pilot study or prior estimate for σ, or use a conservative (larger) value of σ.</p>
+
+    <h3>Sample Size for Estimating Population Proportion p</h3>
+    <p>Margin of error for the proportion: E = z<sub>α/2</sub> · √[p(1−p) / n]. Solving for <i>n</i>:</p>
+    <div class="formula">
+      n = p(1−p) · (z<sub>α/2</sub> / E)²
+    </div>
+    <p>If <i>p</i> is unknown, use <b>p = 0.5</b> for the most conservative (largest) sample size, since p(1−p) is maximum at p = 0.5.</p>
+
+    <div class="example">
+      <b>Example (proportion):</b> We want to estimate the proportion of users who prefer a new feature with margin of error E = 0.05 at 95% confidence. No prior estimate of p. Using p = 0.5 and z<sub>0.025</sub> ≈ 1.96:<br><br>
+      n = 0.5 × 0.5 × (1.96 / 0.05)² = 0.25 × 1536.64 ≈ 385.<br>
+      So we need at least 385 respondents.
+    </div>
+
+    <div class="note">
+      <b>Summary:</b> Larger sample size → smaller margin of error and narrower confidence interval. Higher confidence (e.g., 99% vs 95%) requires a larger <i>n</i> for the same margin of error.
+    </div>
+  </div>
+
+</body>
+</html>

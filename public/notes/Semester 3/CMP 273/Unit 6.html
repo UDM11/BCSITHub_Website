@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 6: Working with Database – Internet Technology II</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      font-size: 22pt;
+      margin-bottom: 30px;
+    }
+    h2 {
+      color: #34495e;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 8px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #2980b9;
+      margin-top: 25px;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: justify;
+    }
+    pre {
+      background-color: #000000;
+      color: #00ff41;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 13pt;
+      margin: 15px 0;
+      line-height: 1.6;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+    .note {
+      background-color: #e8f5ff;
+      border-left: 5px solid #3498db;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .tip {
+      background-color: #e8fff5;
+      border-left: 5px solid #27ae60;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .warning {
+      background-color: #fff3cd;
+      border-left: 5px solid #e67e22;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; margin-bottom: 24px; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 20px; margin-bottom: 28px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin-bottom: 20px; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 16px; margin-bottom: 22px; }
+      pre { font-size: 12pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 6: Working with Database</b></h1>
+
+  <div class="section">
+    <h2><b>6.1 Introduction to MySQL Database Management System</b></h2>
+
+    <p>MySQL is the world's most popular open-source relational database management system (RDBMS). It is widely used in web applications, especially with PHP (the classic LAMP stack: Linux, Apache, MySQL, PHP).</p>
+
+    <h3>Key Features of MySQL (2025 perspective)</h3>
+    <ul>
+      <li>Supports standard SQL (with many extensions)</li>
+      <li>High performance for read-heavy workloads</li>
+      <li>ACID compliance (InnoDB storage engine – default since MySQL 5.5)</li>
+      <li>Multiple storage engines: InnoDB, MyISAM, Memory, CSV, Archive...</li>
+      <li>Replication (master-slave, group replication)</li>
+      <li>JSON data type support (very powerful since 5.7)</li>
+      <li>Common Table Expressions (CTE) and Window functions (8.0+)</li>
+      <li>Strong community + enterprise edition (Oracle MySQL Enterprise)</li>
+      <li>Forks: MariaDB (community-driven, drop-in replacement)</li>
+    </ul>
+
+    <div class="tip">
+      <b>Popular in Nepal & education:</b> Almost all college projects, WordPress sites, small to medium e-commerce, school/college management systems use MySQL + PHP.
+    </div>
+
+    <p><b>Basic MySQL Terminology</b></p>
+    <ul>
+      <li>Database → collection of tables</li>
+      <li>Table → collection of rows (records) and columns (fields)</li>
+      <li>Row / Record → one entry</li>
+      <li>Column / Field → attribute</li>
+      <li>Primary Key → unique identifier</li>
+      <li>Foreign Key → links tables</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><b>6.2 Connecting PHP with MySQL Database</b></h2>
+
+    <p>There are three main ways to connect PHP to MySQL (2025 recommendation: use PDO or MySQLi with prepared statements).</p>
+
+    <h3>Modern Recommended Way: PDO (PHP Data Objects)</h3>
+    <pre><code>&lt;?php
+$host     = 'localhost';
+$dbname   = 'college_portal';
+$username = 'root';
+$password = '';           // default XAMPP/WAMP → empty
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", 
+                   $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // echo "Connected successfully!";
+} catch (PDOException $e) {
+    die("Connection failed: " . $e->getMessage());
+}
+?&gt;</code></pre>
+
+    <h3>Alternative: MySQLi (Procedural or Object-oriented)</h3>
+    <pre><code>&lt;?php
+// Object-oriented style
+$mysqli = new mysqli("localhost", "root", "", "college_portal");
+
+if ($mysqli->connect_error) {
+    die("Connection failed: " . $mysqli->connect_error);
+}
+
+// Procedural style
+$conn = mysqli_connect("localhost", "root", "", "college_portal")
+    or die("Connection failed: " . mysqli_connect_error());
+?&gt;</code></pre>
+
+    <div class="tip">
+      <b>PDO vs MySQLi (2025 advice):</b><br>
+      • PDO → database-agnostic (can switch to PostgreSQL easily), named parameters, better exception handling<br>
+      • MySQLi → slightly faster for MySQL-only, supports multiple statements<br>
+      → Use **PDO** for most college projects
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>6.3 Performing CRUD Operations (Create, Read, Update, Delete)</b></h2>
+
+    <h3>Using PDO – Full CRUD Example</h3>
+    <pre><code>&lt;?php
+// db.php - connection file
+require_once 'db.php';
+
+// CREATE
+if (isset($_POST['add_student'])) {
+    $name = $_POST['name'];
+    $roll = $_POST['roll'];
+    $gpa  = $_POST['gpa'];
+
+    $stmt = $pdo->prepare("INSERT INTO students (name, roll, gpa) VALUES (?, ?, ?)");
+    $stmt->execute([$name, $roll, $gpa]);
+    echo "Student added!";
+}
+
+// READ (all)
+$stmt = $pdo->query("SELECT * FROM students ORDER BY id DESC");
+$students = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// READ (one)
+$id = 5;
+$stmt = $pdo->prepare("SELECT * FROM students WHERE id = ?");
+$stmt->execute([$id]);
+$student = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// UPDATE
+if (isset($_POST['update'])) {
+    $id   = $_POST['id'];
+    $name = $_POST['name'];
+    $gpa  = $_POST['gpa'];
+
+    $stmt = $pdo->prepare("UPDATE students SET name = ?, gpa = ? WHERE id = ?");
+    $stmt->execute([$name, $gpa, $id]);
+}
+
+// DELETE
+if (isset($_GET['delete'])) {
+    $id = $_GET['delete'];
+    $stmt = $pdo->prepare("DELETE FROM students WHERE id = ?");
+    $stmt->execute([$id]);
+    header("Location: index.php");
+}
+?&gt;</code></pre>
+
+    <div class="tip">
+      <b>Always use prepared statements with placeholders (? or :name) to prevent SQL Injection.</b>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>6.4 Executing SQL Queries using PHP</b></h2>
+
+    <h3>Different ways to run queries (PDO)</h3>
+    <pre><code>// 1. Simple query (no user input) - safe
+$stmt = $pdo->query("SELECT * FROM students");
+
+// 2. Prepared statement with positional placeholders (?)
+$stmt = $pdo->prepare("SELECT * FROM students WHERE gpa > ? AND faculty = ?");
+$stmt->execute([3.5, 'BCT']);
+
+// 3. Named placeholders (:name)
+$stmt = $pdo->prepare("UPDATE students SET gpa = :new_gpa WHERE roll = :roll");
+$stmt->execute(['new_gpa' => 3.9, 'roll' => '075BCT001']);
+
+// 4. Fetch modes
+$all = $stmt->fetchAll(PDO::FETCH_ASSOC);       // array of assoc arrays
+$one = $stmt->fetch(PDO::FETCH_ASSOC);          // one row
+$col = $stmt->fetchColumn();                    // single value
+    </code></pre>
+
+    <div class="warning">
+      <b>Never do this (SQL Injection vulnerable):</b><br>
+      <code>$pdo->query("SELECT * FROM users WHERE username = '$username'");</code>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>6.5 User Registration and Login</b></h2>
+
+    <pre><code>// register.php (simplified – real project must use password_hash)
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = trim($_POST['username']);
+    $email    = trim($_POST['email']);
+    $password = $_POST['password'];
+
+    // Basic validation
+    if (empty($username) || empty($email) || empty($password)) {
+        $error = "All fields required";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = "Invalid email";
+    } else {
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE username = ? OR email = ?");
+        $stmt->execute([$username, $email]);
+        if ($stmt->fetchColumn() > 0) {
+            $error = "Username or email already exists";
+        } else {
+            $hashed = password_hash($password, PASSWORD_DEFAULT);
+            $stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+            $stmt->execute([$username, $email, $hashed]);
+            $success = "Registration successful! Please login.";
+        }
+    }
+}
+?&gt;
+
+&lt;!-- login.php --&gt;
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt->execute([$username]);
+    $user = $stmt->fetch();
+
+    if ($user && password_verify($password, $user['password'])) {
+        $_SESSION['user_id']   = $user['id'];
+        $_SESSION['username']  = $user['username'];
+        $_SESSION['logged_in'] = true;
+        header("Location: dashboard.php");
+        exit;
+    } else {
+        $error = "Invalid username or password";
+    }
+}
+    </code></pre>
+
+    <div class="tip">
+      <b>Security must:</b><br>
+      • Use <code>password_hash()</code> & <code>password_verify()</code><br>
+      • Prepared statements<br>
+      • Session after login<br>
+      • Protect pages with login check
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>6.6 Error Handling and Transaction Management</b></h2>
+
+    <h3>Error Handling with PDO</h3>
+    <pre><code>$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+try {
+    $pdo->beginTransaction();
+
+    $stmt1 = $pdo->prepare("UPDATE account SET balance = balance - 1000 WHERE id = 1");
+    $stmt1->execute();
+
+    $stmt2 = $pdo->prepare("UPDATE account SET balance = balance + 1000 WHERE id = 2");
+    $stmt2->execute();
+
+    $pdo->commit();
+    echo "Transfer successful!";
+} catch (Exception $e) {
+    $pdo->rollBack();
+    echo "Transfer failed: " . $e->getMessage();
+}
+    </code></pre>
+
+    <h3>Transaction Management Summary</h3>
+    <ul>
+      <li><code>$pdo->beginTransaction()</code> – start transaction</li>
+      <li><code>$pdo->commit()</code> – save changes</li>
+      <li><code>$pdo->rollBack()</code> – undo changes on error</li>
+      <li>Automatic rollback if exception thrown before commit</li>
+    </ul>
+
+    <div class="note">
+      <b>When to use transactions?</b> Any time multiple related queries must succeed or fail together (bank transfer, order processing, student enrollment + fee deduction).
+    </div>
+  </div>
+</body>
+</html>

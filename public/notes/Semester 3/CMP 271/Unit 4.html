@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 4: Relational Language [10 Hrs.]</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #111;
+      font-size: 20pt;
+      font-weight: bold;
+      margin: 30px 0;
+    }
+    h2 {
+      color: #222;
+      border-bottom: 3px solid #aaa;
+      padding-bottom: 10px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #444;
+      margin-top: 25px;
+      font-size: 1.3em;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+      text-align: justify;
+    }
+    ul, ol {
+      padding-left: 35px;
+    }
+    li {
+      margin-bottom: 14px;
+    }
+    pre {
+      background-color: #111;
+      color: #0f8;
+      padding: 18px;
+      overflow-x: auto;
+      border-radius: 10px;
+      font-size: 13pt;
+      margin: 20px 0;
+      line-height: 1.5;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.95em;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #e0e0e0;
+      font-weight: bold;
+    }
+    .note {
+      background-color: #e8f4fd;
+      border-left: 5px solid #2196f3;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .warning {
+      background-color: #fff3cd;
+      border-left: 5px solid #ff9800;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 18px; margin-bottom: 25px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin: 20px 0; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 14px; margin-bottom: 20px; }
+      pre { font-size: 11.5pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 4: Relational Language [10 Hrs.]</b></h1>
+
+  <div class="section">
+    <h2><b>4.1 Introduction to SQL</b></h2>
+
+    <p><b>SQL</b> (Structured Query Language) is the standard language for managing and manipulating relational databases. It is declarative (you say what you want, not how to get it).</p>
+
+    <ul>
+      <li>Developed: 1970s at IBM (SEQUEL → SQL)</li>
+      <li>Standardized: ANSI/ISO SQL-86, SQL-92, SQL:1999, SQL:2003, SQL:2011, SQL:2016, SQL:2023</li>
+      <li>Dialects: MySQL, PostgreSQL, Oracle, SQL Server, SQLite, MariaDB, etc.</li>
+      <li>Categories: DDL, DML, DCL, TCL, DQL</li>
+    </ul>
+
+    <p><b>SQL is:</b> case-insensitive for keywords (SELECT = select), but case-sensitive for identifiers in some DBMS.</p>
+  </div>
+
+  <div class="section">
+    <h2><b>4.2 Concepts of DDL, DML, DCL</b></h2>
+
+    <table>
+      <tr><th>Category</th><th>Full Form</th><th>Purpose</th><th>Main Commands</th><th>Auto-commit?</th></tr>
+      <tr><td>DDL</td><td>Data Definition Language</td><td>Define & manage database structure</td><td>CREATE, ALTER, DROP, TRUNCATE, RENAME</td><td>Yes (most DBMS)</td></tr>
+      <tr><td>DML</td><td>Data Manipulation Language</td><td>Manipulate data</td><td>INSERT, UPDATE, DELETE, SELECT (DQL)</td><td>No (except autocommit mode)</td></tr>
+      <tr><td>DCL</td><td>Data Control Language</td><td>Control access & permissions</td><td>GRANT, REVOKE</td><td>Yes</td></tr>
+      <tr><td>TCL</td><td>Transaction Control Language</td><td>Manage transactions</td><td>COMMIT, ROLLBACK, SAVEPOINT</td><td>—</td></tr>
+      <tr><td>DQL</td><td>Data Query Language</td><td>Retrieve data</td><td>SELECT</td><td>No</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2><b>4.3 SQL – Data Types, Operators</b></h2>
+
+    <h3>Common SQL Data Types (ANSI + common implementations)</h3>
+    <table>
+      <tr><th>Category</th><th>Data Type</th><th>Description</th><th>Example</th></tr>
+      <tr><td>Numeric</td><td>INT / INTEGER, BIGINT, SMALLINT</td><td>Whole numbers</td><td>student_id INT</td></tr>
+      <tr><td></td><td>DECIMAL(p,s) / NUMERIC(p,s)</td><td>Exact decimal</td><td>gpa DECIMAL(4,2)</td></tr>
+      <tr><td></td><td>FLOAT, REAL, DOUBLE PRECISION</td><td>Approximate floating-point</td><td>temperature FLOAT</td></tr>
+      <tr><td>String</td><td>CHAR(n), VARCHAR(n), TEXT</td><td>Fixed / variable length text</td><td>name VARCHAR(100)</td></tr>
+      <tr><td>Date/Time</td><td>DATE, TIME, DATETIME, TIMESTAMP</td><td>Date and time values</td><td>dob DATE, created_at TIMESTAMP</td></tr>
+      <tr><td>Boolean</td><td>BOOLEAN</td><td>true/false (some DBMS use TINYINT)</td><td>is_active BOOLEAN</td></tr>
+      <tr><td>Other</td><td>BLOB, BINARY, JSON, ENUM</td><td>Binary, JSON, fixed list</td><td>profile_pic BLOB, role ENUM('admin','user')</td></tr>
+    </table>
+
+    <h3>Operators</h3>
+    <ul>
+      <li>Arithmetic: +, -, *, /, % (MOD)</li>
+      <li>Comparison: =, != / <>, <, >, <=, >=, BETWEEN, IN, LIKE, IS NULL</li>
+      <li>Logical: AND, OR, NOT</li>
+      <li>String: || (concat – some DBMS), CONCAT()</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><b>4.4 Structure – Creation, Alteration, Drop, Defining Constraints</b></h2>
+
+    <pre><code>-- DDL Examples
+
+-- CREATE TABLE
+CREATE TABLE Student (
+    sid INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    dob DATE,
+    gpa DECIMAL(3,2) DEFAULT 0.00 CHECK (gpa BETWEEN 0 AND 4.00),
+    dept_id INT,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (dept_id) REFERENCES Department(dept_id) ON DELETE SET NULL
+);
+
+-- ALTER TABLE
+ALTER TABLE Student
+    ADD COLUMN phone VARCHAR(15),
+    MODIFY COLUMN name VARCHAR(120) NOT NULL,
+    DROP COLUMN is_active,
+    ADD CONSTRAINT chk_gpa CHECK (gpa >= 0);
+
+-- DROP TABLE / TRUNCATE
+DROP TABLE Student;
+TRUNCATE TABLE TempData;  -- removes data, keeps structure
+
+-- RENAME
+RENAME TABLE OldStudents TO Students;
+    </code></pre>
+
+    <h3>Constraints Summary</h3>
+    <ul>
+      <li><b>PRIMARY KEY</b>: NOT NULL + UNIQUE</li>
+      <li><b>FOREIGN KEY</b>: referential integrity</li>
+      <li><b>UNIQUE</b>: no duplicates (allows NULL unless combined with NOT NULL)</li>
+      <li><b>NOT NULL</b>: mandatory value</li>
+      <li><b>CHECK</b>: custom condition</li>
+      <li><b>DEFAULT</b>: value if not provided</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><b>4.4 Manipulation Commands (INSERT, UPDATE, DELETE, SELECT queries)</b></h2>
+
+    <pre><code>-- DML Examples
+
+-- INSERT
+INSERT INTO Student (name, email, dob, gpa, dept_id)
+VALUES ('Ram Sharma', 'ram@edu.np', '2003-05-12', 3.85, 1);
+
+INSERT INTO Student (name, dept_id)
+VALUES ('Sita Gurung', 2);   -- uses defaults for others
+
+-- UPDATE
+UPDATE Student
+SET gpa = gpa + 0.1,
+    email = 'sita.new@edu.np'
+WHERE sid = 2 AND gpa < 3.5;
+
+-- DELETE
+DELETE FROM Student WHERE dept_id = 5 AND gpa < 2.0;
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h2><b>4.5 Functions, Set Operations, Sub-queries, GROUP BY, HAVING, ORDER BY, LIKE, EXISTS, ANY/ALL, BETWEEN, JOINs, VIEWs</b></h2>
+
+    <h3>Aggregate Functions</h3>
+    <pre><code>COUNT(*), COUNT(column), SUM(), AVG(), MIN(), MAX()
+SELECT dept_id, COUNT(*) AS student_count, AVG(gpa) AS avg_gpa
+FROM Student
+GROUP BY dept_id
+HAVING AVG(gpa) > 3.0
+ORDER BY avg_gpa DESC;
+    </code></pre>
+
+    <h3>Built-in Functions (common examples)</h3>
+    <ul>
+      <li><b>String:</b> UPPER(), LOWER(), CONCAT(), SUBSTRING(), LENGTH(), TRIM(), REPLACE()</li>
+      <li><b>Numeric:</b> ROUND(), CEIL(), FLOOR(), ABS(), POWER(), MOD()</li>
+      <li><b>Date:</b> NOW(), CURDATE(), DATE_FORMAT(), DATEDIFF(), DATE_ADD(), YEAR(), MONTH()</li>
+    </ul>
+
+    <h3>Set Operations</h3>
+    <pre><code>UNION / UNION ALL
+INTERSECT
+EXCEPT / MINUS
+
+SELECT name FROM Student WHERE dept_id = 1
+UNION
+SELECT name FROM Faculty WHERE dept_id = 1;
+    </code></pre>
+
+    <h3>Subqueries & Correlated Subqueries</h3>
+    <pre><code>-- Scalar subquery
+SELECT name, gpa
+FROM Student
+WHERE gpa > (SELECT AVG(gpa) FROM Student);
+
+-- EXISTS
+SELECT name
+FROM Department d
+WHERE EXISTS (
+    SELECT 1 FROM Student s WHERE s.dept_id = d.dept_id
+);
+
+-- ANY / ALL
+SELECT name
+FROM Student
+WHERE gpa > ALL (SELECT gpa FROM Student WHERE dept_id = 2);
+    </code></pre>
+
+    <h3>JOIN Types</h3>
+    <table>
+      <tr><th>Join Type</th><th>Description</th><th>SQL Syntax</th></tr>
+      <tr><td>INNER JOIN</td><td>Matching rows only</td><td>INNER JOIN … ON</td></tr>
+      <tr><td>LEFT / RIGHT OUTER JOIN</td><td>All from left/right + matches</td><td>LEFT JOIN … ON</td></tr>
+      <tr><td>FULL OUTER JOIN</td><td>All from both (not in MySQL natively)</td><td>FULL JOIN … ON</td></tr>
+      <tr><td>CROSS JOIN</td><td>Cartesian product</td><td>CROSS JOIN or ,</td></tr>
+      <tr><td>SELF JOIN</td><td>Join table with itself</td><td>Table t1 JOIN Table t2 ON t1.id = t2.manager_id</td></tr>
+    </table>
+
+    <h3>LIKE Pattern Matching</h3>
+    <pre><code>WHERE name LIKE 'Ram%'          -- starts with Ram
+WHERE email LIKE '%@edu.np'     -- ends with @edu.np
+WHERE name LIKE '_a%'           -- second letter 'a'
+    </code></pre>
+
+    <h3>Views</h3>
+    <pre><code>-- Simple view
+CREATE VIEW ActiveStudents AS
+SELECT sid, name, gpa, dept_id
+FROM Student
+WHERE is_active = TRUE;
+
+-- Updatable view (limited conditions)
+CREATE VIEW DeptAvgGPA AS
+SELECT dept_id, AVG(gpa) AS avg_gpa
+FROM Student
+GROUP BY dept_id;
+
+-- Materialized view (PostgreSQL / Oracle)
+CREATE MATERIALIZED VIEW MonthlySales AS ...
+REFRESH MATERIALIZED VIEW MonthlySales;
+    </code></pre>
+
+    <div class="note">
+      <b>Best Practice Tip:</b> Use views to simplify complex queries, enforce security (limit columns), and provide consistent reporting interfaces.
+    </div>
+  </div>
+</body>
+</html>

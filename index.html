@@ -9,6 +9,13 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      window.MathJax = {
+        tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+        options: { skipHtmlTags: ['script', 'noscript', 'style'] }
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

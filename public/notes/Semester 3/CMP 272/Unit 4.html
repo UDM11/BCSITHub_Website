@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 4: Object-Oriented Modeling Using UML Notation [10 Hrs.]</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #111;
+      font-size: 20pt;
+      font-weight: bold;
+      margin: 30px 0;
+    }
+    h2 {
+      color: #222;
+      border-bottom: 3px solid #aaa;
+      padding-bottom: 10px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #444;
+      margin-top: 25px;
+      font-size: 1.3em;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+      text-align: justify;
+    }
+    ul, ol {
+      padding-left: 35px;
+    }
+    li {
+      margin-bottom: 14px;
+    }
+    pre {
+      background-color: #111;
+      color: #0f8;
+      padding: 18px;
+      overflow-x: auto;
+      border-radius: 10px;
+      font-size: 13pt;
+      margin: 20px 0;
+      line-height: 1.5;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    .highlight {
+      background-color: #fff9c4;
+      padding: 4px 8px;
+      border-radius: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.95em;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #e0e0e0;
+      font-weight: bold;
+    }
+    .note {
+      background-color: #e8f4fd;
+      border-left: 5px solid #2196f3;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 18px; margin-bottom: 25px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin: 20px 0; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 14px; margin-bottom: 20px; }
+      pre { font-size: 11.5pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 4: Object-Oriented Modeling Using UML Notation [10 Hrs.]</b></h1>
+
+  <div class="section">
+    <h2><b>4.1 Elaborating Use Cases and Use Case Diagram</b></h2>
+    <p>Elaborating use cases involves detailing functional requirements beyond high-level overviews. This includes writing full specifications (name, actors, scope, level, preconditions, postconditions, main success scenario, extensions, exceptions) and refining the use case diagram with advanced relationships for better modularity and reuse.</p>
+
+    <h3><b>4.1.1 Use Cases for Reuse</b></h3>
+    <p>Reuse reduces redundancy by factoring common behavior into shared use cases. UML supports this via <<include>>, <<extend>>, and generalization relationships.</p>
+    <ul>
+      <li><b><<include>>:</b> Mandatory inclusion of behavior (like subroutine call). The base use case is incomplete without it. Promotes reuse of common steps.</li>
+      <li><b><<extend>>:</b> Optional/conditional insertion at extension points. Base use case is complete; extension adds variant behavior.</li>
+      <li><b>Generalization:</b> Inheritance between use cases or actors (child inherits and specializes parent behavior).</li>
+    </ul>
+
+    <h3><b>4.1.2 Use Cases and Components</b></h3>
+    <p>Use cases can map to components in component diagrams (e.g., a use case realized by a subsystem or component). This bridges requirements to architecture.</p>
+
+    <h3><b>4.1.3 Separation Variant Behavior</b></h3>
+    <p>Use <<extend>> to separate optional/variant behavior (e.g., handling errors, alternatives) from the main flow, keeping base use cases clean.</p>
+
+    <h3><b>4.1.4 Generalization</b></h3>
+    <p>Use case generalization: Child use case inherits steps from parent and adds/specializes. Actor generalization: Specialized actors (e.g., PremiumMember) inherit from general (Member).</p>
+
+    <h3><b>4.1.5 Actor as Classes</b></h3>
+    <p>Actors can be modeled as classes in detailed design (e.g., external systems or roles with attributes/methods), especially in service-oriented or actor-generalization scenarios.</p>
+
+    <p><b>Example: Library Management System – Elaborated Use Case Diagram (Textual)</b></p>
+    <pre><code>
+// Use Case Diagram with advanced relationships
+Actors:
+  - Member
+  - Librarian
+  - PremiumMember --|> Member   // Generalization (inherits from Member)
+
+Use Cases:
+  - Borrow Book (base)
+  - Return Book
+  - Pay Fine
+  - Authenticate User <<include>> Borrow Book   // Mandatory reuse
+  - Check Overdue <<extend>> Borrow Book   // Optional variant at extension point "before issuing"
+  - Renew Membership (specialized) --|> Manage Membership   // Generalization
+
+System Boundary: Library System
+    </code></pre>
+
+    <div class="note">
+      <b>Best Practice:</b> Use <<include>> for must-have shared steps (e.g., login), <<extend>> for conditionals (e.g., apply discount if premium), generalization for role hierarchies.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>4.1.2 System Interaction Diagram: Sequence and Communication Diagram</b></h2>
+    <p>Interaction diagrams detail how objects collaborate to realize use cases. Sequence emphasizes time/order; communication emphasizes structure/links.</p>
+
+    <table>
+      <tr><th>Feature</th><th>Sequence Diagram</th><th>Communication Diagram</th></tr>
+      <tr><td>Focus</td><td>Time sequence (vertical)</td><td>Object relationships & message numbering</td></tr>
+      <tr><td>Layout</td><td>Lifelines horizontal, messages top-to-bottom</td><td>Objects in free-form, numbered arrows</td></tr>
+      <tr><td>Best For</td><td>Workflow tracing, timing, loops/alt/opt</td><td>Showing links, overall collaboration pattern</td></tr>
+      <tr><td>Elements</td><td>Lifelines, activation bars, messages (sync/async), fragments (alt, loop, opt)</td><td>Objects, links, sequenced numbered messages</td></tr>
+    </table>
+
+    <p><b>Example: Borrow Book – Sequence Diagram (Textual)</b></p>
+    <pre><code>
+// Sequence Diagram: Borrow Book
+Actor: Member
+Participant: Librarian
+Participant: LibrarySystem
+Participant: Book
+
+Member -> Librarian: request book borrow
+Librarian -> LibrarySystem: scan ISBN
+activate LibrarySystem
+LibrarySystem -> Book: check availability
+Book --> LibrarySystem: available = true
+alt available
+  LibrarySystem -> Librarian: confirm
+  Librarian -> Member: issue book
+  LibrarySystem -> Book: update status to borrowed
+  create Loan
+  LibrarySystem -> Loan: record borrow details
+else not available
+  Librarian -> Member: notify unavailable
+end
+deactivate LibrarySystem
+    </code></pre>
+
+    <p><b>Communication Diagram Equivalent (Textual)</b></p>
+    <pre><code>
+// Communication Diagram: Borrow Book
+1: request book borrow : Member -> Librarian
+2: scan ISBN : Librarian -> LibrarySystem
+3: check availability : LibrarySystem -> Book
+4: available : Book -> LibrarySystem
+5: confirm : LibrarySystem -> Librarian
+6: issue book : Librarian -> Member
+7: update status : LibrarySystem -> Book
+8: record borrow : LibrarySystem -> Loan (create)
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h2><b>4.2 Logical Architecture and UML Package Diagram</b></h2>
+    <p>Logical architecture organizes classes into layers/packages for separation of concerns. Package diagrams show namespaces, dependencies (<<import>>, <<access>>), and high-level structure.</p>
+
+    <h3><b>4.2.1 Model-View Separation Principle</b></h3>
+    <p>Model (domain/business logic) objects should not know about View (UI) objects directly. This enables independent development, testing, and UI changes without affecting core logic. Originates from MVC (Model knows neither View nor Controller directly in strict form).</p>
+
+    <p><b>Example Package Diagram – Online Banking (Textual)</b></p>
+    <pre><code>
+// Package Diagram
+package "Domain Model" {
+  package "Entities" { Account, Transaction, Customer }
+  package "Services" { AccountService, TransactionService }
+}
+
+package "Presentation" {
+  package "UI" { LoginPage, Dashboard, TransactionView }
+}
+
+package "Application" {
+  package "Controllers" { LoginController, TransactionController }
+}
+
+Domain Model --> Presentation   // <<import>> (dependency direction reversed in some notations)
+Presentation ..> Domain Model    // dependency: UI depends on domain
+Application --> Domain Model
+    </code></pre>
+
+    <div class="note">
+      <b>Principle Benefit:</b> Change UI (web → mobile) without touching domain logic.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>4.3 Class Diagram</b></h2>
+    <p>Class diagrams show static structure: classes, attributes, operations, relationships.</p>
+
+    <h3><b>4.3.1 Generalization</b></h3>
+    <p>Inheritance: Child inherits from parent (is-a). Arrow with hollow triangle to parent.</p>
+
+    <h3><b>4.3.2 Dependency</b></h3>
+    <p>Weak usage: One class uses another temporarily (dashed arrow). E.g., parameter, local variable.</p>
+
+    <h3><b>4.3.3 Constraints</b></h3>
+    <p>{OCL or natural language} in curly braces. E.g., {age >= 18} on attribute, or {balance >= 0} on Account.</p>
+
+    <h3><b>4.3.4 Composition over Aggregation</b></h3>
+    <p>Aggregation (hollow diamond): Part independent (e.g., University – Department).<br>
+    Composition (filled diamond): Part lifecycle tied to whole (e.g., Car – Engine; destroy car → destroy engine).</p>
+
+    <h3><b>4.3.5 Singleton Class</b></h3>
+    <p>Ensures one instance. Private constructor, static getInstance().</p>
+    <pre><code>
+class Singleton {
+  - static instance: Singleton
+  - private Singleton() { }
+  + static getInstance(): Singleton {
+    if (instance == null) instance = new Singleton();
+    return instance;
+  }
+}
+    </code></pre>
+
+    <h3><b>4.3.6 Template Class</b></h3>
+    <p>Generic class (parameterized). E.g., List<T>, Stack<E>.</p>
+    <pre><code>
+// Template (generic) class
+class Stack&lt;T&gt; {
+  - items: T[]
+  + push(item: T)
+  + pop(): T
+}
+    </code></pre>
+
+    <p><b>Example: E-commerce Class Diagram Snippet (Textual)</b></p>
+    <pre><code>
+abstract class User {
+  - id: String
+  - name: String
+  + login()
+}
+
+class Customer --|> User   // Generalization
+class Admin --|> User
+
+class Order {
+  - orderId: String
+  - total: double {total > 0}   // Constraint
+  * items: OrderItem   // Composition (filled diamond)
+}
+
+class ShoppingCart {
+  * items: CartItem   // Composition
+}
+
+Customer "1" -- "1" ShoppingCart : owns
+Customer "1" -- "0..*" Order : places
+Order ..> PaymentGateway   // Dependency
+    </code></pre>
+  </div>
+</body>
+</html>

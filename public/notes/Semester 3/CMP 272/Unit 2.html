@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 2: Requirement Elicitation and Analysis</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      color: black;
+      font-size: 18pt;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+    h2 {
+      color: #333;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 8px;
+    }
+    h3 {
+      color: #555;
+      margin-top: 20px;
+    }
+    .section {
+      background: #fff;
+      padding: 20px;
+      margin-bottom: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      text-align: justify;
+    }
+    ul, ol {
+      padding-left: 30px;
+    }
+    li {
+      margin-bottom: 12px;
+    }
+    pre {
+      background-color: #000;
+      color: #0f0;
+      padding: 15px;
+      overflow-x: auto;
+      border-radius: 8px;
+      font-size: 12pt;
+      margin: 15px 0;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    .highlight {
+      background-color: #fffacd;
+      padding: 3px 6px;
+      border-radius: 4px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 16px; margin-bottom: 24px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin-bottom: 20px; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 12px; margin-bottom: 18px; }
+      pre { font-size: 11pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 2: Requirement Elicitation and Analysis [7 Hrs.]</b></h1>
+
+  <div class="section">
+    <h2><b>2.1 Requirement Gathering</b></h2>
+    <p>Requirement gathering (also called requirements engineering) is the foundational phase in OOAD where we discover, document, and refine what the system must do and how well it must perform. In object-oriented approaches, this phase heavily emphasizes identifying actors, use cases, and domain concepts that will later map to classes and objects.</p>
+
+    <h3><b>2.1.1 Requirement Fundamentals</b></h3>
+    <p>Requirements are statements about system capabilities, constraints, and qualities. They are classified into:</p>
+    <ul>
+      <li><b>Functional Requirements:</b> What the system shall do (e.g., "The system shall allow users to borrow books"). Expressed via use cases and scenarios in OOAD.</li>
+      <li><b>Non-Functional Requirements (NFRs):</b> How well the system performs (qualities/attributes):
+        <ul>
+          <li>Performance (response time, throughput)</li>
+          <li>Usability (ease of use, learnability)</li>
+          <li>Reliability (availability, fault tolerance)</li>
+          <li>Security (authentication, confidentiality)</li>
+          <li>Scalability, Maintainability, Portability, etc.</li>
+        </ul>
+      </li>
+      <li><b>Constraints:</b> Restrictions (technology, budget, standards, legal).</li>
+      <li><b>Business Rules:</b> Policies or conditions (e.g., "Fine = 10 NPR per day after due date").</li>
+    </ul>
+    <p><b>Qualities of Good Requirements (SMART / INVEST-like):</b> Specific, Measurable, Achievable, Relevant, Traceable, Complete, Consistent, Unambiguous, Verifiable, Correct, Feasible.</p>
+
+    <h3><b>2.1.2 Requirement Elicitation Techniques</b></h3>
+    <p>Elicitation is the process of discovering requirements from stakeholders. Common techniques include:</p>
+    <ol>
+      <li><b>Interviews:</b> Structured (questionnaire-based), semi-structured, or unstructured. One-on-one or group. Best for deep insights but time-consuming.</li>
+      <li><b>Questionnaires / Surveys:</b> Useful for large groups, quantitative data. Closed/open questions. Risk: low response rate or misunderstanding.</li>
+      <li><b>Workshops / JAD (Joint Application Design):</b> Facilitated meetings with stakeholders, developers, users. Brainstorming, consensus building. Effective for conflict resolution.</li>
+      <li><b>Observation / Shadowing:</b> Watching users perform tasks in real environment. Reveals unspoken needs and inefficiencies (ethnography-inspired).</li>
+      <li><b>Document Analysis:</b> Reviewing existing manuals, forms, legacy systems, business rules, regulations.</li>
+      <li><b>Brainstorming:</b> Group idea generation without criticism. Good for innovative features.</li>
+      <li><b>Prototyping:</b> Throwaway or evolutionary prototypes to clarify vague requirements. Users see mock-ups → feedback loop.</li>
+      <li><b>Domain Analysis:</b> Studying similar systems or standards in the domain.</li>
+      <li><b>Focus Groups:</b> Guided discussions with representative users.</li>
+      <li><b>Role-Playing / Scenarios:</b> Acting out interactions to uncover edge cases.</li>
+    </ol>
+    <p><b>Challenges in Elicitation:</b> Tacit knowledge, conflicting stakeholder views, changing requirements, resistance to change, language barriers.</p>
+
+    <h3><b>2.1.3 Requirement Analysis</b></h3>
+    <p>After elicitation, analyze requirements for conflicts, completeness, feasibility. In OOAD:</p>
+    <ul>
+      <li>Identify domain objects and relationships (start class diagram).</li>
+      <li>Prioritize requirements (MoSCoW: Must, Should, Could, Won't).</li>
+      <li>Model behavior (use cases, activity flows).</li>
+      <li>Resolve ambiguities and inconsistencies.</li>
+    </ul>
+
+    <h3><b>2.1.4 Requirement Specification</b></h3>
+    <p>Document requirements formally. In OOAD, use:</p>
+    <ul>
+      <li>Use Case Descriptions (template: Name, Actors, Preconditions, Postconditions, Main Flow, Alternative Flows, Exceptions).</li>
+      <li>UML Diagrams (use case, class, activity).</li>
+      <li>Supplementary Specification (NFRs, glossary, assumptions).</li>
+    </ul>
+    <pre><code>
+// Example Use Case Template (Textual)
+USE CASE: Borrow Book
+Actors: Member, Librarian
+Preconditions: Member is registered, Book is available
+Main Success Scenario:
+  1. Member requests to borrow book.
+  2. Librarian scans ISBN.
+  3. System checks availability and due date.
+  4. System records loan.
+  5. System issues book.
+Extensions:
+  3a. Book unavailable → Alternative: Reserve book.
+Exceptions:
+  Member has overdue books → Deny borrowing.
+    </code></pre>
+
+    <h3><b>2.1.5 Requirement Validation</b></h3>
+    <p>Ensure requirements are correct, complete, and satisfy stakeholders. Techniques:</p>
+    <ul>
+      <li>Reviews / Inspections</li>
+      <li>Prototyping walkthroughs</li>
+      <li>Test case derivation</li>
+      <li>Stakeholder sign-off</li>
+      <li>Traceability matrix (requirements → use cases → design → tests)</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><b>2.4 Use Cases, Scenarios and Actors</b></h2>
+    <p>Use cases capture functional requirements from the user's perspective in OOAD.</p>
+    <ul>
+      <li><b>Actor:</b> External entity interacting with the system (human user, another system, timer, device). Represented as stick figure in UML. E.g., Member, Librarian, Payment Gateway.</li>
+      <li><b>Use Case:</b> A single, cohesive functionality providing value to an actor. Named as verb + noun (e.g., Borrow Book, Process Payment). Oval in UML.</li>
+      <li><b>Scenario:</b> A specific path through a use case (instance). Includes:
+        <ul>
+          <li>Main success scenario (happy path)</li>
+          <li>Alternative flows</li>
+          <li>Exception flows</li>
+        </ul>
+      </li>
+    </ul>
+    <p><b>Relationships in Use Case Diagrams:</b> Include (mandatory sub-use case), Extend (optional extension), Generalization (inheritance between actors/use cases).</p>
+    <pre><code>
+// Textual representation of Use Case Diagram for Library
+Actors: Member, Librarian, Admin
+Use Cases:
+  - Register Member (by Librarian)
+  - Borrow Book (by Member) -- includes --> Check Availability
+  - Return Book (by Member)
+  - Pay Fine (by Member) -- extends --> Borrow Book (if overdue)
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h2><b>2.5 Overview of the Unified Modeling Language: UML Fundamentals and Notations</b></h2>
+    <p>UML (Unified Modeling Language) is a standardized visual modeling language for specifying, visualizing, constructing, and documenting software systems. Version 2.x is current. It has 14 diagram types divided into Structure (static) and Behavior (dynamic).</p>
+
+    <h3><b>2.5.1 Behavior Diagram: Use Case Diagram and Activity Diagram</b></h3>
+    <p><b>Use Case Diagram:</b> Shows system functionality from external view. Elements: Actors, Use Cases, System boundary, relationships (include, extend, generalization).</p>
+    <p><b>Activity Diagram:</b> Flowchart-like. Models workflow, business processes, use case details. Elements: Action, Initial/Final Node, Decision Node (diamond), Merge, Fork/Join (parallel), Swimlanes (partitions by actor/responsibility).</p>
+    <pre><code>
+// Activity Diagram for Borrow Book (textual)
+[Initial] --> [Member requests book] --> Decision: Available?
+  Yes --> [Update loan record] --> [Issue book] --> [Final]
+  No  --> [Notify unavailable] --> [Final]
+Swimlanes: Member | System | Librarian
+    </code></pre>
+
+    <h3><b>2.5.2 Interaction Diagram: Sequence and Communication Diagram</b></h3>
+    <p><b>Sequence Diagram:</b> Shows object interactions over time. Vertical lifelines (objects/actors), horizontal messages (synchronous/async), activation bars, loops, alternatives (alt), options (opt).</p>
+    <p><b>Communication Diagram (Collaboration):</b> Emphasizes structure (links) over time. Numbers messages in sequence. Good for showing object relationships.</p>
+    <pre><code>
+// Sequence Diagram textual (Borrow Book)
+Member    -> Librarian: request book
+Librarian -> System: scan ISBN
+System    -> System: check availability
+alt available
+  System  -> Librarian: confirm
+  Librarian -> Member: issue book
+else
+  Librarian -> Member: notify unavailable
+end
+    </code></pre>
+
+    <h3><b>2.5.3 Structure Diagram: Class, Package, and Component Diagram</b></h3>
+    <p><b>Class Diagram:</b> Static structure. Classes, attributes, operations, relationships (association, aggregation, composition, inheritance, dependency).</p>
+    <p><b>Package Diagram:</b> Organizes elements into namespaces. Shows dependencies between packages (import, merge).</p>
+    <p><b>Component Diagram:</b> High-level software components (subsystems, libraries), interfaces, provided/required ports.</p>
+    <pre><code>
+// Class Diagram textual example
+class Book {
+  - isbn: String
+  - title: String
+  - author: String
+  + getDetails(): String
+}
+class Member {
+  - id: int
+  - name: String
+}
+Member "1" -- "0..*" Book : borrows >
+    </code></pre>
+  </div>
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 3: Object Oriented Analysis</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #111;
+      font-size: 20pt;
+      font-weight: bold;
+      margin: 30px 0;
+    }
+    h2 {
+      color: #222;
+      border-bottom: 3px solid #aaa;
+      padding-bottom: 10px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #444;
+      margin-top: 25px;
+      font-size: 1.3em;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+      text-align: justify;
+    }
+    ul, ol {
+      padding-left: 35px;
+    }
+    li {
+      margin-bottom: 14px;
+    }
+    pre {
+      background-color: #111;
+      color: #0f8;
+      padding: 18px;
+      overflow-x: auto;
+      border-radius: 10px;
+      font-size: 13pt;
+      margin: 20px 0;
+      line-height: 1.5;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    .highlight {
+      background-color: #fff9c4;
+      padding: 4px 8px;
+      border-radius: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.95em;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #e0e0e0;
+      font-weight: bold;
+    }
+    .note {
+      background-color: #e8f4fd;
+      border-left: 5px solid #2196f3;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 18px; margin-bottom: 25px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin: 20px 0; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 14px; margin-bottom: 20px; }
+      pre { font-size: 11.5pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 3: Object Oriented Analysis [6 Hrs.]</b></h1>
+
+  <div class="section">
+    <h2><b>3.1 Domain Modeling and Concept Modeling Relationships</b></h2>
+    <p>Domain modeling is the most critical activity in Object-Oriented Analysis (OOA). It involves creating a conceptual model of the real-world problem domain — independent of implementation details — that captures important entities, their attributes, and how they relate to each other.</p>
+
+    <h3>Objectives of Domain Modeling</h3>
+    <ul>
+      <li>Understand the problem domain deeply from the business/user perspective.</li>
+      <li>Identify core concepts (nouns → candidate classes) and relationships.</li>
+      <li>Create a stable foundation for use-case realization and system design.</li>
+      <li>Provide a shared vocabulary between stakeholders, analysts, and developers.</li>
+      <li>Avoid premature design decisions (implementation classes come later).</li>
+    </ul>
+
+    <h3>Key Elements in Domain Modeling</h3>
+    <ul>
+      <li><b>Conceptual Classes:</b> Important "things" in the domain (nouns or noun phrases). E.g., Book, Member, Loan, Reservation, Fine.</li>
+      <li><b>Attributes:</b> Characteristics of classes (simple data types or other classes). E.g., title: String, dueDate: Date, fineAmount: float.</li>
+      <li><b>Associations / Relationships:</b> How classes are connected. Named with verb phrases. Multiplicity must be specified (1, *, 0..1, 1..*, etc.).</li>
+      <li><b>Generalization / Specialization:</b> Is-a relationships (inheritance). E.g., Student is-a Member.</li>
+    </ul>
+
+    <h3>Common Types of Relationships in Domain Models</h3>
+    <table>
+      <tr><th>Relationship Type</th><th>UML Symbol</th><th>Description</th><th>Example</th></tr>
+      <tr><td>Association</td><td>solid line</td><td>General structural link between classes</td><td>Member borrows Book</td></tr>
+      <tr><td>Aggregation</td><td>hollow diamond</td><td>Whole-part, part can exist independently</td><td>ShoppingCart has Items</td></tr>
+      <tr><td>Composition</td><td>filled diamond</td><td>Whole-part, part destroyed if whole is destroyed</td><td>Order has OrderItems</td></tr>
+      <tr><td>Generalization</td><td>solid line + hollow arrow</td><td>Is-a / inheritance relationship</td><td>PremiumMember is-a Member</td></tr>
+      <tr><td>Dependency</td><td>dashed line + arrow</td><td>One class uses another temporarily</td><td>Payment uses PaymentGateway</td></tr>
+    </table>
+
+    <p><b>Real-world Domain Model Example: Library Management System</b></p>
+    <pre><code>
+// Textual UML-like Domain Model (Conceptual Class Diagram)
+class Library {
+  name: String
+}
+
+class Member {
+  memberId: String
+  name: String
+  email: String
+  registrationDate: Date
+  membershipType: String  // Regular, Premium, Student
+}
+
+class Book {
+  isbn: String
+  title: String
+  author: String
+  publicationYear: int
+  category: String
+  totalCopies: int
+  availableCopies: int
+}
+
+class Loan {
+  loanId: String
+  borrowDate: Date
+  dueDate: Date
+  returnDate: Date
+  fineAmount: float
+}
+
+class Reservation {
+  reservationId: String
+  reservationDate: Date
+  status: String  // Pending, Fulfilled, Cancelled
+}
+
+// Relationships
+Library "1" -- "0..*" Member     : registers >
+Library "1" -- "0..*" Book       : contains >
+Member  "1" -- "0..*" Loan       : has >
+Book    "1" -- "0..*" Loan       : is borrowed in >
+Member  "1" -- "0..*" Reservation: makes >
+Book    "1" -- "0..*" Reservation: is reserved for >
+    </code></pre>
+
+    <div class="note">
+      <b>Best Practice Tip:</b> Use noun phrase identification from requirements/use cases to find candidate classes. Apply filters: eliminate redundant, external, or implementation-specific terms.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>3.2 Identifying Classes, Attributes, Methods</b></h2>
+    <p>From the domain model and use cases, we refine conceptual classes into more detailed analysis classes. We also begin identifying responsibilities (methods) using <b>CRC cards</b> (Class-Responsibility-Collaboration) or responsibility-driven design.</p>
+
+    <h3>Steps to Identify Classes, Attributes, Methods</h3>
+    <ol>
+      <li><b>Noun Phrase Identification:</b> Scan requirements and use-case descriptions for nouns/noun phrases → candidate classes.</li>
+      <li><b>Apply Filters:</b> Remove: synonyms, external actors, attributes disguised as classes, implementation terms (e.g., database, button).</li>
+      <li><b>Attribute Identification:</b> Look for adjectives, possessive phrases, or data mentioned with the noun (e.g., "book title" → title attribute of Book).</li>
+      <li><b>Responsibility Identification (Methods):</b>
+        <ul>
+          <li>What does this class know? (information-related → getters, calculations)</li>
+          <li>What can this class do? (behavior → actions, state changes)</li>
+          <li>Who initiates the behavior? (collaboration)</li>
+        </ul>
+      </li>
+      <li><b>CRC Card Technique:</b> For each class: write Class name, Responsibilities (what it does/knows), Collaborators (other classes it needs).</li>
+    </ol>
+
+    <h3>Example: Online Shopping System – Class Identification & Responsibilities</h3>
+    <pre><code>
+// Candidate Classes after filtering
+class Customer
+class Product
+class ShoppingCart
+class Order
+class OrderItem
+class Payment
+class Address
+class Category
+
+// Detailed with Attributes & Methods (Analysis Level)
+
+class Customer {
+  - customerId: String
+  - name: String
+  - email: String
+  - phone: String
+  - addresses: List&lt;Address&gt;
+  + register()
+  + login()
+  + addToCart(Product, quantity)
+  + placeOrder()
+  + viewOrderHistory()
+}
+
+class ShoppingCart {
+  - cartId: String
+  - customer: Customer
+  - items: List&lt;CartItem&gt;
+  + addItem(Product, quantity)
+  + removeItem(Product)
+  + updateQuantity(Product, newQty)
+  + calculateTotal()
+  + clear()
+}
+
+class Order {
+  - orderId: String
+  - orderDate: Date
+  - status: String  // Pending, Paid, Shipped, Delivered, Cancelled
+  - totalAmount: double
+  - shippingAddress: Address
+  - payment: Payment
+  - items: List&lt;OrderItem&gt;
+  + createFromCart(ShoppingCart)
+  + applyDiscount(Discount)
+  + confirmPayment()
+  + cancel()
+  + getStatus()
+}
+    </code></pre>
+
+    <p><b>Common Mistakes to Avoid:</b></p>
+    <ul>
+      <li>God classes (too many responsibilities)</li>
+      <li>Modeling database tables instead of domain concepts</li>
+      <li>Confusing attributes with classes (e.g., Address should be class, not just String in Customer)</li>
+      <li>Ignoring multiplicity and direction of associations</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><b>3.3 Behavior Modeling using State Diagrams and Activity Diagrams</b></h2>
+    <p>While class/structural diagrams show "what exists", behavior diagrams show "what happens over time".</p>
+
+    <h3>State Machine Diagram (Statechart Diagram)</h3>
+    <p>Models lifecycle of an object — states it can be in and transitions triggered by events, guarded by conditions, with possible effects.</p>
+    <ul>
+      <li><b>State:</b> Condition/situation during lifetime (rounded rectangle)</li>
+      <li><b>Transition:</b> Arrow showing change (event [guard] / action)</li>
+      <li><b>Initial / Final Pseudostate</b></li>
+      <li><b>Composite / Submachine states</b> for complex lifecycles</li>
+    </ul>
+
+    <p><b>Example: State Diagram for Order in E-commerce</b></p>
+    <pre><code>
+// Textual State Machine Diagram - Order Lifecycle
+[*] --> Pending : create order
+
+state Pending {
+  [*] --> WaitingForPayment
+  WaitingForPayment --> Paid     : payment received
+  WaitingForPayment --> Cancelled: cancel requested [within 30 min]
+}
+
+state Paid {
+  [*] --> Processing
+  Processing --> Shipped     : items dispatched
+  Processing --> Cancelled   : cancel after payment [refund initiated]
+}
+
+state Shipped {
+  [*] --> InTransit
+  InTransit --> Delivered   : delivery confirmed
+  InTransit --> Returned    : customer returns item
+}
+
+Delivered --> [*] : completed
+Cancelled --> [*] : order terminated
+Returned  --> [*] : refund processed
+    </code></pre>
+
+    <h3>Activity Diagram</h3>
+    <p>Models workflow, business processes, or detailed use-case realization. More flowchart-like than state diagrams.</p>
+    <ul>
+      <li>Action nodes, control flows, decision nodes, fork/join (parallelism), swimlanes (responsibility partitions)</li>
+      <li>Often used to detail main/alternative flows of use cases</li>
+    </ul>
+
+    <p><b>Example: Activity Diagram for Place Order Use Case (with Swimlanes)</b></p>
+    <pre><code>
+// Textual Activity Diagram - Place Order
+partition Customer {
+  [Browse products] --> [Add to cart] --> [View cart] --> Decision: Proceed to checkout?
+    Yes --> [Enter shipping address]
+    No  --> [Continue shopping] --> [Browse products]
+}
+
+partition System {
+  [Validate address] --> [Calculate total + tax + shipping]
+  --> [Display order summary]
+}
+
+partition Customer {
+  [Confirm order] --> [Choose payment method]
+}
+
+partition Payment Gateway {
+  fork
+    --> [Process Credit Card]
+    --> [Process Digital Wallet]
+  join
+}
+
+partition System {
+  Decision: Payment successful?
+    Yes --> [Update order status to Paid] --> [Send confirmation email] --> [*]
+    No  --> [Display error] --> [Return to payment selection]
+}
+    </code></pre>
+
+    <div class="note">
+      <b>State Diagram vs Activity Diagram – Quick Comparison:</b><br>
+      State → Focuses on object lifecycle and state changes.<br>
+      Activity → Focuses on workflow, sequence of actions, possibly across multiple objects/actors.
+    </div>
+  </div>
+</body>
+</html>

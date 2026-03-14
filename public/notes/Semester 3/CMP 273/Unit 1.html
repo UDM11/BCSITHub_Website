@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 1: Introduction – Internet Technology II</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      font-size: 22pt;
+      margin-bottom: 30px;
+    }
+    h2 {
+      color: #34495e;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 8px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #2980b9;
+      margin-top: 25px;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: justify;
+    }
+    ul, ol {
+      padding-left: 30px;
+    }
+    li {
+      margin-bottom: 12px;
+    }
+    pre {
+      background-color: #000000;
+      color: #00ff41;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 13pt;
+      margin: 15px 0;
+      line-height: 1.6;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+    .note {
+      background-color: #e8f5ff;
+      border-left: 5px solid #3498db;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .tip {
+      background-color: #e8fff5;
+      border-left: 5px solid #27ae60;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; margin-bottom: 24px; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 20px; margin-bottom: 28px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin-bottom: 20px; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 16px; margin-bottom: 22px; }
+      pre { font-size: 12pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 1: Introduction – Internet Technology II</b></h1>
+
+  <div class="section">
+    <h2><b>1.1 Understanding Server-side Scripting and PHP Programming</b></h2>
+
+    <p><b>Server-side scripting</b> refers to programs/scripts that run on the web server (not in the user's browser) to generate dynamic web content, process forms, interact with databases, handle authentication, and perform business logic.</p>
+
+    <h3>Client-side vs Server-side Scripting</h3>
+    <table>
+      <tr><th>Aspect</th><th>Client-side (e.g. JavaScript, CSS)</th><th>Server-side (e.g. PHP, Node.js, Python)</th></tr>
+      <tr><td>Execution location</td><td>User's browser</td><td>Web server</td></tr>
+      <tr><td>Code visibility</td><td>Visible in page source</td><td>Not visible to client</td></tr>
+      <tr><td>Database access</td><td>No direct access</td><td>Full access (MySQL, PostgreSQL…)</td></tr>
+      <tr><td>Security</td><td>Low (can be tampered)</td><td>High (logic hidden)</td></tr>
+      <tr><td>Use cases</td><td>UI interactivity, animations</td><td>Form processing, login, file upload, CRUD</td></tr>
+    </table>
+
+    <h3>What is PHP?</h3>
+    <ul>
+      <li>PHP = Hypertext Preprocessor (originally Personal Home Page)</li>
+      <li>Created by Rasmus Lerdorf in 1994 → became open-source in 1995</li>
+      <li>Server-side scripting language designed for web development</li>
+      <li>Embedded directly into HTML</li>
+      <li>Very popular: WordPress, Laravel, Drupal, Joomla, Moodle, Facebook (early versions), Wikipedia…</li>
+      <li>Current stable version (2025): PHP 8.3 / 8.4 (with JIT, attributes, typed properties, match expression, nullsafe operator…)</li>
+    </ul>
+
+    <div class="tip">
+      <b>Why learn PHP in 2025?</b><br>
+      • Still powers ~77% of websites with known server-side language (W3Techs 2025)<br>
+      • Huge job market in Nepal & India (WordPress, custom CMS, e-commerce)<br>
+      • Easy to learn, forgiving syntax, massive community
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>1.2 Installing and Setting up PHP Development Environment</b></h2>
+
+    <p>Three popular all-in-one stacks for beginners:</p>
+
+    <table>
+      <tr><th>Stack</th><th>Full Form</th><th>Operating System</th><th>Best For</th><th>Download</th></tr>
+      <tr><td>XAMPP</td><td>X (cross-platform) + Apache + MySQL + PHP + Perl</td><td>Windows, macOS, Linux</td><td>Most popular for students</td><td>apachefriends.org</td></tr>
+      <tr><td>WAMP</td><td>Windows + Apache + MySQL + PHP</td><td>Windows only</td><td>Windows users who want simple tray icon</td><td>wampserver.com</td></tr>
+      <tr><td>LAMP / MAMP</td><td>Linux / macOS + Apache + MySQL + PHP</td><td>Linux / macOS</td><td>Native development</td><td>—</td></tr>
+      <tr><td>Laragon</td><td>—</td><td>Windows</td><td>Modern, fast, auto virtual hosts</td><td>laragon.org</td></tr>
+      <tr><td>Docker + PHP</td><td>—</td><td>Any</td><td>Professional / production-like</td><td>docker.com</td></tr>
+    </table>
+
+    <h3>Step-by-step: Installing XAMPP (Recommended for beginners)</h3>
+    <ol>
+      <li>Go to <a href="https://www.apachefriends.org/" target="_blank">https://www.apachefriends.org/</a></li>
+      <li>Download XAMPP for your OS (PHP 8.2 or 8.3 version recommended)</li>
+      <li>Run installer → choose components: Apache, MySQL, PHP, phpMyAdmin</li>
+      <li>Install to: C:\xampp (avoid Program Files due to permission issues)</li>
+      <li>Start XAMPP Control Panel → Start Apache & MySQL</li>
+      <li>Test: Open browser → <code>http://localhost</code> → should show XAMPP dashboard</li>
+      <li>PHP test file: Create <code>C:\xampp\htdocs\test.php</code>
+        <pre><code>&lt;?php
+phpinfo();
+?&gt;</code></pre>
+        Open: <code>http://localhost/test.php</code>
+      </li>
+      <li>phpMyAdmin: <code>http://localhost/phpmyadmin</code> (default user: root, no password)</li>
+    </ol>
+
+    <div class="tip">
+      <b>Common folder path:</b><br>
+      Windows XAMPP → C:\xampp\htdocs\<br>
+      All your project folders go inside htdocs
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>1.3 Basic Syntax and Data Types</b></h2>
+
+    <h3>Basic PHP Syntax Rules</h3>
+    <ul>
+      <li>PHP code starts with <code>&lt;?php</code> and ends with <code>?&gt;</code></li>
+      <li>Statements end with semicolon <code>;</code></li>
+      <li>Case-sensitive for variables & constants (not for keywords)</li>
+      <li>Comments: <code>// single line</code>, <code>/* multi-line */</code>, <code># single line</code></li>
+      <li>Files must have <code>.php</code> extension</li>
+    </ul>
+
+    <h3>PHP Data Types</h3>
+    <table>
+      <tr><th>Type</th><th>Description</th><th>Example</th><th>Check with</th></tr>
+      <tr><td>Integer</td><td>Whole numbers</td><td>$age = 21; $count = -45;</td><td>is_int()</td></tr>
+      <tr><td>Float / Double</td><td>Decimal numbers</td><td>$price = 99.99; $pi = 3.14159;</td><td>is_float()</td></tr>
+      <tr><td>String</td><td>Text</td><td>$name = "Ram"; $msg = 'Hello';</td><td>is_string()</td></tr>
+      <tr><td>Boolean</td><td>true / false</td><td>$is_admin = true;</td><td>is_bool()</td></tr>
+      <tr><td>Array</td><td>Collection of values</td><td>$colors = ["red", "blue"];</td><td>is_array()</td></tr>
+      <tr><td>Object</td><td>User-defined or built-in</td><td>$date = new DateTime();</td><td>is_object()</td></tr>
+      <tr><td>NULL</td><td>No value</td><td>$nothing = null;</td><td>is_null()</td></tr>
+      <tr><td>Resource</td><td>Special (file handle, DB connection)</td><td>$file = fopen(...);</td><td>is_resource()</td></tr>
+    </table>
+
+    <pre><code>&lt;?php
+// Basic syntax example
+$name = "Sita";           // string
+$age  = 20;               // integer
+$gpa  = 3.78;             // float
+$is_student = true;       // boolean
+
+echo "Hello, $name!";     // Hello, Sita!
+echo '<br>Age: ' . $age;
+?&gt;
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h2><b>1.4 Variables and Constants</b></h2>
+
+    <h3>Variables</h3>
+    <ul>
+      <li>Start with <code>$</code> followed by letter or underscore</li>
+      <li>Case-sensitive: $Age ≠ $age</li>
+      <li>No need to declare type (loosely typed)</li>
+      <li>Can change type dynamically</li>
+    </ul>
+
+    <pre><code>$firstName = "Hari";      // string
+$age = 22;               // int
+$age = "twenty two";     // now string (allowed!)
+    </code></pre>
+
+    <h3>Variable Scope</h3>
+    <ul>
+      <li>Local: inside function</li>
+      <li>Global: outside function (use <code>global</code> keyword inside function)</li>
+      <li>Static: retains value between function calls</li>
+      <li>Parameter: function arguments</li>
+    </ul>
+
+    <h3>Constants</h3>
+    <ul>
+      <li>Defined with <code>define("NAME", value)</code> or <code>const NAME = value;</code></li>
+      <li>Cannot be changed once set</li>
+      <li>Usually uppercase</li>
+      <li>Global scope by default</li>
+    </ul>
+
+    <pre><code>define("SITE_NAME", "My College Portal");
+const PI = 3.14159;
+
+echo SITE_NAME;   // My College Portal
+// SITE_NAME = "New Name";   // Error!
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h2><b>1.5 Operators</b></h2>
+
+    <h3>1.5.1 Arithmetic Operators</h3>
+    <table>
+      <tr><th>Operator</th><th>Name</th><th>Example</th><th>Result</th></tr>
+      <tr><td>+</td><td>Addition</td><td>$a + $b</td><td>Sum</td></tr>
+      <tr><td>-</td><td>Subtraction</td><td>$a - $b</td><td>Difference</td></tr>
+      <tr><td>*</td><td>Multiplication</td><td>$a * $b</td><td>Product</td></tr>
+      <tr><td>/</td><td>Division</td><td>$a / $b</td><td>Quotient</td></tr>
+      <tr><td>%</td><td>Modulus</td><td>$a % $b</td><td>Remainder</td></tr>
+      <tr><td>**</td><td>Exponentiation (PHP 5.6+)</td><td>$a ** $b</td><td>$a raised to $b</td></tr>
+    </table>
+
+    <pre><code>$x = 10;
+$y = 3;
+echo $x + $y;   // 13
+echo $x % $y;   // 1
+echo $x ** 2;   // 100
+    </code></pre>
+
+    <h3>1.5.2 Assignment Operators</h3>
+    <table>
+      <tr><th>Operator</th><th>Example</th><th>Equivalent to</th></tr>
+      <tr><td>=</td><td>$x = 5</td><td>—</td></tr>
+      <tr><td>+=</td><td>$x += 3</td><td>$x = $x + 3</td></tr>
+      <tr><td>-=</td><td>$x -= 2</td><td>$x = $x - 2</td></tr>
+      <tr><td>*=</td><td>$x *= 4</td><td>$x = $x * 4</td></tr>
+      <tr><td>/=</td><td>$x /= 2</td><td>$x = $x / 2</td></tr>
+      <tr><td>%=</td><td>$x %= 3</td><td>$x = $x % 3</td></tr>
+      <tr><td>.=</td><td>$str .= " world"</td><td>$str = $str . " world"</td></tr>
+    </table>
+
+    <h3>1.5.3 Logical Operators</h3>
+    <table>
+      <tr><th>Operator</th><th>Name</th><th>Example</th><th>Result</th></tr>
+      <tr><td>&&</td><td>AND</td><td>$a && $b</td><td>true if both true</td></tr>
+      <tr><td>||</td><td>OR</td><td>$a || $b</td><td>true if at least one true</td></tr>
+      <tr><td>!</td><td>NOT</td><td>!$a</td><td>inverts value</td></tr>
+      <tr><td>xor</td><td>Exclusive OR</td><td>$a xor $b</td><td>true if exactly one is true</td></tr>
+    </table>
+
+    <pre><code>$age = 20;
+$is_student = true;
+
+if ($age >= 18 && $is_student) {
+    echo "Adult student discount!";
+}
+    </code></pre>
+  </div>
+</body>
+</html>

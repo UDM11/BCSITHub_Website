@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 7: Advanced PHP Concepts – Internet Technology II</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      font-size: 22pt;
+      margin-bottom: 30px;
+    }
+    h2 {
+      color: #34495e;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 8px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #2980b9;
+      margin-top: 25px;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: justify;
+    }
+    pre {
+      background-color: #000000;
+      color: #00ff41;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 13pt;
+      margin: 15px 0;
+      line-height: 1.6;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+    .note {
+      background-color: #e8f5ff;
+      border-left: 5px solid #3498db;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .tip {
+      background-color: #e8fff5;
+      border-left: 5px solid #27ae60;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .warning {
+      background-color: #fff3cd;
+      border-left: 5px solid #e67e22;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; margin-bottom: 24px; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 20px; margin-bottom: 28px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin-bottom: 20px; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 16px; margin-bottom: 22px; }
+      pre { font-size: 12pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 7: Advanced PHP Concepts</b></h1>
+
+  <div class="section">
+    <h2><b>7.1 Object-oriented Programming (OOP) in PHP</b></h2>
+
+    <p>OOP in PHP allows organizing code into reusable, modular units called **classes** and **objects**. PHP has supported OOP since PHP 5 (2004) and continues to improve it significantly in PHP 7.x and 8.x (typed properties, constructor property promotion, attributes, enums, readonly properties, etc.).</p>
+
+    <h3>Core OOP Principles Supported in PHP</h3>
+    <ul>
+      <li>Encapsulation (data hiding)</li>
+      <li>Inheritance (extends)</li>
+      <li>Polymorphism (method overriding, interfaces)</li>
+      <li>Abstraction (abstract classes, interfaces)</li>
+    </ul>
+
+    <div class="note">
+      PHP is **not** a purely object-oriented language — it supports both procedural and OOP styles. Modern frameworks (Laravel, Symfony) are almost fully OOP-based.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>7.2 Creating and Using Classes and Objects</b></h2>
+
+    <pre><code>&lt;?php
+// Class definition
+class Student {
+    // Properties (attributes)
+    public $name;
+    public $roll;
+    public $gpa;
+
+    // Constructor (called automatically when object is created)
+    public function __construct($name, $roll, $gpa) {
+        $this->name = $name;
+        $this->roll = $roll;
+        $this->gpa  = $gpa;
+    }
+
+    // Method (behavior)
+    public function getDetails() {
+        return "Name: {$this->name}, Roll: {$this->roll}, GPA: {$this->gpa}";
+    }
+}
+
+// Creating objects (instances)
+$s1 = new Student("Ram Sharma", "075BCT001", 3.85);
+$s2 = new Student("Sita Gurung", "075BCT015", 3.92);
+
+// Accessing properties & methods
+echo $s1->name . "<br>";               // Ram Sharma
+echo $s1->getDetails() . "<br>";       // Name: Ram Sharma, Roll: 075BCT001, GPA: 3.85
+echo $s2->getDetails();                // Name: Sita Gurung, Roll: 075BCT015, GPA: 3.92
+?&gt;</code></pre>
+
+    <div class="tip">
+      <b>PHP 8+ Constructor Property Promotion (very clean):</b>
+      <pre><code>class Student {
+    public function __construct(
+        public string $name,
+        public string $roll,
+        public float $gpa
+    ) {}
+}</code></pre>
+      Automatically creates and assigns public properties.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>7.3 Properties and Methods</b></h2>
+
+    <h3>Visibility (Access Modifiers)</h3>
+    <table>
+      <tr><th>Modifier</th><th>Accessible from</th><th>Use Case</th></tr>
+      <tr><td>public</td><td>Everywhere</td><td>API methods, properties meant to be accessed directly</td></tr>
+      <tr><td>protected</td><td>Inside class + child classes</td><td>Shared implementation details</td></tr>
+      <tr><td>private</td><td>Only inside the class itself</td><td>Internal state, helper methods</td></tr>
+    </table>
+
+    <pre><code>class Person {
+    public $name;           // accessible from anywhere
+    protected $age;         // accessible in class & subclasses
+    private $ssn;           // only inside Person class
+
+    public function setAge($age) {
+        if ($age >= 0) {
+            $this->age = $age;
+        }
+    }
+
+    public function getAge() {
+        return $this->age;
+    }
+}
+
+class Student extends Person {
+    public function display() {
+        echo $this->name . ", Age: " . $this->age;     // OK (protected)
+        // echo $this->ssn;                            // Error! private
+    }
+}
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h2><b>7.4 Inheritance, Encapsulation, and Polymorphism</b></h2>
+
+    <h3>Inheritance (extends)</h3>
+    <pre><code>class Person {
+    public $name;
+    protected $age;
+
+    public function __construct($name, $age) {
+        $this->name = $name;
+        $this->age  = $age;
+    }
+
+    public function introduce() {
+        return "Hi, I'm {$this->name}, age {$this->age}";
+    }
+}
+
+class Student extends Person {
+    public $roll;
+    public $gpa;
+
+    public function __construct($name, $age, $roll, $gpa) {
+        parent::__construct($name, $age);     // call parent constructor
+        $this->roll = $roll;
+        $this->gpa  = $gpa;
+    }
+
+    // Method overriding
+    public function introduce() {
+        return parent::introduce() . ", Roll: {$this->roll}, GPA: {$this->gpa}";
+    }
+}
+
+$s = new Student("Hari", 21, "075BCT010", 3.65);
+echo $s->introduce();
+    </code></pre>
+
+    <h3>Encapsulation</h3>
+    <ul>
+      <li>Bundling data (properties) and methods that operate on data</li>
+      <li>Hide internal details using private/protected</li>
+      <li>Expose only necessary interface (public methods)</li>
+    </ul>
+
+    <h3>Polymorphism</h3>
+    <ul>
+      <li>Same method name behaves differently in different classes</li>
+      <li>Achieved via method overriding</li>
+      <li>Also via interfaces (implements)</li>
+    </ul>
+
+    <pre><code>interface Printable {
+    public function printInfo();
+}
+
+class Student implements Printable {
+    public function printInfo() {
+        echo "Student info...";
+    }
+}
+
+class Teacher implements Printable {
+    public function printInfo() {
+        echo "Teacher info...";
+    }
+}
+
+// Polymorphism in action
+function displayInfo(Printable $obj) {
+    $obj->printInfo();
+}
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h2><b>7.5 Static Properties and Methods</b></h2>
+
+    <pre><code>class Counter {
+    public static $count = 0;
+
+    public static function increment() {
+        self::$count++;
+    }
+
+    public static function getCount() {
+        return self::$count;
+    }
+}
+
+// No need to create object
+Counter::increment();
+Counter::increment();
+echo Counter::getCount();      // 2
+
+// Static properties are shared across all instances
+$c1 = new Counter();
+$c2 = new Counter();
+echo Counter::$count;          // still 2
+    </code></pre>
+
+    <div class="tip">
+      <b>Common uses of static:</b><br>
+      • Counters, configuration values<br>
+      • Factory methods<br>
+      • Utility/helper methods (e.g. Math::sqrt())<br>
+      • Singleton pattern (though dependency injection is preferred now)
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>7.6 Magic Methods</b></h2>
+
+    <p>Magic methods are special methods that are called automatically in certain situations.</p>
+
+    <table>
+      <tr><th>Magic Method</th><th>Triggered When</th><th>Common Use</th></tr>
+      <tr><td>__construct()</td><td>Object creation</td><td>Initialization</td></tr>
+      <tr><td>__destruct()</td><td>Object destruction</td><td>Cleanup (close files, DB connections)</td></tr>
+      <tr><td>__get($name)</td><td>Access undefined/non-visible property</td><td>Dynamic properties</td></tr>
+      <tr><td>__set($name, $value)</td><td>Set undefined/non-visible property</td><td>Dynamic properties</td></tr>
+      <tr><td>__isset($name)</td><td>isset() on property</td><td>Dynamic properties</td></tr>
+      <tr><td>__toString()</td><td>Object used as string</td><td>echo $obj;</td></tr>
+      <tr><td>__call($method, $args)</td><td>Call undefined method</td><td>Method overloading</td></tr>
+      <tr><td>__invoke()</td><td>Object called as function</td><td>$obj()</td></tr>
+      <tr><td>__clone()</td><td>Object cloned (clone $obj)</td><td>Deep copy control</td></tr>
+    </table>
+
+    <pre><code>class Person {
+    private $data = [];
+
+    public function __set($key, $value) {
+        $this->data[$key] = $value;
+    }
+
+    public function __get($key) {
+        return $this->data[$key] ?? null;
+    }
+
+    public function __toString() {
+        return "Person: " . ($this->data['name'] ?? 'Unknown');
+    }
+}
+
+$p = new Person();
+$p->name = "Sita";
+$p->age  = 20;
+
+echo $p;           // Person: Sita
+echo $p->age;      // 20
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h2><b>7.7 Practical Applications of OOP in PHP Development</b></h2>
+
+    <ul>
+      <li><b>Database Abstraction:</b> Create a Database class with connect, query, prepare methods</li>
+      <li><b>User Management:</b> User / Admin / Student classes with inheritance</li>
+      <li><b>Form Validation:</b> Validator class with rules (required, email, min_length...)</li>
+      <li><b>Authentication System:</b> Auth class with login, logout, isLoggedIn methods</li>
+      <li><b>Model-View-Controller (MVC):</b> Models (data), Controllers (logic), Views (HTML)</li>
+      <li><b>Frameworks:</b> Laravel (Eloquent ORM), Symfony (Entities), CodeIgniter 4 (Models)</li>
+      <li><b>API Development:</b> Controller classes with methods mapped to endpoints</li>
+      <li><b>File Upload Handler:</b> Upload class with validation, resize, storage logic</li>
+    </ul>
+
+    <div class="tip">
+      <b>Modern PHP (2025) OOP trend:</b><br>
+      • Use typed properties & return types<br>
+      • Constructor property promotion<br>
+      • Readonly properties & classes<br>
+      • Enums (PHP 8.1+)<br>
+      • Attributes (annotations)<br>
+      • Dependency Injection → avoid new Class() everywhere
+    </div>
+  </div>
+</body>
+</html>

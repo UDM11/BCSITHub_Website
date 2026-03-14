@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 4: Correlation and Regression Analysis (6 hours)</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.7;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #1a3c6d;
+      font-size: 22pt;
+      margin-bottom: 30px;
+    }
+    h2 {
+      color: #34495e;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 8px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #2980b9;
+      margin-top: 25px;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: justify;
+    }
+    pre, .formula {
+      background-color: #f8f9fa;
+      border-left: 5px solid #3498db;
+      padding: 14px;
+      margin: 15px 0;
+      border-radius: 6px;
+      font-family: Consolas, monospace;
+      font-size: 13.5pt;
+    }
+    .formula {
+      font-size: 15pt;
+      text-align: center;
+      background: #e8f5ff;
+      font-weight: bold;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.97em;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+    .note {
+      background-color: #e8f5ff;
+      border-left: 5px solid #3498db;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .tip {
+      background-color: #e8fff5;
+      border-left: 5px solid #27ae60;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .example {
+      background: #f0f8ff;
+      padding: 12px;
+      border-left: 5px solid #1e90ff;
+      margin: 15px 0;
+    }
+    .interpretation {
+      background: #fdf2e9;
+      padding: 12px;
+      border-left: 5px solid #e67e22;
+      margin: 15px 0;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; margin-bottom: 24px; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 20px; margin-bottom: 28px; }
+      pre, .formula { font-size: 12pt; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin-bottom: 20px; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 16px; margin-bottom: 22px; }
+      pre, .formula { font-size: 12pt; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1><b>Unit 4: Correlation and Regression Analysis (6 hours)</b></h1>
+
+  <div class="section">
+    <h2>4.1 Meaning, Definition of Correlation</h2>
+
+    <p><b>Correlation</b> measures the strength and direction of the linear relationship between two quantitative variables. It tells us how changes in one variable are associated with changes in another.</p>
+
+    <h3>Key Points</h3>
+    <ul>
+      <li>Correlation does NOT imply causation</li>
+      <li>Only measures linear relationship (not non-linear)</li>
+      <li>Range of correlation coefficient (r): –1 to +1</li>
+      <li>Interpretation of r value:
+        <ul>
+          <li>r = +1 → perfect positive linear correlation</li>
+          <li>r = 0 → no linear correlation</li>
+          <li>r = –1 → perfect negative linear correlation</li>
+          <li>|r| > 0.7 → strong correlation</li>
+          <li>|r| 0.4–0.7 → moderate</li>
+          <li>|r| < 0.4 → weak</li>
+        </ul>
+      </li>
+    </ul>
+
+    <div class="interpretation">
+      <b>Nepal IT context examples:</b><br>
+      • Positive correlation: study hours vs BCA semester marks<br>
+      • Negative correlation: server response time vs number of users online<br>
+      • No correlation: student height vs programming skill
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>4.2 Karl Pearson’s Correlation Coefficient</h2>
+
+    <p>Karl Pearson’s product-moment correlation coefficient (r) is the most widely used measure of linear correlation.</p>
+
+    <div class="formula">\[ r = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum (x_i - \bar{x})^2 \sum (y_i - \bar{y})^2}} \]</div>
+
+    <p>or equivalently:</p>
+
+    <div class="formula">\[ r = \frac{\text{Cov}(X,Y)}{s_x \cdot s_y} \]</div>
+
+    <p>Where:</p>
+    <ul>
+      <li>Cov(X,Y) = covariance between X and Y</li>
+      <li>s_x, s_y = standard deviations of X and Y</li>
+    </ul>
+
+    <h3>Properties of Pearson’s r</h3>
+    <ul>
+      <li>–1 ≤ r ≤ +1</li>
+      <li>r = 0 → no linear association</li>
+      <li>Sign indicates direction (+ = direct, – = inverse)</li>
+      <li>Magnitude indicates strength</li>
+      <li>Unaffected by change of origin or scale</li>
+      <li>Only measures linear relationship</li>
+    </ul>
+
+    <div class="example">
+      <b>Small dataset example (study hours vs marks):</b><br>
+      Hours (x): 2, 4, 5, 7, 8<br>
+      Marks (y): 45, 60, 68, 82, 90
+
+      After calculation: r ≈ 0.98 (very strong positive correlation)
+    </div>
+
+    <div class="note">
+      <b>For grouped data:</b> use mid-values of classes and apply same formula with frequencies.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>4.3 Meaning and Definition of Simple Regression</h2>
+
+    <p><b>Regression analysis</b> is used to:</p>
+    <ul>
+      <li>Understand how one variable (dependent) changes with another (independent)</li>
+      <li>Predict / estimate the value of dependent variable for given independent variable(s)</li>
+    </ul>
+
+    <p><b>Simple Linear Regression</b> (one independent variable):</p>
+
+    <div class="formula">\[ Y = a + bX + e \]</div>
+
+    <p>Where:</p>
+    <ul>
+      <li>Y = dependent variable (to be predicted)</li>
+      <li>X = independent variable (predictor)</li>
+      <li>a = intercept (value of Y when X = 0)</li>
+      <li>b = slope / regression coefficient (change in Y per unit change in X)</li>
+      <li>e = error / residual term</li>
+    </ul>
+
+    <h3>Least Squares Method (to find best-fit line)</h3>
+    <p>Minimizes sum of squared vertical distances (residuals) from points to line.</p>
+
+    <div class="formula">\[ b = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2} = r \cdot \frac{s_y}{s_x} \]</div>
+
+    <div class="formula">\[ a = \bar{y} - b \bar{x} \]</div>
+
+    <div class="example">
+      <b>Using previous data (hours vs marks):</b><br>
+      b ≈ 6.5 (each extra hour → ~6.5 marks increase)<br>
+      a ≈ 32.5<br>
+      Regression equation: Marks = 32.5 + 6.5 × Hours
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>4.4 Standard Error of Estimate</h2>
+
+    <p>Standard Error of Estimate (SEE) measures the accuracy of predictions made by the regression line — average distance of actual values from predicted values.</p>
+
+    <div class="formula">\[ S_e = \sqrt{\frac{\sum (y_i - \hat{y}_i)^2}{n-2}} \]</div>
+
+    <p>or</p>
+
+    <div class="formula">\[ S_e = s_y \sqrt{1 - r^2} \]</div>
+
+    <ul>
+      <li>Smaller S_e → better fit / more accurate predictions</li>
+      <li>S_e has same unit as Y</li>
+      <li>When r = ±1 → S_e = 0 (perfect fit)</li>
+      <li>When r = 0 → S_e = s_y (no linear relationship)</li>
+    </ul>
+
+    <div class="note">
+      In IT: Used to evaluate regression models (e.g., predicting server load, response time, sales forecast accuracy).
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>4.5 Coefficient of Determination</h2>
+
+    <p><b>Coefficient of Determination (r²)</b> tells us what proportion of the variation in the dependent variable (Y) is explained by the independent variable (X) in the regression model.</p>
+
+    <div class="formula">\[ r^2 = 1 - \frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \bar{y})^2} = \left( \frac{\text{Cov}(X,Y)}{s_x s_y} \right)^2 \]</div>
+
+    <ul>
+      <li>0 ≤ r² ≤ 1</li>
+      <li>r² = 0 → X explains 0% of variation in Y</li>
+      <li>r² = 1 → X explains 100% of variation in Y</li>
+      <li>r² × 100% = percentage of variance in Y explained by X</li>
+    </ul>
+
+    <div class="example">
+      <b>If r = 0.98 (from earlier example):</b><br>
+      r² = (0.98)² = 0.9604 → 96.04% of variation in marks is explained by study hours<br>
+      Remaining 3.96% due to other factors (sleep, IQ, teaching quality…)
+    </div>
+
+    <div class="tip">
+      <b>Important interpretation tip (common exam question):</b><br>
+      “r² = 0.64” means → 64% of the variation in the dependent variable is explained by the independent variable. The remaining 36% is due to other variables or random error.
+    </div>
+
+    <div class="note">
+      In IT context: r² is widely used to evaluate predictive models (e.g., how well server CPU usage predicts response time, how well code complexity predicts number of bugs).
+    </div>
+  </div>
+
+</body>
+</html>

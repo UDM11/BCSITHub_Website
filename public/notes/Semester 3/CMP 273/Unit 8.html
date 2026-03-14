@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 8: PHP Framework – Internet Technology II</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      font-size: 22pt;
+      margin-bottom: 30px;
+    }
+    h2 {
+      color: #34495e;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 8px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #2980b9;
+      margin-top: 25px;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: justify;
+    }
+    pre {
+      background-color: #000000;
+      color: #00ff41;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 13pt;
+      margin: 15px 0;
+      line-height: 1.6;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+    .note {
+      background-color: #e8f5ff;
+      border-left: 5px solid #3498db;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .tip {
+      background-color: #e8fff5;
+      border-left: 5px solid #27ae60;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .warning {
+      background-color: #fff3cd;
+      border-left: 5px solid #e67e22;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; margin-bottom: 24px; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 20px; margin-bottom: 28px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin-bottom: 20px; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 16px; margin-bottom: 22px; }
+      pre { font-size: 12pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 8: PHP Framework</b></h1>
+
+  <div class="section">
+    <h2><b>8.1 MVC Model</b></h2>
+
+    <p>MVC (Model-View-Controller) is the most popular architectural pattern used in modern PHP web frameworks. It separates application logic into three interconnected components to improve maintainability, scalability, and code organization.</p>
+
+    <h3>MVC Components Explained</h3>
+    <table>
+      <tr><th>Component</th><th>Responsibility</th><th>Typical Files/Folders</th><th>Handles</th></tr>
+      <tr><td><b>Model</b></td><td>Data logic & business rules</td><td>app/Models/, app/Entity/</td><td>Database operations (CRUD), validation rules, calculations</td></tr>
+      <tr><td><b>View</b></td><td>User interface / presentation</td><td>resources/views/, public/assets/</td><td>HTML, CSS, JavaScript, Blade templates (Laravel)</td></tr>
+      <tr><td><b>Controller</b></td><td>Handles user requests & coordinates Model & View</td><td>app/Http/Controllers/</td><td>Receives HTTP request, fetches data from Model, passes to View</td></tr>
+    </table>
+
+    <h3>Typical Request Flow in MVC (Laravel example)</h3>
+    <ol>
+      <li>User sends request (e.g., /students/001)</li>
+      <li>Router matches URL → calls Controller method</li>
+      <li>Controller asks Model to fetch data (Student::find(1))</li>
+      <li>Model queries database → returns data</li>
+      <li>Controller passes data to View</li>
+      <li>View renders HTML → response sent to browser</li>
+    </ol>
+
+    <div class="note">
+      <b>Benefits of MVC separation:</b><br>
+      • Easier teamwork (frontend & backend developers separate)<br>
+      • Code reusability (same Model used in API & web)<br>
+      • Testability (unit test Model & Controller independently)<br>
+      • Maintainability (change UI without touching logic)
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>8.2 Benefits of using the PHP Framework</b></h2>
+
+    <p>Using a PHP framework (Laravel, CodeIgniter, Symfony, Yii, CakePHP, Slim…) saves time and reduces bugs compared to writing everything from scratch.</p>
+
+    <h3>Major Benefits (2025 perspective)</h3>
+    <table>
+      <tr><th>Benefit</th><th>Explanation</th><th>Example (Laravel)</th></tr>
+      <tr><td>Rapid Development</td><td>Built-in tools & conventions</td><td>Artisan CLI, Eloquent ORM, Blade templating</td></tr>
+      <tr><td>Security Built-in</td><td>Protection against common attacks</td><td>CSRF protection, input sanitization, bcrypt hashing</td></tr>
+      <tr><td>Best Practices Enforced</td><td>Follows MVC, PSR standards</td><td>PSR-4 autoloading, middleware pattern</td></tr>
+      <tr><td>Database Abstraction</td><td>Works with multiple DBs easily</td><td>Eloquent ORM supports MySQL, PostgreSQL, SQLite, SQL Server</td></tr>
+      <tr><td>Powerful Features Out-of-Box</td><td>Authentication, routing, validation, caching, queues</td><td>Laravel Breeze / Jetstream for auth scaffolding</td></tr>
+      <tr><td>Community & Ecosystem</td><td>Huge packages (Laravel Nova, Livewire, Filament…)</td><td>Packagist + Laravel ecosystem</td></tr>
+      <tr><td>Scalability & Performance</td><td>Built-in caching, queue, optimization tools</td><td>Redis, Memcached, Horizon, Octane</td></tr>
+      <tr><td>Testing Support</td><td>PHPUnit, Dusk, Pest integrated</td><td>Feature & unit tests easy</td></tr>
+    </table>
+
+    <div class="warning">
+      <b>Trade-off:</b> Frameworks add learning curve and overhead.<br>
+      For very small projects → plain PHP is faster to start.<br>
+      For medium-large projects → framework saves months of work.
+    </div>
+
+    <div class="tip">
+      <b>Most popular PHP frameworks in Nepal/India (2025):</b><br>
+      1. Laravel (dominant in job market)<br>
+      2. CodeIgniter 4 (lightweight, good for beginners)<br>
+      3. Symfony (enterprise-level, components used everywhere)<br>
+      4. Slim (micro-framework for APIs)
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>8.3 Getting Started with PHP Framework</b></h2>
+
+    <p>Most colleges in Nepal teach **Laravel** as the primary framework (very high job demand). Below is a beginner-friendly guide to get started with Laravel.</p>
+
+    <h3>Step-by-step: Laravel Installation (2025 method – Laravel 11.x)</h3>
+    <ol>
+      <li><b>Install PHP & Composer</b>
+        <ul>
+          <li>PHP ≥ 8.2</li>
+          <li>Composer (dependency manager) → https://getcomposer.org/</li>
+        </ul>
+      </li>
+
+      <li><b>Create new Laravel project</b>
+        <pre><code>composer create-project laravel/laravel myproject "11.*"</code></pre>
+        or (recommended – Laravel installer)
+        <pre><code>composer global require laravel/installer
+laravel new myproject</code></pre>
+      </li>
+
+      <li><b>Go to project folder & start server</b>
+        <pre><code>cd myproject
+php artisan serve</code></pre>
+        → Open browser: http://127.0.0.1:8000
+      </li>
+
+      <li><b>Basic folder structure (Laravel 11)</b>
+        <pre>
+app/                ← Application core (Models, Controllers, etc.)
+bootstrap/          ← Application bootstrap
+config/             ← Configuration files
+database/           ← Migrations, seeders, factories
+public/             ← Publicly accessible (index.php, assets)
+resources/          ← Views (Blade), CSS, JS
+routes/             ← Route definitions (web.php, api.php)
+storage/            ← Logs, file uploads, cache
+tests/              ← Automated tests
+vendor/             ← Composer packages
+        </pre>
+      </li>
+
+      <li><b>First route & controller</b>
+        <pre><code>// routes/web.php
+use App\Http\Controllers\WelcomeController;
+
+Route::get('/', [WelcomeController::class, 'index']);
+
+// app/Http/Controllers/WelcomeController.php
+namespace App\Http\Controllers;
+
+class WelcomeController extends Controller
+{
+    public function index()
+    {
+        return view('welcome', ['name' => 'Umesh']);
+    }
+}
+
+// resources/views/welcome.blade.php
+&lt;h1&gt;Hello, {{ $name }}! Welcome to Laravel.&lt;/h1&gt;</code></pre>
+      </li>
+    </ol>
+
+    <h3>Alternative Lightweight Framework: CodeIgniter 4</h3>
+    <pre><code>composer create-project codeigniter4/appstarter myci4project
+cd myci4project
+php spark serve</code></pre>
+
+    <div class="tip">
+      <b>Recommended learning path (2025):</b><br>
+      1. Learn plain PHP + MySQL CRUD first<br>
+      2. Understand MVC pattern<br>
+      3. Start with Laravel (most jobs ask for it)<br>
+      4. Learn Eloquent ORM, Blade, Routing, Middleware, Authentication
+    </div>
+
+    <div class="note">
+      <b>College project tip:</b> Even if syllabus asks for plain PHP, implementing login/registration with classes + MVC structure gives extra marks and looks professional.
+    </div>
+  </div>
+</body>
+</html>

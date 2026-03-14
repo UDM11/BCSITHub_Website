@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 6: Applying GoF Design Patterns [8 Hrs.]</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #111;
+      font-size: 20pt;
+      font-weight: bold;
+      margin: 30px 0;
+    }
+    h2 {
+      color: #222;
+      border-bottom: 3px solid #aaa;
+      padding-bottom: 10px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #444;
+      margin-top: 25px;
+      font-size: 1.3em;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+      text-align: justify;
+    }
+    ul, ol {
+      padding-left: 35px;
+    }
+    li {
+      margin-bottom: 14px;
+    }
+    pre {
+      background-color: #111;
+      color: #0f8;
+      padding: 18px;
+      overflow-x: auto;
+      border-radius: 10px;
+      font-size: 13pt;
+      margin: 20px 0;
+      line-height: 1.5;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    .highlight {
+      background-color: #fff9c4;
+      padding: 4px 8px;
+      border-radius: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.95em;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #e0e0e0;
+      font-weight: bold;
+    }
+    .note, .warning {
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .note {
+      background-color: #e8f4fd;
+      border-left: 5px solid #2196f3;
+    }
+    .warning {
+      background-color: #fff3cd;
+      border-left: 5px solid #ff9800;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 18px; margin-bottom: 25px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin: 20px 0; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 14px; margin-bottom: 20px; }
+      pre { font-size: 11.5pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 6: Applying GoF Design Patterns [8 Hrs.]</b></h1>
+
+  <div class="section">
+    <h2><b>6.1 Adapter (Structural Pattern)</b></h2>
+    <p>Intent: Convert the interface of a class into another interface clients expect. Adapter lets classes work together that couldn't otherwise because of incompatible interfaces.</p>
+    <p>Also known as: Wrapper</p>
+
+    <h3>Types</h3>
+    <ul>
+      <li><b>Class Adapter</b> (uses inheritance)</li>
+      <li><b>Object Adapter</b> (uses composition – more common & flexible)</li>
+    </ul>
+
+    <p><b>Example:</b> Integrate legacy <code>OldPaymentSystem</code> (expects <code>pay(double amount)</code>) with new interface <code>PaymentProcessor</code> (expects <code>processPayment(PaymentRequest req)</code>).</p>
+
+    <pre><code>
+// Target interface (expected by client)
+interface PaymentProcessor {
+  void processPayment(PaymentRequest request);
+}
+
+// Adaptee (legacy class)
+class OldPaymentSystem {
+  public void pay(double amount) {
+    System.out.println("Legacy payment of $" + amount);
+  }
+}
+
+// Object Adapter
+class PaymentAdapter implements PaymentProcessor {
+  private OldPaymentSystem legacy;
+
+  public PaymentAdapter(OldPaymentSystem legacy) {
+    this.legacy = legacy;
+  }
+
+  @Override
+  public void processPayment(PaymentRequest request) {
+    double amount = request.getAmount();
+    legacy.pay(amount);  // delegate
+    // Can add extra logic: logging, conversion, validation
+  }
+}
+
+class PaymentRequest {
+  private double amount;
+  public PaymentRequest(double amt) { amount = amt; }
+  public double getAmount() { return amount; }
+}
+    </code></pre>
+
+    <div class="note">
+      <b>When to use:</b> Integrating third-party libraries, legacy code, incompatible APIs.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>6.2 Factory Method (Creational Pattern)</b></h2>
+    <p>Intent: Define an interface for creating an object, but let subclasses decide which class to instantiate. Factory Method lets a class defer instantiation to subclasses.</p>
+
+    <p><b>Example:</b> Document creation in a framework – Application creates Document, but WordApp creates WordDocument, SpreadsheetApp creates SpreadsheetDocument.</p>
+
+    <pre><code>
+// Product interface
+interface Document {
+  void open();
+  void save();
+}
+
+// Concrete products
+class WordDocument implements Document {
+  public void open() { System.out.println("Opening Word doc"); }
+  public void save() { System.out.println("Saving Word doc"); }
+}
+
+class PdfDocument implements Document {
+  public void open() { System.out.println("Opening PDF"); }
+  public void save() { System.out.println("Saving PDF"); }
+}
+
+// Creator (declares factory method)
+abstract class Application {
+  // Factory method
+  protected abstract Document createDocument();
+
+  public void newDocument() {
+    Document doc = createDocument();
+    doc.open();
+  }
+}
+
+// Concrete creators
+class WordApplication extends Application {
+  @Override
+  protected Document createDocument() {
+    return new WordDocument();
+  }
+}
+
+class PdfApplication extends Application {
+  @Override
+  protected Document createDocument() {
+    return new PdfDocument();
+  }
+}
+    </code></pre>
+
+    <div class="note">
+      <b>Related:</b> Abstract Factory (creates families), Simple Factory (not GoF), Builder.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>6.3 Singleton (Creational Pattern)</b></h2>
+    <p>Intent: Ensure a class has only one instance and provide a global point of access to it.</p>
+
+    <p><b>Common Use Cases:</b> Configuration manager, logger, connection pool, cache, thread pool.</p>
+
+    <pre><code>
+// Thread-safe lazy initialization (double-checked locking)
+public class ConfigurationManager {
+  private static volatile ConfigurationManager instance;
+  private Map&lt;String, String&gt; config = new HashMap&lt;&gt;();
+
+  private ConfigurationManager() {
+    // Load config from file, DB, etc.
+    config.put("maxUsers", "1000");
+  }
+
+  public static ConfigurationManager getInstance() {
+    if (instance == null) {
+      synchronized (ConfigurationManager.class) {
+        if (instance == null) {
+          instance = new ConfigurationManager();
+        }
+      }
+    }
+    return instance;
+  }
+
+  public String getConfig(String key) {
+    return config.get(key);
+  }
+}
+    </code></pre>
+
+    <div class="warning">
+      <b>Pitfalls:</b> Global state (hard to test), multi-threading issues, serialization problems. Prefer dependency injection when possible.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>6.4 Strategy (Behavioral Pattern)</b></h2>
+    <p>Intent: Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm vary independently from clients that use it.</p>
+
+    <p><b>Example:</b> Payment processing – different strategies: CreditCard, PayPal, CashOnDelivery.</p>
+
+    <pre><code>
+interface PaymentStrategy {
+  void pay(double amount);
+}
+
+class CreditCardStrategy implements PaymentStrategy {
+  public void pay(double amount) {
+    System.out.println("Paid $" + amount + " via Credit Card");
+  }
+}
+
+class PayPalStrategy implements PaymentStrategy {
+  public void pay(double amount) {
+    System.out.println("Paid $" + amount + " via PayPal");
+  }
+}
+
+class ShoppingCart {
+  private PaymentStrategy strategy;
+
+  public void setPaymentStrategy(PaymentStrategy strategy) {
+    this.strategy = strategy;
+  }
+
+  public void checkout(double amount) {
+    strategy.pay(amount);
+  }
+}
+    </code></pre>
+
+    <div class="note">
+      <b>Related:</b> State (changes behavior with state), Template Method (skeleton fixed, steps vary).
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>6.5 Composite (Structural Pattern)</b></h2>
+    <p>Intent: Compose objects into tree structures to represent part-whole hierarchies. Composite lets clients treat individual objects and compositions of objects uniformly.</p>
+
+    <p><b>Example:</b> File system (File & Folder), Menu (MenuItem & SubMenu), Organization chart.</p>
+
+    <pre><code>
+abstract class MenuComponent {
+  protected String name;
+
+  public MenuComponent(String name) { this.name = name; }
+
+  public abstract void display();
+  public void add(MenuComponent component) { throw new UnsupportedOperationException(); }
+  public void remove(MenuComponent component) { throw new UnsupportedOperationException(); }
+}
+
+class MenuItem extends MenuComponent {
+  public MenuItem(String name) { super(name); }
+  public void display() {
+    System.out.println("  - " + name);
+  }
+}
+
+class Menu extends MenuComponent {
+  private List&lt;MenuComponent&gt; children = new ArrayList&lt;&gt;();
+
+  public Menu(String name) { super(name); }
+
+  public void add(MenuComponent component) { children.add(component); }
+  public void remove(MenuComponent component) { children.remove(component); }
+
+  public void display() {
+    System.out.println("+ " + name);
+    for (MenuComponent child : children) {
+      child.display();
+    }
+  }
+}
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h2><b>6.6 Façade (Structural Pattern)</b></h2>
+    <p>Intent: Provide a unified interface to a set of interfaces in a subsystem. Façade defines a higher-level interface that makes the subsystem easier to use.</p>
+
+    <p><b>Example:</b> Home Theater system – Facade hides Amplifier, DVDPlayer, Projector, Lights, etc.</p>
+
+    <pre><code>
+class Amplifier { void on() { ... } void setVolume(int v) { ... } }
+class DvdPlayer { void on() { ... } void play(String movie) { ... } }
+class Projector { void on() { ... } void wideScreenMode() { ... } }
+// ... more classes
+
+class HomeTheaterFacade {
+  private Amplifier amp;
+  private DvdPlayer dvd;
+  private Projector proj;
+
+  public HomeTheaterFacade(Amplifier a, DvdPlayer d, Projector p) {
+    this.amp = a; this.dvd = d; this.proj = p;
+  }
+
+  public void watchMovie(String movie) {
+    System.out.println("Get ready to watch a movie...");
+    amp.on();
+    amp.setVolume(5);
+    proj.on();
+    proj.wideScreenMode();
+    dvd.on();
+    dvd.play(movie);
+  }
+
+  public void endMovie() {
+    dvd.stop();
+    dvd.off();
+    proj.off();
+    amp.off();
+  }
+}
+    </code></pre>
+
+    <div class="note">
+      <b>Benefit:</b> Reduces coupling between client and subsystem.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>6.7 Observer / Publish-Subscribe / Delegation Event Model (Behavioral Pattern)</b></h2>
+    <p>Intent: Define a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically.</p>
+    <p>Also known as: Dependents, Publish-Subscribe</p>
+
+    <p><b>Example:</b> Stock price changes → notify all registered displays (mobile app, web dashboard, ticker).</p>
+
+    <pre><code>
+interface Observer {
+  void update(String stockSymbol, double price);
+}
+
+class StockSubject {
+  private List&lt;Observer&gt; observers = new ArrayList&lt;&gt;();
+  private String symbol;
+  private double price;
+
+  public StockSubject(String sym) { symbol = sym; }
+
+  public void attach(Observer o) { observers.add(o); }
+  public void detach(Observer o) { observers.remove(o); }
+
+  public void setPrice(double newPrice) {
+    price = newPrice;
+    notifyObservers();
+  }
+
+  private void notifyObservers() {
+    for (Observer o : observers) {
+      o.update(symbol, price);
+    }
+  }
+}
+
+class MobileApp implements Observer {
+  public void update(String symbol, double price) {
+    System.out.println("Mobile: " + symbol + " now $" + price);
+  }
+}
+
+class WebDashboard implements Observer {
+  public void update(String symbol, double price) {
+    System.out.println("Dashboard: Alert! " + symbol + " = $" + price);
+  }
+}
+    </code></pre>
+
+    <div class="note">
+      <b>Modern variations:</b> JavaFX Properties, Reactive Streams (RxJava), Event Bus libraries, MVC (View observes Model).
+    </div>
+  </div>
+</body>
+</html>

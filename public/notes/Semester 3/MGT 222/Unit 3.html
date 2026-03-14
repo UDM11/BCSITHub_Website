@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Unit III: Decision Making (7 hrs.)</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.7;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #1a3c6d;
+      font-size: 24pt;
+      margin-bottom: 30px;
+    }
+    h2 {
+      color: #1a3c6d;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 8px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #2c5282;
+      margin-top: 28px;
+      font-size: 1.25em;
+    }
+    .section {
+      background: white;
+      padding: 24px;
+      margin-bottom: 32px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    ul, ol {
+      padding-left: 28px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.97em;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #d1d5db;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #ebf8ff;
+      color: #2b6cb0;
+      font-weight: bold;
+    }
+    .note {
+      background-color: #e6fffa;
+      border-left: 5px solid #0c8599;
+      padding: 16px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .warning {
+      background-color: #fff5f5;
+      border-left: 5px solid #e53e3e;
+      padding: 16px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .process-steps {
+      counter-reset: step;
+      list-style: none;
+      padding-left: 0;
+    }
+    .process-steps li {
+      position: relative;
+      padding-left: 45px;
+      margin-bottom: 24px;
+    }
+    .process-steps li::before {
+      content: counter(step);
+      counter-increment: step;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 32px;
+      height: 32px;
+      background: #3498db;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; margin-bottom: 24px; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 20px; margin-bottom: 28px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin-bottom: 20px; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 16px; margin-bottom: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1><b>Unit III: Decision Making (7 hrs.)</b></h1>
+
+  <div class="section">
+    <h2>3.3 Concept of Decision Making</h2>
+
+    <p><b>Decision making</b> is the process of choosing among two or more alternatives to achieve a desired outcome. It is the core of management — managers make decisions constantly at every level (strategic, tactical, operational).</p>
+
+    <ul>
+      <li>Decision = Commitment to a course of action</li>
+      <li>Involves: identifying problems/opportunities, gathering information, evaluating alternatives, selecting & implementing the best option, and reviewing results</li>
+      <li>Can be individual or group-based</li>
+      <li>Quality of decisions significantly affects organizational performance</li>
+    </ul>
+
+    <div class="note">
+      <b>Decision vs Choice</b><br>
+      Choice = selecting from given options<br>
+      Decision = broader process (includes problem identification, analysis, implementation)
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>3.4 Types of Decision Making</h2>
+
+    <table>
+      <tr>
+        <th>Basis</th>
+        <th>Type</th>
+        <th>Characteristics</th>
+        <th>Examples</th>
+        <th>Level</th>
+      </tr>
+      <tr>
+        <td rowspan="2"><b>Programmed vs Non-programmed</b></td>
+        <td>Programmed / Routine</td>
+        <td>Repetitive, structured, rules/procedures exist</td>
+        <td>Reordering inventory when stock reaches reorder point, granting leave per policy</td>
+        <td>Lower & middle</td>
+      </tr>
+      <tr>
+        <td>Non-programmed / Non-routine</td>
+        <td>Unstructured, novel, no standard procedure</td>
+        <td>Launching new product, merger/acquisition, crisis response</td>
+        <td>Top level</td>
+      </tr>
+      <tr>
+        <td rowspan="3"><b>Individual vs Group</b></td>
+        <td>Individual</td>
+        <td>Single person decides</td>
+        <td>Daily operational choices</td>
+        <td>All levels</td>
+      </tr>
+      <tr>
+        <td>Group / Collective</td>
+        <td>Team, committee, consensus</td>
+        <td>Strategic decisions, policy making</td>
+        <td>Top & middle</td>
+      </tr>
+      <tr>
+        <td>Collaborative (with stakeholders)</td>
+        <td>Involves external parties</td>
+        <td>Joint ventures, partnerships</td>
+        <td>Top level</td>
+      </tr>
+      <tr>
+        <td rowspan="3"><b>Strategic, Tactical, Operational</b></td>
+        <td>Strategic</td>
+        <td>Long-term, organization-wide, high risk</td>
+        <td>Entering new market, diversification</td>
+        <td>Top management</td>
+      </tr>
+      <tr>
+        <td>Tactical</td>
+        <td>Medium-term, departmental</td>
+        <td>Annual budgeting, marketing campaign</td>
+        <td>Middle management</td>
+      </tr>
+      <tr>
+        <td>Operational</td>
+        <td>Short-term, day-to-day</td>
+        <td>Scheduling shifts, handling customer complaint</td>
+        <td>Lower management / supervisors</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>3.5 The Decision Making Process</h2>
+
+    <ol class="process-steps">
+      <li><b>Identify the problem / opportunity</b><br>
+          Gap between current & desired state<br>
+          Symptoms vs root causes (use 5-Why, Fishbone diagram)</li>
+      <li><b>Gather relevant information</b><br>
+          Facts, data, stakeholder views<br>
+          Internal & external sources</li>
+      <li><b>Identify alternatives</b><br>
+          Brainstorm creatively<br>
+          Avoid premature judgment</li>
+      <li><b>Weigh evidence / evaluate alternatives</b><br>
+          Criteria: cost, feasibility, risk, time, alignment with goals<br>
+          Quantitative (e.g., NPV) or qualitative methods</li>
+      <li><b>Choose among alternatives</b><br>
+          Select best option (maximizing, satisficing)</li>
+      <li><b>Implement the decision</b><br>
+          Action plan, resource allocation, communication</li>
+      <li><b>Review & evaluate results</b><br>
+          Feedback loop → learn for future decisions<br>
+          Adjust if necessary</li>
+    </ol>
+
+    <div class="note">
+      This is the classical <b>rational model</b> (Simon, 1960).<br>
+      Real-world decisions often deviate due to time pressure, incomplete information, politics, etc.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>3.6 Approaches in Decision Making</h2>
+
+    <table>
+      <tr>
+        <th>Approach</th>
+        <th>Key Thinker(s)</th>
+        <th>Core Idea</th>
+        <th>Assumptions / Features</th>
+        <th>Strengths</th>
+        <th>Limitations</th>
+      </tr>
+      <tr>
+        <td><b>Rationality / Rational Model</b></td>
+        <td>Herbert Simon (early)</td>
+        <td>Choose option that maximizes value</td>
+        <td>Complete information, clear goals, unlimited time & capacity</td>
+        <td>Logical, systematic</td>
+        <td>Unrealistic in practice</td>
+      </tr>
+      <tr>
+        <td><b>Bounded Rationality</b></td>
+        <td>Herbert Simon (1957)</td>
+        <td>Satisficing – choose “good enough” option</td>
+        <td>Limited information, time, cognitive capacity</td>
+        <td>More realistic</td>
+        <td>May miss optimal solution</td>
+      </tr>
+      <tr>
+        <td><b>Intuition</b></td>
+        <td>Daniel Kahneman, Gary Klein</td>
+        <td>Rapid, unconscious pattern recognition</td>
+        <td>Experience-based, fast, emotion-involved</td>
+        <td>Effective in familiar, fast-paced situations</td>
+        <td>Subject to bias, hard to explain</td>
+      </tr>
+      <tr>
+        <td><b>Evidence-Based Management</b></td>
+        <td>Jeffrey Pfeffer, Robert Sutton (2006)</td>
+        <td>Decisions based on best available scientific evidence</td>
+        <td>Like evidence-based medicine — use research, data, not fads</td>
+        <td>Reduces fads & myths</td>
+        <td>Evidence sometimes incomplete or conflicting</td>
+      </tr>
+      <tr>
+        <td><b>Crowdsourcing</b></td>
+        <td>James Surowiecki (Wisdom of Crowds, 2004)</td>
+        <td>Leverage collective intelligence</td>
+        <td>Diverse, independent opinions + aggregation</td>
+        <td>Can outperform experts (prediction markets, open innovation)</td>
+        <td>Groupthink, polarization, manipulation risk</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>3.7 Decision Making Biases and Errors</h2>
+
+    <p>Humans systematically deviate from rationality — these are called cognitive biases.</p>
+
+    <table>
+      <tr>
+        <th>Bias / Error</th>
+        <th>Description</th>
+        <th>Example</th>
+        <th>How to Reduce</th>
+      </tr>
+      <tr>
+        <td>Confirmation Bias</td>
+        <td>Seek/interpret information that confirms beliefs</td>
+        <td>Ignoring negative feedback about a favored strategy</td>
+        <td>Actively seek disconfirming evidence</td>
+      </tr>
+      <tr>
+        <td>Anchoring Bias</td>
+        <td>Rely too heavily on first piece of information</td>
+        <td>Initial salary offer anchors final negotiation</td>
+        <td>Consider multiple reference points</td>
+      </tr>
+      <tr>
+        <td>Overconfidence Bias</td>
+        <td>Overestimate own accuracy/judgment</td>
+        <td>CEO believes merger will succeed despite risks</td>
+        <td>Use base rates, pre-mortems</td>
+      </tr>
+      <tr>
+        <td>Availability Heuristic</td>
+        <td>Judge likelihood by ease of recall</td>
+        <td>Overestimate plane crash risk after news coverage</td>
+        <td>Use statistics, not vivid examples</td>
+      </tr>
+      <tr>
+        <td>Sunk Cost Fallacy</td>
+        <td>Continue because of past investment</td>
+        <td>Keep funding failing project “because we’ve spent so much”</td>
+        <td>Ignore sunk costs; focus on future costs/benefits</td>
+      </tr>
+      <tr>
+        <td>Framing Effect</td>
+        <td>Decision changes based on how options are presented</td>
+        <td>“90% success rate” vs “10% failure rate”</td>
+        <td>Reframe problem in multiple ways</td>
+      </tr>
+      <tr>
+        <td>Groupthink</td>
+        <td>Group prioritizes consensus over critical evaluation</td>
+        <td>Challenger space shuttle disaster</td>
+        <td>Devil’s advocate, anonymous input</td>
+      </tr>
+    </table>
+
+    <div class="warning">
+      Biases are universal — even experienced managers fall victim. Awareness + structured processes help mitigate them.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>3.8 Cutting-edge Approaches for Improving Decision Making</h2>
+
+    <ul>
+      <li><b>Behavioral Economics & Nudge Theory</b> (Thaler & Sunstein)<br>
+          Design choice architecture to guide better decisions without restricting freedom (default options, simplification)</li>
+      <li><b>Data-driven / AI-supported Decisions</b><br>
+          Big data, predictive analytics, machine learning, decision support systems, recommendation engines</li>
+      <li><b>Pre-mortems & Red Teaming</b><br>
+          Imagine failure before decision → identify risks early (Gary Klein)</li>
+      <li><b>Scenario Planning & War Gaming</b><br>
+          Shell Oil pioneered — multiple plausible futures → robust strategies</li>
+      <li><b>Agile & Adaptive Decision Making</b><br>
+          Short feedback loops, experimentation, pivoting (startup methodology)</li>
+      <li><b>Algorithmic Decision Making & Explainable AI</b><br>
+          Algorithms for credit scoring, hiring, medical diagnosis — but need transparency & fairness</li>
+      <li><b>Decision Quality Frameworks</b> (e.g., SDG – Strategic Decision Group)<br>
+          Structured dialogue, clear criteria, trade-off analysis</li>
+      <li><b>Cognitive Diversity in Teams</b><br>
+          Diverse perspectives reduce blind spots & groupthink</li>
+    </ul>
+
+    <div class="note">
+      Modern decision making combines human judgment with data, technology, structured processes, and awareness of psychological traps.
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 5: Query Processing [3 Hrs.]</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #111;
+      font-size: 20pt;
+      font-weight: bold;
+      margin: 30px 0;
+    }
+    h2 {
+      color: #222;
+      border-bottom: 3px solid #aaa;
+      padding-bottom: 10px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #444;
+      margin-top: 25px;
+      font-size: 1.3em;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+      text-align: justify;
+    }
+    ul, ol {
+      padding-left: 35px;
+    }
+    li {
+      margin-bottom: 14px;
+    }
+    pre {
+      background-color: #111;
+      color: #0f8;
+      padding: 18px;
+      overflow-x: auto;
+      border-radius: 10px;
+      font-size: 13pt;
+      margin: 20px 0;
+      line-height: 1.5;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.95em;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #e0e0e0;
+      font-weight: bold;
+    }
+    .note {
+      background-color: #e8f4fd;
+      border-left: 5px solid #2196f3;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .warning {
+      background-color: #fff3cd;
+      border-left: 5px solid #ff9800;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 18px; margin-bottom: 25px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin: 20px 0; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 14px; margin-bottom: 20px; }
+      pre { font-size: 11.5pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 5: Query Processing [3 Hrs.]</b></h1>
+
+  <div class="section">
+    <h2><b>5.1 Introduction to Query Processing</b></h2>
+
+    <p>Query processing is the sequence of activities performed by the DBMS to execute a user query and deliver the result.</p>
+
+    <p><b>High-level steps in query processing:</b></p>
+    <ol>
+      <li><b>Parsing & Translation:</b> Validate syntax, convert SQL → internal representation (parse tree / relational algebra tree)</li>
+      <li><b>Optimization:</b> Find the most efficient execution plan among many possible equivalent plans</li>
+      <li><b>Evaluation / Execution:</b> Execute the chosen plan using access methods, join algorithms, etc.</li>
+      <li><b>Result Delivery:</b> Return results to user/application</li>
+    </ol>
+
+    <p><b>Query Processor Components:</b></p>
+    <ul>
+      <li>Parser / Validator</li>
+      <li>Query Rewriter / Normalizer</li>
+      <li>Query Optimizer (cost-based / heuristic)</li>
+      <li>Query Executor / Engine</li>
+      <li>Access Methods (index scan, table scan, join methods)</li>
+    </ul>
+
+    <div class="note">
+      <b>Goal of query processing:</b> Minimize response time and resource consumption (I/O, CPU, memory) while producing correct results.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>5.2 Query Cost Estimation</b></h2>
+
+    <p>Cost-based optimizers estimate the cost of each possible execution plan and choose the one with the lowest estimated cost.</p>
+
+    <h3>Cost Components (most DBMS use I/O cost as dominant)</h3>
+    <ul>
+      <li><b>I/O cost:</b> Number of disk block accesses (seek + transfer time)</li>
+      <li><b>CPU cost:</b> Processing time for comparisons, hashing, sorting</li>
+      <li><b>Memory cost:</b> Buffer usage (less important in modern systems)</li>
+      <li><b>Network cost:</b> In distributed databases</li>
+    </ul>
+
+    <h3>Important Statistics Maintained by DBMS (Statistics / Metadata)</h3>
+    <ul>
+      <li>Number of tuples in relation (cardinality) – |r|</li>
+      <li>Number of blocks – b(r)</li>
+      <li>Number of distinct values for attribute A – V(A, r)</li>
+      <li>Selection cardinality (selectivity) – number of tuples satisfying condition</li>
+      <li>Histogram / distribution information (for better estimation)</li>
+      <li>Index information (height, fan-out, clustering factor)</li>
+    </ul>
+
+    <h3>Cost Estimation Formulas (Simplified)</h3>
+    <pre><code>-- Table scan cost
+Cost = b(R)   // number of blocks in R
+
+-- Index lookup (non-clustered / secondary index)
+Cost ≈ height(index) + number of matching tuples
+
+-- Selection selectivity
+σ_p(R) ≈ |R| × (1 / V(A,R))   for equality condition A = c
+
+-- Join selectivity (natural join R ⋈ S on common attribute)
+Selectivity ≈ 1 / max(V(A,R), V(A,S))
+    </code></pre>
+
+    <div class="warning">
+      <b>Challenge:</b> Accurate statistics are crucial. Outdated statistics → poor plans.  
+      Most DBMS provide commands like ANALYZE TABLE / UPDATE STATISTICS.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>5.3 Query Operations</b></h2>
+
+    <p>DBMS implements several low-level operations efficiently:</p>
+
+    <h3>Selection (σ) Implementation</h3>
+    <ul>
+      <li>File scan / linear search</li>
+      <li>Index scan (B⁺ tree, hash index)</li>
+      <li>Index + lookup (covering index if possible)</li>
+    </ul>
+
+    <h3>Join Algorithms</h3>
+    <table>
+      <tr><th>Algorithm</th><th>Best Case</th><th>Worst Case</th><th>When to Use</th><th>Notes</th></tr>
+      <tr><td>Nested Loop Join</td><td>O(|R| + |S|)</td><td>O(|R| × |S|)</td><td>Small outer relation</td><td>Simple, index on inner helps</td></tr>
+      <tr><td>Block Nested Loop Join</td><td>O(b(R) + b(S))</td><td>O(b(R) × b(S))</td><td>Medium size</td><td>Uses buffer blocks</td></tr>
+      <tr><td>Sort-Merge Join</td><td>O((|R| + |S|) log(|R| + |S|))</td><td>Same</td><td>Sorted or index available</td><td>Good for large relations</td></tr>
+      <tr><td>Hash Join</td><td>O(|R| + |S|)</td><td>O(|R| × |S|) if many collisions</td><td>Large relations, equality join</td><td>Requires memory for hash table</td></tr>
+      <tr><td>Index Join</td><td>Depends on index</td><td>—</td><td>Indexed foreign key</td><td>Very fast for small result</td></tr>
+    </table>
+
+    <h3>Other Operations</h3>
+    <ul>
+      <li>Projection (π) – usually cheap (drop columns)</li>
+      <li>Union, Intersection, Difference – often use sort-merge or hash</li>
+      <li>Sort (ORDER BY) – external merge sort if data > memory</li>
+      <li>Duplicate elimination (DISTINCT) – sort or hash</li>
+      <li>Grouping & Aggregation – hash or sort based</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><b>5.4 Evaluation of Expressions</b></h2>
+
+    <p>Complex queries are translated into relational algebra trees (or query trees).</p>
+
+    <p><b>Evaluation techniques:</b></p>
+    <ul>
+      <li><b>Materialization (Pipelined / On-the-fly):</b> Produce tuples as soon as possible → better for large intermediate results</li>
+      <li><b>Materialization:</b> Store intermediate result on disk → used when memory is limited</li>
+    </ul>
+
+    <p><b>Example Relational Algebra Tree:</b></p>
+    <pre><code>Query:
+SELECT s.name, c.title
+FROM Student s, Enrollment e, Course c
+WHERE s.sid = e.sid AND e.cid = c.cid AND s.dept = 'CS' AND e.grade = 'A';
+
+Relational Algebra:
+π_name,title ( σ_dept='CS' ∧ grade='A' (Student ⋈ Enrollment ⋈ Course) )
+    </code></pre>
+
+    <p><b>Possible execution orders:</b></p>
+    <ul>
+      <li>Apply selections first → reduce cardinality early (pushdown)</li>
+      <li>Join smallest relations first</li>
+      <li>Use indexes for selections and joins</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><b>5.5 Query Optimization</b></h2>
+
+    <p>Query optimization finds the lowest-cost equivalent execution plan.</p>
+
+    <h3>Types of Optimizers</h3>
+    <ul>
+      <li><b>Rule-based / Heuristic:</b> Apply fixed transformation rules (MySQL older versions)</li>
+      <li><b>Cost-based:</b> Enumerate plans, estimate costs using statistics (most modern DBMS: PostgreSQL, Oracle, SQL Server)</li>
+    </ul>
+
+    <h3>Important Optimization Techniques</h3>
+    <ul>
+      <li><b>Selection & Projection Pushdown:</b> Apply σ and π as early as possible</li>
+      <li><b>Join Ordering:</b> Choose best order (dynamic programming or greedy)</li>
+      <li><b>Predicate Pushdown:</b> Move conditions into subqueries/views</li>
+      <li><b>Subquery Unnesting / Flattening:</b> Convert correlated subqueries to joins</li>
+      <li><b>Index Selection:</b> Use covering indexes, clustered indexes</li>
+      <li><b>Materialized Views & Query Rewrite:</b> Use pre-computed results</li>
+      <li><b>Parallel Execution:</b> In distributed / multi-core systems</li>
+    </ul>
+
+    <h3>EXPLAIN / EXPLAIN ANALYZE</h3>
+    <pre><code>-- PostgreSQL / MySQL
+EXPLAIN ANALYZE
+SELECT * FROM Student s JOIN Enrollment e ON s.sid = e.sid
+WHERE s.dept = 'CS';
+
+-- Shows: seq scan vs index scan, join type, estimated vs actual rows, cost
+    </code></pre>
+
+    <div class="note">
+      <b>Key Insight:</b> Optimizer is only as good as its statistics and cost model.  
+      Poor cardinality estimation → wrong plan → slow queries.  
+      Always run ANALYZE / UPDATE STATISTICS after large data changes.
+    </div>
+  </div>
+</body>
+</html>

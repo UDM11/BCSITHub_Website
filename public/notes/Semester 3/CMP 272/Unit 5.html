@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 5: Object Oriented Design Principles [6 Hrs.]</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #111;
+      font-size: 20pt;
+      font-weight: bold;
+      margin: 30px 0;
+    }
+    h2 {
+      color: #222;
+      border-bottom: 3px solid #aaa;
+      padding-bottom: 10px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #444;
+      margin-top: 25px;
+      font-size: 1.3em;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+      text-align: justify;
+    }
+    ul, ol {
+      padding-left: 35px;
+    }
+    li {
+      margin-bottom: 14px;
+    }
+    pre {
+      background-color: #111;
+      color: #0f8;
+      padding: 18px;
+      overflow-x: auto;
+      border-radius: 10px;
+      font-size: 13pt;
+      margin: 20px 0;
+      line-height: 1.5;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    .highlight {
+      background-color: #fff9c4;
+      padding: 4px 8px;
+      border-radius: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.95em;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #e0e0e0;
+      font-weight: bold;
+    }
+    .note, .warning {
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .note {
+      background-color: #e8f4fd;
+      border-left: 5px solid #2196f3;
+    }
+    .warning {
+      background-color: #fff3cd;
+      border-left: 5px solid #ff9800;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 18px; margin-bottom: 25px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin: 20px 0; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 14px; margin-bottom: 20px; }
+      pre { font-size: 11.5pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 5: Object Oriented Design Principles [6 Hrs.]</b></h1>
+
+  <div class="section">
+    <h2><b>5.1 General Responsibility Assignment Software Patterns (GRASP)</b></h2>
+    <p>GRASP (General Responsibility Assignment Software Patterns) are nine fundamental guidelines (by Craig Larman) for assigning responsibilities to classes and objects during object-oriented design. They answer "Who should do what?" to achieve low coupling, high cohesion, and maintainable systems. GRASP patterns guide responsibility assignment in analysis-to-design transition.</p>
+
+    <h3><b>5.1.1 Creator</b></h3>
+    <p>Problem: Who should be responsible for creating instances of a class?<br>
+    Solution: Assign creation responsibility to a class that aggregates, contains, records, closely uses, or has initializing data for the created class (BIE — Benefits, Initialization, Encapsulation).<br>
+    Guidelines (in priority order): Class A creates B if A:</p>
+    <ol>
+      <li>contains / aggregates B (composition/aggregation)</li>
+      <li>records instances of B</li>
+      <li>closely uses B</li>
+      <li>has initializing data for B</li>
+    </ol>
+    <p><b>Example – Point-of-Sale (POS) System:</b> Sale creates SaleLineItem (Sale contains/aggregates line items).</p>
+    <pre><code>
+class Sale {
+  private List&lt;SaleLineItem&gt; lineItems = new ArrayList&lt;&gt;();
+  
+  public SaleLineItem addLineItem(ProductDescription desc, int qty) {
+    SaleLineItem newItem = new SaleLineItem(desc, qty);  // Sale is Creator
+    lineItems.add(newItem);
+    return newItem;
+  }
+}
+    </code></pre>
+
+    <h3><b>5.1.2 Information Expert</b></h3>
+    <p>Problem: What is the basic principle for assigning responsibilities?<br>
+    Solution: Assign a responsibility to the class that has the most information needed to fulfill it ("Information Expert" = the expert on the data).<br>
+    This promotes high cohesion and low coupling.</p>
+    <p><b>Example – Library System:</b> Book knows its own availability → Book should have isAvailable() method, not Librarian.</p>
+    <pre><code>
+class Book {
+  private int availableCopies;
+  
+  public boolean isAvailable() {
+    return availableCopies > 0;  // Information Expert: Book knows its state
+  }
+  
+  public void borrow() {
+    if (isAvailable()) availableCopies--;
+  }
+}
+    </code></pre>
+
+    <h3><b>5.1.3 Controller</b></h3>
+    <p>Problem: Who should handle system events (use case realization)?<br>
+    Solution: Assign to a non-UI class representing the overall system, a use case, or a root object (Facade-like).<br>
+    Types: Use-case controller (one per use case) or facade controller.</p>
+    <p><b>Example – POS:</b> Register (or POSSystem) acts as Controller for "makeSale" use case.</p>
+
+    <h3><b>5.1.4 Low Coupling</b></h3>
+    <p>Problem: How to support low dependency, impact of change, and increased reuse?<br>
+    Solution: Assign responsibilities so coupling between classes remains low (few dependencies).<br>
+    Coupling types: High (bad) vs Low (good). Prefer data coupling over stamp/content coupling.</p>
+
+    <h3><b>5.1.5 High Cohesion</b></h3>
+    <p>Problem: How to keep objects focused, understandable, and manageable?<br>
+    Solution: Assign responsibilities that are strongly related and cohesive (class does one thing well).</p>
+    <table>
+      <tr><th>Principle</th><th>Goal</th><th>Benefit</th><th>Violation Example</th></tr>
+      <tr><td>Low Coupling</td><td>Minimize dependencies</td><td>Easier change, reuse, test</td><td>Order directly calls Database</td></tr>
+      <tr><td>High Cohesion</td><td>Related responsibilities</td><td>Clear, maintainable classes</td><td>Order class handles UI, DB, business logic</td></tr>
+    </table>
+
+    <div class="note">
+      <b>GRASP Summary Tip:</b> Use Information Expert first → then Creator, Controller → evaluate with Low Coupling / High Cohesion.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>5.2 Designing for Visibility</b></h2>
+    <p>Visibility (access modifiers) controls which classes can access attributes/methods. In UML and OO languages, visibility promotes encapsulation and reduces coupling.</p>
+    <table>
+      <tr><th>Visibility</th><th>UML Symbol</th><th>Accessible From</th><th>Use Case</th></tr>
+      <tr><td>Public</td><td>+</td><td>Anywhere</td><td>Interface methods, API</td></tr>
+      <tr><td>Protected</td><td>#</td><td>Same class + subclasses</td><td>Template methods, inheritance</td></tr>
+      <tr><td>Private</td><td>-</td><td>Only same class</td><td>Internal state, helpers</td></tr>
+      <tr><td>Package (default)</td><td>~</td><td>Same package</td><td>Internal utilities in package</td></tr>
+    </table>
+
+    <p><b>Example – UML & Code:</b></p>
+    <pre><code>
+// UML-like
+class Account {
+  + getBalance(): double          // public
+  # calculateInterest(): double   // protected
+  - balance: double               // private
+  ~ transactionLog: List          // package
+}
+
+// Java equivalent
+public class Account {
+  public double getBalance() { return balance; }
+  protected double calculateInterest() { ... }
+  private double balance;
+  List&lt;Transaction&gt; transactionLog;  // package-private
+}
+    </code></pre>
+
+    <div class="warning">
+      <b>Common Mistake:</b> Making everything public → breaks encapsulation, high coupling.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>5.3 SOLID Principles</b></h2>
+    <p>SOLID (by Robert C. Martin / Uncle Bob) are five principles for better class design: maintainable, extensible, flexible code.</p>
+
+    <h3><b>5.3.1 Single Responsibility Principle (SRP)</b></h3>
+    <p>A class should have only one reason to change (one responsibility).</p>
+    <p><b>Violation Example:</b> Order class handles calculation, persistence, printing.<br>
+    <b>Fix:</b> Split into Order (business), OrderRepository (DB), OrderPrinter (UI/report).</p>
+
+    <h3><b>5.3.2 Open Closed Principle (OCP)</b></h3>
+    <p>Classes should be open for extension but closed for modification.</p>
+    <p>Use abstraction (interfaces/abstract classes) + polymorphism.<br>
+    <b>Example:</b> PaymentProcessor with strategy pattern for CreditCard, PayPal, etc.</p>
+    <pre><code>
+interface PaymentProcessor {
+  void process(Payment payment);
+}
+
+class CreditCardProcessor implements PaymentProcessor { ... }
+class PayPalProcessor implements PaymentProcessor { ... }
+
+// Closed for modification, open via new implementations
+    </code></pre>
+
+    <h3><b>5.3.3 Liskov Substitution Principle (LSP)</b></h3>
+    <p>Subclasses must be substitutable for base classes without altering correctness.</p>
+    <p><b>Violation:</b> Square extends Rectangle but overrides setWidth() to change height too.<br>
+    <b>Fix:</b> Avoid mutable inheritance where behavior breaks contract; prefer composition.</p>
+
+    <h3><b>5.3.4 Interface Segregation Principle (ISP)</b></h3>
+    <p>Clients should not depend on interfaces they don't use (many small interfaces > one fat).</p>
+    <p><b>Example:</b> Instead of huge IPrinter with scan/print/fax, have IPrinter, IScanner, IFax.</p>
+
+    <h3><b>5.3.5 Dependency Inversion Principle (DIP)</b></h3>
+    <p>High-level modules should not depend on low-level; both depend on abstractions.<br>
+    Abstractions should not depend on details; details depend on abstractions.</p>
+    <p><b>Example:</b> Use interfaces (abstractions) + dependency injection.</p>
+    <pre><code>
+// High-level depends on abstraction
+class OrderService {
+  private PaymentProcessor processor;  // interface
+  
+  public OrderService(PaymentProcessor p) { this.processor = p; }  // DIP + injection
+}
+    </code></pre>
+
+    <div class="note">
+      <b>SOLID Benefits:</b> Easier testing, refactoring, extension; foundation for design patterns.
+    </div>
+  </div>
+</body>
+</html>

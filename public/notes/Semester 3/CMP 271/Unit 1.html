@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 1: Introduction to Database Management Systems [5 Hrs.]</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #111;
+      font-size: 20pt;
+      font-weight: bold;
+      margin: 30px 0;
+    }
+    h2 {
+      color: #222;
+      border-bottom: 3px solid #aaa;
+      padding-bottom: 10px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #444;
+      margin-top: 25px;
+      font-size: 1.3em;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+      text-align: justify;
+    }
+    ul, ol {
+      padding-left: 35px;
+    }
+    li {
+      margin-bottom: 14px;
+    }
+    pre {
+      background-color: #111;
+      color: #0f8;
+      padding: 18px;
+      overflow-x: auto;
+      border-radius: 10px;
+      font-size: 13pt;
+      margin: 20px 0;
+      line-height: 1.5;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.95em;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #e0e0e0;
+      font-weight: bold;
+    }
+    .note {
+      background-color: #e8f4fd;
+      border-left: 5px solid #2196f3;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 18px; margin-bottom: 25px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin: 20px 0; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 14px; margin-bottom: 20px; }
+      pre { font-size: 11.5pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 1: Introduction [5 Hrs.]</b></h1>
+
+  <div class="section">
+    <h2><b>1.1 History, Database System and Its Applications</b></h2>
+
+    <h3>Brief History of Database Systems</h3>
+    <ul>
+      <li><b>1960s:</b> File-based systems → Hierarchical (IMS by IBM, 1968) and Network (CODASYL) models.</li>
+      <li><b>1970:</b> E.F. Codd publishes "A Relational Model of Data for Large Shared Data Banks" → birth of relational model.</li>
+      <li><b>1970s–80s:</b> First relational DBMS: System R (IBM), INGRES (UC Berkeley), Oracle (1979 – first commercial RDBMS).</li>
+      <li><b>1980s–90s:</b> SQL standardization (ANSI/ISO), widespread adoption of RDBMS (Oracle, DB2, SQL Server, MySQL).</li>
+      <li><b>2000s:</b> Open-source rise (MySQL, PostgreSQL), NoSQL emergence (key-value, document, column-family, graph) for big data & scalability.</li>
+      <li><b>2010s–present:</b> Cloud databases (AWS RDS, Google Cloud Spanner, Azure Cosmos DB), NewSQL (CockroachDB, TiDB), Multimodel, AI-integrated DBMS.</li>
+    </ul>
+
+    <h3>What is a Database System?</h3>
+    <p>A <b>database</b> is an organized collection of structured/related data, typically stored electronically in a computer system.</p>
+    <p>A <b>Database Management System (DBMS)</b> is software that enables users to define, create, maintain, and control access to the database.</p>
+
+    <h3>Major Applications of DBMS</h3>
+    <table>
+      <tr><th>Domain</th><th>Examples</th><th>Key DBMS Features Used</th></tr>
+      <tr><td>Banking</td><td>Accounts, Transactions, Loans</td><td>ACID transactions, Concurrency control, Security</td></tr>
+      <tr><td>Airlines</td><td>Reservations, Flight schedules</td><td>High concurrency, Real-time updates</td></tr>
+      <tr><td>Universities</td><td>Student records, Courses, Grades</td><td>Complex queries, Reporting</td></tr>
+      <tr><td>E-commerce</td><td>Products, Orders, Customers</td><td>Scalability, Search optimization, Transactions</td></tr>
+      <tr><td>Hospitals</td><td>Patient records, Appointments</td><td>Security & privacy (HIPAA), Integrity</td></tr>
+      <tr><td>Social Media</td><td>User profiles, Posts, Relationships</td><td>Graph queries, High write throughput (NoSQL often)</td></tr>
+      <tr><td>Telecom</td><td>Call detail records, Billing</td><td>Big data volume, Analytics</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2><b>1.2 Characteristics of DBMS</b></h2>
+
+    <ul>
+      <li><b>Data Independence:</b> Physical & logical independence (detailed in 1.4)</li>
+      <li><b>Efficient Data Access:</b> Indexing, query optimization</li>
+      <li><b>Data Integrity Constraints:</b> Entity, Referential, Domain, Key constraints</li>
+      <li><b>Concurrent Access & Recovery:</b> Transaction management, ACID properties</li>
+      <li><b>Reduced Application Development Time:</b> Centralized control, standard interfaces (SQL)</li>
+      <li><b>Multiple User Interfaces:</b> GUI tools, SQL, APIs, reporting tools</li>
+      <li><b>Security:</b> Authentication, Authorization, Encryption, Audit trails</li>
+      <li><b>Data Consistency:</b> Enforced via constraints and transactions</li>
+      <li><b>Data Atomicity:</b> All-or-nothing transaction execution</li>
+      <li><b>Backup & Recovery:</b> Automatic logging, point-in-time recovery</li>
+    </ul>
+
+    <div class="note">
+      <b>Comparison: File System vs DBMS</b><br>
+      File systems → data redundancy, no concurrency control, no query language, difficult integrity enforcement.<br>
+      DBMS → centralized control, minimal redundancy, powerful query capability, strong consistency & recovery.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>1.3 Application Architecture (One-tier, Two-tier, N-tier)</b></h2>
+
+    <table>
+      <tr><th>Architecture</th><th>Layers</th><th>Description</th><th>Advantages</th><th>Disadvantages</th><th>Typical Use</th></tr>
+      <tr><td>One-tier (Single-tier)</td><td>All in one</td><td>Application + DBMS + data on same machine</td><td>Simple, fast for small apps</td><td>No scalability, security issues</td><td>Standalone desktop apps (MS Access)</td></tr>
+      <tr><td>Two-tier (Client-Server)</td><td>Client ↔ DBMS</td><td>Client (UI + business logic) connects directly to DBMS</td><td>Simple deployment, good performance</td><td>Fat client, scalability limit, tight coupling</td><td>Small–medium business apps (early client-server)</td></tr>
+      <tr><td>Three-tier</td><td>Presentation ↔ Application ↔ Data</td><td>Separate UI, business logic, and database layers</td><td>Better scalability, maintainability, security</td><td>More complex, higher latency</td><td>Most modern web applications</td></tr>
+      <tr><td>N-tier</td><td>Multiple layers (4+)</td><td>e.g., Presentation, Web, Application, Service, Data, Cache, Load Balancer</td><td>High scalability, flexibility, microservices-ready</td><td>Complex deployment & management</td><td>Enterprise, cloud, large-scale systems</td></tr>
+    </table>
+
+    <pre><code>
+// Typical 3-tier conceptual flow
+Client (Browser / App)
+  → Web Server / API Gateway (Presentation / Controller)
+    → Application Server (Business Logic / Services)
+      → Database Server (DBMS + Data)
+    ← Response flows back
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h2><b>1.4 Data Abstraction and Independence</b></h2>
+
+    <h3>Levels of Data Abstraction (ANSI/SPARC 3-level Architecture)</h3>
+    <ol>
+      <li><b>External / View Level:</b> User-specific views (what users see). Multiple views from same data.</li>
+      <li><b>Conceptual / Logical Level:</b> Community view – overall logical structure (entities, relationships, constraints). Independent of physical storage.</li>
+      <li><b>Internal / Physical Level:</b> How data is actually stored (files, blocks, indexes, compression).</li>
+    </ol>
+
+    <h3>Data Independence</h3>
+    <ul>
+      <li><b>Physical Data Independence:</b> Changes in storage (file structures, indexing) do not affect conceptual schema or applications.</li>
+      <li><b>Logical Data Independence:</b> Changes in conceptual schema (add column, new entity) do not require changes in external views or applications (if properly designed).</li>
+    </ul>
+
+    <div class="note">
+      <b>Benefit:</b> Applications remain stable even when database grows or technology changes.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>1.5 Schemas and Instances</b></h2>
+
+    <ul>
+      <li><b>Schema:</b> Description / blueprint of the database (structure). Relatively static.
+        <ul>
+          <li>Database schema = tables, columns, data types, constraints, relationships</li>
+          <li>Also called intension</li>
+        </ul>
+      </li>
+      <li><b>Instance:</b> Actual data stored at a particular moment (snapshot). Changes frequently.
+        <ul>
+          <li>Also called extension / state</li>
+        </ul>
+      </li>
+    </ul>
+
+    <pre><code>
+// Example
+Schema (DDL):
+CREATE TABLE Student (
+  sid INT PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  dob DATE,
+  gpa DECIMAL(3,2)
+);
+
+Instance (DML - snapshot at time T):
+sid | name          | dob        | gpa
+1   | Ram Sharma    | 2003-05-12 | 3.85
+2   | Sita Gurung   | 2004-01-30 | 3.60
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h2><b>1.6 Database Manager and Users</b></h2>
+
+    <h3>Database Manager / Administrator (DBA) Responsibilities</h3>
+    <ul>
+      <li>Schema definition & modification</li>
+      <li>Storage structure & access method decisions</li>
+      <li>Security & authorization management</li>
+      <li>Performance tuning (indexes, query optimization)</li>
+      <li>Backup, recovery, disaster planning</li>
+      <li>Monitoring usage & resolving concurrency issues</li>
+    </ul>
+
+    <h3>Categories of Database Users</h3>
+    <table>
+      <tr><th>User Type</th><th>Description</th><th>Typical Tools / Access</th></tr>
+      <tr><td>Naive / End Users</td><td>Parametric users (use forms/apps)</td><td>Web/mobile apps, pre-defined queries</td></tr>
+      <tr><td>Sophisticated Users</td><td>Write complex queries, analysts</td><td>SQL directly, BI tools (Tableau, Power BI)</td></tr>
+      <tr><td>Application Programmers</td><td>Develop database applications</td><td>JDBC, ODBC, ORM (Hibernate, Entity Framework)</td></tr>
+      <tr><td>Specialized Users</td><td>Engineers writing complex programs</td><td>Custom tools, simulation software</td></tr>
+      <tr><td>Database Administrator (DBA)</td><td>Manages the DBMS itself</td><td>Admin consoles, scripts, monitoring tools</td></tr>
+    </table>
+  </div>
+</body>
+</html>

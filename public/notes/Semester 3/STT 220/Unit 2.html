@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 2: Summarization and Analysis of Data (8 hours)</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.7;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #1a3c6d;
+      font-size: 22pt;
+      margin-bottom: 30px;
+    }
+    h2 {
+      color: #34495e;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 8px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #2980b9;
+      margin-top: 25px;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: justify;
+    }
+    pre {
+      background-color: #2d2d2d;
+      color: #e6ffed;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 13pt;
+      margin: 15px 0;
+      line-height: 1.6;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.97em;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+    .note {
+      background-color: #e8f5ff;
+      border-left: 5px solid #3498db;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .tip {
+      background-color: #e8fff5;
+      border-left: 5px solid #27ae60;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .example {
+      background: #f0f8ff;
+      padding: 12px;
+      border-left: 5px solid #1e90ff;
+      margin: 15px 0;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; margin-bottom: 24px; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 20px; margin-bottom: 28px; }
+      pre { font-size: 12pt; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin-bottom: 20px; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 16px; margin-bottom: 22px; }
+      pre { font-size: 12pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 2: Summarization and Analysis of Data (8 hours)</b></h1>
+
+  <div class="section">
+    <h2>2.1 Construction of GFD, Relative frequency, Cumulative frequency distribution</h2>
+
+    <p>Raw data (ungrouped observations) is difficult to understand. Frequency distributions summarize and organize data for easier analysis.</p>
+
+    <h3>Types of Frequency Distributions</h3>
+
+    <table>
+      <tr>
+        <th>Type</th>
+        <th>Meaning</th>
+        <th>How to Construct</th>
+        <th>Use</th>
+      </tr>
+      <tr>
+        <td><b>Grouped Frequency Distribution (GFD)</b></td>
+        <td>Data grouped into classes/intervals</td>
+        <td>
+          1. Find range = max – min<br>
+          2. Decide number of classes (Sturges’ rule: k ≈ 1 + 3.322 log₁₀ n)<br>
+          3. Class width = range / k (usually round up)<br>
+          4. Make class intervals (exclusive or inclusive)<br>
+          5. Tally frequencies
+        </td>
+        <td>Large data sets, histograms, analysis</td>
+      </tr>
+      <tr>
+        <td><b>Relative Frequency Distribution</b></td>
+        <td>Proportion or percentage of total observations in each class</td>
+        <td>Relative freq = (class frequency) / total observations</td>
+        <td>Compare distributions of different sizes</td>
+      </tr>
+      <tr>
+        <td><b>Cumulative Frequency Distribution</b></td>
+        <td>Running total of frequencies (less than or more than type)</td>
+        <td>Cumulative freq = sum of frequencies up to that class</td>
+        <td>Ogive graphs, percentiles, median from graph</td>
+      </tr>
+    </table>
+
+    <div class="example">
+      <b>Marks of 40 students (out of 100):</b><br>
+      45, 62, 78, 55, 89, 67, 72, 81, 48, 93, 60, 75, 82, 50, 88, 65, 70, 77, 84, 52, 91, 58, 74, 80, 66, 85, 53, 69, 76, 83, 59, 71, 79, 86, 54, 68, 73, 87, 61, 90
+
+      <b>Step 1:</b> Range = 93 – 45 = 48<br>
+      <b>Step 2:</b> No. of classes ≈ 1 + 3.322 log₁₀(40) ≈ 6–7 (take 6)<br>
+      <b>Step 3:</b> Class width ≈ 48 / 6 = 8 (take 10 for simplicity)
+
+      <b>Grouped Frequency Distribution (class width 10):</b>
+
+      <table>
+        <tr><th>Class Interval</th><th>Tally</th><th>Frequency</th><th>Relative Freq (%)</th><th>Cumulative Freq</th></tr>
+        <tr><td>45 – 54</td><td>||||||</td><td>6</td><td>15.0</td><td>6</td></tr>
+        <tr><td>55 – 64</td><td>||||||||</td><td>8</td><td>20.0</td><td>14</td></tr>
+        <tr><td>65 – 74</td><td>||||||||||</td><td>10</td><td>25.0</td><td>24</td></tr>
+        <tr><td>75 – 84</td><td>||||||||||</td><td>10</td><td>25.0</td><td>34</td></tr>
+        <tr><td>85 – 94</td><td>||||||</td><td>6</td><td>15.0</td><td>40</td></tr>
+        <tr><td>Total</td><td>—</td><td>40</td><td>100.0</td><td>—</td></tr>
+      </table>
+    </div>
+
+    <div class="tip">
+      <b>Exam tip:</b> Always show class intervals clearly (inclusive/exclusive), calculate class marks if needed for mean, and draw ogive for cumulative.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>2.1 Measure of Central Tendency</h2>
+
+    <p>Measures of central tendency give a single value that represents the “center” or typical value of the data set.</p>
+
+    <table>
+      <tr>
+        <th>Measure</th>
+        <th>Definition</th>
+        <th>Formula / Method</th>
+        <th>Best Used When</th>
+        <th>Sensitive to Extreme Values?</th>
+      </tr>
+      <tr>
+        <td><b>Arithmetic Mean (Average)</b></td>
+        <td>Sum of values divided by number of values</td>
+        <td>μ = Σx / n (ungrouped)<br> x̄ = Σ(f×x) / Σf (grouped)</td>
+        <td>Symmetrical data, interval/ratio scale</td>
+        <td>Yes (very sensitive)</td>
+      </tr>
+      <tr>
+        <td><b>Median</b></td>
+        <td>Middle value when data ordered</td>
+        <td>n odd → (n+1)/2 th item<br>n even → average of n/2 and (n/2)+1 th items</td>
+        <td>Skewed data, ordinal scale, outliers present</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td><b>Mode</b></td>
+        <td>Most frequent value</td>
+        <td>Highest frequency class (grouped: modal class)</td>
+        <td>Nominal data, categorical data, multimodal</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td><b>Geometric Mean</b></td>
+        <td>nth root of product of n values</td>
+        <td>GM = (x₁ × x₂ × … × xₙ)^(1/n)</td>
+        <td>Growth rates, ratios, percentages</td>
+        <td>Yes</td>
+      </tr>
+      <tr>
+        <td><b>Harmonic Mean</b></td>
+        <td>n divided by sum of reciprocals</td>
+        <td>HM = n / Σ(1/xᵢ)</td>
+        <td>Rates, speeds, time per unit distance</td>
+        <td>Yes</td>
+      </tr>
+    </table>
+
+    <div class="example">
+      <b>Data: 12, 15, 18, 20, 22, 25, 30, 100</b><br>
+      Mean = 30.25 (pulled up by 100)<br>
+      Median = (20 + 22)/2 = 21 (not affected by 100)<br>
+      Mode = no mode (all unique)
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>2.2 Measure of Location</h2>
+
+    <p>Measures of location (also called quantiles or positional averages) divide the data into equal parts.</p>
+
+    <h3>Main Measures</h3>
+    <table>
+      <tr>
+        <th>Measure</th>
+        <th>Divides data into</th>
+        <th>Calculation (ungrouped)</th>
+        <th>Use</th>
+      </tr>
+      <tr>
+        <td>Median (Q₂)</td>
+        <td>2 equal parts (50%)</td>
+        <td>(n+1)/2 th value</td>
+        <td>Middle value</td>
+      </tr>
+      <tr>
+        <td>Quartiles (Q₁, Q₃)</td>
+        <td>4 equal parts</td>
+        <td>Q₁ = (n+1)/4 th value<br>Q₃ = 3(n+1)/4 th value</td>
+        <td>Spread in lower & upper half</td>
+      </tr>
+      <tr>
+        <td>Deciles (D₁ to D₉)</td>
+        <td>10 equal parts</td>
+        <td>Dₖ = k(n+1)/10 th value</td>
+        <td>Income distribution, test scores</td>
+      </tr>
+      <tr>
+        <td>Percentiles (P₁ to P₉₉)</td>
+        <td>100 equal parts</td>
+        <td>Pₖ = k(n+1)/100 th value</td>
+        <td>Standardized tests (e.g., percentile rank)</td>
+      </tr>
+    </table>
+
+    <div class="tip">
+      <b>Interquartile Range (IQR) = Q₃ – Q₁</b><br>
+      Used to detect outliers: any value < Q₁ – 1.5×IQR or > Q₃ + 1.5×IQR is outlier.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>2.2 Measure of Dispersion</h2>
+
+    <p>Measures of dispersion show how spread out or scattered the data values are around the central value.</p>
+
+    <table>
+      <tr>
+        <th>Measure</th>
+        <th>Definition / Formula</th>
+        <th>Advantages</th>
+        <th>Disadvantages</th>
+        <th>Unit</th>
+      </tr>
+      <tr>
+        <td>Range</td>
+        <td>Maximum – Minimum</td>
+        <td>Very easy to calculate</td>
+        <td>Only uses two values, affected by outliers</td>
+        <td>Same as data</td>
+      </tr>
+      <tr>
+        <td>Quartile Deviation (QD)</td>
+        <td>(Q₃ – Q₁)/2</td>
+        <td>Less affected by extremes</td>
+        <td>Ignores 50% of data</td>
+        <td>Same as data</td>
+      </tr>
+      <tr>
+        <td>Mean Deviation (MD)</td>
+        <td>Σ|x – mean| / n</td>
+        <td>Uses all values</td>
+        <td>Absolute value – not algebraically convenient</td>
+        <td>Same as data</td>
+      </tr>
+      <tr>
+        <td>Variance (σ²)</td>
+        <td>Σ(x – mean)² / n (population)<br>Σ(x – x̄)² / (n–1) (sample)</td>
+        <td>Uses all values, algebraic properties</td>
+        <td>Square unit (not intuitive)</td>
+        <td>Square of data unit</td>
+      </tr>
+      <tr>
+        <td>Standard Deviation (σ)</td>
+        <td>√Variance</td>
+        <td>Same unit as data, most widely used</td>
+        <td>Sensitive to outliers</td>
+        <td>Same as data</td>
+      </tr>
+      <tr>
+        <td>Coefficient of Variation (CV)</td>
+        <td>(σ / mean) × 100%</td>
+        <td>Relative measure – compares dispersion across different units</td>
+        <td>Meaningless if mean ≈ 0</td>
+        <td>Percentage</td>
+      </tr>
+    </table>
+
+    <div class="example">
+      <b>Data: 10, 12, 15, 18, 20</b><br>
+      Mean = 15<br>
+      Range = 20 – 10 = 10<br>
+      Variance = 14 (sample)<br>
+      Std. Dev. ≈ 3.74<br>
+      CV ≈ 24.93%
+    </div>
+
+    <div class="tip">
+      <b>Rule of thumb:</b><br>
+      • For normal distribution → ~68% data within ±1 SD<br>
+      • ~95% within ±2 SD<br>
+      • ~99.7% within ±3 SD
+    </div>
+  </div>
+
+</body>
+</html>

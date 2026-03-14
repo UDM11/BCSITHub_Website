@@ -11,8 +11,8 @@ const semesters = [
     value: '3', 
     label: '3rd Semester', 
     subjects: 5, 
-    notes: 38, 
-    available: false, 
+    notes: 40, 
+    available: true, 
     color: 'from-purple-500 to-indigo-500',
     subjectList: [
       'Linear Algebra and Probability',

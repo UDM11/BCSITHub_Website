@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 3: Normalization [7 Hrs.]</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #111;
+      font-size: 20pt;
+      font-weight: bold;
+      margin: 30px 0;
+    }
+    h2 {
+      color: #222;
+      border-bottom: 3px solid #aaa;
+      padding-bottom: 10px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #444;
+      margin-top: 25px;
+      font-size: 1.3em;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+      text-align: justify;
+    }
+    ul, ol {
+      padding-left: 35px;
+    }
+    li {
+      margin-bottom: 14px;
+    }
+    pre {
+      background-color: #111;
+      color: #0f8;
+      padding: 18px;
+      overflow-x: auto;
+      border-radius: 10px;
+      font-size: 13pt;
+      margin: 20px 0;
+      line-height: 1.5;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.95em;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #e0e0e0;
+      font-weight: bold;
+    }
+    .note {
+      background-color: #e8f4fd;
+      border-left: 5px solid #2196f3;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .warning {
+      background-color: #fff3cd;
+      border-left: 5px solid #ff9800;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 18px; margin-bottom: 25px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin: 20px 0; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 14px; margin-bottom: 20px; }
+      pre { font-size: 11.5pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 3: Normalization [7 Hrs.]</b></h1>
+
+  <div class="section">
+    <h2><b>3.1 Importance of Normalization</b></h2>
+
+    <p>Normalization is a systematic process of organizing data in a database to reduce redundancy and prevent undesirable anomalies during data operations (INSERT, UPDATE, DELETE).</p>
+
+    <h3>Problems in Unnormalized / Poorly Designed Tables (Insertion, Update, Deletion Anomalies)</h3>
+    <table>
+      <tr><th>Anomaly Type</th><th>Description</th><th>Example (Bad Design)</th></tr>
+      <tr><td>Insertion Anomaly</td><td>Cannot insert data without unrelated info</td><td>Cannot add new faculty without assigning a course if faculty-course is in same table</td></tr>
+      <tr><td>Update Anomaly</td><td>Updating one fact requires multiple row changes</td><td>Change faculty phone → update all rows where faculty appears</td></tr>
+      <tr><td>Deletion Anomaly</td><td>Deleting one fact removes unrelated facts</td><td>Delete last student of a course → lose course & instructor info</td></tr>
+    </table>
+
+    <h3>Benefits of Normalization</h3>
+    <ul>
+      <li>Eliminates / minimizes data redundancy</li>
+      <li>Reduces anomalies → improves data integrity</li>
+      <li>Makes database easier to maintain and extend</li>
+      <li>Improves consistency of data</li>
+      <li>Optimizes storage (in most cases)</li>
+      <li>Facilitates query writing (especially joins)</li>
+    </ul>
+
+    <div class="warning">
+      <b>Trade-off:</b> Normalization → more tables → more joins → can reduce read performance.  
+      Solution: Controlled denormalization for read-heavy systems (data warehouses, reporting tables).
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>3.2 Functional Dependencies – Definition, Trivial & Non-trivial FD, Closure of FD Set, Closure of Attributes</b></h2>
+
+    <h3>Functional Dependency (FD) – Definition</h3>
+    <p>A functional dependency <b>X → Y</b> holds on relation R if for every valid instance of R, whenever two tuples agree on all attributes in X, they must also agree on all attributes in Y.</p>
+    <p>In other words: X uniquely determines Y.</p>
+
+    <h3>Types of Functional Dependencies</h3>
+    <ul>
+      <li><b>Trivial FD:</b> Y is a subset of X (always true)<br>Example: {student_id, name} → name</li>
+      <li><b>Non-trivial FD:</b> Y is not a subset of X</li>
+      <li><b>Completely non-trivial:</b> X ∩ Y = ∅</li>
+    </ul>
+
+    <h3>Closure of a Set of Functional Dependencies (F⁺)</h3>
+    <p>The closure F⁺ of a set F of FDs is the set of all FDs that can be logically inferred from F using Armstrong’s axioms.</p>
+
+    <h3>Armstrong’s Axioms (Inference Rules)</h3>
+    <ol>
+      <li><b>Reflexivity:</b> If Y ⊆ X then X → Y (trivial)</li>
+      <li><b>Augmentation:</b> If X → Y then XZ → YZ</li>
+      <li><b>Transitivity:</b> If X → Y and Y → Z then X → Z</li>
+      <li><b>Union:</b> If X → Y and X → Z then X → YZ</li>
+      <li><b>Decomposition:</b> If X → YZ then X → Y and X → Z</li>
+      <li><b>Pseudotransitivity:</b> If X → Y and WY → Z then WX → Z</li>
+    </ol>
+
+    <h3>Attribute Closure (X⁺)</h3>
+    <p>The closure of attribute set X (X⁺) is the set of all attributes that are functionally determined by X (directly or indirectly).</p>
+
+    <pre><code>
+// Algorithm to compute closure of attributes X⁺ given FDs F
+Input: Set of attributes X, Set of FDs F
+Output: X⁺
+
+1. result := X
+2. repeat
+     for each FD U → V in F do
+       if U ⊆ result then
+         result := result ∪ V
+   until result does not change
+3. return result
+
+Example:
+Relation R(A,B,C,D,E)
+FDs: A→B, B→C, AC→D, E→A
+
+Closure of {A,C}:
+Step 1: {A,C}
+Step 2: A→B → add B → {A,B,C}
+        AC→D → add D → {A,B,C,D}
+Step 3: B→C (already have)
+Final: {A,B,C,D}
+    </code></pre>
+
+    <div class="note">
+      <b>Use of closure:</b> Check if X is superkey (X⁺ = all attributes), find candidate keys, test normalization.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>3.3 Integrity and Domain Constraints</b></h2>
+
+    <p>Integrity constraints ensure that database remains consistent and correct.</p>
+
+    <h3>Types of Integrity Constraints</h3>
+    <table>
+      <tr><th>Constraint Type</th><th>Description</th><th>Example</th><th>Enforced By</th></tr>
+      <tr><td>Domain Constraint</td><td>Restricts values in a column</td><td>gpa BETWEEN 0 AND 4.0, gender IN ('M','F','O')</td><td>CHECK, NOT NULL, DEFAULT</td></tr>
+      <tr><td>Entity Integrity</td><td>Primary key cannot be NULL</td><td>student_id NOT NULL & UNIQUE</td><td>PRIMARY KEY</td></tr>
+      <tr><td>Referential Integrity</td><td>Foreign key must match primary key or be NULL</td><td>enrollment.student_id references student.student_id</td><td>FOREIGN KEY … ON DELETE/UPDATE</td></tr>
+      <tr><td>Key Constraint</td><td>Uniqueness</td><td>UNIQUE(email)</td><td>UNIQUE, PRIMARY KEY</td></tr>
+      <tr><td>User-defined / Business Rule</td><td>Complex rules</td><td>age >= 16 for driving license</td><td>CHECK, Triggers</td></tr>
+    </table>
+
+    <p><b>ON DELETE / ON UPDATE options:</b> CASCADE, SET NULL, SET DEFAULT, RESTRICT, NO ACTION</p>
+  </div>
+
+  <div class="section">
+    <h2><b>3.4 Normal Forms (1NF, 2NF, 3NF, BCNF)</b></h2>
+
+    <h3>1NF – First Normal Form</h3>
+    <ul>
+      <li>All attributes are atomic (indivisible)</li>
+      <li>No repeating groups / multi-valued attributes in columns</li>
+      <li>Each column contains values of single domain</li>
+      <li>Usually includes: table has primary key</li>
+    </ul>
+
+    <h3>2NF – Second Normal Form</h3>
+    <ul>
+      <li>Table is in 1NF</li>
+      <li>No partial dependency: non-prime attribute is not dependent on proper subset of candidate key</li>
+    </ul>
+
+    <h3>3NF – Third Normal Form</h3>
+    <ul>
+      <li>Table is in 2NF</li>
+      <li>No transitive dependency: non-prime attribute does not depend on another non-prime attribute</li>
+      <li>Every non-key attribute is directly dependent on candidate key</li>
+    </ul>
+
+    <h3>BCNF – Boyce-Codd Normal Form (Stronger 3NF)</h3>
+    <ul>
+      <li>Table is in 3NF</li>
+      <li>For every non-trivial FD X → Y, X must be a superkey</li>
+      <li>Eliminates anomalies caused by overlapping candidate keys</li>
+    </ul>
+
+    <h3>Comparison Table</h3>
+    <table>
+      <tr><th>Normal Form</th><th>Requirement</th><th>Eliminates</th><th>Preserves FDs?</th><th>Lossless Join?</th></tr>
+      <tr><td>1NF</td><td>Atomic values, no repeating groups</td><td>Repeating groups</td><td>—</td><td>—</td></tr>
+      <tr><td>2NF</td><td>1NF + no partial dependency</td><td>Partial dependencies</td><td>Yes</td><td>Yes</td></tr>
+      <tr><td>3NF</td><td>2NF + no transitive dependency</td><td>Transitive dependencies</td><td>Yes</td><td>Yes</td></tr>
+      <tr><td>BCNF</td><td>Every determinant is a candidate key</td><td>All anomalies from FDs</td><td>May not preserve</td><td>Yes</td></tr>
+    </table>
+
+    <h3>Step-by-step Normalization Example</h3>
+    <pre><code>
+// Unnormalized → 1NF → 2NF → 3NF → BCNF
+
+Unnormalized:
+OrderID | CustomerName | CustomerCity | Product | Quantity | UnitPrice | SupplierName | SupplierCity
+
+1NF (remove repeating groups, atomic values):
+OrderID | CustomerName | CustomerCity | Product | Quantity | UnitPrice | SupplierName | SupplierCity
+
+Candidate keys: {OrderID, Product}
+
+2NF violation: Partial dependency CustomerName → CustomerCity (depends only on OrderID)
+→ Split:
+
+Orders: OrderID PK, CustomerName, CustomerCity
+OrderDetails: OrderID FK, Product PK(composite), Quantity, UnitPrice, SupplierName, SupplierCity
+
+3NF violation: SupplierName → SupplierCity (transitive)
+→ Split further:
+
+Suppliers: SupplierName PK, SupplierCity
+OrderDetails: OrderID FK, Product PK, Quantity, UnitPrice, SupplierName FK
+
+BCNF check: All determinants are keys → already in BCNF
+    </code></pre>
+
+    <div class="note">
+      <b>Practical Tip:</b> Most production databases aim for 3NF (balance between integrity & performance). BCNF is ideal when lossless join & dependency preservation are both required.
+    </div>
+  </div>
+</body>
+</html>

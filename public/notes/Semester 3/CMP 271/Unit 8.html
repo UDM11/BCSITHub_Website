@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 8: Transaction and Concurrency Control [4 Hrs.]</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #111;
+      font-size: 20pt;
+      font-weight: bold;
+      margin: 30px 0;
+    }
+    h2 {
+      color: #222;
+      border-bottom: 3px solid #aaa;
+      padding-bottom: 10px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #444;
+      margin-top: 25px;
+      font-size: 1.3em;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+      text-align: justify;
+    }
+    ul, ol {
+      padding-left: 35px;
+    }
+    li {
+      margin-bottom: 14px;
+    }
+    pre {
+      background-color: #111;
+      color: #0f8;
+      padding: 18px;
+      overflow-x: auto;
+      border-radius: 10px;
+      font-size: 13pt;
+      margin: 20px 0;
+      line-height: 1.5;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.95em;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #e0e0e0;
+      font-weight: bold;
+    }
+    .note {
+      background-color: #e8f4fd;
+      border-left: 5px solid #2196f3;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .warning {
+      background-color: #fff3cd;
+      border-left: 5px solid #ff9800;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 18px; margin-bottom: 25px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin: 20px 0; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 14px; margin-bottom: 20px; }
+      pre { font-size: 11.5pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 8: Transaction and Concurrency Control [4 Hrs.]</b></h1>
+
+  <div class="section">
+    <h2><b>8.1 Introduction to Transaction</b></h2>
+
+    <p>A **transaction** is a logical unit of work that consists of one or more database operations (read/write) treated as an indivisible (atomic) unit.</p>
+
+    <h3>ACID Properties (Foundation of Transactions)</h3>
+    <table>
+      <tr><th>Property</th><th>Full Form</th><th>Description</th><th>How DBMS Ensures It</th></tr>
+      <tr><td>A</td><td>Atomicity</td><td>All operations succeed or none are applied</td><td>Undo/Redo logs, rollback on failure</td></tr>
+      <tr><td>C</td><td>Consistency</td><td>Database moves from one consistent state to another</td><td>Constraints, triggers, application logic</td></tr>
+      <tr><td>I</td><td>Isolation</td><td>Concurrent transactions appear to execute serially</td><td>Locks, multiversion concurrency control</td></tr>
+      <tr><td>D</td><td>Durability</td><td>Committed changes survive failures</td><td>Write-ahead logging (WAL), force to disk</td></tr>
+    </table>
+
+    <h3>Transaction States</h3>
+    <ul>
+      <li>Active → executing operations</li>
+      <li>Partially committed → final commit statement executed</li>
+      <li>Committed → successfully completed</li>
+      <li>Failed → cannot proceed (error detected)</li>
+      <li>Aborted → rolled back, effects undone</li>
+    </ul>
+
+    <pre><code>-- Simple transaction example (SQL)
+BEGIN TRANSACTION;
+    UPDATE Account SET balance = balance - 1000 WHERE acc_id = 101;
+    UPDATE Account SET balance = balance + 1000 WHERE acc_id = 202;
+    INSERT INTO TransactionLog (from_acc, to_acc, amount, t_date)
+    VALUES (101, 202, 1000, CURRENT_DATE);
+COMMIT;
+-- or ROLLBACK if error occurs
+    </code></pre>
+
+    <div class="note">
+      <b>Real-world example:</b> Bank fund transfer must be atomic — deduct from A and credit to B must both happen or neither.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>8.2 Concept of Serializability</b></h2>
+
+    <p>Serializability ensures that concurrent execution of transactions produces the same result as some serial (one-after-another) execution of the same transactions.</p>
+
+    <h3>Types of Serializability</h3>
+    <ul>
+      <li><b>Conflict Serializability:</b> Schedule is conflict equivalent to some serial schedule
+        <ul>
+          <li>Conflict: two operations from different transactions on same data item, at least one is write</li>
+          <li>Read-Write, Write-Read, Write-Write conflicts</li>
+        </ul>
+      </li>
+      <li><b>View Serializability:</b> Stronger but harder to check (same initial read, same final writes, same reads-from relation)</li>
+    </ul>
+
+    <h3>Precedence Graph (Conflict Graph) Test</h3>
+    <ul>
+      <li>Nodes = transactions</li>
+      <li>Directed edge Ti → Tj if operation of Ti precedes and conflicts with operation of Tj</li>
+      <li>Schedule is conflict serializable ⇔ precedence graph is acyclic</li>
+    </ul>
+
+    <pre><code>
+// Example precedence graph
+T1: read(A) → write(A)
+T2: read(A) → write(B)
+T3: write(A)
+
+Conflicts:
+T1 → T3  (write(A) after read(A) by T1)
+T2 → T3  (write(A) after read(A) by T2)
+
+Graph: T1 → T3 ← T2   → acyclic → serializable
+    </code></pre>
+
+    <div class="note">
+      <b>Important:</b> Conflict serializability is sufficient for most practical purposes and is easier to enforce via locking.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>8.3 Concurrent Execution</b></h2>
+
+    <p>Concurrency allows multiple transactions to execute simultaneously to improve throughput and resource utilization.</p>
+
+    <h3>Problems Caused by Uncontrolled Concurrency (Anomalies)</h3>
+    <table>
+      <tr><th>Anomaly</th><th>Description</th><th>Example</th></tr>
+      <tr><td>Lost Update</td><td>One update overwrites another</td><td>T1 & T2 both read balance=1000, T1 adds 500, T2 subtracts 200 → final = 800 instead of 1300</td></tr>
+      <tr><td>Dirty Read</td><td>Read uncommitted data</td><td>T1 updates balance=1500 but aborts → T2 reads 1500 (dirty)</td></tr>
+      <tr><td>Non-repeatable Read</td><td>Same read gives different values</td><td>T1 reads balance=1000, T2 updates to 1200 & commits, T1 reads again → 1200</td></tr>
+      <tr><td>Phantom Read</td><td>New rows appear in repeated query</td><td>T1 counts students in CS=50, T2 inserts new CS student & commits, T1 counts again → 51</td></tr>
+    </table>
+
+    <h3>Isolation Levels (SQL Standard)</h3>
+    <table>
+      <tr><th>Isolation Level</th><th>Dirty Read</th><th>Non-repeatable Read</th><th>Phantom Read</th><th>Use Case</th></tr>
+      <tr><td>Read Uncommitted</td><td>Possible</td><td>Possible</td><td>Possible</td><td>Rare (dirty reporting)</td></tr>
+      <tr><td>Read Committed</td><td>No</td><td>Possible</td><td>Possible</td><td>Default in many DBMS</td></tr>
+      <tr><td>Repeatable Read</td><td>No</td><td>No</td><td>Possible</td><td>Good balance (PostgreSQL default)</td></tr>
+      <tr><td>Serializable</td><td>No</td><td>No</td><td>No</td><td>Strict correctness (highest isolation)</td></tr>
+    </table>
+
+    <div class="warning">
+      <b>Higher isolation → more locking → lower concurrency & performance</b><br>
+      Most applications use Read Committed or Repeatable Read.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>8.4 Lock-based Concurrency Control</b></h2>
+
+    <p>Locking is the most common mechanism to achieve isolation and serializability.</p>
+
+    <h3>Types of Locks</h3>
+    <ul>
+      <li><b>Shared Lock (S / Read Lock):</b> Multiple transactions can hold S on same item (for reading)</li>
+      <li><b>Exclusive Lock (X / Write Lock):</b> Only one transaction can hold X (for writing); blocks all others</li>
+    </ul>
+
+    <h3>Lock Compatibility Matrix</h3>
+    <table>
+      <tr><th>Requested \ Held</th><th>None</th><th>S</th><th>X</th></tr>
+      <tr><td>S (Shared)</td><td>Yes</td><td>Yes</td><td>No</td></tr>
+      <tr><td>X (Exclusive)</td><td>Yes</td><td>No</td><td>No</td></tr>
+    </table>
+
+    <h3>Lock Granularity</h3>
+    <ul>
+      <li>Row-level (fine) → high concurrency, more overhead</li>
+      <li>Table-level (coarse) → low concurrency, less overhead</li>
+      <li>Page-level → compromise (common in many DBMS)</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><b>8.5 2PL and Strict 2PL</b></h2>
+
+    <h3>Two-Phase Locking (2PL) Protocol</h3>
+    <p>Transaction is divided into two phases:</p>
+    <ol>
+      <li><b>Growing Phase:</b> Acquire locks (S or X), no release</li>
+      <li><b>Shrinking Phase:</b> Release locks, no new locks</li>
+    </ol>
+
+    <p><b>Theorem:</b> If all transactions follow 2PL → schedule is conflict serializable</p>
+
+    <h3>Strict 2PL (Stronger & Most Common)</h3>
+    <ul>
+      <li>All exclusive locks held until commit/abort</li>
+      <li>Prevents cascading rollback (dirty read problem solved)</li>
+      <li>Most DBMS use Strict 2PL by default</li>
+    </ul>
+
+    <pre><code>
+// Strict 2PL behavior
+T1: lock-X(A) → write(A) → lock-S(B) → read(B) → commit → unlock(A,B)
+No release before commit
+    </code></pre>
+
+    <div class="note">
+      <b>Deadlock:</b> Cycle in wait-for graph (T1 waits for T2’s lock, T2 waits for T1’s).  
+      DBMS detects & resolves via timeout or victim selection.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>8.6 Timestamp Concept</b></h2>
+
+    <p>Timestamp-based concurrency control assigns a unique timestamp to each transaction (usually system time or logical counter) and orders conflicting operations based on timestamps.</p>
+
+    <h3>Basic Timestamp Ordering (TO) Protocol</h3>
+    <ul>
+      <li>Each data item has:
+        <ul>
+          <li>Read-TS(Q) – largest TS of transaction that read Q</li>
+          <li>Write-TS(Q) – largest TS of transaction that wrote Q</li>
+        </ul>
+      </li>
+      <li>For read(Q) by Ti:
+        <ul>
+          <li>If TS(Ti) < Write-TS(Q) → reject (Thomas’ write rule may ignore late writes)</li>
+        </ul>
+      </li>
+      <li>For write(Q) by Ti:
+        <ul>
+          <li>If TS(Ti) < Read-TS(Q) or TS(Ti) < Write-TS(Q) → reject</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>Thomas’ Write Rule</h3>
+    <p>If TS(Ti) < Write-TS(Q), ignore the write (late write) → avoids cascading rollback.</p>
+
+    <h3>Multiversion Timestamp Ordering (MVTO)</h3>
+    <ul>
+      <li>Maintain multiple versions of each data item</li>
+      <li>Reader gets most recent version written by transaction with TS ≤ reader’s TS</li>
+      <li>Very good for read-heavy workloads (PostgreSQL MVCC uses similar concept)</li>
+    </ul>
+
+    <h3>Comparison: Locking vs Timestamp</h3>
+    <table>
+      <tr><th>Aspect</th><th>Lock-based (2PL)</th><th>Timestamp Ordering</th></tr>
+      <tr><td>Deadlock</td><td>Possible (needs detection)</td><td>No deadlock</td></tr>
+      <tr><td>Starvation</td><td>Possible</td><td>Possible (late transactions rejected)</td></tr>
+      <tr><td>Overhead</td><td>Lock management</td><td>Timestamp comparison + version storage (MVTO)</td></tr>
+      <tr><td>Used in</td><td>Most DBMS default</td><td>MVCC systems (PostgreSQL, Oracle)</td></tr>
+    </table>
+  </div>
+</body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Unit VII: Controlling (6 hrs.)</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.7;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #1a3c6d;
+      font-size: 24pt;
+      margin-bottom: 30px;
+    }
+    h2 {
+      color: #1a3c6d;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 8px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #2c5282;
+      margin-top: 28px;
+      font-size: 1.25em;
+    }
+    .section {
+      background: white;
+      padding: 24px;
+      margin-bottom: 32px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    ul, ol {
+      padding-left: 28px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.97em;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #d1d5db;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #ebf8ff;
+      color: #2b6cb0;
+      font-weight: bold;
+    }
+    .note {
+      background-color: #e6fffa;
+      border-left: 5px solid #0c8599;
+      padding: 16px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .warning {
+      background-color: #fff5f5;
+      border-left: 5px solid #e53e3e;
+      padding: 16px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .control-steps {
+      counter-reset: step;
+      list-style: none;
+      padding-left: 0;
+    }
+    .control-steps li {
+      position: relative;
+      padding-left: 45px;
+      margin-bottom: 24px;
+    }
+    .control-steps li::before {
+      content: counter(step);
+      counter-increment: step;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 32px;
+      height: 32px;
+      background: #3498db;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; margin-bottom: 24px; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 20px; margin-bottom: 28px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin-bottom: 20px; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 16px; margin-bottom: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1><b>Unit VII: Controlling (6 hrs.)</b></h1>
+
+  <div class="section">
+    <h2>7.1 Concept and Basic Elements of Control</h2>
+
+    <p><b>Controlling</b> is the management function that ensures actual performance aligns with planned performance. It involves monitoring, measuring, comparing results against standards, and taking corrective action when deviations occur.</p>
+
+    <p><b>Controlling = Ensuring what should happen does happen</b></p>
+
+    <h3>Basic Elements / Components of Control Process</h3>
+    <ol class="control-steps">
+      <li><b>Establishing standards / performance criteria</b><br>
+          Quantitative (sales target = 500 units/month) or qualitative (customer satisfaction score ≥ 4.5/5)</li>
+      <li><b>Measuring actual performance</b><br>
+          Through reports, observation, audits, KPIs, dashboards</li>
+      <li><b>Comparing actual performance with standards</b><br>
+          Identify deviations (positive or negative)</li>
+      <li><b>Taking corrective action</b><br>
+          If deviation exists → adjust resources, processes, training, or revise standards</li>
+    </ol>
+
+    <div class="note">
+      Controlling is both <b>forward-looking</b> (prevents problems) and <b>backward-looking</b> (analyzes past performance).
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>7.2 The Nature of Control: Purpose, Types, and Steps</h2>
+
+    <h3>Purpose / Objectives of Control</h3>
+    <ul>
+      <li>Ensure goal achievement</li>
+      <li>Minimize deviations & waste</li>
+      <li>Facilitate coordination</li>
+      <li>Improve future planning</li>
+      <li>Provide feedback for learning</li>
+      <li>Support decentralization (empower lower levels with clear standards)</li>
+    </ul>
+
+    <h3>Types of Control</h3>
+    <table>
+      <tr>
+        <th>Type</th>
+        <th>Timing</th>
+        <th>Focus</th>
+        <th>Examples</th>
+        <th>Strength</th>
+      </tr>
+      <tr>
+        <td><b>Feedforward / Preventive Control</b></td>
+        <td>Before activity</td>
+        <td>Anticipate & prevent problems</td>
+        <td>Employee training, supplier quality checks, budgeting</td>
+        <td>Most proactive & cost-effective</td>
+      </tr>
+      <tr>
+        <td><b>Concurrent / Screening Control</b></td>
+        <td>During activity</td>
+        <td>Real-time monitoring & adjustment</td>
+       td>Quality inspection on assembly line, real-time sales dashboard</td>
+        <td>Immediate correction</td>
+      </tr>
+      <tr>
+        <td><b>Feedback / Post-action Control</b></td>
+        <td>After activity</td>
+        <td>Learn from results</td>
+        <td>Annual performance appraisal, financial audit, customer feedback analysis</td>
+        <td>Helps future planning</td>
+      </tr>
+    </table>
+
+    <h3>Steps in the Control Process (Detailed)</h3>
+    <ol class="control-steps">
+      <li><b>Set performance standards</b><br>
+          Must be specific, measurable, achievable, relevant, time-bound (SMART)</li>
+      <li><b>Measure actual performance</b><br>
+          Use reliable, timely, accurate data sources</li>
+      <li><b>Compare actual vs standard</b><br>
+          Identify variance (positive = good, negative = problem)</li>
+      <li><b>Take corrective action</b><br>
+          <ul>
+            <li>Do nothing (if within tolerance)</li>
+            <li>Correct deviation (adjust resources/processes)</li>
+            <li>Revise standards (if unrealistic)</li>
+          </ul>
+      </li>
+    </ol>
+  </div>
+
+  <div class="section">
+    <h2>7.3 Operations Control</h2>
+
+    <p>Focuses on day-to-day production/service delivery processes.</p>
+
+    <h3>Common Operations Control Techniques</h3>
+    <ul>
+      <li><b>Budgetary Control</b> – compare actual vs budgeted expenses</li>
+      <li><b>Statistical Process Control (SPC)</b> – control charts, Six Sigma</li>
+      <li><b>Quality Control</b> – inspection, TQM, ISO standards</li>
+      <li><b>Inventory Control</b> – EOQ, JIT, ABC analysis</li>
+      <li><b>Production Scheduling & Control</b> – Gantt charts, PERT/CPM</li>
+      <li><b>Ratio Analysis</b> – productivity ratios, capacity utilization</li>
+    </ul>
+
+    <div class="note">
+      Operations control is usually concurrent or feedback-oriented and heavily uses quantitative tools.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>7.4 Financial Control</h2>
+
+    <p>Ensures effective & efficient use of financial resources.</p>
+
+    <h3>Major Financial Control Tools</h3>
+    <ul>
+      <li><b>Budgets</b> – master budget, cash budget, capital budget</li>
+      <li><b>Financial Ratio Analysis</b>
+        <ul>
+          <li>Liquidity: current ratio, quick ratio</li>
+          <li>Profitability: ROA, ROE, profit margin</li>
+          <li>Leverage: debt-equity ratio</li>
+          <li>Activity: inventory turnover, receivables turnover</li>
+        </ul>
+      </li>
+      <li><b>Standard Costing & Variance Analysis</b> – material, labor, overhead variances</li>
+      <li><b>Break-even Analysis</b> – determine sales volume needed to cover costs</li>
+      <li><b>Auditing</b> – internal & external (financial & operational)</li>
+    </ul>
+
+    <div class="note">
+      Financial controls are mostly feedback-oriented and critical for survival & profitability.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>7.5 Structural Control</h2>
+
+    <p>Control achieved through organizational structure, policies, rules, procedures, hierarchy, and culture.</p>
+
+    <h3>Mechanisms</h3>
+    <ul>
+      <li><b>Bureaucratic Control</b> – rules, procedures, hierarchy, formal authority</li>
+      <li><b>Clan Control</b> – shared values, norms, culture (common in startups, professional firms)</li>
+      <li><b>Market Control</b> – price mechanisms, competition, profit centers</li>
+      <li><b>Output / Results Control</b> – focus on measurable outcomes (MBO, KPIs)</li>
+    </ul>
+
+    <div class="note">
+      Structural control is preventive (feedforward) and works best when combined with other types.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>7.6 Strategic Control</h2>
+
+    <p>Ensures organization is moving toward its strategic goals in a changing environment.</p>
+
+    <h3>Types / Focus Areas</h3>
+    <ul>
+      <li><b>Premises Control</b> – monitor validity of planning assumptions</li>
+      <li><b>Implementation Control</b> – monitor progress of strategic plans (milestones, budgets)</li>
+      <li><b>Strategic Surveillance</b> – broad scanning for unexpected threats/opportunities</li>
+      <li><b>Special Alert Control</b> – rapid response to sudden crises</li>
+    </ul>
+
+    <h3>Tools</h3>
+    <ul>
+      <li>Balanced Scorecard (Kaplan & Norton)</li>
+      <li>Strategy Maps</li>
+      <li>Environmental Scanning</li>
+      <li>Key Performance Indicators (KPIs) aligned with strategy</li>
+    </ul>
+
+    <div class="note">
+      Strategic control is long-term, proactive, and future-oriented.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>7.7 Managing Control in Organizations</h2>
+
+    <h3>Key Principles for Effective Control Systems</h3>
+    <ul>
+      <li>Timeliness – information must be available soon enough to act</li>
+      <li>Accuracy – reliable data</li>
+      <li>Relevance – focus on critical success factors</li>
+      <li>Flexibility – adapt to changes</li>
+      <li>Economy – cost of control < benefit</li>
+      <li>Understandability – clear to users</li>
+      <li>Acceptability – employees should perceive system as fair</li>
+      <li>Multiple Criteria – avoid over-emphasis on single measure</li>
+    </ul>
+
+    <h3>Challenges in Managing Control</h3>
+    <ul>
+      <li>Resistance to control (perceived as distrust)</li>
+      <li>Over-control → stifles creativity</li>
+      <li>Under-control → chaos</li>
+      <li>Goal displacement (focus on measurable indicators, ignore others)</li>
+      <li>Short-termism (sacrifice long-term for short-term targets)</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>7.8 Contemporary Issues in Controlling</h2>
+
+    <ul>
+      <li><b>Control in Remote & Virtual Work</b><br>
+          Outcome-based vs activity monitoring, trust vs surveillance tools</li>
+      <li><b>Big Data, AI & Analytics in Control</b><br>
+          Real-time dashboards, predictive control, anomaly detection</li>
+      <li><b>Balanced Scorecard & Strategy Maps</b><br>
+          Multi-dimensional performance measurement</li>
+      <li><b>Ethical & Sustainability Control</b><br>
+          ESG metrics, ethical audits, whistleblower systems</li>
+      <li><b>Control in Gig & Flexible Workforce</b><br>
+          Platform ratings, peer reviews, self-regulation</li>
+      <li><b>Cybersecurity & Data Control</b><br>
+          Access controls, encryption, audit trails</li>
+      <li><b>Agile Control Systems</b><br>
+          Short feedback loops, iterative goals, adaptive targets</li>
+    </ul>
+
+    <div class="note">
+      Modern control is shifting from rigid, top-down systems toward flexible, trust-based, data-driven, and multi-stakeholder approaches.
+    </div>
+  </div>
+
+</body>
+</html>

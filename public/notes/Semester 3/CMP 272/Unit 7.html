@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 7: Case Study and Project [4 Hrs.]</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #111;
+      font-size: 20pt;
+      font-weight: bold;
+      margin: 30px 0;
+    }
+    h2 {
+      color: #222;
+      border-bottom: 3px solid #aaa;
+      padding-bottom: 10px;
+      margin-top: 40px;
+    }
+    h3, h4 {
+      color: #444;
+      margin-top: 25px;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+      text-align: justify;
+    }
+    ul, ol {
+      padding-left: 35px;
+    }
+    li {
+      margin-bottom: 14px;
+    }
+    pre {
+      background-color: #111;
+      color: #0f8;
+      padding: 18px;
+      overflow-x: auto;
+      border-radius: 10px;
+      font-size: 13pt;
+      margin: 20px 0;
+      line-height: 1.5;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.95em;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #e0e0e0;
+      font-weight: bold;
+    }
+    .note {
+      background-color: #e8f4fd;
+      border-left: 5px solid #2196f3;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 18px; margin-bottom: 25px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin: 20px 0; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 14px; margin-bottom: 20px; }
+      pre { font-size: 11.5pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 7: Case Study and Project [4 Hrs.]</b></h1>
+
+  <div class="section">
+    <h2><b>7.1 Apply OOAD Principles to a Real-World Case Study</b></h2>
+    <p><b>Chosen Case Study:</b> Online Library Management System (OLMS)</p>
+    <p>A modern web-based library system that allows members to search, reserve, borrow, renew, and return books digitally, while librarians manage inventory, members, fines, and reports. The system supports multiple user roles, notifications, and integration with payment gateways for fines.</p>
+
+    <h3>Stakeholders & Actors</h3>
+    <ul>
+      <li><b>Member</b> (Student, Faculty, Guest) – searches, reserves, borrows, renews, returns, pays fines</li>
+      <li><b>Librarian</b> – manages books, members, loans, reservations, generates reports</li>
+      <li><b>Admin</b> – manages user accounts, system settings, categories</li>
+      <li><b>Payment Gateway</b> (external system) – processes fine payments</li>
+      <li><b>Notification Service</b> (email/SMS) – overdue reminders, reservation ready</li>
+    </ul>
+
+    <h3>High-Level Functional Requirements (Use Cases Summary)</h3>
+    <ol>
+      <li>Register / Login / Logout</li>
+      <li>Search Books (by title, author, ISBN, category)</li>
+      <li>View Book Details & Availability</li>
+      <li>Reserve Book</li>
+      <li>Borrow Book (if available)</li>
+      <li>Renew Loan (if eligible)</li>
+      <li>Return Book</li>
+      <li>Pay Fine</li>
+      <li>Manage Books (Add, Update, Remove) – Librarian</li>
+      <li>Manage Members (Activate, Suspend) – Librarian/Admin</li>
+      <li>Generate Reports (Overdue, Popular Books) – Librarian</li>
+      <li>Send Overdue/Reservation Notifications</li>
+    </ol>
+
+    <h3>Non-Functional Requirements</h3>
+    <ul>
+      <li>Concurrency: Multiple members borrowing/reserving simultaneously</li>
+      <li>Security: Role-based access, password hashing</li>
+      <li>Usability: Responsive web interface</li>
+      <li>Reliability: Transactional integrity (loan + status update atomic)</li>
+      <li>Performance: Search < 2 seconds, report generation < 5 seconds</li>
+    </ul>
+
+    <h3>Applying OOAD Principles & Patterns</h3>
+    <table>
+      <tr><th>Concept / Principle</th><th>Application in OLMS</th></tr>
+      <tr><td>GRASP – Information Expert</td><td>Book knows its own availability & loan history</td></tr>
+      <tr><td>GRASP – Creator</td><td>Loan creates LoanItem when borrowing</td></tr>
+      <tr><td>GRASP – Controller</td><td>LibraryController or UseCase controllers (BorrowBookController)</td></tr>
+      <tr><td>GRASP – Low Coupling / High Cohesion</td><td>Separate domain (Book, Loan), service (LoanService), repository layers</td></tr>
+      <tr><td>SOLID – SRP</td><td>LoanService only handles borrowing/renewal/return logic</td></tr>
+      <tr><td>SOLID – OCP</td><td>NotificationStrategy (Email, SMS) – add new types without changing core</td></tr>
+      <tr><td>SOLID – DIP</td><td>LoanService depends on INotificationService interface</td></tr>
+      <tr><td>GoF – Singleton</td><td>ConfigurationManager, NotificationQueue</td></tr>
+      <tr><td>GoF – Strategy</td><td>FineCalculationStrategy (Student vs Faculty different rules)</td></tr>
+      <tr><td>GoF – Observer</td><td>Loan observes → notifies Member & Librarian on overdue</td></tr>
+      <tr><td>GoF – Facade</td><td>LibraryFacade hides complexity of multiple services</td></tr>
+      <tr><td>GoF – Adapter</td><td>PaymentAdapter to integrate different gateways (Stripe, eSewa)</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2><b>7.2 Develop a UML Model for the Chosen Case Study</b></h2>
+
+    <h3>1. Use Case Diagram (Textual Representation)</h3>
+    <pre><code>
+Actors:
+  - Member
+  - Librarian
+  - Admin
+  - PaymentGateway  <<system>>
+  - NotificationService  <<system>>
+
+Use Cases:
+  Member:
+    - Search Books
+    - Reserve Book
+    - Borrow Book  <<include>> Authenticate User
+    - Renew Loan   <<extend>> Borrow Book  (if eligible)
+    - Return Book
+    - Pay Fine     <<include>> Authenticate User
+
+  Librarian:
+    - Add/Update/Remove Book
+    - Manage Member Account
+    - Generate Reports
+    - Approve Reservation
+
+  Admin:
+    - Manage Categories
+    - System Configuration
+
+Relationships:
+  PremiumMember --|> Member   // Generalization
+  Reserve Book <<extend>> Borrow Book  (at extension point: book unavailable)
+  Send Notification <<include>> Borrow Book, Return Book, Overdue Check
+    </code></pre>
+
+    <h3>2. Domain Model / Conceptual Class Diagram (Textual)</h3>
+    <pre><code>
+Library "1" -- "0..*" Book
+Library "1" -- "0..*" Member
+Member  "1" -- "0..*" Loan
+Book    "1" -- "0..*" Loan
+Member  "1" -- "0..*" Reservation
+Book    "1" -- "0..*" Reservation
+
+class Book {
+  - isbn: String
+  - title: String
+  - author: String
+  - copiesTotal: int
+  - copiesAvailable: int
+  + isAvailable(): boolean
+  + borrowCopy()
+  + returnCopy()
+}
+
+class Loan {
+  - loanId: String
+  - borrowDate: Date
+  - dueDate: Date
+  - returnDate: Date
+  - fine: double
+  + calculateFine()
+  + isOverdue()
+}
+    </code></pre>
+
+    <h3>3. Sequence Diagram Example – Borrow Book (Happy Path)</h3>
+    <pre><code>
+Member -> LibraryController: requestBorrow(isbn)
+LibraryController -> BookRepository: findByIsbn(isbn)
+BookRepository --> LibraryController: book
+LibraryController -> Book: isAvailable()
+alt available
+  Book --> LibraryController: true
+  create Loan
+  LibraryController -> Loan: new Loan(member, book)
+  Book -> Book: borrowCopy()  // decrement copies
+  LibraryController -> LoanRepository: save(loan)
+  LibraryController -> NotificationService: send("Book borrowed", member)
+  LibraryController --> Member: success + dueDate
+else
+  LibraryController -> ReservationService: createReservation(member, book)
+  LibraryController --> Member: reserved
+end
+    </code></pre>
+
+    <h3>4. State Machine Diagram – Loan Lifecycle</h3>
+    <pre><code>
+[*] --> Requested
+Requested --> Active     : librarian approves / auto-approve
+Active    --> Overdue    : dueDate passed
+Overdue   --> Fined      : fine calculated
+Active    --> Returned   : member returns book
+Overdue   --> Returned   : member returns book
+Returned  --> [*]
+Fined     --> Paid       : fine paid
+Paid      --> Returned   : book returned
+    </code></pre>
+
+    <h3>5. Class Diagram Snippet with Patterns (Design Level)</h3>
+    <pre><code>
+interface NotificationStrategy {
+  void send(String message, Member member);
+}
+
+class EmailNotification implements NotificationStrategy { ... }
+class SmsNotification implements NotificationStrategy { ... }
+
+class LoanService {
+  private NotificationStrategy notifier;
+  public LoanService(NotificationStrategy n) { notifier = n; }  // DIP
+  public void borrow(...) {
+    // ...
+    notifier.send("Due date reminder", member);
+  }
+}
+
+class LibraryFacade {
+  private LoanService loanService;
+  private BookService bookService;
+  // delegates calls, hides subsystem complexity
+}
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h2><b>7.3 Class Presentations and Discussions</b></h2>
+    <p><b>Project Deliverables (Typical):</b></p>
+    <ul>
+      <li>Requirements Specification (use case descriptions + NFRs)</li>
+      <li>Complete UML Diagrams:
+        <ul>
+          <li>Use Case Diagram</li>
+          <li>Domain Model (Class Diagram – conceptual)</li>
+          <li>Sequence / Communication Diagrams (2–3 critical scenarios)</li>
+          <li>Activity Diagram (e.g., Borrow Book workflow)</li>
+          <li>State Machine (Loan, Reservation, Member Account)</li>
+          <li>Design Class Diagram (with patterns applied)</li>
+          <li>Package Diagram (layers: presentation, application, domain, infrastructure)</li>
+        </ul>
+      </li>
+      <li>Design Decisions Document:
+        <ul>
+          <li>Which GRASP principles applied & why</li>
+          <li>SOLID compliance examples</li>
+          <li>GoF patterns used + justification</li>
+          <li>Trade-offs (e.g., Singleton vs DI, Strategy vs if-else)</li>
+        </ul>
+      </li>
+      <li>Prototype / Partial Implementation (optional – 1–2 use cases)</li>
+      <li>Presentation Slides (15–20 min):
+        <ul>
+          <li>Problem statement & scope</li>
+          <li>Actors & use cases</li>
+          <li>Key diagrams walkthrough</li>
+          <li>Patterns applied with code snippets</li>
+          <li>Lessons learned & improvements</li>
+        </ul>
+      </li>
+    </ul>
+
+    <p><b>Discussion Points for Class / Viva:</b></p>
+    <ul>
+      <li>Why choose composition over deep inheritance?</li>
+      <li>How did you handle concurrency (e.g., two members borrowing last copy)?</li>
+      <li>Where did you apply OCP? Could you extend for new fine rules easily?</li>
+      <li>What would break LSP if you added a restricted member type?</li>
+      <li>Alternative patterns you considered but rejected (and why)?</li>
+      <li>How would you scale this system to 100,000+ members?</li>
+    </ul>
+
+    <div class="note">
+      <b>Tip for Students:</b> Document every major design decision with justification (GRASP, SOLID, pattern name). This is what examiners value most in case study evaluations.
+    </div>
+  </div>
+</body>
+</html>

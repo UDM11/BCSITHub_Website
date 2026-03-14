@@ -155,4 +155,71 @@ export const chapterData: SubjectChapters[] = [
         { id: "Guidelines", title: "Project I: Guidelines" }
     ]
   },
+  // Start 3rd Semester
+  {
+    courseCode: "CMP 272",
+    chapters: [
+      { id: "Unit 1", title: "Unit 1: Introduction to Object-Oriented" },
+      { id: "Unit 2", title: "Unit 2: Requirement Elicitation and Analysis" },
+      { id: "Unit 3", title: "Unit 3: Object oriented analysis" },
+      { id: "Unit 4", title: "Unit 4: Object-Oriented Modeling Using UML Notation" },
+      { id: "Unit 5", title: "Unit 5: Object Oriented Design principles" },
+      { id: "Unit 6", title: "Unit 6: Applying GOF Design Patterns" },
+      { id: "Unit 7", title: "Unit 7: Case Study and Project" }
+    ],
+  },
+  {
+    courseCode: "CMP 271",
+    chapters: [
+      { id: "Unit 1", title: "Unit 1: Introduction" },
+      { id: "Unit 2", title: "Unit 2: Data Models" },
+      { id: "Unit 3", title: "Unit 3: Normalization" },
+      { id: "Unit 4", title: "Unit 4: Relational Language" },
+      { id: "Unit 5", title: "Unit 5: Query Processing" },
+      { id: "Unit 6", title: "Unit 6: File organization and indexing" },
+      { id: "Unit 7", title: "Unit 7: Security" },
+      { id: "Unit 8", title: "Unit 8: Transaction and Concurrency Control" },
+      { id: "Unit 9", title: "Unit 9: Backup and Recovery" },
+      { id: "Unit 10", title: "Unit 10: Object oriented Database" }
+    ]
+  },
+  {
+    courseCode: "CMP 273",
+    chapters: [
+      { id: "Unit 1", title: "Unit 1: Introduction" },
+      { id: "Unit 2", title: "Unit 2: Control Structures and Loop" },
+      { id: "Unit 3", title: "Unit 3: Array and Function" },
+      { id: "Unit 4", title: "Unit 4: Form Handling and Data Validation" },
+      { id: "Unit 5", title: "Unit 5: File Handling, Sessions, and Error Handling" },
+      { id: "Unit 6", title: "Unit 6: Working with Database" },
+      { id: "Unit 7", title: "Unit 7: Advanced PHP Concepts" },
+      { id: "Unit 8", title: "Unit 8: PHP Framework" }
+    ]
+  },
+  {
+    courseCode: "MGT 222",
+    chapters: [
+      { id: "Unit 1", title: "Unit I: Introduction to Management" },
+      { id: "Unit 2", title: "Unit II: The Evolution of Management Thoughts" },
+      { id: "Unit 3", title: "Unit III: Decision Making" },
+      { id: "Unit 4", title: "Unit IV: Planning and Organizing" },
+      { id: "Unit 5", title: "Unit V: Leadership" },
+      { id: "Unit 6", title: "Unit VI: Motivation" },
+      { id: "Unit 7", title: "Unit VII: Controlling" },
+      { id: "Unit 8", title: "Unit VIII: IT for Management" }
+    ]
+  },
+  {
+    courseCode: "STT 220",
+    chapters: [
+      { id: "Unit 1", title: "Unit 1: Introduction" },
+      { id: "Unit 2", title: "Unit 2: Summarization and Analysis of Data" },
+      { id: "Unit 3", title: "Unit 3: Basic Probability" },
+      { id: "Unit 4", title: "Unit 4: Correlation and Regression Analysis" },
+      { id: "Unit 5", title: "Unit 5: Probability Distribution" },
+      { id: "Unit 6", title: "Unit 6: Theory of Estimation" },
+      { id: "Unit 7", title: "Unit 7: Hypothesis Testing" }
+    ]
+  },
+  // End 3rd Semester
 ];

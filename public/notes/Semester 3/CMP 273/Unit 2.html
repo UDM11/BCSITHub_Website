@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 2: Control Structures and Loop – Internet Technology II</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      font-size: 22pt;
+      margin-bottom: 30px;
+    }
+    h2 {
+      color: #34495e;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 8px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #2980b9;
+      margin-top: 25px;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: justify;
+    }
+    pre {
+      background-color: #000000;
+      color: #00ff41;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 13pt;
+      margin: 15px 0;
+      line-height: 1.6;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+    .note {
+      background-color: #e8f5ff;
+      border-left: 5px solid #3498db;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .tip {
+      background-color: #e8fff5;
+      border-left: 5px solid #27ae60;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .example-output {
+      background: #f0f8ff;
+      padding: 12px;
+      border-left: 5px solid #1e90ff;
+      margin: 15px 0;
+      font-family: monospace;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; margin-bottom: 24px; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 20px; margin-bottom: 28px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin-bottom: 20px; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 16px; margin-bottom: 22px; }
+      pre { font-size: 12pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 2: Control Structures and Loop</b></h1>
+
+  <div class="section">
+    <h2><b>2.1 Conditional Statements</b></h2>
+
+    <p>Conditional statements allow you to execute different blocks of code based on different conditions.</p>
+
+    <h3>2.1.1 if, else, elseif</h3>
+
+    <pre><code>&lt;?php
+$marks = 78;
+
+if ($marks >= 80) {
+    echo "Distinction";
+} elseif ($marks >= 60) {
+    echo "First Division";
+} elseif ($marks >= 45) {
+    echo "Second Division";
+} elseif ($marks >= 32) {
+    echo "Third Division";
+} else {
+    echo "Failed";
+}
+?&gt;</code></pre>
+
+    <div class="example-output">
+      Output (when marks = 78): First Division
+    </div>
+
+    <div class="tip">
+      <b>Best practice:</b><br>
+      • Use curly braces {} even for single-line blocks — prevents bugs when adding more lines later.<br>
+      • Avoid very deep if-elseif nesting — consider switch or early return instead.
+    </div>
+
+    <h3>2.1.2 Ternary Operator (Short if-else)</h3>
+
+    <p>Syntax: <code>condition ? valueIfTrue : valueIfFalse</code></p>
+
+    <pre><code>&lt;?php
+$age = 20;
+$status = ($age >= 18) ? "Adult" : "Minor";
+echo $status;           // Adult
+
+// Nested ternary (not recommended for readability)
+$grade = ($marks >= 80) ? "A" : (($marks >= 60) ? "B" : "C");
+?&gt;</code></pre>
+
+    <div class="note">
+      Ternary is good for short, simple conditions.<br>
+      Avoid nesting more than once — use if-else or match (PHP 8+) for clarity.
+    </div>
+
+    <h3>2.1.3 Switch Statement</h3>
+
+    <pre><code>&lt;?php
+$day = "Wednesday";
+
+switch ($day) {
+    case "Sunday":
+        echo "Weekend - Holiday";
+        break;
+    case "Saturday":
+        echo "Weekend - Holiday";
+        break;
+    case "Monday":
+    case "Tuesday":
+    case "Wednesday":
+    case "Thursday":
+    case "Friday":
+        echo "Working day";
+        break;
+    default:
+        echo "Invalid day";
+}
+?&gt;</code></pre>
+
+    <div class="example-output">
+      Output: Working day
+    </div>
+
+    <div class="tip">
+      • Always end each case with <code>break;</code> (unless you intentionally want fall-through)<br>
+      • PHP 8+ introduced <code>match</code> expression — more modern & safer alternative to switch
+    </div>
+
+    <pre><code>// PHP 8+ match (expression – returns value)
+$grade = match ($marks) {
+    80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100 => "A+",
+    70, 71, 72, 73, 74, 75, 76, 77, 78, 79 => "A",
+    default => "Below A"
+};
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h2><b>2.2 Using Loop for Repetitive Tasks</b></h2>
+
+    <h3>2.2.1 while, do...while, for</h3>
+
+    <h4>while Loop</h4>
+    <pre><code>$i = 1;
+while ($i <= 5) {
+    echo "Number: $i &lt;br&gt;";
+    $i++;
+}
+// Output:
+// Number: 1
+// Number: 2
+// ...
+// Number: 5
+    </code></pre>
+
+    <h4>do...while Loop</h4>
+    <pre><code>$i = 1;
+do {
+    echo "Number: $i &lt;br&gt;";
+    $i++;
+} while ($i <= 5);
+// Runs at least once even if condition is false initially
+    </code></pre>
+
+    <h4>for Loop</h4>
+    <pre><code>for ($i = 1; $i <= 10; $i++) {
+    echo "$i ";
+}
+// Output: 1 2 3 4 5 6 7 8 9 10
+    </code></pre>
+
+    <div class="tip">
+      <b>Quick choice guide:</b><br>
+      • for → known number of iterations (arrays, counting)<br>
+      • while → condition-based (unknown iterations)<br>
+      • do-while → must run at least once (e.g., menu loop)
+    </div>
+
+    <h3>2.2.2 continue and break</h3>
+
+    <pre><code>for ($i = 1; $i <= 10; $i++) {
+    if ($i == 3 || $i == 6) {
+        continue;           // skip 3 and 6
+    }
+    if ($i == 8) {
+        break;              // stop loop at 8
+    }
+    echo "$i ";
+}
+// Output: 1 2 4 5 7
+    </code></pre>
+
+    <div class="note">
+      • <code>continue</code> → skip rest of current iteration, go to next<br>
+      • <code>break</code> → exit the loop completely<br>
+      • Can use with labels in nested loops (rare): <code>break outerLoop;</code>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 6: File Organization and Indexing [3 Hrs.]</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #111;
+      font-size: 20pt;
+      font-weight: bold;
+      margin: 30px 0;
+    }
+    h2 {
+      color: #222;
+      border-bottom: 3px solid #aaa;
+      padding-bottom: 10px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #444;
+      margin-top: 25px;
+      font-size: 1.3em;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+      text-align: justify;
+    }
+    ul, ol {
+      padding-left: 35px;
+    }
+    li {
+      margin-bottom: 14px;
+    }
+    pre {
+      background-color: #111;
+      color: #0f8;
+      padding: 18px;
+      overflow-x: auto;
+      border-radius: 10px;
+      font-size: 13pt;
+      margin: 20px 0;
+      line-height: 1.5;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.95em;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #e0e0e0;
+      font-weight: bold;
+    }
+    .note {
+      background-color: #e8f4fd;
+      border-left: 5px solid #2196f3;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .warning {
+      background-color: #fff3cd;
+      border-left: 5px solid #ff9800;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 18px; margin-bottom: 25px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin: 20px 0; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 14px; margin-bottom: 20px; }
+      pre { font-size: 11.5pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 6: File Organization and Indexing [3 Hrs.]</b></h1>
+
+  <div class="section">
+    <h2><b>6.1 Disks and Storage</b></h2>
+
+    <p>Modern DBMS performance is heavily dependent on how data is physically stored and accessed on secondary storage (mainly disks), because disk I/O is orders of magnitude slower than main memory access.</p>
+
+    <h3>Disk Structure (Magnetic Hard Disk Drive – HDD)</h3>
+    <ul>
+      <li><b>Platters:</b> Circular disks coated with magnetic material</li>
+      <li><b>Tracks:</b> Concentric circles on a platter</li>
+      <li><b>Sectors:</b> Smallest addressable unit (typically 512 bytes or 4 KB)</li>
+      <li><b>Cylinders:</b> Same track across all platters</li>
+      <li><b>Read/Write Heads:</b> One per platter surface</li>
+      <li><b>Access Time = Seek time + Rotational latency + Transfer time</b></li>
+    </ul>
+
+    <h3>Typical Disk Parameters (2020s HDD)</h3>
+    <table>
+      <tr><th>Parameter</th><th>Typical Value</th><th>Notes</th></tr>
+      <tr><td>Sector size</td><td>512 B – 4 KB</td><td>Advanced Format = 4 KB</td></tr>
+      <tr><td>Seek time</td><td>4–10 ms (average)</td><td>Time to move head to track</td></tr>
+      <tr><td>Rotational latency</td><td>2–5 ms (average)</td><td>½ rotation at 7200–15,000 RPM</td></tr>
+      <tr><td>Transfer rate</td><td>100–250 MB/s</td><td>Sequential read/write</td></tr>
+      <tr><td>Block size (DBMS)</td><td>4 KB – 16 KB</td><td>Common page size</td></tr>
+    </table>
+
+    <h3>SSD (Solid State Drive) vs HDD</h3>
+    <ul>
+      <li>No moving parts → seek time ≈ 0.05–0.1 ms</li>
+      <li>Random I/O much faster</li>
+      <li>But: limited write endurance, higher cost per GB</li>
+      <li>Modern DBMS often use SSDs or hybrid storage</li>
+    </ul>
+
+    <div class="note">
+      <b>Key DBMS Insight:</b> Disk I/O is the bottleneck in most database operations → goal is to minimize random I/O and maximize sequential access.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>6.2 Organization of Records into Blocks</b></h2>
+
+    <p>Data is stored on disk in fixed-size **blocks** (or pages) — the unit of I/O between disk and memory (typically 4 KB–16 KB in DBMS).</p>
+
+    <h3>Types of Record Organization within a Block</h3>
+    <table>
+      <tr><th>Type</th><th>Description</th><th>Advantages</th><th>Disadvantages</th><th>Use Case</th></tr>
+      <tr><td>Fixed-length records</td><td>All records same size</td><td>Easy addressing, fast access</td><td>Waste space if variable data</td><td>Simple tables (integer keys)</td></tr>
+      <tr><td>Variable-length records</td><td>Different sizes</td><td>Efficient storage</td><td>Complex management, fragmentation</td><td>VARCHAR, TEXT columns</td></tr>
+      <tr><td>Packed records</td><td>No gaps between records</td><td>Max storage efficiency</td><td>Insertion/deletion slow</td><td>Read-heavy, static data</td></tr>
+      <tr><td>Unspanned records</td><td>Record cannot cross block boundary</td><td>Simple</td><td>Internal fragmentation</td><td>Most DBMS default</td></tr>
+      <tr><td>Spanned records</td><td>Record can span blocks</td><td>No fragmentation waste</td><td>Complex retrieval</td><td>Large objects (BLOBs)</td></tr>
+    </table>
+
+    <h3>Block Header Information (typical)</h3>
+    <ul>
+      <li>Block ID / Page ID</li>
+      <li>Number of records</li>
+      <li>Free space pointer / offset list</li>
+      <li>Checksum / LSN (Log Sequence Number)</li>
+      <li>Next / previous block pointer (for sequential files)</li>
+    </ul>
+
+    <div class="note">
+      <b>Slotted Page Structure:</b> Most DBMS use slotted pages: header + slot array (pointers to records) + records from end of page → allows variable-length records with easy deletion (mark slot free).
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>6.3 File Organizations – Sequential and Indexed Sequential File Organizations</b></h2>
+
+    <h3>Heap File / Unordered File</h3>
+    <ul>
+      <li>Records inserted at end or in free space</li>
+      <li>No order → full table scan for search</li>
+      <li>Fast insert, slow search</li>
+    </ul>
+
+    <h3>Sequential File Organization</h3>
+    <ul>
+      <li>Records stored in order of search key (sorted)</li>
+      <li>Search: binary search possible if blocks are contiguous</li>
+      <li>Insertion: expensive (requires shifting or overflow area)</li>
+      <li>Common for reports / batch processing</li>
+    </ul>
+
+    <h3>Indexed Sequential Access Method (ISAM) / Indexed Sequential File</h3>
+    <ul>
+      <li>Records sorted on primary key</li>
+      <li>Primary index on blocks (sparse index)</li>
+      <li>Overflow area for inserts (chain of overflow blocks)</li>
+      <li>Degrades over time → requires periodic reorganization</li>
+      <li>Precursor to B+ tree indexes</li>
+    </ul>
+
+    <pre><code>
+// Conceptual ISAM structure
+Level 0 (cylinder index) → points to track indexes
+Level 1 (track index)   → points to block indexes
+Level 2 (block index)   → points to data blocks + overflow chain
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h2><b>6.4 B+ Tree Index</b></h2>
+
+    <p>B+ tree is the most widely used index structure in modern DBMS (InnoDB, PostgreSQL, Oracle, SQL Server, etc.).</p>
+
+    <h3>Properties of B+ Tree</h3>
+    <ul>
+      <li>Balanced tree → all leaf nodes at same level</li>
+      <li>Internal nodes contain only keys & pointers (no data)</li>
+      <li>Leaf nodes contain keys + data pointers (or actual data in clustered index)</li>
+      <li>Nodes have fan-out (order) m: between ⌈m/2⌉ – m children (except root)</li>
+      <li>Leaf nodes linked sequentially → efficient range scan</li>
+    </ul>
+
+    <h3>Advantages over B-tree</h3>
+    <ul>
+      <li>Better range queries (sequential leaf links)</li>
+      <li>More keys per node (no data in internal nodes)</li>
+      <li>Stable performance (balanced height)</li>
+    </ul>
+
+    <h3>Typical Parameters</h3>
+    <ul>
+      <li>Node size = disk block (4–16 KB)</li>
+      <li>Fan-out ≈ 100–500 (depending on key size)</li>
+      <li>Height ≈ 3–4 for billions of records</li>
+    </ul>
+
+    <pre><code>
+// Example B+ tree (order = 3, i.e. 2–3 keys per node)
+Root:          [50]
+             /     \
+Internal:   [20,30]   [60,80]
+           /  |  \    /  |  \
+Leaves: [10,15] [20,25,30] [40]   [50,55] [60,70] [80,90,100]
+        ↑ linked sequentially →
+    </code></pre>
+
+    <div class="note">
+      <b>Clustered vs Non-clustered:</b><br>
+      Clustered (primary index): leaf nodes contain full rows (InnoDB default)<br>
+      Non-clustered (secondary): leaf nodes contain primary key → extra lookup
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>6.5 Hash Index</b></h2>
+
+    <p>Hash indexes map search key values to bucket addresses using a hash function.</p>
+
+    <h3>Static Hashing</h3>
+    <ul>
+      <li>Fixed number of buckets</li>
+      <li>Hash(key) mod M → bucket number</li>
+      <li>Collisions handled by chaining or open addressing</li>
+      <li>Problem: under-utilization or overflow as data grows</li>
+    </ul>
+
+    <h3>Dynamic Hashing / Extendible Hashing</h3>
+    <ul>
+      <li>Directory of pointers to buckets</li>
+      <li>Global depth & local depth</li>
+      <li>Splits buckets & doubles directory when overflow</li>
+      <li>No full table reorganization</li>
+      <li>Used in PostgreSQL (hash index), SQL Server (memory-optimized tables)</li>
+    </ul>
+
+    <h3>Comparison: B+ Tree vs Hash Index</h3>
+    <table>
+      <tr><th>Feature</th><th>B+ Tree Index</th><th>Hash Index</th></tr>
+      <tr><td>Equality search</td><td>O(log n)</td><td>O(1) average</td></tr>
+      <tr><td>Range search</td><td>Efficient (sequential leaves)</td><td>Not supported</td></tr>
+      <tr><td>Ordered access</td><td>Yes (ORDER BY, GROUP BY)</td><td>No</td></tr>
+      <tr><td>Index-only scan</td><td>Possible (covering index)</td><td>Limited</td></tr>
+      <tr><td>Performance stability</td><td>Very stable</td><td>Can degrade with poor hash</td></tr>
+      <tr><td>Use in modern DBMS</td><td>Default primary/secondary</td><td>Special cases (equality lookups)</td></tr>
+    </table>
+
+    <div class="warning">
+      <b>Important:</b> Most production DBMS prefer B+ trees over hash indexes for disk-based storage because range queries, sorting, and joins are common operations.
+    </div>
+  </div>
+</body>
+</html>

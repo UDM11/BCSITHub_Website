@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 3: Array and Function – Internet Technology II</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      font-size: 22pt;
+      margin-bottom: 30px;
+    }
+    h2 {
+      color: #34495e;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 8px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #2980b9;
+      margin-top: 25px;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: justify;
+    }
+    pre {
+      background-color: #000000;
+      color: #00ff41;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 13pt;
+      margin: 15px 0;
+      line-height: 1.6;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+    .note {
+      background-color: #e8f5ff;
+      border-left: 5px solid #3498db;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .tip {
+      background-color: #e8fff5;
+      border-left: 5px solid #27ae60;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .example-output {
+      background: #f0f8ff;
+      padding: 12px;
+      border-left: 5px solid #1e90ff;
+      margin: 15px 0;
+      font-family: monospace;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; margin-bottom: 24px; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 20px; margin-bottom: 28px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin-bottom: 20px; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 16px; margin-bottom: 22px; }
+      pre { font-size: 12pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 3: Array and Function</b></h1>
+
+  <div class="section">
+    <h2><b>3.1 Working with Array</b></h2>
+
+    <p>Arrays in PHP are very flexible — they can be indexed, associative, or even multidimensional, and they can change size dynamically.</p>
+
+    <h3>3.1.1 Indexed Array (Numeric / Sequential)</h3>
+
+    <pre><code>&lt;?php
+// Indexed array (keys are 0, 1, 2...)
+$colors = array("Red", "Green", "Blue", "Yellow");
+
+// Short syntax (PHP 5.4+)
+$fruits = ["Apple", "Banana", "Mango", "Orange"];
+
+echo $fruits[1];          // Banana
+echo $fruits[3];          // Orange
+
+// Add element at the end
+$fruits[] = "Grapes";
+
+// Change value
+$fruits[0] = "Pineapple";
+
+// Count elements
+echo count($fruits);      // 5
+?&gt;</code></pre>
+
+    <h3>3.1.2 Associative Array</h3>
+
+    <pre><code>&lt;?php
+$student = [
+    "name"    => "Ram Sharma",
+    "roll"    => "075BCT001",
+    "faculty" => "BCT",
+    "gpa"     => 3.85,
+    "active"  => true
+];
+
+echo $student["name"];     // Ram Sharma
+echo $student["gpa"];      // 3.85
+
+// Add new key-value
+$student["email"] = "ram@ioe.edu.np";
+
+// Check if key exists
+if (isset($student["phone"])) {
+    echo $student["phone"];
+} else {
+    echo "Phone not set";
+}
+?&gt;</code></pre>
+
+    <h3>3.1.3 Array Iteration</h3>
+
+    <pre><code>&lt;?php
+// foreach — most common for arrays
+$days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+foreach ($days as $day) {
+    echo "$day ";
+}
+// Output: Sun Mon Tue Wed Thu Fri Sat
+
+// With key and value (associative)
+foreach ($student as $key => $value) {
+    echo "$key: $value &lt;br&gt;";
+}
+
+// Traditional for loop (indexed only)
+for ($i = 0; $i < count($days); $i++) {
+    echo $days[$i] . " ";
+}
+?&gt;</code></pre>
+
+    <h3>3.1.4 Multi-dimensional Array</h3>
+
+    <pre><code>&lt;?php
+// 2D array (array of arrays)
+$students = [
+    ["name" => "Ram", "roll" => "001", "gpa" => 3.85],
+    ["name" => "Sita", "roll" => "002", "gpa" => 3.92],
+    ["name" => "Hari", "roll" => "003", "gpa" => 3.45]
+];
+
+// Access
+echo $students[1]["name"];     // Sita
+echo $students[0]["gpa"];      // 3.85
+
+// Loop through 2D array
+foreach ($students as $student) {
+    echo $student["name"] . " - GPA: " . $student["gpa"] . "&lt;br&gt;";
+}
+?&gt;</code></pre>
+
+    <div class="tip">
+      <b>Best practice:</b> Use meaningful keys in associative arrays. Avoid mixing indexed and associative in the same array level (can cause confusion).
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>3.2 PHP’s Built-in Functions</b></h2>
+
+    <h3>3.2.1 String Functions</h3>
+    <table>
+      <tr><th>Function</th><th>Purpose</th><th>Example</th><th>Output</th></tr>
+      <tr><td>strlen()</td><td>Length of string</td><td>strlen("Hello")</td><td>5</td></tr>
+      <tr><td>strtoupper()</td><td>Uppercase</td><td>strtoupper("php")</td><td>PHP</td></tr>
+      <tr><td>strtolower()</td><td>Lowercase</td><td>strtolower("PHP")</td><td>php</td></tr>
+      <tr><td>trim()</td><td>Remove whitespace</td><td>trim("  hi  ")</td><td>"hi"</td></tr>
+      <tr><td>explode()</td><td>String → array</td><td>explode(",", "a,b,c")</td><td>["a","b","c"]</td></tr>
+      <tr><td>implode()</td><td>Array → string</td><td>implode("-", ["a","b"])</td><td>"a-b"</td></tr>
+      <tr><td>substr()</td><td>Extract substring</td><td>substr("Hello", 1, 3)</td><td>"ell"</td></tr>
+      <tr><td>str_replace()</td><td>Replace substring</td><td>str_replace("old", "new", "old text")</td><td>"new text"</td></tr>
+    </table>
+
+    <h3>3.2.2 Math Functions</h3>
+    <pre><code>abs(-45)          → 45
+round(3.78)       → 4
+round(3.78, 1)    → 3.8
+ceil(3.1)         → 4
+floor(3.9)        → 3
+pow(2, 5)         → 32
+sqrt(16)          → 4
+rand(1, 100)      → random number between 1–100
+mt_rand(1, 100)   → better random (Mersenne Twister)
+    </code></pre>
+
+    <h3>3.2.3 Date and Time Functions</h3>
+    <pre><code>date("Y-m-d H:i:s")          → 2025-03-15 14:30:45
+date("D, d M Y")              → Sat, 15 Mar 2025
+time()                        → current Unix timestamp
+strtotime("next Monday")      → timestamp of next Monday
+date("Y-m-d", strtotime("+2 days"))  → two days later
+    </code></pre>
+
+    <h3>3.2.4 Array Functions</h3>
+    <table>
+      <tr><th>Function</th><th>Purpose</th><th>Example</th></tr>
+      <tr><td>count()</td><td>Number of elements</td><td>count($arr)</td></tr>
+      <tr><td>array_push()</td><td>Add to end</td><td>array_push($arr, "new")</td></tr>
+      <tr><td>array_pop()</td><td>Remove from end</td><td>$last = array_pop($arr)</td></tr>
+      <tr><td>array_shift()</td><td>Remove from start</td><td>$first = array_shift($arr)</td></tr>
+      <tr><td>array_unshift()</td><td>Add to start</td><td>array_unshift($arr, "first")</td></tr>
+      <tr><td>array_merge()</td><td>Combine arrays</td><td>$new = array_merge($a1, $a2)</td></tr>
+      <tr><td>array_key_exists()</td><td>Key exists?</td><td>array_key_exists("name", $student)</td></tr>
+      <tr><td>in_array()</td><td>Value exists?</td><td>in_array("Apple", $fruits)</td></tr>
+      <tr><td>sort()</td><td>Sort ascending</td><td>sort($numbers)</td></tr>
+      <tr><td>rsort()</td><td>Sort descending</td><td>rsort($numbers)</td></tr>
+      <tr><td>asort()</td><td>Sort associative by value</td><td>asort($student)</td></tr>
+      <tr><td>ksort()</td><td>Sort associative by key</td><td>ksort($student)</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2><b>3.3 User Defined Function</b></h2>
+
+    <h3>3.3.1 Passing arguments and Return</h3>
+
+    <pre><code>&lt;?php
+// Basic function
+function greet($name) {
+    echo "Hello, $name!";
+}
+
+// With return
+function add($a, $b) {
+    return $a + $b;
+}
+
+// Default parameter
+function welcome($name = "Guest") {
+    return "Welcome, $name!";
+}
+
+// Call functions
+greet("Sita");             // Hello, Sita!
+echo add(15, 27);          // 42
+echo welcome();            // Welcome, Guest!
+echo welcome("Hari");      // Welcome, Hari!
+?&gt;</code></pre>
+
+    <h3>3.3.2 Variable Scoping</h3>
+
+    <ul>
+      <li><b>Local:</b> Defined inside function → only available inside</li>
+      <li><b>Global:</b> Defined outside → use <code>global</code> keyword inside function</li>
+      <li><b>Static:</b> Retains value between function calls</li>
+      <li><b>Parameter:</b> Passed to function (local scope)</li>
+    </ul>
+
+    <pre><code>&lt;?php
+$globalVar = 100;           // global
+
+function testScope() {
+    $localVar = 50;         // local
+    global $globalVar;      // access global
+    $globalVar += 10;
+
+    static $counter = 0;    // static - remembers value
+    $counter++;
+    echo "Counter: $counter &lt;br&gt;";
+}
+
+testScope();                // Counter: 1
+testScope();                // Counter: 2
+echo $globalVar;            // 110
+// echo $localVar;          // Error – not accessible
+?&gt;</code></pre>
+
+    <div class="tip">
+      <b>Modern recommendation (PHP 7.4+):</b><br>
+      Avoid using <code>global</code> — pass variables as parameters or use dependency injection / classes.<br>
+      Use <code>static</code> only when you really need to preserve state.
+    </div>
+  </div>
+</body>
+</html>

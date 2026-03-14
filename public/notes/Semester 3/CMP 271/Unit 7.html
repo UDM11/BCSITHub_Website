@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 7: Security [3 Hrs.]</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #111;
+      font-size: 20pt;
+      font-weight: bold;
+      margin: 30px 0;
+    }
+    h2 {
+      color: #222;
+      border-bottom: 3px solid #aaa;
+      padding-bottom: 10px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #444;
+      margin-top: 25px;
+      font-size: 1.3em;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+      text-align: justify;
+    }
+    ul, ol {
+      padding-left: 35px;
+    }
+    li {
+      margin-bottom: 14px;
+    }
+    pre {
+      background-color: #111;
+      color: #0f8;
+      padding: 18px;
+      overflow-x: auto;
+      border-radius: 10px;
+      font-size: 13pt;
+      margin: 20px 0;
+      line-height: 1.5;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.95em;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #e0e0e0;
+      font-weight: bold;
+    }
+    .note {
+      background-color: #e8f4fd;
+      border-left: 5px solid #2196f3;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .warning {
+      background-color: #fff3cd;
+      border-left: 5px solid #ff9800;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 18px; margin-bottom: 25px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin: 20px 0; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 14px; margin-bottom: 20px; }
+      pre { font-size: 11.5pt; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 7: Security [3 Hrs.]</b></h1>
+
+  <div class="section">
+    <h2><b>7.1 Needs of Security</b></h2>
+
+    <p>Database security is essential to protect data from unauthorized access, misuse, corruption, or theft while ensuring availability and integrity for legitimate users.</p>
+
+    <h3>Why Database Security is Critical</h3>
+    <ul>
+      <li>Databases store highly sensitive information: personal data (name, address, phone, email), financial records (bank accounts, credit cards), medical history, intellectual property, government records, passwords (hashed), etc.</li>
+      <li>Legal & regulatory compliance: GDPR, HIPAA, PCI-DSS, Nepal's Electronic Transactions Act, Data Protection Bill (ongoing), ISO 27001</li>
+      <li>Financial & reputational damage: Data breaches lead to lawsuits, fines, loss of trust (e.g., Equifax 2017, Yahoo 2013–2014, Bangladesh Bank 2016)</li>
+      <li>Insider threats: Employees, contractors, or partners with legitimate access can misuse data</li>
+      <li>Cyber threats: SQL injection, ransomware, credential stuffing, DDoS, phishing</li>
+      <li>Business continuity: Prevent downtime due to malicious deletion or corruption</li>
+    </ul>
+
+    <div class="note">
+      <b>Core Security Goals (CIA Triad + more):</b><br>
+      • Confidentiality – prevent unauthorized disclosure<br>
+      • Integrity – prevent unauthorized modification<br>
+      • Availability – ensure system is usable when needed<br>
+      • Authenticity – verify identity of users/systems<br>
+      • Non-repudiation – prove actions cannot be denied
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>7.2 Security and Integrity Violations</b></h2>
+
+    <h3>Types of Security & Integrity Violations</h3>
+    <table>
+      <tr><th>Violation Type</th><th>Description</th><th>Example</th><th>Impact</th></tr>
+      <tr><td>Unauthorized Read</td><td>Access to data without permission</td><td>Employee reads salary of colleagues</td><td>Privacy breach, competitive harm</td></tr>
+      <tr><td>Unauthorized Modification</td><td>Alter data without authorization</td><td>Change exam grades, bank balance</td><td>Data corruption, financial fraud</td></tr>
+      <tr><td>Unauthorized Deletion</td><td>Remove data maliciously</td><td>Ransomware deletes customer records</td><td>Loss of business data, recovery cost</td></tr>
+      <tr><td>SQL Injection</td><td>Malicious input alters query</td><td>' OR '1'='1 → bypass login</td><td>Full database exposure or destruction</td></tr>
+      <tr><td>Privilege Escalation</td><td>Gain higher access than granted</td><td>Exploit bug to become DBA</td><td>Complete system compromise</td></tr>
+      <tr><td>Denial of Service (DoS)</td><td>Make database unavailable</td><td>Flood with heavy queries</td><td>Service outage, revenue loss</td></tr>
+      <tr><td>Integrity Violation (not security)</td><td>Violates constraints accidentally</td><td>Insert negative age</td><td>Inconsistent data, wrong reports</td></tr>
+    </table>
+
+    <div class="warning">
+      <b>Common Attack Vectors in DBMS:</b><br>
+      • SQL Injection (still #1 in OWASP Top 10)<br>
+      • Weak authentication (default passwords, no MFA)<br>
+      • Misconfigured permissions (PUBLIC grants)<br>
+      • Unpatched vulnerabilities (Log4Shell, CVE in DBMS)
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>7.3 Access Control</b></h2>
+
+    <p>Access control determines **who** can perform **what** operations on **which** objects.</p>
+
+    <h3>Access Control Models</h3>
+    <table>
+      <tr><th>Model</th><th>Description</th><th>Used In</th><th>Example</th></tr>
+      <tr><td>Discretionary Access Control (DAC)</td><td>Owner decides permissions</td><td>Most relational DBMS (GRANT/REVOKE)</td><td>Alice grants SELECT on her table to Bob</td></tr>
+      <tr><td>Mandatory Access Control (MAC)</td><td>System enforces based on labels & clearance</td><td>High-security (military, government)</td><td>Top Secret data only accessible to cleared users</td></tr>
+      <tr><td>Role-Based Access Control (RBAC)</td><td>Permissions assigned to roles, users get roles</td><td>Enterprise systems (most common today)</td><td>Role "HR Manager" has SELECT on EmployeeSalary</td></tr>
+      <tr><td>Attribute-Based Access Control (ABAC)</td><td>Dynamic rules based on attributes</td><td>Modern cloud, fine-grained access</td><td>Allow access if user.department = 'HR' AND time between 9 AM–5 PM</td></tr>
+    </table>
+
+    <p><b>Typical DBMS Access Control Layers:</b></p>
+    <ul>
+      <li>Authentication (who are you?) – username/password, certificates, SSO, Kerberos</li>
+      <li>Authorization (what can you do?) – privileges on objects</li>
+      <li>Auditing (what did you do?) – log actions</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><b>7.4 Authorization</b></h2>
+
+    <p>Authorization in relational DBMS is managed using <b>GRANT</b> and <b>REVOKE</b> commands with privileges.</p>
+
+    <h3>Common Privileges</h3>
+    <ul>
+      <li>SELECT, INSERT, UPDATE, DELETE – on tables/views</li>
+      <li>EXECUTE – on stored procedures/functions</li>
+      <li>REFERENCES – create foreign keys</li>
+      <li>ALTER, DROP, INDEX, TRIGGER – structural changes</li>
+      <li>ALL PRIVILEGES – everything</li>
+      <li>CREATE SESSION / CONNECT – login</li>
+      <li>CREATE TABLE, CREATE VIEW, CREATE PROCEDURE – schema objects</li>
+    </ul>
+
+    <pre><code>-- Authorization Examples (PostgreSQL / MySQL / Oracle style)
+
+-- Grant specific privileges
+GRANT SELECT, INSERT ON Student TO ram;
+GRANT SELECT ON Student TO PUBLIC;           -- everyone can read
+GRANT ALL PRIVILEGES ON Department TO sita WITH GRANT OPTION;  -- can grant further
+
+-- Role-based
+CREATE ROLE hr_manager;
+GRANT SELECT ON Employee, Salary TO hr_manager;
+GRANT hr_manager TO ram, sita;
+
+-- Revoke
+REVOKE INSERT ON Student FROM ram;
+REVOKE ALL PRIVILEGES ON Department FROM sita CASCADE;  -- revoke from others too
+    </code></pre>
+
+    <div class="note">
+      <b>WITH GRANT OPTION / WITH ADMIN OPTION:</b> Allows receiver to pass privilege to others.<br>
+      <b>Best Practice:</b> Follow principle of least privilege – grant only necessary access.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>7.5 Security and Views</b></h2>
+
+    <p>Views are powerful tools for implementing security through data abstraction and access restriction.</p>
+
+    <h3>Security Benefits of Views</h3>
+    <ul>
+      <li>Hide sensitive columns (projection)</li>
+      <li>Restrict rows (selection / WHERE clause)</li>
+      <li>Present simplified or joined data</li>
+      <li>Enforce row-level security without complex privileges</li>
+      <li>Allow different views for different roles</li>
+    </ul>
+
+    <pre><code>-- Security via Views
+
+-- Hide salary from normal employees
+CREATE VIEW EmployeePublic AS
+SELECT emp_id, name, dept, hire_date
+FROM Employee;
+
+-- Row-level: only show own department
+CREATE VIEW DeptEmployee AS
+SELECT * FROM Employee
+WHERE dept = CURRENT_USER_DEPT();   -- or session variable
+
+-- Grant access only to view
+GRANT SELECT ON EmployeePublic TO PUBLIC;
+GRANT SELECT ON DeptEmployee TO dept_manager_role;
+    </code></pre>
+
+    <div class="note">
+      <b>Updatable Views:</b> Some views allow UPDATE/INSERT/DELETE if they meet criteria (single table, no aggregate, no join in some DBMS).
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>7.6 Encryption and Decryption</b></h2>
+
+    <p>Encryption protects data confidentiality at rest (stored) and in transit (network).</p>
+
+    <h3>Types of Encryption in DBMS</h3>
+    <table>
+      <tr><th>Type</th><th>Scope</th><th>Who Manages Keys?</th><th>Example Tools / Features</th></tr>
+      <tr><td>Transparent Data Encryption (TDE)</td><td>Entire database / tablespace</td><td>DBMS / OS</td><td>Oracle TDE, SQL Server TDE, PostgreSQL pgcrypto + filesystem encryption</td></tr>
+      <tr><td>Column-level Encryption</td><td>Specific sensitive columns</td><td>Application or DBMS</td><td>ENCRYPT(), AES_ENCRYPT() in MySQL</td></tr>
+      <tr><td>Application-level Encryption</td><td>Before sending to DB</td><td>Application</td><td>Client-side encryption (always encrypted in SQL Server)</td></tr>
+      <tr><td>Data in Transit</td><td>Network traffic</td><td>SSL/TLS</td><td>SSL/TLS certificates, require_secure_transport</td></tr>
+    </table>
+
+    <pre><code>-- MySQL / MariaDB column encryption example
+CREATE TABLE Patient (
+    patient_id INT PRIMARY KEY,
+    name VARCHAR(100),
+    disease_enc VARBINARY(255)   -- encrypted
+);
+
+INSERT INTO Patient (patient_id, name, disease_enc)
+VALUES (1, 'Ram', AES_ENCRYPT('Diabetes', 'secret_key_32_bytes_long'));
+
+SELECT name, AES_DECRYPT(disease_enc, 'secret_key_32_bytes_long') AS disease
+FROM Patient;
+    </code></pre>
+
+    <h3>Key Management Challenges</h3>
+    <ul>
+      <li>Where to store encryption keys? (HSM, key vault, environment variables)</li>
+      <li>Key rotation</li>
+      <li>Performance overhead (encryption/decryption cost)</li>
+      <li>Search & indexing on encrypted data (difficult → deterministic encryption or searchable encryption)</li>
+    </ul>
+
+    <div class="warning">
+      <b>Important:</b> Encrypting data does NOT protect against SQL injection or privilege abuse — combine with input validation, least privilege, and auditing.
+    </div>
+  </div>
+</body>
+</html>

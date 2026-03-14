@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 3: Basic Probability (6 hrs.)</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.7;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #1a3c6d;
+      font-size: 22pt;
+      margin-bottom: 30px;
+    }
+    h2 {
+      color: #34495e;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 8px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #2980b9;
+      margin-top: 25px;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: justify;
+    }
+    pre, .formula {
+      background-color: #f8f9fa;
+      border-left: 5px solid #3498db;
+      padding: 14px;
+      margin: 15px 0;
+      border-radius: 6px;
+      font-family: Consolas, monospace;
+      font-size: 13pt;
+    }
+    .formula {
+      font-size: 14pt;
+      text-align: center;
+      background: #e8f5ff;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+    .note {
+      background-color: #e8f5ff;
+      border-left: 5px solid #3498db;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .tip {
+      background-color: #e8fff5;
+      border-left: 5px solid #27ae60;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .example {
+      background: #f0f8ff;
+      padding: 12px;
+      border-left: 5px solid #1e90ff;
+      margin: 15px 0;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; margin-bottom: 24px; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 20px; margin-bottom: 28px; }
+      pre, .formula { font-size: 12pt; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin-bottom: 20px; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 16px; margin-bottom: 22px; }
+      pre, .formula { font-size: 12pt; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1><b>Unit 3: Basic Probability (6 hrs.)</b></h1>
+
+  <div class="section">
+    <h2>3.1 Terminology and Definition of Probability</h2>
+
+    <p><b>Probability</b> is a numerical measure of the likelihood that a particular event will occur. It ranges from 0 (impossible) to 1 (certain).</p>
+
+    <h3>Basic Terminology</h3>
+    <ul>
+      <li><b>Experiment / Random Experiment</b>: Any process that produces uncertain outcomes (e.g., tossing a coin, rolling a die, loading a webpage)</li>
+      <li><b>Outcome</b>: A single possible result of an experiment</li>
+      <li><b>Sample Space (S)</b>: Set of all possible outcomes (denoted by S or Ω)<br>
+          Example: Coin toss → S = {Head, Tail}<br>
+          Die roll → S = {1, 2, 3, 4, 5, 6}</li>
+      <li><b>Event</b>: Any subset of sample space (denoted by capital letters A, B, C…)<br>
+          Simple event: single outcome<br>
+          Compound event: more than one outcome</li>
+      <li><b>Mutually Exclusive Events</b>: Cannot occur at the same time (A ∩ B = ∅)</li>
+      <li><b>Exhaustive Events</b>: Cover the entire sample space (A ∪ B ∪ … = S)</li>
+      <li><b>Independent Events</b>: Occurrence of one does not affect the other</li>
+      <li><b>Complementary Event</b>: A̅ (not A) → P(A̅) = 1 – P(A)</li>
+    </ul>
+
+    <h3>Definitions / Approaches to Probability</h3>
+    <table>
+      <tr>
+        <th>Approach</th>
+        <th>Definition</th>
+        <th>Formula</th>
+        <th>When Used</th>
+        <th>Example</th>
+      </tr>
+      <tr>
+        <td>Classical / A Priori</td>
+        <td>Probability based on equally likely outcomes</td>
+        <td>P(A) = Number of favorable outcomes / Total possible outcomes</td>
+        <td>Finite sample space, equally likely</td>
+        <td>P(Head in coin) = 1/2</td>
+      </tr>
+      <tr>
+        <td>Relative Frequency / Empirical</td>
+        <td>Probability based on long-run observed frequency</td>
+        <td>P(A) ≈ (Number of times A occurs) / (Total trials)   (as n → ∞)</td>
+        <td>Real data / experiments</td>
+        <td>Server uptime 99.98% from 10,000 checks</td>
+      </tr>
+      <tr>
+        <td>Subjective / Personal</td>
+        <td>Degree of belief / expert judgment</td>
+        <td>No fixed formula — based on experience</td>
+        <td>No historical data (new product success)</td>
+        <td>“I think this bug fix has 80% chance of working”</td>
+      </tr>
+      <tr>
+        <td>Axiomatic (Kolmogorov)</td>
+        <td>Modern mathematical foundation</td>
+        <td>1. 0 ≤ P(A) ≤ 1<br>2. P(S) = 1<br>3. If A & B mutually exclusive → P(A ∪ B) = P(A) + P(B)</td>
+        <td>All probability theory</td>
+        <td>Used in proofs & advanced topics</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>3.2 Addition and Multiplication Law</h2>
+
+    <h3>Addition Law / Rule of Addition</h3>
+    <p>For any two events A and B:</p>
+
+    <div class="formula">
+      P(A ∪ B) = P(A) + P(B) – P(A ∩ B)
+    </div>
+
+    <ul>
+      <li><b>Mutually exclusive events</b> (A ∩ B = ∅): P(A ∪ B) = P(A) + P(B)</li>
+      <li><b>Exhaustive & mutually exclusive</b>: P(A) + P(B) + … = 1</li>
+    </ul>
+
+    <h3>Multiplication Law / Rule of Multiplication</h3>
+    <p>For any two events A and B:</p>
+
+    <div class="formula">
+      P(A ∩ B) = P(A) × P(B|A)   or   P(B) × P(A|B)
+    </div>
+
+    <ul>
+      <li><b>Independent events</b> (occurrence of one does not affect the other):<br>
+          P(A ∩ B) = P(A) × P(B)<br>
+          Also P(A|B) = P(A) and P(B|A) = P(B)</li>
+      <li><b>Dependent events</b>: Use conditional probability</li>
+    </ul>
+
+    <div class="example">
+      <b>A card is drawn from a standard deck (52 cards). Find probability of drawing:</b><br>
+      a) King or Queen (mutually exclusive) → 4/52 + 4/52 = 8/52 = 2/13<br>
+      b) King and then Queen (without replacement, dependent) → (4/52) × (4/51) = 16/2652 ≈ 0.006<br>
+      c) King and Queen (with replacement, independent) → (4/52) × (4/52) = 16/2704 ≈ 0.0059
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>3.3 Conditional Probability and Bayes’ Theorem related to IT</h2>
+
+    <h3>Conditional Probability</h3>
+    <p>Probability of event A occurring given that event B has already occurred.</p>
+
+    <div class="formula">
+      P(A|B) = P(A ∩ B) / P(B)    (provided P(B) > 0)
+    </div>
+
+    <h3>Bayes’ Theorem (Thomas Bayes, 1763)</h3>
+    <p>Allows us to reverse conditional probabilities — very important in IT (spam filtering, medical diagnosis, fraud detection, machine learning).</p>
+
+    <div class="formula">
+      P(A|B) = [P(B|A) × P(A)] / P(B)
+    </div>
+
+    <p>Where P(B) = P(B|A) × P(A) + P(B|A̅) × P(A̅)   (total probability rule)</p>
+
+    <h3>Real IT Applications of Bayes’ Theorem</h3>
+    <table>
+      <tr>
+        <th>Application</th>
+        <th>What is being calculated</th>
+        <th>P(A)</th>
+        <th>P(B|A)</th>
+        <th>P(B|A̅)</th>
+      </tr>
+      <tr>
+        <td>Spam Email Filter</td>
+        <td>P(Spam | contains “win lottery”)</td>
+        <td>Prior probability of spam</td>
+        <td>Likelihood word appears in spam</td>
+        <td>Likelihood in non-spam</td>
+      </tr>
+      <tr>
+        <td>Network Intrusion Detection</td>
+        <td>P(Attack | unusual traffic pattern)</td>
+        <td>Prior probability of attack</td>
+        <td>P(unusual traffic | attack)</td>
+        <td>P(unusual traffic | no attack)</td>
+      </tr>
+      <tr>
+        <td>Fraud Detection (Banking / eSewa)</td>
+        <td>P(Fraud | transaction at midnight from abroad)</td>
+        <td>Prior fraud rate</td>
+        <td>P(midnight foreign | fraud)</td>
+        <td>P(midnight foreign | genuine)</td>
+      </tr>
+      <tr>
+        <td>Medical Diagnosis AI</td>
+        <td>P(Disease | positive test)</td>
+        <td>Prior disease prevalence</td>
+        <td>Test sensitivity</td>
+        <td>False positive rate</td>
+      </tr>
+      <tr>
+        <td>Search Engine Ranking</td>
+        <td>P(Relevant | clicked link)</td>
+        <td>Prior relevance</td>
+        <td>P(click | relevant)</td>
+        <td>P(click | irrelevant)</td>
+      </tr>
+    </table>
+
+    <div class="example">
+      <b>Spam filter example (classic Bayes application):</b><br>
+      P(Spam) = 0.4 (40% of emails are spam)<br>
+      P(Word “win” | Spam) = 0.3<br>
+      P(Word “win” | Not Spam) = 0.001<br>
+
+      P(Spam | “win”) = [0.3 × 0.4] / [0.3 × 0.4 + 0.001 × 0.6] ≈ 0.995 (99.5% spam)
+    </div>
+
+    <div class="tip">
+      <b>Bayes’ theorem is the mathematical foundation of:</b><br>
+      • Naïve Bayes Classifier (very popular in machine learning)<br>
+      • Spam filters (Gmail, Outlook)<br>
+      • Medical diagnosis support systems<br>
+      • Fraud detection in Nepali digital wallets (eSewa, Khalti, IME Pay)
+    </div>
+  </div>
+
+</body>
+</html>

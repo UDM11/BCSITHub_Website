@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 1: Introduction to Object-Oriented Analysis and Design</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+    }
+    h1 {
+        text-align: center;
+        color: black;
+        font-size: 16pt;
+        font-weight: bold;
+    }
+    h2 {
+      color: black;
+    }
+    .section {
+      background: #fff;
+      padding: 15px;
+      margin-bottom: 25px;
+      border-radius: 8px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+      text-align: justify;
+    }
+    ul, ol {
+      padding-left: 25px;
+    }
+    li {
+      margin-bottom: 12px;
+    }
+    pre {
+      background-color: #000000;
+      color: #00ff41;
+      padding: 15px;
+      overflow-x: auto;
+      border-radius: 8px;
+      font-size: 12pt;
+      margin: 10px 0;
+    }
+    code {
+      font-family: Consolas, monospace;
+    }
+    .highlight {
+      background-color: #fffacd;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+    @media (max-width: 600px) {
+      .section { padding: 10px; }
+      pre { font-size: 11pt; }
+    }
+    @media only screen and (max-width: 768px) {
+        body { font-size: 14px; }
+        h1 { font-size: 1.3rem; }
+        h2 { font-size: 1.1rem; }
+        .section { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <h1><b>Unit 1: Introduction to Object-Oriented Analysis and Design [4 Hrs.]</b></h1>
+
+  <div class="section">
+    <h2><b>1.1 Class, Objects, Attributes, Methods</b></h2>
+    <p><b>Object-Oriented Analysis and Design (OOAD)</b> is a software engineering methodology that models complex systems using <span class="highlight">objects</span> that represent real-world or conceptual entities. It combines <b>Object-Oriented Analysis (OOA)</b> — understanding and specifying requirements through objects — and <b>Object-Oriented Design (OOD)</b> — structuring the solution with classes, relationships, and interactions.</p>
+    
+    <ul>
+      <li><b>Class:</b> A blueprint or template that defines the common structure (attributes) and behavior (methods) for a group of similar objects. It describes what objects of that type look like and can do. Classes promote reusability and organization.</li>
+      <li><b>Object:</b> A concrete instance of a class — a runtime entity with its own identity, state (attribute values), and behavior. Every object has a unique identity even if two objects have identical attribute values.</li>
+      <li><b>Attributes (Properties / Instance Variables / Data Members):</b> Represent the state or characteristics of an object. They hold data values that can change during the object's lifetime.</li>
+      <li><b>Methods (Operations / Member Functions):</b> Define the behavior or services an object can provide or receive. Methods manipulate attributes or perform actions.</li>
+    </ul>
+
+    <p><b>Key Principles Illustrated:</b></p>
+    <ul>
+      <li><b>Encapsulation:</b> Bundling attributes and methods together inside a class, hiding internal details (data hiding via access modifiers like private/public).</li>
+      <li><b>Abstraction:</b> Focusing on essential features while hiding complexity (class exposes only necessary methods).</li>
+    </ul>
+
+    <p><b>Real-World Example – Library Management System:</b></p>
+    <pre><code>
+// Class definition (Java-like pseudocode)
+class Book {
+    // Attributes (private for encapsulation)
+    private String isbn;
+    private String title;
+    private String author;
+    private int publicationYear;
+    private boolean isAvailable;
+
+    // Constructor (special method to initialize object)
+    public Book(String isbn, String title, String author, int year) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+        this.publicationYear = year;
+        this.isAvailable = true;
+    }
+
+    // Methods (behavior)
+    public void borrowBook() {
+        if (isAvailable) {
+            isAvailable = false;
+            System.out.println("Book '" + title + "' borrowed successfully.");
+        } else {
+            System.out.println("Book '" + title + "' is currently unavailable.");
+        }
+    }
+
+    public void returnBook() {
+        isAvailable = true;
+        System.out.println("Book '" + title + "' returned.");
+    }
+
+    public String getDetails() {
+        return "ISBN: " + isbn + ", Title: " + title + ", Author: " + author +
+               ", Year: " + publicationYear + ", Available: " + isAvailable;
+    }
+}
+
+// Creating objects
+Book book1 = new Book("978-3-16-148410-0", "Clean Code", "Robert C. Martin", 2008);
+Book book2 = new Book("978-0-201-63361-0", "Design Patterns", "Erich Gamma", 1994);
+
+book1.borrowBook();
+System.out.println(book1.getDetails());
+    </code></pre>
+
+    <p>Objects <code>book1</code> and <code>book2</code> are distinct instances with their own state, even though both are of type <code>Book</code>.</p>
+  </div>
+
+  <div class="section">
+    <h2><b>1.2 Relation between Objects: Association, Aggregation, and Composition Relationships with Examples</b></h2>
+    <p>Objects rarely exist in isolation; they interact through <b>relationships</b>. In UML class diagrams, these are shown with lines connecting classes, often with symbols indicating multiplicity (e.g., 1..*, 0..1) and role names.</p>
+
+    <ul>
+      <li><b>Association:</b> A general, structural relationship indicating that objects of one class are connected to objects of another ("uses-a", "knows-a", or "related-to"). Objects have independent lifecycles. Can be unidirectional or bidirectional. Represented by a solid line in UML.</li>
+      <ul>
+        <li><b>Example:</b> A <code>Student</code> enrolls in a <code>Course</code>. A student can exist without courses, and courses exist without specific students.</li>
+        <li><b>Multiplicity:</b> One student can enroll in many courses (1..*), one course has many students (*..*).</li>
+      </ul>
+
+      <li><b>Aggregation:</b> A "whole-part" or "has-a" relationship where the part can exist independently of the whole (weaker ownership). The part's lifecycle is not controlled by the whole. Represented by a <b>hollow diamond</b> on the whole side in UML.</li>
+      <ul>
+        <li><b>Example:</b> A <code>Team</code> has <code>Players</code>. If the team disbands, players can still exist and join other teams.</li>
+        <li>Common in collections like lists, arrays, or shared resources.</li>
+      </ul>
+
+      <li><b>Composition:</b> A stronger "whole-part" relationship where the part cannot exist without the whole (strong ownership, exclusive lifecycle). If the whole is destroyed, its parts are destroyed too. Represented by a <b>filled diamond</b> on the whole side in UML.</li>
+      <ul>
+        <li><b>Example:</b> A <code>Car</code> has an <code>Engine</code>. If the car is scrapped, the engine ceases to be part of any car (though physically it might be reused, conceptually it's destroyed with the car in the model).</li>
+        <li>Another: A <code>Document</code> has <code>Paragraphs</code> — paragraphs don't exist outside their document.</li>
+      </ul>
+    </ul>
+
+    <p><b>Comparison Table (Conceptual):</b></p>
+    <ul>
+      <li>Association → Loose connection, independent lifecycles</li>
+      <li>Aggregation → "Has-a" weak, parts shared/independent</li>
+      <li>Composition → "Has-a" strong, parts owned/exclusive</li>
+    </ul>
+
+    <pre><code>
+// Association
+class Student {
+    Course[] enrolledCourses;  // Student knows Courses
+}
+
+class Course {
+    Student[] enrolledStudents;  // Bidirectional possible
+}
+
+// Aggregation
+class Team {
+    List&lt;Player&gt; players = new ArrayList&lt;&gt;();  // Players can exist without Team
+}
+
+// Composition
+class Car {
+    private Engine engine = new Engine();  // Engine created & destroyed with Car
+    private Wheel[] wheels = new Wheel[4];
+    
+    public Car() {
+        for (int i = 0; i < 4; i++) wheels[i] = new Wheel();
+    }
+}
+    </code></pre>
+
+    <p><b>Common Misconception:</b> Aggregation vs Composition is not just about physical containment but about lifecycle dependency and ownership responsibility in the software model.</p>
+  </div>
+
+  <div class="section">
+    <h2><b>1.3 Benefits and Challenges of OOP (and OOAD)</b></h2>
+    <p>OOP/OOAD revolutionized software development by promoting modularity, reusability, and better modeling of real-world problems. However, it introduces complexity that must be managed carefully.</p>
+
+    <ul>
+      <li><b>Benefits / Advantages:</b>
+        <ul>
+          <li><b>Modularity & Maintainability:</b> Code organized into self-contained classes/objects → easier debugging, updates, and team collaboration.</li>
+          <li><b>Reusability:</b> Classes, inheritance, polymorphism, and libraries allow code reuse across projects (e.g., frameworks like Spring, .NET).</li>
+          <li><b>Real-World Mapping:</b> Objects model entities (Person, Account, Order) → improves understanding, communication with stakeholders, and requirement analysis.</li>
+          <li><b>Encapsulation & Data Protection:</b> Private attributes + public methods → reduces bugs from invalid data states.</li>
+          <li><b>Polymorphism & Flexibility:</b> Same method name behaves differently (e.g., draw() in Circle, Rectangle) → extensible systems without modifying existing code.</li>
+          <li><b>Inheritance & Hierarchy:</b> Promotes DRY (Don't Repeat Yourself) principle and hierarchical organization.</li>
+          <li><b>Scalability:</b> Supports large systems (enterprise software, games, simulations) via design patterns (Singleton, Factory, Observer, etc.).</li>
+          <li><b>Parallel Development:</b> Teams can work on different classes/objects independently.</li>
+        </ul>
+      </li>
+
+      <li><b>Challenges / Disadvantages:</b>
+        <ul>
+          <li><b>Steep Learning Curve:</b> Requires deep understanding of abstraction, encapsulation, inheritance, polymorphism, SOLID principles, and design patterns.</li>
+          <li><b>Performance Overhead:</b> Object creation, virtual method calls, garbage collection → slower than procedural code in some cases (critical in real-time/embedded systems).</li>
+          <li><b>Over-Engineering Risk:</b> Excessive abstraction, deep inheritance trees ("yo-yo problem"), or god classes → hard-to-maintain "spaghetti" code.</li>
+          <li><b>Design Complexity:</b> Poorly chosen relationships (tight coupling, fragile base class problem) lead to ripple effects during changes.</li>
+          <li><b>Higher Memory Usage:</b> Objects carry overhead (references, vtables); many small objects can fragment memory.</li>
+          <li><b>Debugging Difficulty:</b> Polymorphic behavior and dynamic dispatch make tracing harder than linear procedural code.</li>
+          <li><b>Initial Development Time:</b> More upfront design effort compared to simple scripts or procedural programs.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <p><b>When to Use OOP/OOAD:</b> Ideal for complex, evolving systems (banking, e-commerce, games, GUI apps). May be overkill for small scripts or performance-critical code (use procedural/C-style when appropriate).</p>
+  </div>
+</body>
+</html>

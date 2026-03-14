@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 7: Hypothesis Testing (12 hours) – Statistics / Probability & Statistics</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.7;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #1a3c6d;
+      font-size: 22pt;
+      margin-bottom: 30px;
+    }
+    h2 {
+      color: #34495e;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 8px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #2980b9;
+      margin-top: 25px;
+    }
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 35px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: justify;
+    }
+    ul, ol {
+      padding-left: 30px;
+    }
+    li {
+      margin-bottom: 12px;
+    }
+    pre, .formula {
+      background-color: #f8f9fa;
+      border-left: 5px solid #3498db;
+      padding: 14px;
+      margin: 15px 0;
+      border-radius: 6px;
+      font-family: Consolas, monospace;
+      font-size: 13.5pt;
+    }
+    .formula {
+      font-size: 15pt;
+      text-align: center;
+      background: #e8f5ff;
+      font-weight: bold;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.97em;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+    .note {
+      background-color: #e8f5ff;
+      border-left: 5px solid #3498db;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .tip {
+      background-color: #e8fff5;
+      border-left: 5px solid #27ae60;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+    .example {
+      background: #f0f8ff;
+      padding: 12px;
+      border-left: 5px solid #1e90ff;
+      margin: 15px 0;
+    }
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      h1 { font-size: 1.6rem; margin-bottom: 24px; }
+      h2 { font-size: 1.3rem; }
+      .section { padding: 20px; margin-bottom: 28px; }
+      pre, .formula { font-size: 12pt; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      h1 { font-size: 1.4rem; margin-bottom: 20px; }
+      h2 { font-size: 1.1rem; }
+      .section { padding: 16px; margin-bottom: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1><b>Unit 7: Hypothesis Testing (12 hours)</b></h1>
+
+  <div class="section">
+    <h2><b>7.1 Meaning and Definition</b></h2>
+
+    <p><b>Hypothesis testing</b> is a formal procedure in inferential statistics used to decide whether sample data supports or contradicts a claim (hypothesis) about a population parameter. We start with two competing statements and use sample evidence to choose between them.</p>
+
+    <h3>Key Terms</h3>
+    <ul>
+      <li><b>Null hypothesis (H<sub>0</sub>):</b> The statement we assume to be true initially; usually represents “no effect,” “no difference,” or “status quo.”</li>
+      <li><b>Alternative hypothesis (H<sub>1</sub> or H<sub>a</sub>):</b> The statement we want to support; represents “there is an effect,” “there is a difference,” or a specific direction (greater than / less than).</li>
+      <li><b>Test statistic:</b> A number computed from the sample that measures how far the sample result is from what we would expect if H<sub>0</sub> were true (e.g., z, t, F).</li>
+      <li><b>p-value:</b> The probability of observing a test statistic as extreme as (or more extreme than) the one we got, if H<sub>0</sub> were true. Small p-value → evidence against H<sub>0</sub>.</li>
+      <li><b>Conclusion:</b> If p-value ≤ significance level (α), we <b>reject H<sub>0</sub></b>; otherwise we <b>fail to reject H<sub>0</sub></b>.</li>
+    </ul>
+
+    <div class="note">
+      We never “accept” H<sub>0</sub>; we either reject it or fail to reject it. Failing to reject means we do not have enough evidence to support H<sub>1</sub>.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>7.2 Types of Errors, Significance Level, Degree of Freedom</b></h2>
+
+    <h3>Types of Errors</h3>
+    <table>
+      <tr>
+        <th>Decision</th>
+        <th>H<sub>0</sub> is true</th>
+        <th>H<sub>0</sub> is false</th>
+      </tr>
+      <tr>
+        <td>Reject H<sub>0</sub></td>
+        <td><b>Type I Error (α)</b> — False positive; reject a true null</td>
+        <td><b>Correct</b> — True positive</td>
+      </tr>
+      <tr>
+        <td>Fail to reject H<sub>0</sub></td>
+        <td><b>Correct</b></td>
+        <td><b>Type II Error (β)</b> — False negative; fail to reject a false null</td>
+      </tr>
+    </table>
+    <ul>
+      <li><b>Type I error (α):</b> Rejecting H<sub>0</sub> when it is actually true. We control this with the significance level.</li>
+      <li><b>Type II error (β):</b> Failing to reject H<sub>0</sub> when it is actually false. Power = 1 − β (probability of correctly rejecting a false H<sub>0</sub>).</li>
+    </ul>
+
+    <h3>Significance Level (α)</h3>
+    <p>The <b>significance level</b> (α) is the maximum probability of committing a Type I error we are willing to allow. Common choices: α = 0.05 (5%), 0.01 (1%), 0.10 (10%). We reject H<sub>0</sub> if p-value ≤ α.</p>
+
+    <h3>Degree of Freedom (df)</h3>
+    <p><b>Degrees of freedom (df)</b> is the number of independent pieces of information in the sample used to compute a statistic. It affects the shape of the t and chi-square (and F) distributions.</p>
+    <ul>
+      <li><b>One-sample t-test (mean):</b> df = n − 1</li>
+      <li><b>Two-sample t-test (independent):</b> df = n<sub>1</sub> + n<sub>2</sub> − 2 (or use Welch’s formula if variances unequal)</li>
+      <li><b>Paired t-test:</b> df = n − 1 (n = number of pairs)</li>
+      <li><b>One-way ANOVA (k groups, total n):</b> df<sub>between</sub> = k − 1, df<sub>within</sub> = n − k</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><b>7.3 Steps in Hypothesis Testing</b></h2>
+
+    <ol>
+      <li><b>State H<sub>0</sub> and H<sub>1</sub></b> in terms of the population parameter (μ, p, etc.).</li>
+      <li><b>Choose the significance level</b> α (e.g., 0.05).</li>
+      <li><b>Select the appropriate test</b> and <b>test statistic</b> (z, t, F, etc.) based on parameter, sample size, and whether σ is known or unknown.</li>
+      <li><b>Compute the test statistic</b> from the sample data.</li>
+      <li><b>Find the p-value</b> (or compare test statistic to critical value) using the sampling distribution.</li>
+      <li><b>Decide:</b> If p-value ≤ α, reject H<sub>0</sub>; otherwise fail to reject H<sub>0</sub>.</li>
+      <li><b>Conclusion:</b> State in context (e.g., “There is sufficient evidence at the 5% level to support that the mean is greater than 50”).</li>
+    </ol>
+
+    <div class="tip">
+      <b>One-tailed vs two-tailed:</b> Two-tailed H<sub>1</sub>: μ ≠ μ<sub>0</sub> (use both tails for p-value). One-tailed: μ &gt; μ<sub>0</sub> or μ &lt; μ<sub>0</sub> (use one tail only).
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>7.4 Single and Double Mean Test (Population Standard Deviation Known)</b></h2>
+
+    <p>When the <b>population standard deviation σ is known</b>, we use the <b>z-test</b> for means (based on the normal distribution).</p>
+
+    <h3>Single mean (one-sample z-test)</h3>
+    <p>Test H<sub>0</sub>: μ = μ<sub>0</sub> vs H<sub>1</sub>: μ ≠ μ<sub>0</sub> (or &gt; or &lt;).</p>
+    <div class="formula">
+      z = (x̄ − μ<sub>0</sub>) / (σ / √n)
+    </div>
+    <p>Compare z to critical values from the standard normal table, or find the p-value.</p>
+
+    <h3>Two means (two-sample z-test, independent samples)</h3>
+    <p>Test H<sub>0</sub>: μ<sub>1</sub> = μ<sub>2</sub> vs H<sub>1</sub>: μ<sub>1</sub> ≠ μ<sub>2</sub> (or &gt; or &lt;). Assume populations are normal with known σ<sub>1</sub>, σ<sub>2</sub>.</p>
+    <div class="formula">
+      z = (x̄<sub>1</sub> − x̄<sub>2</sub>) / √(σ<sub>1</sub>²/n<sub>1</sub> + σ<sub>2</sub>²/n<sub>2</sub>)
+    </div>
+
+    <div class="example">
+      <b>Single mean:</b> Claim μ = 100, σ = 15, n = 36, x̄ = 105. z = (105 − 100) / (15/√36) = 5/2.5 = 2. For two-tailed α = 0.05, critical value ≈ ±1.96. Since 2 &gt; 1.96, reject H<sub>0</sub>.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>7.5 Single and Double Proportion Test</b></h2>
+
+    <p>For <b>proportions</b>, we use the <b>z-test</b> (large samples: np ≥ 5 and n(1−p) ≥ 5).</p>
+
+    <h3>Single proportion</h3>
+    <p>Test H<sub>0</sub>: p = p<sub>0</sub> vs H<sub>1</sub>: p ≠ p<sub>0</sub> (or &gt; or &lt;).</p>
+    <div class="formula">
+      z = (p̂ − p<sub>0</sub>) / √[p<sub>0</sub>(1−p<sub>0</sub>) / n]
+    </div>
+
+    <h3>Two proportions (independent samples)</h3>
+    <p>Test H<sub>0</sub>: p<sub>1</sub> = p<sub>2</sub> vs H<sub>1</sub>: p<sub>1</sub> ≠ p<sub>2</sub> (or &gt; or &lt;). Use pooled estimate p̄ = (x<sub>1</sub> + x<sub>2</sub>) / (n<sub>1</sub> + n<sub>2</sub>) under H<sub>0</sub>.</p>
+    <div class="formula">
+      z = (p̂<sub>1</sub> − p̂<sub>2</sub>) / √[p̄(1−p̄)(1/n<sub>1</sub> + 1/n<sub>2</sub>)]
+    </div>
+
+    <div class="note">
+      p̂<sub>1</sub> = x<sub>1</sub>/n<sub>1</sub>, p̂<sub>2</sub> = x<sub>2</sub>/n<sub>2</sub>; x<sub>1</sub>, x<sub>2</sub> are numbers of successes in each sample.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>7.6 Single and Double Mean Test (Population Standard Deviation Unknown)</b></h2>
+
+    <p>When <b>σ is unknown</b>, we use the <b>t-test</b> (sample standard deviation s and t-distribution).</p>
+
+    <h3>Single mean (one-sample t-test)</h3>
+    <p>Test H<sub>0</sub>: μ = μ<sub>0</sub> vs H<sub>1</sub>: μ ≠ μ<sub>0</sub> (or &gt; or &lt;). df = n − 1.</p>
+    <div class="formula">
+      t = (x̄ − μ<sub>0</sub>) / (s / √n)
+    </div>
+
+    <h3>Two means (two-sample t-test, independent samples)</h3>
+    <p>Test H<sub>0</sub>: μ<sub>1</sub> = μ<sub>2</sub> vs H<sub>1</sub>: μ<sub>1</sub> ≠ μ<sub>2</sub> (or &gt; or &lt;). Assume roughly equal population variances (pooled) or use Welch’s t (unequal variances).</p>
+    <p><b>Pooled variance:</b> s<sub>p</sub>² = [(n<sub>1</sub>−1)s<sub>1</sub>² + (n<sub>2</sub>−1)s<sub>2</sub>²] / (n<sub>1</sub> + n<sub>2</sub> − 2)</p>
+    <div class="formula">
+      t = (x̄<sub>1</sub> − x̄<sub>2</sub>) / (s<sub>p</sub> √(1/n<sub>1</sub> + 1/n<sub>2</sub>))   ,   df = n<sub>1</sub> + n<sub>2</sub> − 2
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>7.7 Paired t-Test</b></h2>
+
+    <p>The <b>paired t-test</b> is used when we have <b>two related measurements</b> on the same subjects (e.g., before/after, matched pairs). We work with the <b>differences</b> d = (after − before) and test whether the mean difference μ<sub>d</sub> is zero.</p>
+
+    <h3>Hypotheses</h3>
+    <p>H<sub>0</sub>: μ<sub>d</sub> = 0  vs  H<sub>1</sub>: μ<sub>d</sub> ≠ 0 (or &gt; 0 or &lt; 0)</p>
+
+    <h3>Test statistic</h3>
+    <p>d̄ = sample mean of differences, s<sub>d</sub> = sample standard deviation of differences, n = number of pairs.</p>
+    <div class="formula">
+      t = d̄ / (s<sub>d</sub> / √n)   ,   df = n − 1
+    </div>
+
+    <div class="example">
+      <b>Example:</b> Reaction time before and after training for 10 users. Compute d = after − before for each; then d̄ and s<sub>d</sub>. Test H<sub>0</sub>: μ<sub>d</sub> = 0. If t exceeds the critical value (or p-value &lt; α), we conclude there is a significant change.
+    </div>
+
+    <div class="tip">
+      Use paired t when observations are naturally paired (same subject, matched units). Use two-sample t when the two groups are independent.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><b>7.8 One-Way ANOVA</b></h2>
+
+    <p><b>One-way ANOVA</b> (Analysis of Variance) tests whether the <b>means of three or more independent groups</b> are equal. It extends the two-sample t-test to k groups.</p>
+
+    <h3>Hypotheses</h3>
+    <p>H<sub>0</sub>: μ<sub>1</sub> = μ<sub>2</sub> = … = μ<sub>k</sub> (all group means are equal)<br>
+    H<sub>1</sub>: At least one mean is different</p>
+
+    <h3>Idea</h3>
+    <p>Partition total variation into <b>between-group</b> variation (due to group differences) and <b>within-group</b> variation (random error). If between-group variation is large relative to within-group, we reject H<sub>0</sub>.</p>
+
+    <h3>Test statistic: F-ratio</h3>
+    <div class="formula">
+      F = MS<sub>between</sub> / MS<sub>within</sub>
+    </div>
+    <p>Where MS = Mean Square = SS/df.</p>
+    <ul>
+      <li><b>SS<sub>between</sub></b> (or SS<sub>B</sub>): Sum of squares between groups</li>
+      <li><b>SS<sub>within</sub></b> (or SS<sub>W</sub>): Sum of squares within groups (error)</li>
+      <li><b>df<sub>between</sub></b> = k − 1,  <b>df<sub>within</sub></b> = n − k  (n = total sample size, k = number of groups)</li>
+    </ul>
+
+    <h3>Decision</h3>
+    <p>Compare F to the critical value from the F-distribution with (k−1, n−k) degrees of freedom at level α. If F &gt; F<sub>critical</sub> (or p-value ≤ α), reject H<sub>0</sub> — at least one group mean differs.</p>
+
+    <div class="note">
+      ANOVA only tells us that not all means are equal; it does not say which groups differ. For that we use <b>post-hoc tests</b> (e.g., Tukey’s HSD) after a significant F.
+    </div>
+  </div>
+
+</body>
+</html>
