@@ -1,8 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, Mail, Phone, MapPin, ArrowUp, Heart, ExternalLink, Clock } from 'lucide-react';
+import { BookOpen, Mail, Phone, MapPin, ArrowUp, ExternalLink, Clock, Download } from 'lucide-react';
+import { useInstallModal } from '@/context/InstallModalContext';
 
 export function Footer() {
+  const { open: openInstallModal } = useInstallModal();
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -236,11 +239,20 @@ export function Footer() {
             </motion.p>
             
             <motion.div 
-              className="flex items-center gap-4 text-sm text-gray-400"
+              className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-400"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
+              <button
+                type="button"
+                onClick={openInstallModal}
+                className="flex items-center gap-1.5 hover:text-white transition-colors text-indigo-300 hover:text-indigo-200"
+              >
+                <Download className="w-4 h-4" />
+                Install app
+              </button>
+              <span>•</span>
               <a href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</a>
               <span>•</span>
               <a href="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</a>

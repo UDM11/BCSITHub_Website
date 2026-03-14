@@ -20,8 +20,10 @@ import {
   Brain,
   ChevronDown,
   Wrench,
+  Download,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { useInstallModal } from '@/context/InstallModalContext';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false); // mobile menu
@@ -29,6 +31,7 @@ export function Navbar() {
   const [showToolsMenu, setShowToolsMenu] = useState(false); // tools dropdown
   const [isTablet, setIsTablet] = useState(false);
   const { user, signOut } = useAuth();
+  const { open: openInstallModal } = useInstallModal();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -346,6 +349,19 @@ export function Navbar() {
                     </Link>
                   ))}
                   
+                  {/* Install app - Mobile */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      openInstallModal();
+                      setIsOpen(false);
+                    }}
+                    className="flex items-center space-x-3 px-3 py-2 rounded-md w-full text-left text-gray-700 hover:text-indigo-600 hover:bg-gray-50 transition-colors"
+                  >
+                    <Download className="w-5 h-5 text-indigo-600" />
+                    <span>Install app</span>
+                  </button>
+
                   {/* Tools Section in Mobile */}
                   <div className="border-t border-gray-200 pt-3 mt-3">
                     <div className="px-3 py-2 text-sm font-semibold text-gray-500 uppercase tracking-wider">

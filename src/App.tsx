@@ -3,9 +3,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import { AuthProvider } from './context/AuthContext';
 import { ProfileProvider } from './context/ProfileContext';
+import { PWAInstallProvider } from './context/PWAInstallContext';
+import { InstallModalProvider } from './context/InstallModalContext';
 
 import { Navbar } from './components/Layout/Navbar';
 import { Footer } from './components/Layout/Footer';
+import { PWAInstallBanner } from './components/PWAInstallBanner';
 import ProtectedRoute from './components/routes/ProtectedRoute';
 import ScrollToTop from './components/ScrollToTop';
 
@@ -46,10 +49,13 @@ function App() {
   return (
     <AuthProvider>
       <ProfileProvider>
+        <PWAInstallProvider>
+        <InstallModalProvider>
         <Router>
           <ScrollToTop />
           <div className="flex flex-col min-h-screen">
             <Navbar />
+            <PWAInstallBanner />
 
             <main className="flex-1">
               <Routes>
@@ -158,6 +164,8 @@ function App() {
             }}
           />
         </Router>
+        </InstallModalProvider>
+        </PWAInstallProvider>
       </ProfileProvider>
     </AuthProvider>
   );
