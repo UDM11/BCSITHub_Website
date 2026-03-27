@@ -36,7 +36,7 @@ export default defineConfig({
             handler: 'CacheFirst',
             options: {
               cacheName: 'bcsithub-notes-cache',
-              expiration: { maxEntries: 500, maxAgeSeconds: 60 * 60 * 24 * 30 },
+              expiration: { maxEntries: 500, maxAgeSeconds: 60 * 60 * 24 * 365 },
               cacheableResponse: { statuses: [0, 200] },
             },
           },

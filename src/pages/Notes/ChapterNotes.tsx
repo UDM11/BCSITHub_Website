@@ -97,13 +97,32 @@ export default function ChapterNotes() {
     window.scrollTo(0, 0);
 
     const delay = new Promise((res) => setTimeout(res, 1500));
-    Promise.all([
-      fetch(filePath).then((res) => {
+    const notesCacheName = "bcsithub-notes-fallback-cache";
+
+    const loadNoteContent = async () => {
+      try {
+        const res = await fetch(filePath);
         if (!res.ok) throw new Error("Note not found.");
-        return res.text();
-      }),
-      delay,
-    ])
+
+        // Save a copy for robust offline fallback.
+        if ("caches" in window) {
+          const cache = await caches.open(notesCacheName);
+          await cache.put(filePath, res.clone());
+        }
+        return await res.text();
+      } catch {
+        if ("caches" in window) {
+          // Try both direct match and fallback cache.
+          const cached =
+            (await caches.match(filePath)) ||
+            (await (await caches.open(notesCacheName)).match(filePath));
+          if (cached) return await cached.text();
+        }
+        throw new Error("Note not found.");
+      }
+    };
+
+    Promise.all([loadNoteContent(), delay])
       .then(([data]) => setHtmlContent(data))
       .catch(() => setError("This chapter note does not exist or failed to load."))
       .finally(() => setLoading(false));
